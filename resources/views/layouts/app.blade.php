@@ -12,6 +12,11 @@
     <!-- Canonical -->
     <link rel="canonical" href="{{ url()->current() }}">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}?v={{ time() }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v={{ time() }}">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}?v={{ time() }}">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
