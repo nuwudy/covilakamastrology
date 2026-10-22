@@ -145,6 +145,34 @@
         return 'https://api.whatsapp.com/send?text=' + encodeURIComponent(msg);
     },
 
+    getVisitorOwnWhatsAppUrl() {
+        if (!this.calcResult || !this.calcPhone) return '#';
+        let sanitized = this.calcPhone.replace(/[^0-9]/g, '');
+        if (sanitized.length === 10) {
+            sanitized = '91' + sanitized;
+        }
+        let name = this.calcResult.name || 'Seeker';
+        let dob = this.calcResult.birth_date || '';
+        let mulank = this.calcResult.mulank || '';
+        let bhagyank = this.calcResult.bhagyank || '';
+        let rulingPlanet = this.calcResult.ruling_planet?.[this.readingLang] || this.calcResult.ruling_planet?.en || '';
+        let gemstone = this.calcResult.gemstone_en || '';
+        let reportUrl = this.calcResult.report_url || ('{{ url('/prediction') }}/' + (this.calcResult.consultation_id || ''));
+        if (this.readingLang) {
+            reportUrl += (reportUrl.includes('?') ? '&' : '?') + 'lang=' + this.readingLang;
+        }
+
+        let msg = `🔮 *Namaskaram ${name}, here is your Vedic Astro Reading by DR. E. K. Raja Varma* (Covilakam Astrology / കോവിലകം ജ്യോതിഷം):\n\n` +
+                  `📅 *Date of Birth:* ${dob}\n` +
+                  `🪐 *Birth Number (Mulank):* ${mulank} (${rulingPlanet})\n` +
+                  `🌟 *Destiny Number (Bhagyank):* ${bhagyank}\n` +
+                  `💎 *Recommended Gemstone:* ${gemstone}\n\n` +
+                  `📜 *View your full horoscope report on site:*\n${reportUrl}\n\n` +
+                  `🙏 *Consultation with DR. E. K. Raja Varma (Vidya Vachaspathi & Gold Medalist):*\nWhatsApp: +91 7907052160\nWebsite: https://www.covilakamastrology.com`;
+
+        return `https://wa.me/${sanitized}?text=` + encodeURIComponent(msg);
+    },
+
     async onServiceChange() {
         if (!this.calcResult?.consultation_id) return;
         try {
@@ -243,7 +271,7 @@
                         <!-- Bio Snippet & Tagline -->
                         <div class="space-y-2 text-center sm:text-left">
                             <p class="font-cinzel text-xs text-amber-300 uppercase tracking-widest font-bold">
-                                Covilakam Astrology • <span class="italic font-playfair lowercase">Explore. Discover. Transform.</span>
+                                Covilakam Astrology (Kovilakam Astrology / കോവിലകം ജ്യോതിഷം) • <span class="italic font-playfair lowercase">Explore. Discover. Transform.</span>
                             </p>
                             <p class="text-xs sm:text-sm text-amber-100/80 leading-relaxed">
                                 Conferred Ph.D. in Vedic Astrology (Specialisation in Online Astro Counselling) by IAMA Open University, Florida, and Gold Medalist at Shree Maharshi College of Vedic Astrology. Dedicated to helping you align with cosmic harmony since 2022.
@@ -810,12 +838,22 @@
                                     </a>
                                 </div>
 
+                                <!-- Deliver to Visitor's Own WhatsApp Button -->
+                                <template x-if="calcPhone">
+                                    <a :href="getVisitorOwnWhatsAppUrl()"
+                                       target="_blank"
+                                       class="w-full py-2.5 px-3 rounded-xl font-bold text-xs text-amber-200 bg-[#25163b] hover:bg-[#311c4e] border border-amber-500/40 flex items-center justify-center space-x-2 transition-all shadow-md">
+                                        <span>📩</span>
+                                        <span>Send Report to My WhatsApp (<span x-text="calcPhone"></span>)</span>
+                                    </a>
+                                </template>
+
                                 <!-- Reader Share to WhatsApp Button -->
                                 <a :href="getReaderShareWhatsAppUrl()"
                                    target="_blank"
                                    class="w-full py-2.5 px-3 rounded-xl font-bold text-xs text-emerald-200 bg-[#14261f] hover:bg-[#1a332a] border border-emerald-500/40 flex items-center justify-center space-x-2 transition-all shadow-md">
                                     <span>📲</span>
-                                    <span>Share My Prediction on WhatsApp</span>
+                                    <span>Share Report with Friends / WhatsApp Status</span>
                                 </a>
 
                                 <!-- Open Full Dedicated Prediction Page -->

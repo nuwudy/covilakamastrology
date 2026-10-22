@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) | Covilakam Astrology')</title>
-    <meta name="description" content="@yield('meta_description', 'Covilakam Astrology - Official portal of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Explore. Discover. Transform. Accurate Predictions, Jathakam, Marriage Matching, Gem Predictions, and Muhoorthams.')">
-    <meta name="keywords" content="DR E K Raja Varma, Vidya Vachaspathi in Vedic Astrology, Covilakam Astrology, Kerala Astrology, Online Astro Counselling, Jathakam, Porutham, Malayalam Astrology">
+    <title>@yield('title', 'DR. E. K. Raja Varma | Covilakam Astrology (Kovilakam Astrology - കോവിലകം ജ്യോതിഷം)')</title>
+    <meta name="description" content="@yield('meta_description', 'Covilakam Astrology (also searched as Kovilakam Astrology / കോവിലകം ജ്യോതിഷം) - Official portal of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, Gold Medalist & Ph.D.). Accurate Predictions, Jathakam, Marriage Matching (Porutham), Gem Predictions, and Online Astro Counselling for Kerala & Global Malayalees.')">
+    <meta name="keywords" content="Covilakam Astrology, Kovilakam Astrology, കോവിലകം ജ്യോതിഷം, Kovilakam Jyothisham, Covilakam Jyothisham, DR E K Raja Varma, Vidya Vachaspathi in Vedic Astrology, Kerala Astrology, Malayalam Astrology Online, ജാതക പരിശോധന, വിവാഹ പൊരുത്തം, മുഹൂർത്തം, Malayali Astrologer, Kerala Astrologer in Dubai UAE, Best Astrologer in Kerala, Online Astro Counselling">
 
     <!-- Canonical -->
     <link rel="canonical" href="{{ url()->current() }}">
@@ -22,24 +22,105 @@
     <!-- Open Graph / Facebook / WhatsApp (1200x630) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="@yield('title', 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) | Covilakam Astrology')">
-    <meta property="og:description" content="@yield('meta_description', 'Covilakam Astrology - Official portal of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Accurate Predictions, Jathakam, Marriage Matching, Gem Predictions, and Online Astro Counselling.')">
+    <meta property="og:title" content="@yield('title', 'DR. E. K. Raja Varma | Covilakam Astrology (Kovilakam Astrology - കോവിലകം ജ്യോതിഷം)')">
+    <meta property="og:description" content="@yield('meta_description', 'Covilakam Astrology (Kovilakam Astrology / കോവിലകം ജ്യോതിഷം) - Official portal of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Accurate Predictions, Jathakam, Marriage Matching, Gem Predictions, and Online Astro Counselling.')">
     <meta property="og:image" content="@yield('og_image', asset('images/og-covilakam-1200x630.png'))">
     <meta property="og:image:secure_url" content="@yield('og_image', asset('images/og-covilakam-1200x630.png'))">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:alt" content="DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) - Covilakam Astrology">
-    <meta property="og:site_name" content="Covilakam Astrology">
+    <meta property="og:site_name" content="Covilakam Astrology (Kovilakam Astrology)">
     <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="ml_IN">
 
     <!-- Twitter / X Cards (1200x630 summary_large_image) -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="{{ url()->current() }}">
-    <meta name="twitter:title" content="@yield('title', 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) | Covilakam Astrology')">
-    <meta name="twitter:description" content="@yield('meta_description', 'Covilakam Astrology - Official portal of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Accurate Predictions, Jathakam, Marriage Matching, Gem Predictions, and Online Astro Counselling.')">
+    <meta name="twitter:title" content="@yield('title', 'DR. E. K. Raja Varma | Covilakam Astrology (Kovilakam Astrology)')">
+    <meta name="twitter:description" content="@yield('meta_description', 'Covilakam Astrology (Kovilakam Astrology / കോവിലകം ജ്യോതിഷം) - Official portal of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Accurate Predictions, Jathakam, Marriage Matching, Gem Predictions, and Online Astro Counselling.')">
     <meta name="twitter:image" content="@yield('og_image', asset('images/og-covilakam-1200x630.png'))">
     <meta name="twitter:image:alt" content="DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) - Covilakam Astrology">
+
+    <!-- Structured JSON-LD Schema: Organization, ProfessionalService, Person & FAQ for High Search Visibility -->
+    @php
+        $schemaGraph = [
+            '@context' => 'https://schema.org',
+            '@graph' => [
+                [
+                    '@type' => 'ProfessionalService',
+                    '@id' => url('/') . '#organization',
+                    'name' => 'Covilakam Astrology',
+                    'alternateName' => [
+                        'Kovilakam Astrology',
+                        'കോവിലകം ജ്യോതിഷം',
+                        'Covilakam Jyothisham',
+                        'Kovilakam Jyothisham',
+                        'Covilakam Vedic Astrology',
+                        'Kovilakam Vedic Astrology'
+                    ],
+                    'url' => url('/'),
+                    'logo' => asset('images/logo.png'),
+                    'image' => asset('images/og-covilakam-1200x630.png'),
+                    'description' => 'Covilakam Astrology (also known as Kovilakam Astrology / കോവിലകം ജ്യോതിഷം) is the official Vedic astrology practice of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, 2026 Gold Medalist & Ph.D.). Specialising in accurate horoscope predictions, Jathakam analysis, marriage compatibility (Porutham), and online consultations for Kerala and global Malayalis.',
+                    'telephone' => '+917907052160',
+                    'email' => 'varmaji@covilakamastrology.com',
+                    'priceRange' => '$$',
+                    'address' => [
+                        '@type' => 'PostalAddress',
+                        'addressRegion' => 'Kerala',
+                        'addressCountry' => 'IN'
+                    ],
+                    'areaServed' => [
+                        ['@type' => 'AdministrativeArea', 'name' => 'Kerala'],
+                        ['@type' => 'Country', 'name' => 'India'],
+                        ['@type' => 'Country', 'name' => 'United Arab Emirates'],
+                        ['@type' => 'Country', 'name' => 'Qatar'],
+                        ['@type' => 'Country', 'name' => 'Saudi Arabia'],
+                        ['@type' => 'Country', 'name' => 'Oman'],
+                        ['@type' => 'Country', 'name' => 'Kuwait'],
+                        ['@type' => 'Country', 'name' => 'United States'],
+                        ['@type' => 'Country', 'name' => 'United Kingdom']
+                    ],
+                    'knowsLanguage' => ['ml', 'en', 'ta', 'hi'],
+                    'founder' => [
+                        '@type' => 'Person',
+                        'name' => 'DR. E. K. Raja Varma',
+                        'honorificPrefix' => 'Dr.',
+                        'jobTitle' => 'Vidya Vachaspathi in Vedic Astrology & Gold Medalist',
+                        'sameAs' => [
+                            'https://www.youtube.com/@CovilakamAstrology'
+                        ]
+                    ]
+                ],
+                [
+                    '@type' => 'FAQPage',
+                    '@id' => url('/') . '#faq',
+                    'mainEntity' => [
+                        [
+                            '@type' => 'Question',
+                            'name' => 'Is it Covilakam Astrology or Kovilakam Astrology?',
+                            'acceptedAnswer' => [
+                                '@type' => 'Answer',
+                                'text' => 'Both Covilakam Astrology and Kovilakam Astrology (കോവിലകം ജ്യോതിഷം) refer to the same authentic Vedic astrology practice established by DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). In Malayalam it is written as കോവിലകം ജ്യോതിഷം, and it is commonly searched in English as both Covilakam and Kovilakam.'
+                            ]
+                        ],
+                        [
+                            '@type' => 'Question',
+                            'name' => 'Can Malayalis (Mallus) get an online astrology consultation in Malayalam?',
+                            'acceptedAnswer' => [
+                                '@type' => 'Answer',
+                                'text' => 'Yes! DR. E. K. Raja Varma provides authentic online Vedic astrology consultations, Jathakam readings, marriage matching (Porutham), and remedies directly in Malayalam (മലയാളം), as well as English, Tamil, and Hindi for clients in Kerala, the Gulf (UAE, Oman, Qatar, Saudi Arabia), and across the world via WhatsApp.'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+    @endphp
+    <script type="application/ld+json">
+    {!! json_encode($schemaGraph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+    </script>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

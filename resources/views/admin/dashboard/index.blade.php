@@ -220,6 +220,24 @@
                         if (strlen($targetPhone) === 10) {
                             $targetPhone = '91' . $targetPhone;
                         }
+                        $calc = $lead->calculated_summary;
+                        if ($calc && !empty($calc['mulank'])) {
+                            $rPlanet = is_array($calc['ruling_planet'] ?? null) ? ($calc['ruling_planet']['en'] ?? 'Surya') : ($calc['ruling_planet'] ?? '');
+                            $gem = $calc['gemstone_en'] ?? '';
+                            $reportUrl = route('consultations.prediction', $lead->id);
+                            $replyText = "Namaskaram {$lead->name},\n\n"
+                                . "This is DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) from Covilakam Astrology (കോവിലകം ജ്യോതിഷം).\n\n"
+                                . "Here is your Vedic Horoscope Summary:\n"
+                                . "• Date of Birth: " . ($lead->birth_date ? \Carbon\Carbon::parse($lead->birth_date)->format('d-m-Y') : '') . "\n"
+                                . "• Birth Number (Mulank): {$calc['mulank']} ({$rPlanet})\n"
+                                . "• Destiny Number (Bhagyank): " . ($calc['bhagyank'] ?? '') . "\n"
+                                . "• Recommended Gemstone: {$gem}\n"
+                                . "• Service Requested: " . ($lead->service_requested ?? 'Vedic Astro Reading') . "\n\n"
+                                . "📜 View your complete dedicated report here:\n{$reportUrl}\n\n"
+                                . "Please let me know if you would like to proceed with a detailed personal consultation.";
+                        } else {
+                            $replyText = "Namaskaram {$lead->name}, this is DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) from Covilakam Astrology regarding your inquiry for \"" . ($lead->service_requested ?? 'Astrology Reading') . "\". How may I guide you today?";
+                        }
                     @endphp
 
                     <div class="pt-1 flex items-center justify-between text-[11px]">
@@ -228,10 +246,10 @@
                         </span>
 
                         @if($targetPhone)
-                        <a href="https://wa.me/{{ $targetPhone }}?text={{ rawurlencode('Namaskaram ' . $lead->name . ', this is DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) regarding your consultation request on Covilakam Astrology.') }}"
+                        <a href="https://wa.me/{{ $targetPhone }}?text={{ rawurlencode($replyText) }}"
                            target="_blank"
                            class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-300 border border-emerald-500/40 font-semibold text-[10px]">
-                            <span>💬 WhatsApp Reply</span>
+                            <span>💬 Send Horoscope on WhatsApp</span>
                         </a>
                         @endif
                     </div>

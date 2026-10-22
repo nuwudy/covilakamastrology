@@ -144,10 +144,16 @@
             </div>
         </div>
 
+        <!-- Search Keywords Indexing for Malayalees (Mallus) & Kerala Astrology -->
+        <div class="mt-8 pt-4 border-t border-amber-500/15 text-[11px] text-amber-200/50 leading-relaxed text-center sm:text-left">
+            <span class="text-amber-300/80 font-bold">Also Searched As:</span>
+            <span>Kovilakam Astrology • കോവിലകം ജ്യോതിഷം • Kovilakam Jyothisham • Covilakam Jyothisham • Malayalam Astrology Online • Kerala Astrologer • ജാതക പരിശോധന • വിവാഹ പൊരുത്തം • മുഹൂർത്തം • Online Jathakam Kerala • DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</span>
+        </div>
+
         <!-- Bottom Copyright -->
-        <div class="mt-12 pt-6 border-t border-amber-500/20 flex flex-col sm:flex-row items-center justify-between text-[11px] text-amber-300/60 gap-4">
+        <div class="mt-6 pt-6 border-t border-amber-500/20 flex flex-col sm:flex-row items-center justify-between text-[11px] text-amber-300/60 gap-4">
             <p>
-                © {{ date('Y') }} <strong>Covilakam Astrology</strong>. All rights reserved. Directed by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>.
+                © {{ date('Y') }} <strong>Covilakam Astrology</strong> (Kovilakam Astrology). All rights reserved. Directed by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>.
             </p>
             <div class="flex items-center space-x-4">
                 <span>Explore. Discover. Transform.</span>
