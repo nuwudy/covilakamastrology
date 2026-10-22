@@ -33,9 +33,9 @@
 
         <!-- Author Card -->
         <div class="flex items-center space-x-4 p-4 rounded-2xl bg-[#1a1128] border border-amber-500/30 mb-8">
-            <img src="{{ asset('storage/media/images/whatsapp-image-2026-10-20-at-85056-am-MOuzds.webp') }}"
+            <img src="{{ asset('storage/media/images/covilakam-4bcJQK.webp') }}"
                  alt="Dr. E. K. Raja Varma"
-                 onerror="this.onerror=null; this.src='{{ asset('images/dr-ek-raja-varma.webp') }}';"
+                 onerror="this.onerror=null; this.src='{{ asset('images/covilakam-hero.webp') }}';"
                  class="w-14 h-14 rounded-full object-cover border-2 border-amber-400 shrink-0">
             <div>
                 <p class="font-cinzel text-sm sm:text-base font-bold text-amber-300">

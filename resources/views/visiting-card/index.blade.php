@@ -55,9 +55,9 @@
                 <!-- Profile Section -->
                 <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6">
                     <div class="w-28 h-28 shrink-0 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-xl">
-                        <img src="{{ asset('storage/media/images/whatsapp-image-2026-10-20-at-85056-am-MOuzds.webp') }}"
+                        <img src="{{ asset('storage/media/images/covilakam-4bcJQK.webp') }}"
                              alt="Dr. E. K. Raja Varma"
-                             onerror="this.onerror=null; this.src='{{ asset('images/dr-ek-raja-varma.webp') }}';"
+                             onerror="this.onerror=null; this.src='{{ asset('images/covilakam-hero.webp') }}';"
                              class="w-full h-full object-cover rounded-2xl">
                     </div>
 

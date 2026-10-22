@@ -156,9 +156,9 @@
                         <!-- Royal Gold Ornate Frame -->
                         <div class="relative shrink-0">
                             <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl p-1.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-2xl gold-glow transform rotate-1 hover:rotate-0 transition-transform duration-300">
-                                <img src="{{ asset('storage/media/images/whatsapp-image-2026-10-20-at-85056-am-MOuzds.webp') }}?v={{ time() }}"
+                                <img src="{{ asset('storage/media/images/covilakam-4bcJQK.webp') }}?v={{ time() }}"
                                      alt="Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)"
-                                     onerror="this.onerror=null; this.src='{{ asset('images/dr-ek-raja-varma.webp') }}';"
+                                     onerror="this.onerror=null; this.src='{{ asset('images/covilakam-hero.webp') }}';"
                                      class="w-full h-full object-cover object-top rounded-xl border border-amber-300/60 shadow-inner">
                             </div>
                             <span class="absolute -bottom-2 -right-2 px-2.5 py-0.5 rounded-full bg-amber-400 text-[10px] font-extrabold text-[#1a1128] uppercase shadow-lg border border-amber-200">
@@ -1563,9 +1563,9 @@
                         <!-- Card Center Profile & Title -->
                         <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 mb-5">
                             <div class="w-24 h-24 shrink-0 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-lg">
-                                <img src="{{ asset('storage/media/images/whatsapp-image-2026-10-20-at-85056-am-MOuzds.webp') }}"
+                                <img src="{{ asset('storage/media/images/covilakam-4bcJQK.webp') }}"
                                      alt="Dr. E. K. Raja Varma"
-                                     onerror="this.onerror=null; this.src='{{ asset('images/dr-ek-raja-varma.webp') }}';"
+                                     onerror="this.onerror=null; this.src='{{ asset('images/covilakam-hero.webp') }}';"
                                      class="w-full h-full object-cover rounded-2xl">
                             </div>
 
