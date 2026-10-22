@@ -93,26 +93,83 @@
 
 /* Visiting card print styles */
 @media print {
+    @page {
+        size: A4 portrait;
+        margin: 15mm 10mm;
+    }
+
+    /* Completely hide navigation, header, footer, background elements and action buttons */
+    header,
+    nav,
+    footer,
+    .no-print,
+    .no-print *,
+    #dob-calculator,
+    #videos,
+    #qualifications,
+    #services,
+    #about,
+    #why-us,
+    #translations,
+    #blog {
+        display: none !important;
+    }
+
+    html, body {
+        background: #ffffff !important;
+        color: #1a1128 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
     body * {
         visibility: hidden;
     }
-    #printable-visiting-card, #printable-visiting-card * {
+
+    #printable-visiting-card,
+    #printable-visiting-card * {
         visibility: visible;
     }
+
     #printable-visiting-card {
-        position: absolute;
-        left: 50%;
-        top: 20%;
-        transform: translate(-50%, -20%);
-        width: 90mm !important;
-        height: 54mm !important;
-        margin: 0 !important;
-        padding: 6mm !important;
-        box-shadow: none !important;
+        display: block !important;
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        transform: none !important;
+        margin: 20px auto !important;
+        width: 100% !important;
+        max-width: 580px !important;
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        padding: 24px 28px !important;
+        border-radius: 20px !important;
         border: 2px solid #d4af37 !important;
-        background: #1a1128 !important;
+        background: linear-gradient(135deg, #2a0e1c 0%, #1a1128 50%, #380e22 100%) !important;
+        background-color: #1a1128 !important;
         color: #fdfbf7 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+        box-shadow: none !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    /* Ensure text inside visiting card prints with high contrast */
+    #printable-visiting-card h1,
+    #printable-visiting-card h2,
+    #printable-visiting-card h3,
+    #printable-visiting-card h4 {
+        color: #fef3c7 !important;
+    }
+
+    #printable-visiting-card a {
+        color: #fef3c7 !important;
+        text-decoration: none !important;
     }
 }

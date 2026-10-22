@@ -4,11 +4,63 @@
 @section('meta_description', 'Official Digital Visiting Card of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), Covilakam Astrology. Connect via WhatsApp +91 7907052160 or GPay 094473 27450.')
 
 @section('content')
+<style>
+    @media print {
+        @page {
+            size: A4 portrait;
+            margin: 12mm 8mm;
+        }
+        header, nav, footer, .no-print, .no-print * {
+            display: none !important;
+        }
+        html, body {
+            background: #ffffff !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: visible !important;
+            height: auto !important;
+            min-height: auto !important;
+        }
+        body * {
+            visibility: hidden;
+        }
+        #printable-visiting-card,
+        #printable-visiting-card * {
+            visibility: visible;
+        }
+        #printable-visiting-card {
+            display: block !important;
+            position: relative !important;
+            left: auto !important;
+            top: auto !important;
+            transform: none !important;
+            margin: 10px auto !important;
+            width: 100% !important;
+            max-width: 580px !important;
+            height: auto !important;
+            min-height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
+            padding: 24px 28px !important;
+            border-radius: 20px !important;
+            border: 2px solid #d4af37 !important;
+            background: linear-gradient(135deg, #2a0e1c 0%, #1a1128 50%, #380e22 100%) !important;
+            background-color: #1a1128 !important;
+            color: #fdfbf7 !important;
+            box-shadow: none !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+    }
+</style>
+
 <div class="pt-32 pb-24 bg-[#0d0716] min-h-screen">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Header -->
-        <div class="text-center max-w-2xl mx-auto mb-14 space-y-3">
+        <div class="no-print text-center max-w-2xl mx-auto mb-14 space-y-3">
             <span class="text-xs font-bold uppercase tracking-widest text-amber-400 bg-amber-500/10 px-3.5 py-1 rounded-full border border-amber-500/30">
                 Official Digital Identity
             </span>
@@ -57,6 +109,7 @@
                     <div class="w-28 h-28 shrink-0 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-xl">
                         <img src="{{ asset('storage/media/images/covilakam-4bcJQK.webp') }}"
                              alt="DR. E. K. Raja Varma"
+                             crossorigin="anonymous"
                              onerror="this.onerror=null; this.src='{{ asset('images/covilakam-hero.webp') }}';"
                              class="w-full h-full object-cover rounded-2xl">
                     </div>
@@ -113,10 +166,18 @@
             </div>
 
             <!-- Action Buttons -->
-            <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
-                <button onclick="window.print()"
+            <div class="no-print mt-8 flex flex-wrap items-center justify-center gap-4">
+                <button type="button" id="btn-download-img" onclick="downloadVisitingCardImage()"
                         class="px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-xl flex items-center space-x-2 transition-all">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    <span>Download Card as Image (PNG)</span>
+                </button>
+
+                <button type="button" onclick="window.print()"
+                        class="px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-purple-900/80 hover:bg-purple-800 border border-amber-500/50 shadow-xl flex items-center space-x-2 transition-all">
+                    <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
                     </svg>
                     <span>Print / Save as PDF</span>
@@ -130,15 +191,44 @@
                     </svg>
                     <span>Save Contact on WhatsApp</span>
                 </a>
-
-                <a href="{{ route('visiting-card.print') }}" target="_blank"
-                   class="px-6 py-3.5 rounded-xl font-medium text-xs sm:text-sm text-amber-200 border border-amber-500/40 hover:bg-amber-500/10 transition-all">
-                    Standalone Clean Print Window
-                </a>
             </div>
 
         </div>
 
     </div>
 </div>
+
+<script src="{{ asset('js/html2canvas.min.js') }}"></script>
+<script>
+    function downloadVisitingCardImage() {
+        const card = document.getElementById('printable-visiting-card');
+        const btn = document.getElementById('btn-download-img');
+        const origText = btn ? btn.innerHTML : '';
+        if (btn) btn.innerHTML = '<span>⏳ Generating Image...</span>';
+
+        if (typeof html2canvas === 'undefined') {
+            window.print();
+            if (btn) btn.innerHTML = origText;
+            return;
+        }
+
+        html2canvas(card, {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: '#1a1128',
+            logging: false
+        }).then(function(canvas) {
+            const link = document.createElement('a');
+            link.download = 'DR-E-K-Raja-Varma-Covilakam-Visiting-Card.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            if (btn) btn.innerHTML = origText;
+        }).catch(function(err) {
+            console.error('Error generating card image:', err);
+            if (btn) btn.innerHTML = origText;
+            window.print();
+        });
+    }
+</script>
 @endsection
