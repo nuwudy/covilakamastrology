@@ -45,12 +45,16 @@
 
     async submitDobForm() {
         this.syncDob();
-        if (!this.calcName) {
+        if (!this.calcName || !this.calcName.trim()) {
             alert('Please enter your Full Name.');
             return;
         }
         if (!this.calcDay || !this.calcMonth || !this.calcYear || !this.calcDob) {
             alert('Please select your Date of Birth in DD / MM / YYYY format.');
+            return;
+        }
+        if (!this.calcPhone || this.calcPhone.trim().length < 8) {
+            alert('Please enter your WhatsApp Number (minimum 8 digits) so your horoscope predictions can be delivered.');
             return;
         }
         this.calcLoading = true;
@@ -66,6 +70,7 @@
                     name: this.calcName,
                     birth_date: this.calcDob,
                     phone: this.calcPhone,
+                    language: this.readingLang,
                     service_requested: this.calcService
                 })
             });
@@ -86,6 +91,74 @@
             document.getElementById('dob-traditional-form').submit();
         } finally {
             this.calcLoading = false;
+        }
+    },
+
+    getDoctorWhatsAppUrl() {
+        if (!this.calcResult) return '#';
+        let name = this.calcResult.name || 'Seeker';
+        let dob = this.calcResult.birth_date || '';
+        let mulank = this.calcResult.mulank || '';
+        let bhagyank = this.calcResult.bhagyank || '';
+        let rulingPlanet = this.calcResult.ruling_planet?.[this.readingLang] || this.calcResult.ruling_planet?.en || 'Surya';
+        let destinyPlanet = this.calcResult.destiny_planet?.[this.readingLang] || this.calcResult.destiny_planet?.en || '';
+        let solarSign = this.readingLang === 'ml' ? (this.calcResult.solar_sign?.name_ml || '') : (this.calcResult.solar_sign?.name_en || '');
+        let gemstone = this.readingLang === 'ml' ? (this.calcResult.gemstone_ml || this.calcResult.gemstone_en) : this.calcResult.gemstone_en;
+        let chosenService = this.calcService || 'Accurate Predictions';
+
+        let msg = `Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology),\n\n` +
+                  `I read my Vedic DOB Astro Reading on Covilakam Astrology:\n` +
+                  `• Name: ${name}\n` +
+                  `• Date of Birth: ${dob}\n` +
+                  `• Birth Number (Mulank): ${mulank} (${rulingPlanet})\n` +
+                  `• Destiny Number (Bhagyank): ${bhagyank} (${destinyPlanet})\n` +
+                  `• Surya Rasi: ${solarSign}\n` +
+                  `• Recommended Gemstone: ${gemstone}\n` +
+                  `• Service Needed: ${chosenService}\n\n` +
+                  `I would like to book a detailed personal consultation with you regarding ${chosenService}.`;
+
+        return 'https://wa.me/917907052160?text=' + encodeURIComponent(msg);
+    },
+
+    getReaderShareWhatsAppUrl() {
+        if (!this.calcResult) return '#';
+        let name = this.calcResult.name || 'Seeker';
+        let dob = this.calcResult.birth_date || '';
+        let mulank = this.calcResult.mulank || '';
+        let bhagyank = this.calcResult.bhagyank || '';
+        let rulingPlanet = this.calcResult.ruling_planet?.[this.readingLang] || this.calcResult.ruling_planet?.en || '';
+        let gemstone = this.calcResult.gemstone_en || '';
+        let reportUrl = this.calcResult.report_url || ('{{ url('/prediction') }}/' + (this.calcResult.consultation_id || ''));
+        if (this.readingLang) {
+            reportUrl += (reportUrl.includes('?') ? '&' : '?') + 'lang=' + this.readingLang;
+        }
+
+        let msg = `🔮 *My Vedic Astrology Reading by DR. E. K. Raja Varma* (Covilakam Astrology)\n\n` +
+                  `👤 *Name:* ${name}\n` +
+                  `📅 *Date of Birth:* ${dob}\n` +
+                  `🪐 *Birth Number (Mulank):* ${mulank} (${rulingPlanet})\n` +
+                  `🌟 *Destiny Number (Bhagyank):* ${bhagyank}\n` +
+                  `💎 *Recommended Gemstone:* ${gemstone}\n\n` +
+                  `📜 *Read my complete horoscope report on site:*\n${reportUrl}\n\n` +
+                  `🙏 *Consult DR. E. K. Raja Varma (Vidya Vachaspathi & Gold Medalist):*\nhttps://www.covilakamastrology.com`;
+
+        return 'https://api.whatsapp.com/send?text=' + encodeURIComponent(msg);
+    },
+
+    async onServiceChange() {
+        if (!this.calcResult?.consultation_id) return;
+        try {
+            await fetch(`{{ url('/consultations') }}/${this.calcResult.consultation_id}/service`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ service_requested: this.calcService })
+            });
+        } catch (e) {
+            console.error('Service update error:', e);
         }
     },
 
@@ -346,13 +419,49 @@
 
                         <!-- INPUT FORM VIEW -->
                         <div x-show="!hasResult">
-                            <p class="text-xs text-amber-100/70 mb-5 leading-relaxed">
+                            <p class="text-xs text-amber-100/70 mb-4 leading-relaxed">
                                 Enter your Date of Birth in the standard Indian format <strong>(DD/MM/YYYY)</strong> to instantly reveal your <strong>Vedic Birth Number (Mulank)</strong>, <strong>Destiny Number (Bhagyank)</strong>, <strong>Navagraha Ruling Planet</strong>, <strong>Malayalam Surya Rasi</strong>, and <strong>Lucky Gemstone</strong>.
                             </p>
+
+                            <!-- STEP 1: SELECT LANGUAGE BEFORE STARTING -->
+                            <div class="mb-4 p-3 rounded-2xl bg-[#1b102e] border border-amber-500/30 shadow-inner">
+                                <div class="flex items-center justify-between mb-2">
+                                    <label class="block text-xs font-bold text-amber-300 flex items-center space-x-1.5">
+                                        <span>🌐</span>
+                                        <span>Select Language Before Starting:</span>
+                                    </label>
+                                    <span class="text-[10px] text-amber-400 font-mono bg-amber-500/15 px-2 py-0.5 rounded border border-amber-500/30">
+                                        4 Languages
+                                    </span>
+                                </div>
+                                <div class="grid grid-cols-4 gap-1.5">
+                                    <button type="button" @click="readingLang = 'en'"
+                                            :class="readingLang === 'en' ? 'bg-gradient-to-r from-amber-400 to-yellow-400 text-black font-extrabold shadow-md scale-[1.02]' : 'bg-[#25153c] text-amber-200/80 hover:text-white border border-amber-500/20'"
+                                            class="py-2 px-1 rounded-xl text-xs text-center transition-all cursor-pointer">
+                                        🇬🇧 English
+                                    </button>
+                                    <button type="button" @click="readingLang = 'ml'"
+                                            :class="readingLang === 'ml' ? 'bg-gradient-to-r from-amber-400 to-yellow-400 text-black font-extrabold shadow-md scale-[1.02]' : 'bg-[#25153c] text-amber-200/80 hover:text-white border border-amber-500/20'"
+                                            class="py-2 px-1 rounded-xl text-xs text-center transition-all cursor-pointer font-malayalam">
+                                        മലയാളം
+                                    </button>
+                                    <button type="button" @click="readingLang = 'ta'"
+                                            :class="readingLang === 'ta' ? 'bg-gradient-to-r from-amber-400 to-yellow-400 text-black font-extrabold shadow-md scale-[1.02]' : 'bg-[#25153c] text-amber-200/80 hover:text-white border border-amber-500/20'"
+                                            class="py-2 px-1 rounded-xl text-xs text-center transition-all cursor-pointer font-tamil">
+                                        தமிழ்
+                                    </button>
+                                    <button type="button" @click="readingLang = 'hi'"
+                                            :class="readingLang === 'hi' ? 'bg-gradient-to-r from-amber-400 to-yellow-400 text-black font-extrabold shadow-md scale-[1.02]' : 'bg-[#25153c] text-amber-200/80 hover:text-white border border-amber-500/20'"
+                                            class="py-2 px-1 rounded-xl text-xs text-center transition-all cursor-pointer font-hindi">
+                                        हिन्दी
+                                    </button>
+                                </div>
+                            </div>
 
                             <form @submit.prevent="submitDobForm" id="dob-traditional-form" action="{{ route('consultations.calculate-dob') }}" method="POST" class="space-y-4 text-xs">
                                 @csrf
                                 <input type="hidden" name="birth_date" :value="calcDob">
+                                <input type="hidden" name="language" :value="readingLang">
 
                                 <div>
                                     <label class="block font-semibold text-amber-200 mb-1">Your Full Name *</label>
@@ -425,23 +534,21 @@
                                     </div>
                                 </div>
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    <div>
-                                        <label class="block font-semibold text-amber-200 mb-1">WhatsApp / Phone (Optional)</label>
-                                        <input type="tel" x-model="calcPhone" name="phone" placeholder="+91 98765 43210"
-                                               class="w-full px-3.5 py-2.5 rounded-xl bg-[#231538] border border-amber-500/30 text-white placeholder-amber-200/40 focus:outline-none focus:border-amber-400 transition-colors">
+                                <!-- MANDATORY WHATSAPP NUMBER (SERVICE NEEDED REMOVED FROM HERE) -->
+                                <div>
+                                    <div class="flex items-center justify-between mb-1">
+                                        <label class="block font-semibold text-amber-200">
+                                            WhatsApp Number * <span class="text-rose-400 font-bold">(Mandatory)</span>
+                                        </label>
+                                        <span class="text-[10px] text-emerald-400 font-mono flex items-center space-x-1">
+                                            <span>💬 Direct Horoscope Delivery</span>
+                                        </span>
                                     </div>
-                                    <div>
-                                        <label class="block font-semibold text-amber-200 mb-1">Service Needed</label>
-                                        <select x-model="calcService" name="service_requested"
-                                                class="w-full px-3.5 py-2.5 rounded-xl bg-[#231538] border border-amber-500/30 text-white focus:outline-none focus:border-amber-400 transition-colors">
-                                            <option value="Accurate Predictions">Accurate Predictions</option>
-                                            <option value="Jathakam Reports">Jathakam Reports</option>
-                                            <option value="Marriage Match Reports">Marriage Match Reports</option>
-                                            <option value="Gem Prediction Reports">Gem Prediction Reports</option>
-                                            <option value="Muhoorthams">Muhoorthams</option>
-                                        </select>
-                                    </div>
+                                    <input type="tel" x-model="calcPhone" name="phone" required placeholder="e.g., +91 94473 27450"
+                                           class="w-full px-3.5 py-2.5 rounded-xl bg-[#231538] border border-amber-500/30 text-white placeholder-amber-200/40 focus:outline-none focus:border-amber-400 transition-colors font-mono">
+                                    <p class="text-[10px] text-amber-200/60 mt-1">
+                                        DR. E. K. Raja Varma will personally connect with your detailed horoscope predictions on WhatsApp.
+                                    </p>
                                 </div>
 
                                 <div class="pt-2">
@@ -662,22 +769,59 @@
                                 </div>
                             </div>
 
-                            <!-- Dual Actions: Read Full Report on Site & WhatsApp -->
-                            <div class="pt-2 space-y-2">
+                            <!-- Contact DR. E. K. Raja Varma & Reveal Service Needed -->
+                            <div class="pt-3 border-t border-amber-500/30 space-y-3">
+                                
+                                <div class="p-3.5 rounded-2xl bg-gradient-to-b from-[#1c102a] to-[#12081d] border-2 border-emerald-500/40 shadow-xl space-y-3">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-emerald-300 flex items-center space-x-1.5">
+                                            <span>💬</span>
+                                            <span>Connect with DR. E. K. Raja Varma on WhatsApp</span>
+                                        </span>
+                                        <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/30 font-semibold">
+                                            Direct Astro Guidance
+                                        </span>
+                                    </div>
+
+                                    <!-- REVEALED SERVICE NEEDED DROPDOWN -->
+                                    <div>
+                                        <label class="block font-semibold text-amber-200 text-xs mb-1">
+                                            Service Needed:
+                                        </label>
+                                        <select x-model="calcService" @change="onServiceChange"
+                                                class="w-full px-3 py-2 rounded-xl bg-[#28153d] border border-amber-500/40 text-amber-100 font-semibold text-xs focus:outline-none focus:border-amber-400 transition-colors">
+                                            <option value="Accurate Predictions">Accurate Predictions</option>
+                                            <option value="Jathakam Reports">Jathakam Reports (Birth Chart Analysis)</option>
+                                            <option value="Marriage Match Reports">Marriage Match Reports (Porutham)</option>
+                                            <option value="Gem Prediction Reports">Gem Prediction Reports (Lucky Gemstone)</option>
+                                            <option value="Muhoorthams">Auspicious Muhoorthams</option>
+                                            <option value="Comprehensive Astro Consultation">Comprehensive Vedic Astro Consultation</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- 1-Click WhatsApp Consultation Button -->
+                                    <a :href="getDoctorWhatsAppUrl()"
+                                       target="_blank"
+                                       class="w-full py-3 px-4 rounded-xl font-extrabold text-xs text-white bg-gradient-to-r from-emerald-600 via-green-600 to-emerald-500 hover:from-emerald-500 hover:to-green-400 shadow-lg shadow-emerald-950/60 flex items-center justify-center space-x-2 transition-all cursor-pointer">
+                                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.947 2.796.947 3.179 0 5.766-2.587 5.767-5.766.001-3.181-2.586-5.767-5.767-5.767zm0 10.373c-.768 0-1.637-.251-2.327-.661l-.167-.099-1.58.414.422-1.539-.109-.174c-.453-.722-.693-1.564-.693-2.55 0-2.539 2.066-4.605 4.606-4.605 2.54 0 4.606 2.066 4.606 4.606 0 2.54-2.066 4.608-4.755 4.608z"/>
+                                        </svg>
+                                        <span>Contact DR. E. K. Raja Varma on WhatsApp</span>
+                                    </a>
+                                </div>
+
+                                <!-- Reader Share to WhatsApp Button -->
+                                <a :href="getReaderShareWhatsAppUrl()"
+                                   target="_blank"
+                                   class="w-full py-2.5 px-3 rounded-xl font-bold text-xs text-emerald-200 bg-[#14261f] hover:bg-[#1a332a] border border-emerald-500/40 flex items-center justify-center space-x-2 transition-all shadow-md">
+                                    <span>📲</span>
+                                    <span>Share My Prediction on WhatsApp</span>
+                                </a>
+
                                 <!-- Open Full Dedicated Prediction Page -->
                                 <a :href="(calcResult?.report_url || ('{{ url('/prediction') }}/' + calcResult?.consultation_id)) + '?lang=' + readingLang"
                                    class="w-full py-2.5 px-3 rounded-xl font-bold text-xs text-[#1a1128] bg-gradient-to-r from-amber-300 to-yellow-400 hover:from-amber-200 hover:to-yellow-300 shadow-md flex items-center justify-center space-x-2 transition-all">
                                     <span>📜 Read &amp; Print Full Dedicated Report on Site</span>
-                                </a>
-
-                                <!-- 1-Click WhatsApp Consultation Button -->
-                                <a :href="calcResult?.whatsapp_url"
-                                   target="_blank"
-                                   class="w-full py-2.5 px-3 rounded-xl font-bold text-xs text-white bg-emerald-600 hover:bg-emerald-500 shadow-lg flex items-center justify-center space-x-2 transition-all">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.947 2.796.947 3.179 0 5.766-2.587 5.767-5.766.001-3.181-2.586-5.767-5.767-5.767zm0 10.373c-.768 0-1.637-.251-2.327-.661l-.167-.099-1.58.414.422-1.539-.109-.174c-.453-.722-.693-1.564-.693-2.55 0-2.539 2.066-4.605 4.606-4.605 2.54 0 4.606 2.066 4.606 4.606 0 2.54-2.066 4.608-4.755 4.608z"/>
-                                    </svg>
-                                    <span>Discuss with DR. E. K. Raja Varma on WhatsApp</span>
                                 </a>
                             </div>
 

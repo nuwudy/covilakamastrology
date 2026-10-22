@@ -72,16 +72,26 @@
                             $targetPhone = '91' . $targetPhone;
                         }
                         $rulingPlanet = $lead->calculated_summary['ruling_planet'] ?? null;
+                        $rulingPlanetName = is_array($rulingPlanet) ? ($rulingPlanet['en'] ?? reset($rulingPlanet)) : $rulingPlanet;
                         $mulank = $lead->calculated_summary['mulank'] ?? null;
+                        $bhagyank = $lead->calculated_summary['bhagyank'] ?? null;
+                        $selectedLang = $lead->calculated_summary['selected_language'] ?? null;
+                        $gemstone = $lead->calculated_summary['gemstone_en'] ?? null;
                     @endphp
                     <tr class="hover:bg-amber-500/5 transition-colors">
                         <!-- Client Name & Contact -->
                         <td class="py-4 px-4 space-y-1">
                             <h4 class="font-bold text-sm text-white">{{ $lead->name }}</h4>
-                            @if($lead->phone || $lead->whatsapp_number)
-                            <p class="font-mono text-amber-300/80 text-[11px] select-all">
-                                📞 {{ $lead->whatsapp_number ?: $lead->phone }}
+                            @if($lead->whatsapp_number || $lead->phone)
+                            <p class="font-mono text-emerald-300 font-semibold text-[11px] select-all flex items-center space-x-1">
+                                <span>🟢 WA:</span>
+                                <span>{{ $lead->whatsapp_number ?: $lead->phone }}</span>
                             </p>
+                            @endif
+                            @if($selectedLang)
+                            <span class="inline-block px-1.5 py-0.5 rounded text-[9px] font-bold uppercase bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                                Lang: {{ strtoupper($selectedLang) }}
+                            </span>
                             @endif
                             @if($lead->email)
                             <p class="text-[10px] text-amber-100/60 font-mono truncate max-w-[180px]">
@@ -114,16 +124,15 @@
 
                         <!-- Calculated Ruling Planet -->
                         <td class="py-4 px-4 space-y-1">
-                            @if($rulingPlanet)
+                            @if($rulingPlanetName)
                             <div class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-300 font-semibold text-[11px]">
                                 <span>🪐</span>
-                                <span>{{ $rulingPlanet }}</span>
+                                <span>{{ $rulingPlanetName }}</span>
                             </div>
-                            @if($mulank)
-                            <p class="text-[10px] text-amber-300/70 font-mono">
-                                Mulank (Root #): {{ $mulank }}
-                            </p>
-                            @endif
+                            <div class="text-[10px] text-amber-300/80 font-mono space-y-0.5 mt-1">
+                                @if($mulank)<p>Mulank: <strong>{{ $mulank }}</strong> @if($bhagyank) | Bhagyank: <strong>{{ $bhagyank }}</strong>@endif</p>@endif
+                                @if($gemstone)<p class="text-amber-200/70">💎 {{ $gemstone }}</p>@endif
+                            </div>
                             @else
                             <span class="text-[11px] text-amber-100/50">Direct Consultation</span>
                             @endif

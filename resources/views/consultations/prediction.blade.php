@@ -53,7 +53,7 @@
                 <span class="text-amber-100/60">Vedic Prediction Report</span>
             </nav>
 
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center flex-wrap gap-2.5">
                 <button onclick="window.print()"
                         class="px-4 py-2 rounded-xl text-xs font-bold text-[#1a1128] bg-gradient-to-r from-amber-300 to-yellow-400 hover:from-amber-200 hover:to-yellow-300 shadow-md flex items-center space-x-1.5 transition-all">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -61,6 +61,24 @@
                     </svg>
                     <span>Print / Save PDF</span>
                 </button>
+
+                @php
+                    $shareMsg = "🔮 *My Vedic Astrology Prediction Report by DR. E. K. Raja Varma* (Covilakam Astrology)\n\n"
+                        . "👤 *Name:* " . ($reading['name'] ?? 'Seeker') . "\n"
+                        . "📅 *DOB:* " . ($reading['birth_date'] ?? '') . "\n"
+                        . "🪐 *Birth Number (Mulank):* " . ($reading['mulank'] ?? '') . "\n"
+                        . "🌟 *Destiny Number (Bhagyank):* " . ($reading['bhagyank'] ?? '') . "\n"
+                        . "💎 *Lucky Gemstone:* " . ($reading['gemstone_en'] ?? '') . "\n\n"
+                        . "📜 *View complete horoscope & remedies:*\n" . url()->full() . "\n\n"
+                        . "🙏 *Consult DR. E. K. Raja Varma:*\nhttps://www.covilakamastrology.com";
+                    $shareUrl = "https://api.whatsapp.com/send?text=" . rawurlencode($shareMsg);
+                @endphp
+
+                <a href="{{ $shareUrl }}" target="_blank"
+                   class="px-4 py-2 rounded-xl text-xs font-bold text-emerald-200 bg-[#14261f] hover:bg-[#1a332a] border border-emerald-500/40 shadow-md flex items-center space-x-1.5 transition-all">
+                    <span>📲 Share on WhatsApp</span>
+                </a>
+
                 <a href="{{ $reading['whatsapp_url'] ?? '#' }}" target="_blank"
                    class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-md flex items-center space-x-1.5 transition-all">
                     <span>Chat on WhatsApp</span>

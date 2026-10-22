@@ -86,10 +86,20 @@ class CovilakamAstrologyTest extends TestCase
 
     public function test_calculate_dob_endpoint(): void
     {
+        // 1. Phone is required: missing phone should fail validation
+        $failResponse = $this->postJson('/calculate-dob', [
+            'name' => 'Suresh Kumar',
+            'birth_date' => '1985-05-15',
+        ]);
+        $failResponse->assertStatus(422);
+        $failResponse->assertJsonValidationErrors(['phone']);
+
+        // 2. Successful calculation with mandatory phone & selected language
         $response = $this->postJson('/calculate-dob', [
             'name' => 'Suresh Kumar',
             'birth_date' => '1985-05-15',
             'phone' => '+91 94473 11111',
+            'language' => 'ml',
             'service_requested' => 'Jathakam Reports',
         ]);
 
@@ -115,7 +125,19 @@ class CovilakamAstrologyTest extends TestCase
         $this->assertDatabaseHas('consultations', [
             'name' => 'Suresh Kumar',
             'phone' => '+91 94473 11111',
+            'status' => 'pending',
             'service_requested' => 'Jathakam Reports',
+        ]);
+
+        // 3. Test updating requested service from the results WhatsApp funnel
+        $consultationId = $response->json('data.consultation_id');
+        $patchResponse = $this->patchJson("/consultations/{$consultationId}/service", [
+            'service_requested' => 'Marriage Match Reports',
+        ]);
+        $patchResponse->assertStatus(200);
+        $this->assertDatabaseHas('consultations', [
+            'id' => $consultationId,
+            'service_requested' => 'Marriage Match Reports',
         ]);
     }
 

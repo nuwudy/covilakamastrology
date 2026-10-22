@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::post('/calculate-dob', [ConsultationController::class, 'calculateDob'])->name('consultations.calculate-dob');
+Route::patch('/consultations/{id}/service', [ConsultationController::class, 'updateService'])->name('consultations.update-service');
 Route::get('/prediction/{id}', [ConsultationController::class, 'showPrediction'])->name('consultations.prediction');
 Route::post('/book-consultation', [ConsultationController::class, 'store'])->name('consultations.store');
 
