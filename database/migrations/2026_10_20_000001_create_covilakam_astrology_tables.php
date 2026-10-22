@@ -80,7 +80,7 @@ return new class extends Migration
             $table->text('excerpt')->nullable();
             $table->longText('body');
             $table->dateTime('published_at')->nullable();
-            $table->string('author_name')->default('Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)');
+            $table->string('author_name')->default('DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)');
             $table->timestamps();
         });
 

@@ -21,7 +21,7 @@
                         </span>
                     </div>
                     <p class="text-[11px] sm:text-xs text-amber-100/70 font-sans tracking-wide">
-                        <strong class="text-amber-300 font-semibold">Dr. E. K. Raja Varma</strong>
+                        <strong class="text-amber-300 font-semibold">DR. E. K. Raja Varma</strong>
                         <span class="text-[10px] text-amber-200/60 ml-0.5 hidden sm:inline">(Vidya Vachaspathi in Vedic Astrology)</span>
                     </p>
                 </div>
@@ -51,7 +51,7 @@
 
             <!-- Actions / CTA Button -->
             <div class="hidden sm:flex items-center space-x-3">
-                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to consult with you.') }}"
+                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to consult with you.') }}"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="inline-flex items-center space-x-2 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md hover:shadow-amber-500/30 transition-all duration-200 transform hover:-translate-y-0.5">
@@ -113,7 +113,7 @@
                 </a>
 
                 <div class="pt-3 border-t border-amber-500/20 flex flex-col gap-2">
-                    <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to consult with you.') }}"
+                    <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to consult with you.') }}"
                        target="_blank"
                        class="w-full text-center py-2.5 rounded-xl font-bold text-xs text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 shadow-md">
                         Chat on WhatsApp (+91 7907052160)

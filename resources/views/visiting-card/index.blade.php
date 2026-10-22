@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Digital Visiting Card | Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)')
-@section('meta_description', 'Official Digital Visiting Card of Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), Covilakam Astrology. Connect via WhatsApp +91 7907052160 or GPay 094473 27450.')
+@section('title', 'Digital Visiting Card | DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)')
+@section('meta_description', 'Official Digital Visiting Card of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), Covilakam Astrology. Connect via WhatsApp +91 7907052160 or GPay 094473 27450.')
 
 @section('content')
 <div class="pt-32 pb-24 bg-[#0d0716] min-h-screen">
@@ -17,7 +17,7 @@
             </h1>
             <div class="w-24 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
             <p class="text-xs sm:text-sm text-amber-100/70">
-                Official credential card of <strong>Dr. E. K. Raja Varma</strong> (Vidya Vachaspathi in Vedic Astrology).
+                Official credential card of <strong>DR. E. K. Raja Varma</strong> (Vidya Vachaspathi in Vedic Astrology).
             </p>
         </div>
 
@@ -56,14 +56,14 @@
                 <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6">
                     <div class="w-28 h-28 shrink-0 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-xl">
                         <img src="{{ asset('storage/media/images/covilakam-4bcJQK.webp') }}"
-                             alt="Dr. E. K. Raja Varma"
+                             alt="DR. E. K. Raja Varma"
                              onerror="this.onerror=null; this.src='{{ asset('images/covilakam-hero.webp') }}';"
                              class="w-full h-full object-cover rounded-2xl">
                     </div>
 
                     <div class="space-y-1.5 text-center sm:text-left">
                         <h3 class="font-cinzel text-2xl font-black text-amber-200">
-                            Dr. E. K. Raja Varma
+                            DR. E. K. Raja Varma
                         </h3>
                         <p class="font-cinzel text-sm font-bold text-amber-400">
                             (Vidya Vachaspathi in Vedic Astrology)
@@ -122,7 +122,7 @@
                     <span>Print / Save as PDF</span>
                 </button>
 
-                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I saved your Digital Visiting Card from Covilakam Astrology and would like to consult with you.') }}"
+                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I saved your Digital Visiting Card from Covilakam Astrology and would like to consult with you.') }}"
                    target="_blank"
                    class="px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-emerald-600 hover:bg-emerald-500 shadow-xl flex items-center space-x-2 transition-all">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">

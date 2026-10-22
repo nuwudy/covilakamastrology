@@ -22,7 +22,7 @@
 
                 <div class="pt-2">
                     <p class="font-cinzel text-base font-bold text-amber-200">
-                        Dr. E. K. Raja Varma
+                        DR. E. K. Raja Varma
                     </p>
                     <p class="text-xs text-amber-400 font-medium">
                         (Vidya Vachaspathi in Vedic Astrology)
@@ -30,7 +30,7 @@
                 </div>
 
                 <p class="text-xs text-amber-100/70 leading-relaxed">
-                    Official portal of Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Blending classical Parashara principles with modern psychological Astro Counselling since 2022.
+                    Official portal of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Blending classical Parashara principles with modern psychological Astro Counselling since 2022.
                 </p>
 
                 <!-- Credentials Badges -->
@@ -50,7 +50,7 @@
                     <li><a href="{{ route('home') }}#hero" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Home Portal</span></a></li>
                     <li><a href="{{ route('home') }}#dob-calculator" class="text-amber-300 font-semibold hover:text-amber-200 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Instant Free DOB Reading</span></a></li>
                     <li><a href="{{ route('home') }}#services" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Core Astro Services</span></a></li>
-                    <li><a href="{{ route('home') }}#why-covilakam" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Why Dr. E. K. Raja Varma</span></a></li>
+                    <li><a href="{{ route('home') }}#why-covilakam" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Why DR. E. K. Raja Varma</span></a></li>
                     <li><a href="{{ route('home') }}#videos" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>YouTube Video Gallery</span></a></li>
                     <li><a href="{{ route('home') }}#philosophy" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Vedic Philosophy (4 Languages)</span></a></li>
                     <li><a href="{{ route('blog.index') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Astrology Articles & Insights</span></a></li>
@@ -147,7 +147,7 @@
         <!-- Bottom Copyright -->
         <div class="mt-12 pt-6 border-t border-amber-500/20 flex flex-col sm:flex-row items-center justify-between text-[11px] text-amber-300/60 gap-4">
             <p>
-                © {{ date('Y') }} <strong>Covilakam Astrology</strong>. All rights reserved. Directed by <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>.
+                © {{ date('Y') }} <strong>Covilakam Astrology</strong>. All rights reserved. Directed by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>.
             </p>
             <div class="flex items-center space-x-4">
                 <span>Explore. Discover. Transform.</span>

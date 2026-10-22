@@ -87,7 +87,7 @@
                 <!-- Astrologer Identity Mini-Card -->
                 <div class="px-5 py-3 mx-4 my-4 rounded-2xl bg-[#1e1333] border border-amber-500/30 text-xs">
                     <p class="font-bold text-white text-[12px] truncate">
-                        Dr. E. K. Raja Varma
+                        DR. E. K. Raja Varma
                     </p>
                     <p class="text-[10px] text-amber-300/80 truncate">
                         Vidya Vachaspathi (Gold Medalist)
@@ -223,7 +223,7 @@
                 <div class="flex items-center space-x-3 sm:space-x-5">
                     <div class="hidden md:flex flex-col text-right">
                         <span class="text-xs font-bold text-amber-200">
-                            Dr. E. K. Raja Varma
+                            DR. E. K. Raja Varma
                         </span>
                         <span class="text-[10px] text-amber-300/70">
                             (Vidya Vachaspathi in Vedic Astrology)
@@ -278,7 +278,7 @@
 
             <!-- Admin Footer -->
             <footer class="px-6 py-4 border-t border-amber-500/10 text-center text-[11px] text-amber-200/50 bg-[#12091c]">
-                Covilakam Astrology Portal Management System • Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)
+                Covilakam Astrology Portal Management System • DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)
             </footer>
 
         </div>

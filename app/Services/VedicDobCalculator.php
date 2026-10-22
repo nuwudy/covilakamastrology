@@ -871,7 +871,7 @@ class VedicDobCalculator
         $formattedDate = $carbon->format('d-m-Y'); // Indian DD-MM-YYYY format
         $displayDate = $carbon->format('d-M-Y');
 
-        $whatsappText = "Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology),\n\n"
+        $whatsappText = "Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology),\n\n"
             . "I read my full Vedic DOB Astro Reading on Covilakam Astrology:\n"
             . "• Name: {$clientName}\n"
             . "• Date of Birth: {$formattedDate}\n"

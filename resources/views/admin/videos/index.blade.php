@@ -13,7 +13,7 @@
                 Vedic Astrology Video Gallery
             </h1>
             <p class="text-xs text-amber-200/70 mt-1">
-                Manage YouTube video discourses presented by Dr. E. K. Raja Varma. Videos appear on the homepage in order of <span class="text-amber-300 font-mono font-bold">Sort Order</span>.
+                Manage YouTube video discourses presented by DR. E. K. Raja Varma. Videos appear on the homepage in order of <span class="text-amber-300 font-mono font-bold">Sort Order</span>.
             </p>
         </div>
 

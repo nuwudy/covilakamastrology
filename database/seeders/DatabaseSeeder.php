@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::updateOrCreate(
             ['email' => 'varmaji@covilakamastrology.com'],
             [
-                'name' => 'Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
+                'name' => 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
                 'password' => \Illuminate\Support\Facades\Hash::make('Covilakam@2026'),
                 'email_verified_at' => now(),
             ]
@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::updateOrCreate(
             ['email' => 'admin@covilakamastrology.com'],
             [
-                'name' => 'Dr. E. K. Raja Varma (Administrator)',
+                'name' => 'DR. E. K. Raja Varma (Administrator)',
                 'password' => \Illuminate\Support\Facades\Hash::make('Covilakam@2026'),
                 'email_verified_at' => now(),
             ]
@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::updateOrCreate(
             ['email' => 'admin@covilakamastrology@gmail.com'],
             [
-                'name' => 'Dr. E. K. Raja Varma (Administrator)',
+                'name' => 'DR. E. K. Raja Varma (Administrator)',
                 'password' => \Illuminate\Support\Facades\Hash::make('Varmaji2160#'),
                 'email_verified_at' => now(),
             ]
@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
 
         // 1. Settings Table
         $settings = [
-            'astrologer_name' => 'Dr. E. K. Raja Varma',
+            'astrologer_name' => 'DR. E. K. Raja Varma',
             'astrologer_subtitle' => '(Vidya Vachaspathi in Vedic Astrology)',
             'brand_name' => 'Covilakam Astrology',
             'tagline' => 'Explore. Discover. Transform.',
@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder
             'experience_year' => '2022',
             'convocation_date' => '27th September 2026',
             'profile_photo' => 'images/dr-ek-raja-varma.jpg',
-            'about_bio' => 'Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) is an internationally acknowledged Vedic Astrologer, researcher, and astro-counsellor. Awarded the coveted Gold Medal at the prestigious Shree Maharshi College of Vedic Astrology Convocation and conferred a Ph.D. in Vedic Astrology (Specialising in Online Astro Counselling) by IAMA Open University, Florida, he blends ancient Rishi-tradition precision with compassionate, practical life-guidance.',
+            'about_bio' => 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) is an internationally acknowledged Vedic Astrologer, researcher, and astro-counsellor. Awarded the coveted Gold Medal at the prestigious Shree Maharshi College of Vedic Astrology Convocation and conferred a Ph.D. in Vedic Astrology (Specialising in Online Astro Counselling) by IAMA Open University, Florida, he blends ancient Rishi-tradition precision with compassionate, practical life-guidance.',
         ];
 
         foreach ($settings as $key => $value) {
@@ -136,7 +136,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => 'accurate-predictions',
                 'description' => 'Pinpoint analysis of planetary Dasha cycles, planetary transits, and karmic life milestones. Clear, precise guidance for career, health, finances, and important turning points.',
                 'icon' => 'sparkles',
-                'whatsapp_prefill' => 'Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to book an Accurate Prediction reading for my horoscope.',
+                'whatsapp_prefill' => 'Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to book an Accurate Prediction reading for my horoscope.',
                 'sort_order' => 1,
             ],
             [
@@ -144,7 +144,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => 'jathakam-reports',
                 'description' => 'Comprehensive Vedic horoscope calculation and exhaustive written/audio analysis covering Lagna, Rasi, Navamsha, Dasha-Bhukti timelines, and individualized Vedic remedial measures.',
                 'icon' => 'scroll',
-                'whatsapp_prefill' => 'Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I need a comprehensive Jathakam Report and analysis.',
+                'whatsapp_prefill' => 'Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I need a comprehensive Jathakam Report and analysis.',
                 'sort_order' => 2,
             ],
             [
@@ -152,7 +152,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => 'marriage-match-reports',
                 'description' => 'In-depth marital harmony assessment using the 10 Poruthams, Papasamya (balancing of afflictions), Kuja Dosha (Manglik) analysis, and Dasha compatibility for lifelong happiness.',
                 'icon' => 'heart',
-                'whatsapp_prefill' => 'Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to check a Marriage Horoscope Matching (Porutham) report.',
+                'whatsapp_prefill' => 'Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to check a Marriage Horoscope Matching (Porutham) report.',
                 'sort_order' => 3,
             ],
             [
@@ -160,7 +160,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => 'gem-prediction-reports',
                 'description' => 'Scientific gemstone recommendation aligned with your beneficial Yogakaraka planets. Prevents harmful stone wear and enhances planetary vitality, prosperity, and mental clarity.',
                 'icon' => 'gem',
-                'whatsapp_prefill' => 'Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to receive a scientific Gemstone Prediction Report.',
+                'whatsapp_prefill' => 'Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to receive a scientific Gemstone Prediction Report.',
                 'sort_order' => 4,
             ],
             [
@@ -168,7 +168,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => 'muhoorthams',
                 'description' => 'Auspicious timing calculations for Weddings, House Warming (Grihapravesham), Business Inaugurations, Child Naming (Namakaranam), and Upanayanam according to Shastras.',
                 'icon' => 'clock',
-                'whatsapp_prefill' => 'Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I need auspicious Muhoortham dates for an upcoming ceremony.',
+                'whatsapp_prefill' => 'Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I need auspicious Muhoortham dates for an upcoming ceremony.',
                 'sort_order' => 5,
             ],
         ];
@@ -199,7 +199,7 @@ class DatabaseSeeder extends Seeder
                 'heading' => 'Vedic Astrology: The Eternal Cosmic Beacon of Self-Discovery',
                 'subheading' => 'Explore. Discover. Transform. - Covilakam Astrology',
                 'content' => "<p class='mb-4 font-semibold text-amber-200'>Vedic Astrology (Jyotisha) is not fatalism; it is the sacred light of cosmic consciousness bestowed by ancient Indian sages to illuminate humanity's karmic journey through space and time.</p>
-                <p class='mb-4'>At Covilakam Astrology, Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) applies profound academic mastery and traditional insights to decode the intricate planetary patterns imprinted upon your moment of birth. By evaluating the Dasha cycles, planetary placements, and transit vibrations, we unveil the latent potentials, opportunities, and challenges awaiting you.</p>
+                <p class='mb-4'>At Covilakam Astrology, DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) applies profound academic mastery and traditional insights to decode the intricate planetary patterns imprinted upon your moment of birth. By evaluating the Dasha cycles, planetary placements, and transit vibrations, we unveil the latent potentials, opportunities, and challenges awaiting you.</p>
                 <p class='mb-4'>True astrological wisdom empowers decision-making in career evolution, marital compatibility, financial stability, and spiritual awakening. Through ethical online astro-counselling, scientific gemstone recommendations, and authentic Vedic remedies, Covilakam Astrology invites you to Explore your celestial blueprint, Discover your true purpose, and Transform your destined path.</p>",
                 'sort_order' => 2,
             ],
@@ -254,7 +254,7 @@ class DatabaseSeeder extends Seeder
                 <h3>ഉപസംഹാരം</h3>
                 <p>ജ്യോതിഷം ഭയപ്പെടാനുള്ളതല്ല, ധൈര്യത്തോടെ മുന്നേറാനുള്ള ജീവിത വഴികാട്ടിയാണ്. കോവിലകം അസ്ട്രോളജിയിലൂടെ ശാസ്ത്രീയവും ആധികാരികവുമായ ജാതക വിശകലനം നേടൂ, നിങ്ങളുടെ യഥാർത്ഥ ജീവിത പാതയെ സ്വയം തിരിച്ചറിയൂ.</p>",
                 'published_at' => Carbon::now()->subDays(5),
-                'author_name' => 'Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
+                'author_name' => 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
             ],
             [
                 'title' => 'വിവാഹ പൊരുത്ത പരിശോധനയിലെ സൂക്ഷ്മ ഘടകങ്ങൾ (The Science of Porutham & Compatibility)',
@@ -274,7 +274,7 @@ class DatabaseSeeder extends Seeder
                 
                 <p>ജ്യോതിഷ വിദഗ്ദ്ധനായ <strong>ഡോ. ഇ. കെ. രാജ വർമ്മ (വിദ്യാ വാചസ്പതി ഇൻ വേദിക് അസ്ട്രോളജി)</strong> നൽകുന്ന സമഗ്ര വിവാഹ പൊരുത്ത റിപ്പോർട്ട് നിങ്ങളുടെ ദാമ്പത്യ ജീവിതത്തിന് ശുഭകരമായ അടിത്തറയേകും.</p>",
                 'published_at' => Carbon::now()->subDays(3),
-                'author_name' => 'Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
+                'author_name' => 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
             ],
             [
                 'title' => 'രത്നശാസ്ത്രവും നവരത്ന ധാരണാ വിധികളും (Vedic Gemology & Navaratna Healing)',
@@ -301,7 +301,7 @@ class DatabaseSeeder extends Seeder
                 
                 <p>ജാതകത്തിലെ യോഗകാരക ഗ്രഹങ്ങളെ പരിശോധിക്കാതെ നക്ഷത്രത്തിന്റെ മാത്രം പേരിൽ തെറ്റായ രത്നം ധരിക്കുന്നത് ഗുണത്തേക്കാളേറെ ദോഷം ചെയ്യും. ശാസ്ത്രീയ നിർണ്ണയത്തിനായി കൺസൾട്ട് ചെയ്യുക.</p>",
                 'published_at' => Carbon::now()->subDays(2),
-                'author_name' => 'Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
+                'author_name' => 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
             ],
             [
                 'title' => 'ഓൺലൈൻ അസ്ട്രോ കൗൺസിലിംഗിന്റെ ആധുനിക പ്രസക്തി (Online Astro Counselling in Modern Era)',
@@ -316,7 +316,7 @@ class DatabaseSeeder extends Seeder
                 <h3>എന്തുകൊണ്ട് ഓൺലൈൻ കൗൺസിലിംഗ്?</h3>
                 <p>നിങ്ങൾ വിദേശത്തോ കേരളത്തിന് പുറത്തോ എവിടെയുമാകട്ടെ, സമയനഷ്ടമില്ലാതെ വാട്സാപ്പിലൂടെയോ വോയ്സ് കോളിലൂടെയോ അതീവ രഹസ്യസ്വഭാവത്തോടെ നേരിട്ട് സംസാരിക്കാൻ സാധിക്കുന്നു. ലളിതമായ ഭാഷയിൽ പ്രശ്നങ്ങളുടെ കാതൽ കണ്ടെത്തി മനസ്സിന് ആശ്വാസവും വ്യക്തമായ മാർഗ്ഗരേഖയും നൽകുന്നു.</p>",
                 'published_at' => Carbon::now()->subDay(),
-                'author_name' => 'Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
+                'author_name' => 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
             ],
         ];
 
@@ -373,7 +373,7 @@ class DatabaseSeeder extends Seeder
         // 8. Media Library Initial Items (WebP Images, Audio, Video, PDF)
         $mediaItems = [
             [
-                'title' => 'Dr. E. K. Raja Varma Official Portrait (WebP)',
+                'title' => 'DR. E. K. Raja Varma Official Portrait (WebP)',
                 'file_name' => 'dr-ek-raja-varma.webp',
                 'original_name' => 'dr-ek-raja-varma.jpg',
                 'file_path' => 'media/images/dr-ek-raja-varma.webp',
@@ -383,7 +383,7 @@ class DatabaseSeeder extends Seeder
                 'width' => 1024,
                 'height' => 1024,
                 'is_webp' => true,
-                'alt_text' => 'Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
+                'alt_text' => 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
                 'description' => 'Official portrait in royal gold kasavu attire, optimized to WebP format for 84% faster loading.',
             ],
             [
@@ -450,10 +450,10 @@ class DatabaseSeeder extends Seeder
                 'file_size' => 52000,
                 'is_webp' => false,
                 'alt_text' => 'Official Sample Horoscope Analysis PDF',
-                'description' => 'Complete sample Vedic Jathakam report prepared by Dr. E. K. Raja Varma.',
+                'description' => 'Complete sample Vedic Jathakam report prepared by DR. E. K. Raja Varma.',
             ],
             [
-                'title' => 'Dr. Raja Varma Vedic Guidance Video (MP4)',
+                'title' => 'DR. Raja Varma Vedic Guidance Video (MP4)',
                 'file_name' => 'dr-raja-varma-astro-intro.mp4',
                 'original_name' => 'dr-raja-varma-astro-intro.mp4',
                 'file_path' => 'media/video/dr-raja-varma-astro-intro.mp4',

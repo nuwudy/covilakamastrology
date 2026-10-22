@@ -83,7 +83,7 @@
         <div class="rounded-3xl bg-[#160d26] border border-amber-500/30 p-6 sm:p-10 shadow-2xl space-y-6">
             <div class="border-b border-amber-500/20 pb-4">
                 <h2 class="font-cinzel text-lg font-bold text-white flex items-center space-x-2">
-                    <span>👑 Dr. E. K. Raja Varma Profile & Accreditations</span>
+                    <span>👑 DR. E. K. Raja Varma Profile & Accreditations</span>
                 </h2>
                 <p class="text-xs text-amber-300/70 mt-0.5">
                     Doctorate, Gold Medalist Title, and International Astrology Federation fellowship
@@ -93,7 +93,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 <div>
                     <label class="block font-semibold text-amber-200 mb-1.5">Astrologer Name *</label>
-                    <input type="text" name="astrologer_name" value="{{ old('astrologer_name', $settings['astrologer_name'] ?? 'Dr. E. K. Raja Varma') }}" required
+                    <input type="text" name="astrologer_name" value="{{ old('astrologer_name', $settings['astrologer_name'] ?? 'DR. E. K. Raja Varma') }}" required
                            class="w-full px-4 py-2.5 rounded-xl bg-[#211335] border border-amber-500/30 text-white text-xs font-bold">
                 </div>
 

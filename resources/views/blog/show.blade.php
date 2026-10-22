@@ -35,12 +35,12 @@
         <!-- Author Card -->
         <div class="flex items-center space-x-4 p-4 rounded-2xl bg-[#1a1128] border border-amber-500/30 mb-8">
             <img src="{{ asset('storage/media/images/covilakam-4bcJQK.webp') }}"
-                 alt="Dr. E. K. Raja Varma"
+                 alt="DR. E. K. Raja Varma"
                  onerror="this.onerror=null; this.src='{{ asset('images/covilakam-hero.webp') }}';"
                  class="w-14 h-14 rounded-full object-cover border-2 border-amber-400 shrink-0">
             <div>
                 <p class="font-cinzel text-sm sm:text-base font-bold text-amber-300">
-                    Dr. E. K. Raja Varma
+                    DR. E. K. Raja Varma
                 </p>
                 <p class="text-xs text-amber-200/80 font-medium">
                     (Vidya Vachaspathi in Vedic Astrology)
@@ -71,7 +71,7 @@
                 Have questions regarding this topic?
             </h3>
             <p class="text-xs sm:text-sm text-amber-100/80 max-w-xl mx-auto leading-relaxed">
-                Connect directly with <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong> for personalized horoscope evaluation and authentic Vedic remedies.
+                Connect directly with <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong> for personalized horoscope evaluation and authentic Vedic remedies.
             </p>
 
             <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">

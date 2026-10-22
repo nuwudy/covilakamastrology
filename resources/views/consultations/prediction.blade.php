@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Vedic Astrology Prediction Report for ' . ($reading['name'] ?? 'Seeker') . ' | Covilakam Astrology')
-@section('meta_description', 'Full Vedic Horoscope and DOB analysis by Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology).')
+@section('meta_description', 'Full Vedic Horoscope and DOB analysis by DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology).')
 
 @php
     $currLang = request('lang', 'en');
@@ -84,7 +84,7 @@
                             COVILAKAM ASTROLOGY
                         </span>
                         <p class="text-xs text-amber-200/80">
-                            Dr. E. K. Raja Varma <span class="text-amber-400 font-semibold">(Vidya Vachaspathi in Vedic Astrology)</span>
+                            DR. E. K. Raja Varma <span class="text-amber-400 font-semibold">(Vidya Vachaspathi in Vedic Astrology)</span>
                         </p>
                     </div>
                 </div>
@@ -400,7 +400,7 @@
                 @if(!empty($reading['doctor_remedy']))
                 <div class="p-5 rounded-2xl bg-[#1c112e] border border-amber-500/30">
                     <h5 class="font-cinzel text-sm font-bold text-amber-300 mb-1">
-                        <span x-show="readingLang === 'en'">Vedic Remedy Prescribed by Dr. E. K. Raja Varma:</span>
+                        <span x-show="readingLang === 'en'">Vedic Remedy Prescribed by DR. E. K. Raja Varma:</span>
                         <span x-show="readingLang === 'ml'">ഡോ. ഇ. കെ. രാജവർമ്മ നിർദ്ദേശിക്കുന്ന പരിഹാരം:</span>
                         <span x-show="readingLang === 'ta'">டாக்டர் இ. கே. ராஜ வர்மா பரிந்துரைக்கும் பரிகாரம்:</span>
                         <span x-show="readingLang === 'hi'">डॉ. ई. के. राजा वर्मा द्वारा अनुशंसित उपाय:</span>
@@ -420,7 +420,7 @@
                         Need In-Depth Jathakam Analysis with Exact Birth Time?
                     </h4>
                     <p class="text-xs text-amber-200/70 max-w-xl">
-                        This DOB reading computes your fundamental cosmic numbers. For complete Dasha-Bhukti timelines, Kuja Dosha, and personalized remedies, consult Dr. E. K. Raja Varma directly.
+                        This DOB reading computes your fundamental cosmic numbers. For complete Dasha-Bhukti timelines, Kuja Dosha, and personalized remedies, consult DR. E. K. Raja Varma directly.
                     </p>
                 </div>
 

@@ -118,7 +118,7 @@ class PostController extends Controller
 
         // Default author
         if (empty($validated['author_name'])) {
-            $validated['author_name'] = 'Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)';
+            $validated['author_name'] = 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)';
         }
 
         if (empty($validated['reading_time'])) {
@@ -186,7 +186,7 @@ class PostController extends Controller
         }
 
         if (empty($validated['author_name'])) {
-            $validated['author_name'] = 'Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)';
+            $validated['author_name'] = 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)';
         }
 
         $post->update($validated);

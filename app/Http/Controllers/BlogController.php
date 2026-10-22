@@ -39,7 +39,7 @@ class BlogController extends Controller
             ->take(4)
             ->get();
 
-        $whatsappPrefill = "Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I read your article on Covilakam Astrology: \"" . $post->title . "\". I would like to consult with you.";
+        $whatsappPrefill = "Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I read your article on Covilakam Astrology: \"" . $post->title . "\". I would like to consult with you.";
         $whatsappUrl = 'https://wa.me/917907052160?text=' . rawurlencode($whatsappPrefill);
 
         return view('blog.show', compact('post', 'recentPosts', 'whatsappUrl'));

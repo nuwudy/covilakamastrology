@@ -22,7 +22,7 @@
                     Covilakam Astrology Portal
                 </p>
                 <p class="text-[11px] text-amber-100/60 mt-0.5">
-                    Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)
+                    DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)
                 </p>
             </div>
         </div>

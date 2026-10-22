@@ -16,7 +16,7 @@
                     Vidya Vachaspathi Management Console
                 </span>
                 <h1 class="font-cinzel text-2xl sm:text-3xl font-extrabold text-white mt-2">
-                    Namaskaram, <span class="gold-gradient-text">Dr. E. K. Raja Varma</span>
+                    Namaskaram, <span class="gold-gradient-text">DR. E. K. Raja Varma</span>
                 </h1>
                 <p class="text-xs sm:text-sm text-amber-100/70 mt-1 max-w-2xl">
                     Manage your authentic YouTube Video Gallery discourses, Vedic Wisdom Repository articles, free DOB predictions, and astrology translations from here.
@@ -228,7 +228,7 @@
                         </span>
 
                         @if($targetPhone)
-                        <a href="https://wa.me/{{ $targetPhone }}?text={{ rawurlencode('Namaskaram ' . $lead->name . ', this is Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) regarding your consultation request on Covilakam Astrology.') }}"
+                        <a href="https://wa.me/{{ $targetPhone }}?text={{ rawurlencode('Namaskaram ' . $lead->name . ', this is DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) regarding your consultation request on Covilakam Astrology.') }}"
                            target="_blank"
                            class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-300 border border-emerald-500/40 font-semibold text-[10px]">
                             <span>💬 WhatsApp Reply</span>

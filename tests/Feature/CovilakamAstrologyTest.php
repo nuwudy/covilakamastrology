@@ -30,7 +30,7 @@ class CovilakamAstrologyTest extends TestCase
         $response->assertStatus(200);
 
         // Strict branding checks
-        $response->assertSee('Dr. E. K. Raja Varma');
+        $response->assertSee('DR. E. K. Raja Varma');
         $response->assertSee('(Vidya Vachaspathi in Vedic Astrology)');
         $response->assertSee('COVILAKAM', false);
         $response->assertSee('Explore. Discover. Transform.');
@@ -128,7 +128,7 @@ class CovilakamAstrologyTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee($consultation->name);
         $response->assertSee('COVILAKAM ASTROLOGY');
-        $response->assertSee('Dr. E. K. Raja Varma');
+        $response->assertSee('DR. E. K. Raja Varma');
         $response->assertSee('(Vidya Vachaspathi in Vedic Astrology)');
         $response->assertSee('Life Path & Soul Nature', false);
         $response->assertSee('Career & Wealth', false);
@@ -165,7 +165,7 @@ class CovilakamAstrologyTest extends TestCase
         $showResponse = $this->get('/blog/' . $post->slug);
         $showResponse->assertStatus(200);
         $showResponse->assertSee($post->title);
-        $showResponse->assertSee('Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)');
+        $showResponse->assertSee('DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)');
         $showResponse->assertSee('7907052160');
     }
 
@@ -173,12 +173,12 @@ class CovilakamAstrologyTest extends TestCase
     {
         $response1 = $this->get('/visiting-card');
         $response1->assertStatus(200);
-        $response1->assertSee('Dr. E. K. Raja Varma');
+        $response1->assertSee('DR. E. K. Raja Varma');
         $response1->assertSee('(Vidya Vachaspathi in Vedic Astrology)');
 
         $response2 = $this->get('/visiting-card/print');
         $response2->assertStatus(200);
-        $response2->assertSee('Dr. E. K. Raja Varma');
+        $response2->assertSee('DR. E. K. Raja Varma');
     }
 
     public function test_admin_media_library_index(): void

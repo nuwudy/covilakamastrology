@@ -162,7 +162,7 @@
                         <td class="py-4 px-4 text-right">
                             <div class="flex items-center justify-end space-x-2">
                                 @if($targetPhone)
-                                <a href="https://wa.me/{{ $targetPhone }}?text={{ rawurlencode('Namaskaram ' . $lead->name . ', this is Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) from Covilakam Astrology regarding your inquiry for "' . ($lead->service_requested ?? 'Astrology Reading') . '". How may I guide you today?') }}"
+                                <a href="https://wa.me/{{ $targetPhone }}?text={{ rawurlencode('Namaskaram ' . $lead->name . ', this is DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) from Covilakam Astrology regarding your inquiry for "' . ($lead->service_requested ?? 'Astrology Reading') . '". How may I guide you today?') }}"
                                    target="_blank"
                                    class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-black font-bold text-xs shadow-md transition-all">
                                     <span>💬</span>
