@@ -20,11 +20,11 @@ class AdminAndVideoGalleryTest extends TestCase
         $this->seed(DatabaseSeeder::class);
     }
 
-    public function test_seven_real_youtube_videos_are_seeded_in_exact_order(): void
+    public function test_eight_real_youtube_videos_are_seeded_in_exact_order(): void
     {
         $videos = Video::orderBy('sort_order', 'asc')->get();
 
-        $this->assertCount(7, $videos);
+        $this->assertCount(8, $videos);
 
         // Video 1
         $this->assertEquals(1, $videos[0]->sort_order);
@@ -55,6 +55,11 @@ class AdminAndVideoGalleryTest extends TestCase
         // Video 7
         $this->assertEquals(7, $videos[6]->sort_order);
         $this->assertEquals('cJEyRaRa5-w', $videos[6]->youtube_id);
+
+        // Video 8
+        $this->assertEquals(8, $videos[7]->sort_order);
+        $this->assertEquals('TFOfLMwuxTo', $videos[7]->youtube_id);
+        $this->assertStringContainsString('വിവാഹ പൊരുത്തം അറിയേണ്ടത്', $videos[7]->title);
     }
 
     public function test_smart_youtube_id_parser_handles_various_formats(): void
@@ -121,14 +126,14 @@ class AdminAndVideoGalleryTest extends TestCase
             'youtube_url' => 'https://youtu.be/dQw4w9WgXcQ',
             'description' => 'നവഗ്രഹ ദോഷ പരിഹാരങ്ങൾ',
             'duration' => '10:00',
-            'sort_order' => 8,
+            'sort_order' => 9,
             'is_active' => '1',
         ]);
         $postResponse->assertRedirect('/admin/videos');
 
         $newVideo = Video::where('youtube_id', 'dQw4w9WgXcQ')->first();
         $this->assertNotNull($newVideo);
-        $this->assertEquals(8, $newVideo->sort_order);
+        $this->assertEquals(9, $newVideo->sort_order);
 
         // 3. Edit Video
         $editResponse = $this->actingAs($admin)->get("/admin/videos/{$newVideo->id}/edit");
@@ -140,7 +145,7 @@ class AdminAndVideoGalleryTest extends TestCase
             'youtube_url' => 'https://youtu.be/dQw4w9WgXcQ',
             'description' => 'Updated Description',
             'duration' => '11:00',
-            'sort_order' => 9,
+            'sort_order' => 10,
             'is_active' => '1',
         ]);
         $updateResponse->assertRedirect('/admin/videos');

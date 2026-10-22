@@ -78,6 +78,15 @@ class VideoSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 7,
             ],
+            [
+                'title' => 'വിവാഹ പൊരുത്തം അറിയേണ്ടത് - DR. E. K. Raja Varma',
+                'youtube_url' => 'https://youtu.be/TFOfLMwuxTo',
+                'youtube_id' => 'TFOfLMwuxTo',
+                'description' => 'വിവാഹ പൊരുത്തം നോക്കുമ്പോൾ ശ്രദ്ധിക്കേണ്ട പ്രധാന കാര്യങ്ങൾ, പത്തു പൊരുത്തങ്ങളുടെ അന്തസ്സത്ത, മനപ്പൊരുത്തവും പാപസാമ്യവും ദാമ്പത്യ വിജയത്തിന് അത്യന്താപേക്ഷിതമാകുന്നതെങ്ങനെയെന്ന് DR. ഇ. കെ. രാജ വർമ്മ വിശദീകരിക്കുന്നു.',
+                'duration' => '14:10',
+                'is_active' => true,
+                'sort_order' => 8,
+            ],
         ];
 
         foreach ($videos as $video) {
