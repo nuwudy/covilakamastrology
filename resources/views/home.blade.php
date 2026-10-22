@@ -632,80 +632,80 @@
                 </p>
             </div>
 
-            <!-- Two Convocation Document Cards Displayed Aesthetically Without Cropping -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch mb-10">
+            <!-- Two Convocation Document Cards Displayed Compactly Without Cropping -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto items-stretch mb-8">
                 
                 <!-- Document 1: Convocation Felicitation & Certificate -->
-                <div class="card-gold-frame rounded-3xl p-5 sm:p-7 flex flex-col justify-between bg-gradient-to-b from-[#1f112c]/90 to-[#12081d]/95 backdrop-blur-md hover:border-amber-400/80 transition-all duration-300 group shadow-2xl">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between pb-3 border-b border-amber-500/20">
-                            <div class="flex items-center space-x-2.5">
-                                <span class="text-xl">📜</span>
-                                <span class="font-cinzel text-sm sm:text-base font-bold text-amber-200">Convocation Record & Honor</span>
+                <div class="card-gold-frame rounded-2xl p-4 sm:p-5 flex flex-col justify-between bg-gradient-to-b from-[#1f112c]/90 to-[#12081d]/95 backdrop-blur-md hover:border-amber-400/80 transition-all duration-300 group shadow-xl">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between pb-2.5 border-b border-amber-500/20">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-lg">📜</span>
+                                <span class="font-cinzel text-xs sm:text-sm font-bold text-amber-200">Convocation Record & Honor</span>
                             </div>
-                            <span class="text-[11px] font-semibold text-amber-400/90 bg-amber-400/10 px-2.5 py-1 rounded-full border border-amber-400/30">
+                            <span class="text-[10px] font-semibold text-amber-400/90 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/30">
                                 27 Sep 2026
                             </span>
                         </div>
 
-                        <!-- Uncropped Image Container -->
-                        <div class="relative w-full rounded-2xl bg-[#0b0412] p-2.5 sm:p-3 border border-amber-500/20 flex items-center justify-center min-h-[300px] sm:min-h-[380px] overflow-hidden group-hover:border-amber-400/50 transition-colors">
-                            <a href="{{ asset('storage/media/images/screenshot-2026-10-22-084835-yzdRy8.webp') }}" target="_blank" class="block w-full text-center group/img">
+                        <!-- Compact Uncropped Image Container -->
+                        <div class="relative w-full rounded-xl bg-[#0b0412] p-2 border border-amber-500/20 flex items-center justify-center h-48 sm:h-56 overflow-hidden group-hover:border-amber-400/50 transition-colors">
+                            <a href="{{ asset('storage/media/images/screenshot-2026-10-22-084835-yzdRy8.webp') }}" target="_blank" class="block h-full w-full flex items-center justify-center group/img">
                                 <img src="{{ asset('storage/media/images/screenshot-2026-10-22-084835-yzdRy8.webp') }}"
                                      alt="Academic Honor & Convocation Record - Dr. E. K. Raja Varma"
                                      onerror="this.onerror=null; this.src='{{ asset('images/convocation-record-1.webp') }}';"
-                                     class="w-full h-auto max-h-[440px] object-contain rounded-xl shadow-lg transition-transform duration-300 group-hover/img:scale-[1.02]">
+                                     class="max-h-full max-w-full h-auto w-auto object-contain mx-auto rounded-lg shadow-md transition-transform duration-300 group-hover/img:scale-105">
                             </a>
                         </div>
 
-                        <p class="text-xs text-amber-100/75 leading-relaxed text-center sm:text-left">
+                        <p class="text-[11px] text-amber-100/75 leading-relaxed text-center sm:text-left">
                             Official convocation felicitation credential confirming Vidya Vachaspathi distinction and university recognition.
                         </p>
                     </div>
 
-                    <div class="pt-4 mt-4 border-t border-amber-500/20 flex items-center justify-between">
-                        <span class="text-[11px] text-amber-300/80 font-medium">Click image to view full high-res record</span>
+                    <div class="pt-3 mt-3 border-t border-amber-500/20 flex items-center justify-between">
+                        <span class="text-[10px] text-amber-300/75">Click image to expand</span>
                         <a href="{{ asset('storage/media/images/screenshot-2026-10-22-084835-yzdRy8.webp') }}" target="_blank"
                            class="text-xs font-bold text-amber-300 hover:text-amber-100 flex items-center space-x-1 transition-colors">
-                            <span>Open Record</span>
+                            <span>Open Full Record</span>
                             <span>↗</span>
                         </a>
                     </div>
                 </div>
 
                 <!-- Document 2: Examination Merit & Degree Credential -->
-                <div class="card-gold-frame rounded-3xl p-5 sm:p-7 flex flex-col justify-between bg-gradient-to-b from-[#1f112c]/90 to-[#12081d]/95 backdrop-blur-md hover:border-amber-400/80 transition-all duration-300 group shadow-2xl">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between pb-3 border-b border-amber-500/20">
-                            <div class="flex items-center space-x-2.5">
-                                <span class="text-xl">🏅</span>
-                                <span class="font-cinzel text-sm sm:text-base font-bold text-amber-200">Vidya Vachaspathi Merit Credential</span>
+                <div class="card-gold-frame rounded-2xl p-4 sm:p-5 flex flex-col justify-between bg-gradient-to-b from-[#1f112c]/90 to-[#12081d]/95 backdrop-blur-md hover:border-amber-400/80 transition-all duration-300 group shadow-xl">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between pb-2.5 border-b border-amber-500/20">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-lg">🏅</span>
+                                <span class="font-cinzel text-xs sm:text-sm font-bold text-amber-200">Vidya Vachaspathi Merit Credential</span>
                             </div>
-                            <span class="text-[11px] font-semibold text-amber-400/90 bg-amber-400/10 px-2.5 py-1 rounded-full border border-amber-400/30">
+                            <span class="text-[10px] font-semibold text-amber-400/90 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/30">
                                 Gold Medalist
                             </span>
                         </div>
 
-                        <!-- Uncropped Image Container -->
-                        <div class="relative w-full rounded-2xl bg-[#0b0412] p-2.5 sm:p-3 border border-amber-500/20 flex items-center justify-center min-h-[300px] sm:min-h-[380px] overflow-hidden group-hover:border-amber-400/50 transition-colors">
-                            <a href="{{ asset('storage/media/images/vidya-vachaspathi-examination-gm9NIB.webp') }}" target="_blank" class="block w-full text-center group/img">
+                        <!-- Compact Uncropped Image Container -->
+                        <div class="relative w-full rounded-xl bg-[#0b0412] p-2 border border-amber-500/20 flex items-center justify-center h-48 sm:h-56 overflow-hidden group-hover:border-amber-400/50 transition-colors">
+                            <a href="{{ asset('storage/media/images/vidya-vachaspathi-examination-gm9NIB.webp') }}" target="_blank" class="block h-full w-full flex items-center justify-center group/img">
                                 <img src="{{ asset('storage/media/images/vidya-vachaspathi-examination-gm9NIB.webp') }}"
                                      alt="Vidya Vachaspathi Examination Gold Medal Merit - Dr. E. K. Raja Varma"
                                      onerror="this.onerror=null; this.src='{{ asset('images/convocation-record-2.webp') }}';"
-                                     class="w-full h-auto max-h-[440px] object-contain rounded-xl shadow-lg transition-transform duration-300 group-hover/img:scale-[1.02]">
+                                     class="max-h-full max-w-full h-auto w-auto object-contain mx-auto rounded-lg shadow-md transition-transform duration-300 group-hover/img:scale-105">
                             </a>
                         </div>
 
-                        <p class="text-xs text-amber-100/75 leading-relaxed text-center sm:text-left">
+                        <p class="text-[11px] text-amber-100/75 leading-relaxed text-center sm:text-left">
                             Shree Maharshi College of Vedic Astrology Vidya Vachaspathi examination record highlighting first-rank academic excellence.
                         </p>
                     </div>
 
-                    <div class="pt-4 mt-4 border-t border-amber-500/20 flex items-center justify-between">
-                        <span class="text-[11px] text-amber-300/80 font-medium">Click image to view full high-res record</span>
+                    <div class="pt-3 mt-3 border-t border-amber-500/20 flex items-center justify-between">
+                        <span class="text-[10px] text-amber-300/75">Click image to expand</span>
                         <a href="{{ asset('storage/media/images/vidya-vachaspathi-examination-gm9NIB.webp') }}" target="_blank"
                            class="text-xs font-bold text-amber-300 hover:text-amber-100 flex items-center space-x-1 transition-colors">
-                            <span>Open Record</span>
+                            <span>Open Full Record</span>
                             <span>↗</span>
                         </a>
                     </div>
