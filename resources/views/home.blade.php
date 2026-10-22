@@ -155,13 +155,13 @@
                     <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#201133]/90 via-[#2f1020]/80 to-[#190e28]/90 border border-amber-500/40 shadow-xl backdrop-blur-md">
                         <!-- Royal Gold Ornate Frame -->
                         <div class="relative shrink-0">
-                            <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl p-1 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-xl gold-glow transform rotate-1 hover:rotate-0 transition-transform duration-300">
-                                <img src="{{ asset('storage/media/images/whatsapp-image-2026-10-20-at-85056-am-MOuzds.webp') }}"
+                            <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl p-1.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-2xl gold-glow transform rotate-1 hover:rotate-0 transition-transform duration-300">
+                                <img src="{{ asset('storage/media/images/whatsapp-image-2026-10-20-at-85056-am-MOuzds.webp') }}?v={{ time() }}"
                                      alt="Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)"
                                      onerror="this.onerror=null; this.src='{{ asset('images/dr-ek-raja-varma.webp') }}';"
-                                     class="w-full h-full object-cover rounded-xl border border-amber-300/40">
+                                     class="w-full h-full object-cover object-top rounded-xl border border-amber-300/60 shadow-inner">
                             </div>
-                            <span class="absolute -bottom-2 -right-2 px-2 py-0.5 rounded bg-amber-500 text-[10px] font-bold text-[#1a1128] uppercase shadow">
+                            <span class="absolute -bottom-2 -right-2 px-2.5 py-0.5 rounded-full bg-amber-400 text-[10px] font-extrabold text-[#1a1128] uppercase shadow-lg border border-amber-200">
                                 Verified
                             </span>
                         </div>
@@ -608,39 +608,129 @@
     <!-- ========================================================================= -->
     <!-- SECTION 2: Achievement Announcement / Credential Banner                   -->
     <!-- ========================================================================= -->
-    <section class="relative py-12 bg-gradient-to-r from-[#2c0b16] via-[#1a0e28] to-[#2c0b16] border-y-2 border-amber-500/40 shadow-2xl">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-                <!-- Achievement Badges & Gold Trophy Icon -->
-                <div class="flex items-center space-x-5">
-                    <div class="w-16 h-16 shrink-0 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 p-0.5 shadow-xl gold-glow">
-                        <div class="w-full h-full rounded-2xl bg-[#1a1128] flex items-center justify-center text-3xl">
-                            🥇
+    <!-- SECTION 2: Academic Honor & Convocation Record Showcase                   -->
+    <!-- ========================================================================= -->
+    <section id="academic-honors" class="relative py-16 bg-gradient-to-b from-[#180a1c] via-[#240b1a] to-[#120a1c] border-y-2 border-amber-500/40 shadow-2xl overflow-hidden">
+        <!-- Subtle sacred background accents -->
+        <div class="absolute inset-0 bg-radial from-amber-500/5 via-transparent to-transparent pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
+                <div class="inline-flex items-center space-x-2 text-xs uppercase tracking-widest text-amber-300 font-bold bg-amber-500/20 px-4 py-1.5 rounded-full border border-amber-400/40 shadow-md">
+                    <span class="animate-pulse">🥇</span>
+                    <span>Academic Honor & Convocation Record</span>
+                    <span>•</span>
+                    <span>27th September 2026</span>
+                </div>
+                <h2 class="font-cinzel text-2xl sm:text-4xl font-extrabold text-white leading-tight">
+                    Vidya Vachaspathi Gold Medalist & Ph.D. in Vedic Astrology
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
+                <p class="text-xs sm:text-sm text-amber-100/80 leading-relaxed max-w-2xl mx-auto">
+                    Awarded the prestigious <strong>Gold Medal in Vidya Vachaspathi</strong> examination at <em>Shree Maharshi College of Vedic Astrology, Udaipur, Rajasthan</em>, and conferred <strong>Doctorate of Philosophy (Ph.D.)</strong> with specialisation in <strong>Online Astro Counselling</strong> by <em>IAMA Open University, Florida</em>.
+                </p>
+            </div>
+
+            <!-- Two Convocation Document Cards Displayed Aesthetically Without Cropping -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch mb-10">
+                
+                <!-- Document 1: Convocation Felicitation & Certificate -->
+                <div class="card-gold-frame rounded-3xl p-5 sm:p-7 flex flex-col justify-between bg-gradient-to-b from-[#1f112c]/90 to-[#12081d]/95 backdrop-blur-md hover:border-amber-400/80 transition-all duration-300 group shadow-2xl">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between pb-3 border-b border-amber-500/20">
+                            <div class="flex items-center space-x-2.5">
+                                <span class="text-xl">📜</span>
+                                <span class="font-cinzel text-sm sm:text-base font-bold text-amber-200">Convocation Record & Honor</span>
+                            </div>
+                            <span class="text-[11px] font-semibold text-amber-400/90 bg-amber-400/10 px-2.5 py-1 rounded-full border border-amber-400/30">
+                                27 Sep 2026
+                            </span>
                         </div>
-                    </div>
-                    <div>
-                        <div class="inline-flex items-center space-x-2 text-xs uppercase tracking-widest text-amber-300 font-bold bg-amber-500/20 px-3 py-0.5 rounded-full mb-1">
-                            <span>Academic Honor & Convocation Record</span>
-                            <span>•</span>
-                            <span>27th September 2026</span>
+
+                        <!-- Uncropped Image Container -->
+                        <div class="relative w-full rounded-2xl bg-[#0b0412] p-2.5 sm:p-3 border border-amber-500/20 flex items-center justify-center min-h-[300px] sm:min-h-[380px] overflow-hidden group-hover:border-amber-400/50 transition-colors">
+                            <a href="{{ asset('storage/media/images/screenshot-2026-10-22-084835-yzdRy8.webp') }}" target="_blank" class="block w-full text-center group/img">
+                                <img src="{{ asset('storage/media/images/screenshot-2026-10-22-084835-yzdRy8.webp') }}"
+                                     alt="Academic Honor & Convocation Record - Dr. E. K. Raja Varma"
+                                     onerror="this.onerror=null; this.src='{{ asset('images/convocation-record-1.webp') }}';"
+                                     class="w-full h-auto max-h-[440px] object-contain rounded-xl shadow-lg transition-transform duration-300 group-hover/img:scale-[1.02]">
+                            </a>
                         </div>
-                        <h2 class="font-cinzel text-xl sm:text-2xl font-black text-white">
-                            Vidya Vachaspathi Gold Medalist & Ph.D. in Vedic Astrology
-                        </h2>
-                        <p class="text-xs sm:text-sm text-amber-100/80 mt-1 max-w-3xl leading-relaxed">
-                            Awarded the prestigious <strong>Gold Medal in Vidya Vachaspathi</strong> examination at <em>Shree Maharshi College of Vedic Astrology, Udaipur, Rajasthan</em>, and conferred <strong>Doctorate of Philosophy (Ph.D.)</strong> with specialisation in <strong>Online Astro Counselling</strong> by <em>IAMA Open University, Florida</em>.
+
+                        <p class="text-xs text-amber-100/75 leading-relaxed text-center sm:text-left">
+                            Official convocation felicitation credential confirming Vidya Vachaspathi distinction and university recognition.
                         </p>
+                    </div>
+
+                    <div class="pt-4 mt-4 border-t border-amber-500/20 flex items-center justify-between">
+                        <span class="text-[11px] text-amber-300/80 font-medium">Click image to view full high-res record</span>
+                        <a href="{{ asset('storage/media/images/screenshot-2026-10-22-084835-yzdRy8.webp') }}" target="_blank"
+                           class="text-xs font-bold text-amber-300 hover:text-amber-100 flex items-center space-x-1 transition-colors">
+                            <span>Open Record</span>
+                            <span>↗</span>
+                        </a>
                     </div>
                 </div>
 
-                <!-- Action Button -->
-                <div class="shrink-0 w-full md:w-auto text-center">
-                    <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), congratulations on your Gold Medal and Ph.D. in Vedic Astrology. I would like to consult with you.') }}"
-                       target="_blank"
-                       class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-[#1a1128] bg-gradient-to-r from-amber-300 to-yellow-400 hover:from-amber-200 hover:to-yellow-300 shadow-lg hover:shadow-amber-400/30 transition-all">
-                        Consult Gold Medalist
-                    </a>
+                <!-- Document 2: Examination Merit & Degree Credential -->
+                <div class="card-gold-frame rounded-3xl p-5 sm:p-7 flex flex-col justify-between bg-gradient-to-b from-[#1f112c]/90 to-[#12081d]/95 backdrop-blur-md hover:border-amber-400/80 transition-all duration-300 group shadow-2xl">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between pb-3 border-b border-amber-500/20">
+                            <div class="flex items-center space-x-2.5">
+                                <span class="text-xl">🏅</span>
+                                <span class="font-cinzel text-sm sm:text-base font-bold text-amber-200">Vidya Vachaspathi Merit Credential</span>
+                            </div>
+                            <span class="text-[11px] font-semibold text-amber-400/90 bg-amber-400/10 px-2.5 py-1 rounded-full border border-amber-400/30">
+                                Gold Medalist
+                            </span>
+                        </div>
+
+                        <!-- Uncropped Image Container -->
+                        <div class="relative w-full rounded-2xl bg-[#0b0412] p-2.5 sm:p-3 border border-amber-500/20 flex items-center justify-center min-h-[300px] sm:min-h-[380px] overflow-hidden group-hover:border-amber-400/50 transition-colors">
+                            <a href="{{ asset('storage/media/images/vidya-vachaspathi-examination-gm9NIB.webp') }}" target="_blank" class="block w-full text-center group/img">
+                                <img src="{{ asset('storage/media/images/vidya-vachaspathi-examination-gm9NIB.webp') }}"
+                                     alt="Vidya Vachaspathi Examination Gold Medal Merit - Dr. E. K. Raja Varma"
+                                     onerror="this.onerror=null; this.src='{{ asset('images/convocation-record-2.webp') }}';"
+                                     class="w-full h-auto max-h-[440px] object-contain rounded-xl shadow-lg transition-transform duration-300 group-hover/img:scale-[1.02]">
+                            </a>
+                        </div>
+
+                        <p class="text-xs text-amber-100/75 leading-relaxed text-center sm:text-left">
+                            Shree Maharshi College of Vedic Astrology Vidya Vachaspathi examination record highlighting first-rank academic excellence.
+                        </p>
+                    </div>
+
+                    <div class="pt-4 mt-4 border-t border-amber-500/20 flex items-center justify-between">
+                        <span class="text-[11px] text-amber-300/80 font-medium">Click image to view full high-res record</span>
+                        <a href="{{ asset('storage/media/images/vidya-vachaspathi-examination-gm9NIB.webp') }}" target="_blank"
+                           class="text-xs font-bold text-amber-300 hover:text-amber-100 flex items-center space-x-1 transition-colors">
+                            <span>Open Record</span>
+                            <span>↗</span>
+                        </a>
+                    </div>
                 </div>
+
+            </div>
+
+            <!-- Bottom Direct Consultation Bar -->
+            <div class="p-4 sm:p-6 rounded-2xl bg-gradient-to-r from-amber-500/15 via-yellow-400/10 to-amber-950/40 border border-amber-400/40 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+                <div class="space-y-1">
+                    <h3 class="font-cinzel text-base sm:text-lg font-bold text-amber-200">
+                        Consult with Vidya Vachaspathi Gold Medalist Dr. E. K. Raja Varma
+                    </h3>
+                    <p class="text-xs text-amber-100/75">
+                        Experience authentic traditional Vedic predictive astrology and personal counseling via phone or WhatsApp worldwide.
+                    </p>
+                </div>
+                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I saw your Academic Honor and Convocation Gold Medal credentials. I would like to book a consultation.') }}"
+                   target="_blank"
+                   class="shrink-0 px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-[#1a1128] bg-gradient-to-r from-amber-300 to-yellow-400 hover:from-amber-200 hover:to-yellow-300 shadow-lg hover:shadow-amber-400/30 transition-all flex items-center space-x-2">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.947 2.796.947 3.179 0 5.766-2.587 5.767-5.766.001-3.181-2.586-5.767-5.767-5.767zm0 10.373c-.768 0-1.637-.251-2.327-.661l-.167-.099-1.58.414.422-1.539-.109-.174c-.453-.722-.693-1.564-.693-2.55 0-2.539 2.066-4.605 4.606-4.605 2.54 0 4.606 2.066 4.606 4.606 0 2.54-2.066 4.608-4.755 4.608z"/>
+                    </svg>
+                    <span>Consult on WhatsApp (7907052160)</span>
+                </a>
             </div>
         </div>
     </section>
