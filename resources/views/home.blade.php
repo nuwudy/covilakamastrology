@@ -236,42 +236,90 @@
                         </a>
                     </div>
 
-                    <!-- Official Google Pay & UPI Quick Scan Card in Hero Section -->
-                    <div class="mt-4 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-[#201032]/95 via-[#2b0e22]/90 to-[#180c28]/95 border-2 border-amber-500/40 shadow-2xl backdrop-blur-md flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <div class="flex items-center space-x-3.5 w-full sm:w-auto">
-                            <!-- Clickable GPay QR Thumbnail with Gold Frame -->
-                            <div class="relative shrink-0 cursor-pointer group" @click="gpayModalOpen = true" title="Click to enlarge QR Code">
-                                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl p-1 bg-white shadow-xl border-2 border-amber-400 group-hover:scale-105 transition-transform duration-200">
-                                    <img src="{{ asset('images/gpay-qr-code.jpg') }}" alt="Google Pay QR Code - DR. E. K. Raja Varma" class="w-full h-full object-contain">
+                    <!-- Official Google Pay & UPI Quick Scan Showcase Card in Hero Section -->
+                    <div class="mt-6 p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-[#221037]/95 via-[#2d0e25]/90 to-[#180c2a]/95 border-2 border-amber-400/50 shadow-2xl backdrop-blur-md">
+                        <div class="flex flex-col sm:flex-row items-center gap-5 sm:gap-6">
+                            
+                            <!-- Scannably Big Gold-Framed QR Card -->
+                            <div class="relative shrink-0 cursor-pointer group" @click="gpayModalOpen = true" title="Click to view full screen">
+                                <div class="w-44 sm:w-48 md:w-52 rounded-2xl p-2.5 bg-white shadow-2xl border-2 border-amber-400 group-hover:border-yellow-300 group-hover:scale-[1.02] transition-all duration-300">
+                                    <img src="{{ asset('images/gpay-qr-card.jpg') }}" 
+                                         alt="Google Pay QR Scanner - DR. E. K. Raja Varma" 
+                                         class="w-full h-auto object-contain rounded-xl">
                                 </div>
-                                <span class="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-full bg-emerald-500 text-[9px] font-black text-white uppercase shadow-md border border-[#160d24]">
-                                    Pay
-                                </span>
+                                <div class="absolute -bottom-2 inset-x-0 flex justify-center">
+                                    <span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 text-[10px] font-black text-white uppercase tracking-wider shadow-lg border border-white/20 flex items-center space-x-1">
+                                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                                        </svg>
+                                        <span>Scan with Camera / UPI</span>
+                                    </span>
+                                </div>
                             </div>
 
-                            <div class="space-y-0.5">
-                                <div class="flex items-center space-x-2">
-                                    <span class="font-cinzel text-xs font-bold text-amber-300">Google Pay • UPI Dakshina</span>
-                                    <span class="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-400/20 text-amber-300 font-bold border border-amber-400/40">Verified UPI</span>
+                            <!-- Payment & UPI Details -->
+                            <div class="flex-1 w-full text-center sm:text-left space-y-3">
+                                <div>
+                                    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 mb-1">
+                                        <span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold text-[10px] uppercase tracking-wider border border-amber-400/40">
+                                            <span>👑 Verified Astrologer</span>
+                                        </span>
+                                        <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-[10px] border border-emerald-400/30">
+                                            ● Instant GPay
+                                        </span>
+                                    </div>
+                                    <h3 class="font-cinzel text-base sm:text-lg font-black text-white">
+                                        Google Pay • UPI Dakshina
+                                    </h3>
+                                    <p class="text-xs text-amber-200/90 font-medium">
+                                        DR. E. K. Raja Varma
+                                    </p>
                                 </div>
-                                <p class="text-xs text-amber-100 font-semibold">
-                                    UPI ID: <span class="font-mono text-amber-300 font-bold tracking-wide select-all">ekrvarma-1@oksbi</span>
-                                </p>
-                                <p class="text-[11px] text-amber-200/80">
-                                    GPay / Phone: <strong class="text-amber-300">094473 27450</strong> (Raja Varma)
-                                </p>
-                            </div>
-                        </div>
 
-                        <!-- Scan QR Button -->
-                        <div class="shrink-0 w-full sm:w-auto text-right">
-                            <button type="button" @click="gpayModalOpen = true"
-                                    class="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs font-bold text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-lg flex items-center justify-center space-x-1.5 transition-all">
-                                <svg class="w-4 h-4 text-[#1a1128]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
-                                </svg>
-                                <span>Scan GPay QR</span>
-                            </button>
+                                <!-- UPI ID Card with 1-Click Copy -->
+                                <div class="p-2.5 rounded-xl bg-[#190c29]/90 border border-amber-500/30 text-xs space-y-1.5"
+                                     x-data="{ copied: false }">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-amber-200/80 text-[11px]">Official UPI ID:</span>
+                                        <button type="button"
+                                                @click="navigator.clipboard.writeText('ekrvarma-1@oksbi'); copied = true; setTimeout(() => copied = false, 2500)"
+                                                class="text-[10px] px-2 py-0.5 rounded bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 font-bold transition-colors flex items-center space-x-1">
+                                            <span x-text="copied ? '✓ Copied!' : '📋 Copy UPI ID'">📋 Copy UPI ID</span>
+                                        </button>
+                                    </div>
+                                    <p class="font-mono text-amber-300 font-bold text-sm tracking-wide select-all">
+                                        ekrvarma-1@oksbi
+                                    </p>
+                                </div>
+
+                                <!-- GPay Phone & Supported Apps -->
+                                <div class="text-[11px] text-amber-100/90 space-y-1">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-amber-200/70">GPay / Phone:</span>
+                                        <span class="font-mono font-bold text-amber-300">094473 27450</span>
+                                    </div>
+                                    <p class="text-[10px] text-amber-200/70 pt-0.5">
+                                        Point any UPI app (GPay, PhonePe, Paytm, BHIM) or phone camera directly to scan.
+                                    </p>
+                                </div>
+
+                                <!-- Quick Buttons -->
+                                <div class="pt-1 flex flex-wrap gap-2">
+                                    <button type="button" @click="gpayModalOpen = true"
+                                            class="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl text-xs font-bold text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all flex items-center justify-center space-x-1.5">
+                                        <svg class="w-3.5 h-3.5 text-[#1a1128]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                                        </svg>
+                                        <span>Enlarge Fullscreen</span>
+                                    </button>
+                                    <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I scanned your Google Pay QR code (ekrvarma-1@oksbi).') }}"
+                                       target="_blank"
+                                       class="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-md transition-all flex items-center justify-center space-x-1.5">
+                                        <span>💬 Send on WhatsApp</span>
+                                    </a>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1684,10 +1732,10 @@
                         </div>
 
                         <!-- GPay QR Code Card in Payment Section -->
-                        <div class="p-4 rounded-2xl bg-gradient-to-br from-[#24133b] to-[#180b29] border border-amber-500/30 flex flex-col sm:flex-row items-center gap-4">
-                            <div class="w-28 h-28 sm:w-32 sm:h-32 shrink-0 bg-white p-2 rounded-2xl shadow-xl border-2 border-amber-400/80 cursor-pointer group"
+                        <div class="p-4 rounded-2xl bg-gradient-to-br from-[#24133b] to-[#180b29] border border-amber-500/30 flex flex-col sm:flex-row items-center gap-5">
+                            <div class="w-36 sm:w-44 shrink-0 bg-white p-2.5 rounded-2xl shadow-xl border-2 border-amber-400/80 cursor-pointer group"
                                  @click="gpayModalOpen = true" title="Click to enlarge QR Code">
-                                <img src="{{ asset('images/gpay-qr-code.jpg') }}" alt="Google Pay QR Code - DR. E. K. Raja Varma" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200">
+                                <img src="{{ asset('images/gpay-qr-card.jpg') }}" alt="Google Pay QR Code - DR. E. K. Raja Varma" class="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-200 rounded-xl">
                             </div>
                             <div class="space-y-1.5 text-center sm:text-left">
                                 <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-400/30">
@@ -1792,8 +1840,8 @@
             </div>
 
             <!-- Crisp QR Image Container -->
-            <div class="p-3 bg-white rounded-2xl shadow-2xl border-4 border-amber-400/50 max-w-[270px] sm:max-w-[300px] mx-auto">
-                <img src="{{ asset('images/gpay-qr-code.jpg') }}"
+            <div class="p-3 bg-white rounded-2xl shadow-2xl border-4 border-amber-400/50 max-w-[300px] sm:max-w-[340px] mx-auto">
+                <img src="{{ asset('images/gpay-qr-card.jpg') }}"
                      alt="Google Pay QR Code - DR. E. K. Raja Varma"
                      class="w-full h-auto object-contain rounded-xl">
             </div>
