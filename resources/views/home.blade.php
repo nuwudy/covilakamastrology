@@ -156,9 +156,9 @@
                         <!-- Royal Gold Ornate Frame -->
                         <div class="relative shrink-0">
                             <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl p-1 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-xl gold-glow transform rotate-1 hover:rotate-0 transition-transform duration-300">
-                                <img src="{{ asset('images/dr-ek-raja-varma.jpg') }}"
+                                <img src="{{ asset('storage/media/images/whatsapp-image-2026-10-20-at-85056-am-MOuzds.webp') }}"
                                      alt="Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)"
-                                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\' viewBox=\'0 0 200 200\'><rect width=\'100%\' height=\'100%\' fill=\'%234a0e17\'/><circle cx=\'100\' cy=\'100\' r=\'80\' fill=\'%23d4af37\' opacity=\'0.25\'/><text x=\'50%\' y=\'55%\' font-size=\'60\' fill=\'%23f3e5ab\' font-family=\'serif\' dominant-baseline=\'middle\' text-anchor=\'middle\'>ॐ</text></svg>';"
+                                     onerror="this.onerror=null; this.src='{{ asset('images/dr-ek-raja-varma.webp') }}';"
                                      class="w-full h-full object-cover rounded-xl border border-amber-300/40">
                             </div>
                             <span class="absolute -bottom-2 -right-2 px-2 py-0.5 rounded bg-amber-500 text-[10px] font-bold text-[#1a1128] uppercase shadow">
@@ -1473,9 +1473,9 @@
                         <!-- Card Center Profile & Title -->
                         <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 mb-5">
                             <div class="w-24 h-24 shrink-0 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-lg">
-                                <img src="{{ asset('images/dr-ek-raja-varma.jpg') }}"
+                                <img src="{{ asset('storage/media/images/whatsapp-image-2026-10-20-at-85056-am-MOuzds.webp') }}"
                                      alt="Dr. E. K. Raja Varma"
-                                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 100 100\'><rect width=\'100%\' height=\'100%\' fill=\'%234a0e17\'/><text x=\'50%\' y=\'55%\' font-size=\'40\' fill=\'%23f3e5ab\' font-family=\'serif\' dominant-baseline=\'middle\' text-anchor=\'middle\'>ॐ</text></svg>';"
+                                     onerror="this.onerror=null; this.src='{{ asset('images/dr-ek-raja-varma.webp') }}';"
                                      class="w-full h-full object-cover rounded-2xl">
                             </div>
 

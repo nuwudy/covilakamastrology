@@ -17,9 +17,9 @@
         <div class="bg-gradient-to-r from-[#2c0e18] via-[#4a0e17] to-[#1a1128] p-4 border-b border-amber-500/30 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="relative">
-                    <img src="{{ asset('images/dr-ek-raja-varma.jpg') }}"
+                    <img src="{{ asset('storage/media/images/whatsapp-image-2026-10-20-at-85056-am-MOuzds.webp') }}"
                          alt="Dr. E. K. Raja Varma"
-                         onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 100 100\'><rect width=\'100%\' height=\'100%\' fill=\'%234a0e17\'/><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'%23d4af37\' opacity=\'0.3\'/><text x=\'50%\' y=\'55%\' font-size=\'36\' fill=\'%23f3e5ab\' font-family=\'serif\' dominant-baseline=\'middle\' text-anchor=\'middle\'>ॐ</text></svg>';"
+                         onerror="this.onerror=null; this.src='{{ asset('images/dr-ek-raja-varma.webp') }}';"
                          class="w-12 h-12 rounded-full object-cover border-2 border-amber-400 shadow-md">
                     <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-[#160d24] rounded-full"></span>
                 </div>

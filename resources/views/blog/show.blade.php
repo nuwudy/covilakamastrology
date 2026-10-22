@@ -33,9 +33,9 @@
 
         <!-- Author Card -->
         <div class="flex items-center space-x-4 p-4 rounded-2xl bg-[#1a1128] border border-amber-500/30 mb-8">
-            <img src="{{ asset('images/dr-ek-raja-varma.jpg') }}"
+            <img src="{{ asset('storage/media/images/whatsapp-image-2026-10-20-at-85056-am-MOuzds.webp') }}"
                  alt="Dr. E. K. Raja Varma"
-                 onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\' viewBox=\'0 0 60 60\'><rect width=\'100%\' height=\'100%\' fill=\'%234a0e17\'/><text x=\'50%\' y=\'55%\' font-size=\'24\' fill=\'%23f3e5ab\' dominant-baseline=\'middle\' text-anchor=\'middle\'>ॐ</text></svg>';"
+                 onerror="this.onerror=null; this.src='{{ asset('images/dr-ek-raja-varma.webp') }}';"
                  class="w-14 h-14 rounded-full object-cover border-2 border-amber-400 shrink-0">
             <div>
                 <p class="font-cinzel text-sm sm:text-base font-bold text-amber-300">

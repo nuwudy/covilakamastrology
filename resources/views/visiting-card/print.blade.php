@@ -90,8 +90,9 @@
 
         <!-- Middle Profile Info -->
         <div class="flex items-center space-x-3 py-1">
-            <img src="{{ asset('images/dr-ek-raja-varma.jpg') }}"
+            <img src="{{ asset('storage/media/images/whatsapp-image-2026-10-20-at-85056-am-MOuzds.webp') }}"
                  alt="Dr. E. K. Raja Varma"
+                 onerror="this.onerror=null; this.src='{{ asset('images/dr-ek-raja-varma.webp') }}';"
                  class="w-12 h-12 rounded-xl object-cover border border-amber-400 shrink-0">
             <div class="space-y-0.5">
                 <h2 class="font-cinzel text-xs font-black text-amber-200 leading-none">
