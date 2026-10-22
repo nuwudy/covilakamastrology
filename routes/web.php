@@ -34,6 +34,25 @@ Route::get('/visiting-card/print', function () {
     return view('visiting-card.print', compact('settings'));
 })->name('visiting-card.print');
 
+Route::get('/sitemap.xml', function () {
+    $posts = \App\Models\Post::where('is_published', true)->orderBy('updated_at', 'desc')->get();
+    $xml = '<?xml version="1.0" encoding="UTF-8"?>';
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+    $xml .= '<url><loc>' . url('/') . '</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>';
+    $xml .= '<url><loc>' . url('/blog') . '</loc><changefreq>daily</changefreq><priority>0.8</priority></url>';
+    $xml .= '<url><loc>' . url('/visiting-card') . '</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>';
+    foreach ($posts as $post) {
+        $xml .= '<url>';
+        $xml .= '<loc>' . route('blog.show', $post->slug) . '</loc>';
+        $xml .= '<lastmod>' . $post->updated_at->toAtomString() . '</lastmod>';
+        $xml .= '<changefreq>monthly</changefreq>';
+        $xml .= '<priority>0.8</priority>';
+        $xml .= '</url>';
+    }
+    $xml .= '</urlset>';
+    return response($xml, 200)->header('Content-Type', 'text/xml');
+});
+
 // Admin Guest Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::get('/admin/login', [AuthController::class, 'showLoginForm'])->name('admin.login');

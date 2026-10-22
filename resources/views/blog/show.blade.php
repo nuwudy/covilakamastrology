@@ -2,6 +2,7 @@
 
 @section('title', $post->title . ' | Covilakam Astrology')
 @section('meta_description', Str::limit(strip_tags($post->excerpt ?: $post->body), 155))
+@section('og_image', $post->featured_image ? (str_starts_with($post->featured_image, 'http') ? $post->featured_image : asset('storage/' . $post->featured_image)) : asset('images/og-covilakam-1200x630.png'))
 
 @section('content')
 <article class="pt-32 pb-24 bg-[#0d0716] min-h-screen">
