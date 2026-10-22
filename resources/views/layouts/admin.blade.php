@@ -68,10 +68,10 @@
                 <!-- Brand & Logo Header -->
                 <div class="px-6 py-6 border-b border-amber-500/20 bg-[#12091c]">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-md">
-                            <div class="w-full h-full rounded-2xl bg-[#1a1128] flex items-center justify-center text-amber-300 font-serif text-lg font-bold">
-                                ॐ
-                            </div>
+                        <div class="w-11 h-11 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-md shrink-0">
+                            <img src="{{ asset('images/og-covilakam-512x512.png') }}"
+                                 alt="Covilakam Astrology"
+                                 class="w-full h-full rounded-xl object-cover">
                         </div>
                         <div>
                             <span class="font-cinzel text-base font-extrabold tracking-wider text-amber-300 block leading-tight">

@@ -8,11 +8,10 @@
     <div class="w-full max-w-md">
         
         <!-- Logo & Header -->
-        <div class="text-center mb-8 space-y-3">
-            <div class="w-16 h-16 rounded-2xl mx-auto bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 p-0.5 shadow-xl gold-glow">
-                <div class="w-full h-full rounded-2xl bg-[#1a1128] flex items-center justify-center text-amber-300 font-serif text-3xl font-bold">
-                    ॐ
-                </div>
+            <div class="w-20 h-20 rounded-full mx-auto p-1 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-2xl gold-glow">
+                <img src="{{ asset('images/og-covilakam-512x512.png') }}"
+                     alt="Covilakam Astrology Logo"
+                     class="w-full h-full rounded-full object-cover shadow-inner">
             </div>
             
             <div>

@@ -6,15 +6,10 @@
         <div class="flex items-center justify-between">
             <!-- Brand & Astrologer Name -->
             <a href="{{ route('home') }}" class="group flex items-center space-x-3.5 focus:outline-none">
-                <div class="w-11 h-11 rounded-full p-0.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-md group-hover:scale-105 transition-transform duration-300">
-                    <div class="w-full h-full rounded-full bg-[#1a1128] flex items-center justify-center text-amber-300">
-                        <!-- Sacred Vedic Yantra / Sun Icon -->
-                        <svg class="w-6 h-6 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <circle cx="12" cy="12" r="4" fill="rgba(212, 175, 55, 0.2)"/>
-                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-                            <polygon points="12,5 14,10 19,12 14,14 12,19 10,14 5,12 10,10" fill="currentColor" opacity="0.3"/>
-                        </svg>
-                    </div>
+                <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full p-0.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-xl gold-glow group-hover:scale-105 transition-transform duration-300 shrink-0">
+                    <img src="{{ asset('images/og-covilakam-512x512.png') }}"
+                         alt="Covilakam Astrology Logo"
+                         class="w-full h-full rounded-full object-cover shadow-inner">
                 </div>
                 <div>
                     <div class="flex items-center space-x-2">
