@@ -17,6 +17,7 @@
     hasResult: {{ session('dob_result') ? 'true' : 'false' }},
     readingLang: 'en', // 'en', 'ml', 'ta', 'hi'
     daysInMonth: 31,
+    gpayModalOpen: false,
 
     updateDays() {
         if (!this.calcMonth || !this.calcYear) {
@@ -233,6 +234,45 @@
                             </svg>
                             <span>Chat on WhatsApp (7907052160)</span>
                         </a>
+                    </div>
+
+                    <!-- Official Google Pay & UPI Quick Scan Card in Hero Section -->
+                    <div class="mt-4 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-[#201032]/95 via-[#2b0e22]/90 to-[#180c28]/95 border-2 border-amber-500/40 shadow-2xl backdrop-blur-md flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center space-x-3.5 w-full sm:w-auto">
+                            <!-- Clickable GPay QR Thumbnail with Gold Frame -->
+                            <div class="relative shrink-0 cursor-pointer group" @click="gpayModalOpen = true" title="Click to enlarge QR Code">
+                                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl p-1 bg-white shadow-xl border-2 border-amber-400 group-hover:scale-105 transition-transform duration-200">
+                                    <img src="{{ asset('images/gpay-qr-code.jpg') }}" alt="Google Pay QR Code - DR. E. K. Raja Varma" class="w-full h-full object-contain">
+                                </div>
+                                <span class="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-full bg-emerald-500 text-[9px] font-black text-white uppercase shadow-md border border-[#160d24]">
+                                    Pay
+                                </span>
+                            </div>
+
+                            <div class="space-y-0.5">
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-cinzel text-xs font-bold text-amber-300">Google Pay • UPI Dakshina</span>
+                                    <span class="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-400/20 text-amber-300 font-bold border border-amber-400/40">Verified UPI</span>
+                                </div>
+                                <p class="text-xs text-amber-100 font-semibold">
+                                    UPI ID: <span class="font-mono text-amber-300 font-bold tracking-wide select-all">ekrvarma-1@oksbi</span>
+                                </p>
+                                <p class="text-[11px] text-amber-200/80">
+                                    GPay / Phone: <strong class="text-amber-300">094473 27450</strong> (Raja Varma)
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Scan QR Button -->
+                        <div class="shrink-0 w-full sm:w-auto text-right">
+                            <button type="button" @click="gpayModalOpen = true"
+                                    class="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs font-bold text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-lg flex items-center justify-center space-x-1.5 transition-all">
+                                <svg class="w-4 h-4 text-[#1a1128]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                                </svg>
+                                <span>Scan GPay QR</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -1639,7 +1679,26 @@
                             </div>
                             <div>
                                 <h3 class="font-cinzel text-lg font-bold text-white">Payment & Booking Info</h3>
-                                <p class="text-xs text-amber-200/70">Google Pay (GPay) & Bank Transfer</p>
+                                <p class="text-xs text-amber-200/70">Google Pay (GPay) & UPI Dakshina</p>
+                            </div>
+                        </div>
+
+                        <!-- GPay QR Code Card in Payment Section -->
+                        <div class="p-4 rounded-2xl bg-gradient-to-br from-[#24133b] to-[#180b29] border border-amber-500/30 flex flex-col sm:flex-row items-center gap-4">
+                            <div class="w-28 h-28 sm:w-32 sm:h-32 shrink-0 bg-white p-2 rounded-2xl shadow-xl border-2 border-amber-400/80 cursor-pointer group"
+                                 @click="gpayModalOpen = true" title="Click to enlarge QR Code">
+                                <img src="{{ asset('images/gpay-qr-code.jpg') }}" alt="Google Pay QR Code - DR. E. K. Raja Varma" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200">
+                            </div>
+                            <div class="space-y-1.5 text-center sm:text-left">
+                                <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-400/30">
+                                    <span>● Verified Google Pay Account</span>
+                                </div>
+                                <p class="text-sm font-bold text-white">DR. E. K. Raja Varma</p>
+                                <p class="text-xs text-amber-200 font-medium">UPI ID: <span class="font-mono text-amber-300 font-bold select-all">ekrvarma-1@oksbi</span></p>
+                                <p class="text-xs text-amber-100">GPay: <span class="font-mono font-bold text-amber-300">094473 27450</span></p>
+                                <button type="button" @click="gpayModalOpen = true" class="mt-1 inline-flex items-center space-x-1 text-xs text-amber-300 hover:text-amber-200 font-semibold underline underline-offset-4">
+                                    <span>🔍 Click to Enlarge QR Code</span>
+                                </button>
                             </div>
                         </div>
 
@@ -1647,6 +1706,10 @@
                             <div class="flex items-center justify-between text-xs">
                                 <span class="text-amber-200">Google Pay (GPay) Number:</span>
                                 <span class="font-mono font-bold text-amber-300 text-sm">094473 27450</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-amber-200">UPI ID:</span>
+                                <span class="font-mono text-amber-300 font-bold select-all">ekrvarma-1@oksbi</span>
                             </div>
                             <div class="flex items-center justify-between text-xs">
                                 <span class="text-amber-200">International / Phone:</span>
@@ -1666,7 +1729,7 @@
                             </div>
                             <div class="flex items-start space-x-2">
                                 <span class="text-amber-400 font-bold">2.</span>
-                                <span>Complete payment via Google Pay (094473 27450) and share confirmation.</span>
+                                <span>Complete payment via Google Pay (094473 27450 / ekrvarma-1@oksbi) and share confirmation.</span>
                             </div>
                             <div class="flex items-start space-x-2">
                                 <span class="text-amber-400 font-bold">3.</span>
@@ -1674,7 +1737,7 @@
                             </div>
                         </div>
 
-                        <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to book a consultation and pay via GPay (094473 27450).') }}"
+                        <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to book a consultation and pay via GPay (094473 27450 / ekrvarma-1@oksbi).') }}"
                            target="_blank"
                            class="w-full py-3 rounded-xl font-bold text-xs sm:text-sm text-white bg-emerald-600 hover:bg-emerald-500 shadow-lg flex items-center justify-center space-x-2 transition-all">
                             <span>Connect on WhatsApp for Payment Confirmation</span>
@@ -1685,6 +1748,91 @@
             </div>
         </div>
     </section>
+
+    <!-- Google Pay & UPI QR Code Lightbox Modal -->
+    <div x-show="gpayModalOpen"
+         x-cloak
+         @keydown.escape.window="gpayModalOpen = false"
+         class="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-md flex items-center justify-center p-4"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+
+        <!-- Modal Dialog Box -->
+        <div @click.away="gpayModalOpen = false"
+             class="relative w-full max-w-sm sm:max-w-md rounded-3xl bg-gradient-to-b from-[#1f1133] via-[#160c26] to-[#0f071a] border-2 border-amber-400/60 p-6 sm:p-7 shadow-2xl text-center space-y-4"
+             x-transition:enter="transition ease-out duration-300 transform"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-200 transform"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95">
+
+            <!-- Close Button -->
+            <button type="button"
+                    @click="gpayModalOpen = false"
+                    class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <!-- Modal Header -->
+            <div class="space-y-1">
+                <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-400/15 border border-amber-400/40 text-amber-300 text-[11px] font-bold uppercase tracking-wider">
+                    <span>👑 Official Astro Dakshina / Consultation Fee</span>
+                </div>
+                <h3 class="font-cinzel text-xl sm:text-2xl font-bold text-white pt-1">
+                    DR. E. K. Raja Varma
+                </h3>
+                <p class="text-xs text-amber-200/80">Vidya Vachaspathi & Vedic Astrologer • Covilakam</p>
+            </div>
+
+            <!-- Crisp QR Image Container -->
+            <div class="p-3 bg-white rounded-2xl shadow-2xl border-4 border-amber-400/50 max-w-[270px] sm:max-w-[300px] mx-auto">
+                <img src="{{ asset('images/gpay-qr-code.jpg') }}"
+                     alt="Google Pay QR Code - DR. E. K. Raja Varma"
+                     class="w-full h-auto object-contain rounded-xl">
+            </div>
+
+            <!-- Verified Details Box -->
+            <div class="p-3.5 rounded-xl bg-[#25153d]/90 border border-amber-500/30 text-xs text-left space-y-2">
+                <div class="flex items-center justify-between">
+                    <span class="text-amber-200/80">Google Pay Phone:</span>
+                    <span class="font-mono font-bold text-amber-300">094473 27450</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-amber-200/80">UPI ID:</span>
+                    <span class="font-mono font-bold text-amber-300 select-all">ekrvarma-1@oksbi</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-amber-200/80">Accepted Apps:</span>
+                    <span class="text-amber-100 font-semibold">Google Pay, PhonePe, Paytm, Any UPI</span>
+                </div>
+            </div>
+
+            <p class="text-[11px] text-amber-200/70 leading-relaxed">
+                Scan with Google Pay or any UPI app to complete dakshina, then share screenshot via WhatsApp at <strong>+91 7907052160</strong>.
+            </p>
+
+            <!-- Actions -->
+            <div class="pt-1 flex flex-col sm:flex-row gap-2">
+                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I have made payment via Google Pay (ekrvarma-1@oksbi / 094473 27450). Here is my confirmation.') }}"
+                   target="_blank"
+                   class="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs text-white bg-emerald-600 hover:bg-emerald-500 shadow-lg flex items-center justify-center space-x-1.5 transition-all">
+                    <span>Share Receipt on WhatsApp</span>
+                </a>
+                <button type="button"
+                        @click="gpayModalOpen = false"
+                        class="py-2.5 px-4 rounded-xl text-xs font-semibold text-amber-200 bg-white/10 hover:bg-white/20 transition-all">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
 
 </div>
 @endsection
