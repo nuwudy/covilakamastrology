@@ -1,9 +1,9 @@
-﻿{
+{
   "name": "Covilakam Astrology - DR. E. K. Raja Varma",
   "short_name": "Covilakam",
   "icons": [
     {
-      "src": "/images/android-chrome-192x192.png",
+      "src": "/favicon-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
