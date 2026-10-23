@@ -22,27 +22,28 @@
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     <meta name="theme-color" content="#1a1128">
 
-    <!-- Open Graph / Facebook / WhatsApp (1200x630) -->
+    <!-- Open Graph / Facebook / WhatsApp (1200x630, optimized JPEG <300KB for instant WhatsApp previews) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="@yield('title', 'DR. E. K. Raja Varma | Covilakam Astrology (Kovilakam Astrology - കോവിലകം ജ്യോതിഷം)')">
     <meta property="og:description" content="@yield('meta_description', 'Covilakam Astrology (Kovilakam Astrology / കോവിലകം ജ്യോതിഷം) - Official portal of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Accurate Predictions, Jathakam, Marriage Matching, Gem Predictions, and Online Astro Counselling.')">
-    <meta property="og:image" content="@yield('og_image', asset('images/og-covilakam-1200x630.png'))">
-    <meta property="og:image:secure_url" content="@yield('og_image', asset('images/og-covilakam-1200x630.png'))">
+    <meta property="og:image" content="@yield('og_image', asset('images/og-covilakam-1200x630.jpg'))">
+    <meta property="og:image:secure_url" content="@yield('og_image', asset('images/og-covilakam-1200x630.jpg'))">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:alt" content="DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) - Covilakam Astrology">
     <meta property="og:site_name" content="Covilakam Astrology (Kovilakam Astrology)">
     <meta property="og:locale" content="en_US">
     <meta property="og:locale:alternate" content="ml_IN">
+    <link rel="image_src" href="@yield('og_image', asset('images/og-covilakam-1200x630.jpg'))">
 
     <!-- Twitter / X Cards (1200x630 summary_large_image) -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="{{ url()->current() }}">
     <meta name="twitter:title" content="@yield('title', 'DR. E. K. Raja Varma | Covilakam Astrology (Kovilakam Astrology)')">
     <meta name="twitter:description" content="@yield('meta_description', 'Covilakam Astrology (Kovilakam Astrology / കോവിലകം ജ്യോതിഷം) - Official portal of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Accurate Predictions, Jathakam, Marriage Matching, Gem Predictions, and Online Astro Counselling.')">
-    <meta name="twitter:image" content="@yield('og_image', asset('images/og-covilakam-1200x630.png'))">
+    <meta name="twitter:image" content="@yield('og_image', asset('images/og-covilakam-1200x630.jpg'))">
     <meta name="twitter:image:alt" content="DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) - Covilakam Astrology">
 
     <!-- Structured JSON-LD Schema: Organization, ProfessionalService, Person & FAQ for High Search Visibility -->
@@ -64,7 +65,7 @@
                     ],
                     'url' => url('/'),
                     'logo' => asset('images/logo.png'),
-                    'image' => asset('images/og-covilakam-1200x630.png'),
+                    'image' => asset('images/og-covilakam-1200x630.jpg'),
                     'description' => 'Covilakam Astrology (also known as Kovilakam Astrology / കോവിലകം ജ്യോതിഷം) is the official Vedic astrology practice of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, 2026 Gold Medalist & Ph.D.). Specialising in accurate horoscope predictions, Jathakam analysis, marriage compatibility (Porutham), and online consultations for Kerala and global Malayalis.',
                     'telephone' => '+917907052160',
                     'email' => 'varmaji@covilakamastrology.com',
