@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Setting;
@@ -25,17 +26,24 @@ class ShopController extends Controller
         $settings = $this->getSettings();
         $type = $request->query('type', 'all');
 
-        $query = Product::where('is_active', true)->orderBy('sort_order', 'asc');
+        // Dr. E. K. Raja Varma's real books from the books table (managed via /admin/books)
+        $books = Book::where('is_active', true)->orderBy('sort_order', 'asc')->get();
 
-        if ($type && in_array($type, ['book', 'digital_pdf', 'consultation'])) {
-            $query->where('type', $type);
+        // Astrological digital services & consultation products
+        $servicesQuery = Product::where('is_active', true)->whereIn('type', ['digital_pdf', 'consultation'])->orderBy('sort_order', 'asc');
+
+        if ($type === 'digital_pdf') {
+            $servicesQuery->where('type', 'digital_pdf');
+        } elseif ($type === 'consultation') {
+            $servicesQuery->where('type', 'consultation');
         }
 
-        $products = $query->get();
-        $featuredBook = Product::where('slug', 'kerala-jyothisha-deepika')->first();
+        $services = $servicesQuery->get();
+        $products = $services; // For compatibility
+        $featuredBook = $books->first();
         $jathakamPdfProduct = Product::where('slug', 'deluxe-vedic-jathakam-pdf-report')->first();
 
-        return view('shop.index', compact('products', 'settings', 'type', 'featuredBook', 'jathakamPdfProduct'));
+        return view('shop.index', compact('books', 'services', 'products', 'settings', 'type', 'featuredBook', 'jathakamPdfProduct'));
     }
 
     /**

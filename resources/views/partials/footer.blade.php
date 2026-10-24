@@ -48,7 +48,7 @@
                 </h4>
                 <ul class="space-y-2.5 text-xs">
                     <li><a href="{{ route('home') }}#hero" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Home Portal</span></a></li>
-                    <li><a href="{{ route('shop.index') }}" class="text-amber-300 font-bold hover:text-amber-200 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Vedic Bookstore & Shop</span></a></li>
+                    <li><a href="{{ route('shop.index') }}" class="text-amber-300 font-bold hover:text-amber-200 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Dr. Raja Varma's Books & Shop</span></a></li>
                     <li><a href="{{ route('home') }}#dob-calculator" class="text-amber-300 font-semibold hover:text-amber-200 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Instant Free DOB Reading</span></a></li>
                     <li><a href="{{ route('shop.show', 'deluxe-vedic-jathakam-pdf-report') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Deluxe Jathakam (PDF Report)</span></a></li>
                     <li><a href="{{ route('home') }}#services" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Core Astro Services</span></a></li>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Vedic Bookstore & Astrology Services | Covilakam Astrology')
-@section('meta_description', 'Official Bookstore & Services Shop of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Buy authoritative Kerala Vedic astrology books, download Deluxe 30-Page Jathakam PDFs, and book consultations via secure Razorpay checkout.')
+@section('title', 'Dr. E. K. Raja Varma\'s Books, Literary Works & Astrology Services | Covilakam Astrology')
+@section('meta_description', 'Official Bookstore & Services Shop of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Explore authentic Malayalam literary books, philosophy, short stories, audio album, and certified Vedic astrology services.')
 
 @section('content')
 <div class="pt-32 pb-24 bg-[#0d0716] min-h-screen text-amber-100/90 relative overflow-hidden"
@@ -160,28 +160,34 @@
         <!-- Hero Header -->
         <div class="text-center max-w-3xl mx-auto mb-12">
             <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs font-semibold mb-4">
-                <span>📚 Covilakam Vedic Bookstore & Digital Services</span>
+                <span>📚 ഡോ. ഇ. കെ. രാജ വർമ്മയുടെ ഗ്രന്ഥങ്ങളും സാഹിത്യ രചനകളും</span>
             </div>
             <h1 class="font-cinzel text-3xl sm:text-5xl font-extrabold text-amber-300 tracking-wide">
-                Authentic Vedic Astrology Books & Services
+                ഗ്രന്ഥങ്ങളും സാഹിത്യ രചനകളും
             </h1>
+            <div class="font-cinzel text-xl sm:text-2xl font-bold text-amber-200 mt-2">
+                Dr. E. K. Raja Varma's Books, Creative Works & Services
+            </div>
             <p class="text-xs sm:text-sm text-amber-200/70 mt-3 leading-relaxed">
-                Directly published and authorized by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, 2026 Gold Medalist & Ph.D.)</strong>. Free shipping across India on physical books, instant downloads for Deluxe Jathakam PDFs, and certified matrimonial match reports.
+                വേദിക് ജ്യോതിഷാചാര്യൻ <strong>ഡോ. ഇ. കെ. രാജ വർമ്മ (വിദ്യാ വാചസ്പതി)</strong> രചിച്ച സാഹിത്യ കൃതികൾ, അനുഭവക്കുറിപ്പുകൾ, ചിന്താശകലങ്ങൾ, ചെറുകഥകൾ, സംഗീത ആൽബം എന്നിവയോടൊപ്പം കോവിലകം വേദിക് ജ്യോതിഷ സേവനങ്ങളും. താങ്കൾക്ക് ആവശ്യമായ പുസ്തകങ്ങൾ വാട്സാപ്പ് വഴി നേരിട്ട് ഓർഡർ ചെയ്യാവുന്നതാണ്.
+            </p>
+            <p class="text-[11px] text-amber-300/70 mt-1">
+                Authentic Malayalam literary works, philosophy, short stories & audio album authored by Dr. E. K. Raja Varma, alongside certified Covilakam horoscope consultations & Deluxe Jathakam PDFs.
             </p>
 
-            <!-- Razorpay Compliance Trust Bar -->
+            <!-- Trust Bar -->
             <div class="mt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-[11px] text-amber-200/80">
                 <span class="flex items-center space-x-1.5 bg-[#1a1128] px-3 py-1.5 rounded-full border border-amber-500/20">
                     <span class="text-emerald-400">✓</span>
-                    <span>100% Razorpay Secure Payments</span>
+                    <span>Direct Author Signed Copies</span>
                 </span>
                 <span class="flex items-center space-x-1.5 bg-[#1a1128] px-3 py-1.5 rounded-full border border-amber-500/20">
                     <span class="text-amber-400">⚡</span>
-                    <span>UPI • GPay • Cards • NetBanking</span>
+                    <span>WhatsApp / GPay Order + Razorpay</span>
                 </span>
                 <span class="flex items-center space-x-1.5 bg-[#1a1128] px-3 py-1.5 rounded-full border border-amber-500/20">
                     <span class="text-emerald-400">📦</span>
-                    <span>Free Speed Post Delivery in India</span>
+                    <span>Speed Post Courier Across Kerala & Abroad</span>
                 </span>
             </div>
         </div>
@@ -191,11 +197,11 @@
             <div class="inline-flex p-1.5 rounded-2xl bg-[#140b22] border border-amber-500/20 space-x-1 sm:space-x-2">
                 <a href="{{ route('shop.index', ['type' => 'all']) }}"
                    class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap {{ ($type ?? 'all') === 'all' ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-[#1a1128] shadow-md font-bold' : 'text-amber-200/70 hover:text-amber-100 hover:bg-amber-500/10' }}">
-                    All Items ({{ $products->count() }})
+                    All Items ({{ $books->count() + $services->count() }})
                 </a>
                 <a href="{{ route('shop.index', ['type' => 'book']) }}"
                    class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap {{ ($type ?? '') === 'book' ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-[#1a1128] shadow-md font-bold' : 'text-amber-200/70 hover:text-amber-100 hover:bg-amber-500/10' }}">
-                    📖 Vedic Books (Physical)
+                    📚 Dr. Raja Varma's Books (സാഹിത്യ കൃതികൾ) ({{ $books->count() }})
                 </a>
                 <a href="{{ route('shop.index', ['type' => 'digital_pdf']) }}"
                    class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap {{ ($type ?? '') === 'digital_pdf' ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-[#1a1128] shadow-md font-bold' : 'text-amber-200/70 hover:text-amber-100 hover:bg-amber-500/10' }}">
@@ -208,138 +214,183 @@
             </div>
         </div>
 
-        <!-- Products Multi-Column Grid (No awkward single column banner) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            @forelse($products as $product)
-                @php
-                    $isFeatured = ($product->slug === 'kerala-jyothisha-deepika');
-                @endphp
-                <div class="bg-[#140b22] rounded-3xl p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 shadow-xl group hover:shadow-2xl hover:shadow-amber-500/10 {{ $isFeatured ? 'border-2 border-amber-400 ring-1 ring-amber-400/50 shadow-amber-500/15 relative' : 'border border-amber-500/25 hover:border-amber-400/60' }}">
+        <!-- Multi-Column Grid Displaying Real Books & Digital Services -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-7">
+            {{-- Dr. E. K. Raja Varma's Real Books from books table --}}
+            @if(($type ?? 'all') === 'all' || ($type ?? '') === 'book')
+                @foreach($books as $book)
+                    <div class="bg-[#140b22] rounded-3xl p-5 flex flex-col justify-between transition-all duration-300 shadow-xl group hover:shadow-2xl hover:shadow-amber-500/10 border border-amber-500/25 hover:border-amber-400/60">
+                        <div>
+                            <!-- Book Cover Artwork Box -->
+                            <div class="relative rounded-2xl overflow-hidden bg-gradient-to-b from-[#211339] to-[#0d0716] border border-amber-500/20 aspect-[2/3] max-h-80 mb-4 flex items-center justify-center p-3">
+                                <img src="{{ asset($book->cover_image) }}"
+                                     alt="{{ $book->title }}"
+                                     loading="lazy"
+                                     class="w-full h-full object-contain rounded-xl transform group-hover:scale-105 transition-transform duration-300 shadow-xl">
 
-                    @if($isFeatured)
-                        <div class="absolute -top-3 left-6 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-[#1a1128] shadow-lg flex items-center space-x-1 z-20">
-                            <span>★</span>
-                            <span>FLAGSHIP BESTSELLER</span>
-                        </div>
-                    @endif
+                                <!-- Royal Gold Price Tag Badge -->
+                                <div class="absolute top-3 right-3 z-10">
+                                    <div class="px-3 py-1 rounded-full text-xs font-black text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 shadow-lg border border-amber-200/60 flex items-center space-x-1 tracking-wide">
+                                        <span>₹{{ number_format($book->price ?? 0, 0) }}</span>
+                                    </div>
+                                </div>
 
-                    <div>
-                        <!-- Product Image Box (Authentic Portrait Frame) -->
-                        <div class="relative rounded-2xl overflow-hidden bg-[#0d0716] border border-amber-500/20 aspect-[3/4] max-h-80 mb-5 flex items-center justify-center p-3">
-                            <img src="{{ asset($product->image_path) }}"
-                                 alt="{{ $product->title }}"
-                                 class="w-full h-full object-contain rounded-xl transform group-hover:scale-105 transition-transform duration-300">
+                                <!-- Publisher Tag -->
+                                @if($book->publisher)
+                                    <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded text-[10px] font-semibold bg-[#1a1128]/95 text-amber-200 border border-amber-500/40 uppercase tracking-wider shadow">
+                                        {{ Str::limit($book->publisher, 20) }}
+                                    </span>
+                                @endif
+                            </div>
 
-                            @if($product->badge)
-                                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-400 text-[#1a1128] shadow-md">
-                                    {{ $product->badge }}
-                                </span>
-                            @endif
+                            <!-- Titles -->
+                            <div class="space-y-1 mb-2">
+                                <div class="flex items-center space-x-1.5 text-[11px] text-amber-400/80 font-mono">
+                                    <span>Work #{{ $book->sort_order }}</span>
+                                    <span>•</span>
+                                    <span class="text-amber-200/70">ഡോ. ഇ. കെ. രാജ വർമ്മ</span>
+                                </div>
+                                <h3 class="font-cinzel text-base sm:text-lg font-bold text-amber-200 group-hover:text-amber-300 transition-colors line-clamp-1">
+                                    {{ $book->title }}
+                                </h3>
+                                @if($book->malayalam_title && $book->malayalam_title !== $book->title)
+                                    <p class="text-xs text-amber-400 font-medium">
+                                        {{ $book->malayalam_title }}
+                                    </p>
+                                @endif
+                            </div>
 
-                            <span class="absolute top-3 right-3 px-2.5 py-0.5 rounded text-[10px] font-semibold bg-[#1a1128]/95 text-amber-200 border border-amber-500/40 uppercase tracking-wider shadow">
-                                {{ $product->type === 'book' ? '📖 Hardcover' : ($product->type === 'digital_pdf' ? '📱 Instant PDF' : '🔮 Consultation') }}
-                            </span>
-                        </div>
-
-                        <!-- Product Titles -->
-                        <div class="space-y-1 mb-2.5">
-                            <h3 class="font-cinzel text-lg sm:text-xl font-bold text-amber-200 group-hover:text-amber-300 transition-colors line-clamp-1">
-                                {{ $product->title }}
-                            </h3>
-                            @if($product->title_ml)
-                                <p class="text-xs text-amber-400 font-medium">
-                                    {{ $product->title_ml }}
+                            <!-- Subtitle -->
+                            @if($book->subtitle)
+                                <p class="text-xs text-amber-300/80 font-medium line-clamp-1 mb-2">
+                                    {{ $book->subtitle }}
                                 </p>
                             @endif
+
+                            <!-- Description -->
+                            <p class="text-xs text-amber-100/75 line-clamp-3 leading-relaxed mb-4">
+                                {{ $book->description }}
+                            </p>
                         </div>
 
-                        <!-- Author attribution -->
-                        <p class="text-[11px] text-amber-300/80 font-medium mb-3 flex items-center space-x-1">
-                            <span>✍️</span>
-                            <span>DR. E. K. Raja Varma (Vidya Vachaspathi)</span>
-                        </p>
-
-                        <!-- Subtitle / Short description -->
-                        <p class="text-xs text-amber-100/75 line-clamp-2 leading-relaxed mb-4">
-                            {{ $product->subtitle ?: Str::limit($product->description, 110) }}
-                        </p>
-
-                        <!-- Key Specs list -->
-                        @if(!empty($product->details))
-                            <div class="bg-[#1a1128] p-3 rounded-xl border border-amber-500/15 text-[11px] text-amber-200/80 space-y-1.5 mb-4">
-                                @if(isset($product->details['delivery_time']))
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-amber-400 font-medium">Delivery:</span>
-                                        <span class="text-emerald-400 font-semibold">{{ $product->details['delivery_time'] }}</span>
-                                    </div>
-                                @endif
-                                @if(isset($product->details['format']))
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-amber-400 font-medium">Format:</span>
-                                        <span>{{ $product->details['format'] }}</span>
-                                    </div>
-                                @endif
-                                @if(isset($product->details['pages']))
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-amber-400 font-medium">Pages:</span>
-                                        <span>{{ $product->details['pages'] }}</span>
-                                    </div>
-                                @endif
-                            </div>
-                        @endif
-                    </div>
-
-                    <!-- Price & Actions Footer -->
-                    <div class="pt-4 border-t border-amber-500/20 space-y-3">
-                        <div class="flex items-baseline justify-between">
-                            <div class="flex items-baseline space-x-2">
-                                <span class="font-cinzel text-2xl sm:text-3xl font-extrabold text-amber-300">
-                                    {{ $product->formatted_price }}
-                                </span>
-                                @if($product->formatted_original_price)
-                                    <span class="text-xs line-through text-amber-300/50">
-                                        {{ $product->formatted_original_price }}
-                                    </span>
-                                    <span class="text-[10px] font-bold text-emerald-400 px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
-                                        {{ $product->discount_percentage }}% OFF
-                                    </span>
-                                @endif
-                            </div>
-                            <span class="text-[10px] text-amber-200/60 font-medium">Taxes Included</span>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="grid grid-cols-2 gap-2.5">
-                            <button @click="openCheckout({{ $product->toJson() }})"
-                                    class="py-2.5 px-3 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all text-center flex items-center justify-center space-x-1">
-                                <span>⚡</span>
-                                <span>Buy Now</span>
-                            </button>
-
-                            <a href="{{ route('shop.show', $product->slug) }}"
-                               class="py-2.5 px-3 rounded-xl font-cinzel font-semibold text-xs tracking-wider text-amber-200 border border-amber-500/30 hover:bg-amber-500/10 transition-colors text-center flex items-center justify-center">
-                                Details →
-                            </a>
-                        </div>
-
-                        <div class="text-center">
-                            <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma, I would like to order: ' . $product->title . ' (' . $product->formatted_price . '). Please share payment & delivery details.') }}"
+                        <!-- Card Actions -->
+                        <div class="pt-3 border-t border-amber-500/20 space-y-2">
+                            <!-- WhatsApp Buy Button -->
+                            @php
+                                $waPrice = $book->price ? number_format($book->price, 0) : '100';
+                                $waText = "Namaskaram Dr. E. K. Raja Varma Sir, I would like to order a copy of your book '" . $book->title . "' (Price: ₹" . $waPrice . "). Please share the GPay/delivery details.";
+                                $waUrl = "https://wa.me/917907052160?text=" . rawurlencode($waText);
+                            @endphp
+                            <a href="{{ $waUrl }}"
                                target="_blank"
-                               class="text-[11px] text-emerald-400 hover:text-emerald-300 inline-flex items-center space-x-1">
-                                <span>💬</span>
-                                <span>Or order via WhatsApp (+91 7907052160)</span>
+                               rel="noopener noreferrer"
+                               class="w-full py-2.5 px-3 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all text-center flex items-center justify-center space-x-1.5">
+                                <span>🛒</span>
+                                <span>വാങ്ങുക / Order on WhatsApp (₹{{ number_format($book->price ?? 0, 0) }})</span>
                             </a>
+
+                            <!-- Preview / Flipbook -->
+                            @if($book->ebook_url)
+                                @php
+                                    $isFlipbook = Str::contains($book->ebook_url, ['fliphtml5', 'flipbook']);
+                                    $isAudio = Str::contains(strtolower($book->title), ['audio', 'cd', 'rajageetham']);
+                                    $btnLabel = $isFlipbook ? '📖 Read Flipbook' : ($isAudio ? '🎵 Listen Tracks' : '🔍 Preview Details');
+                                @endphp
+                                <a href="{{ $book->ebook_url }}"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="w-full py-2 px-3 rounded-xl text-xs font-semibold text-amber-200 bg-[#211335] border border-amber-500/30 hover:border-amber-400 hover:bg-[#2b1945] hover:text-white flex items-center justify-center space-x-1 transition-all text-center">
+                                    <span>{{ $btnLabel }}</span>
+                                    <span class="text-[10px] opacity-75">↗</span>
+                                </a>
+                            @endif
                         </div>
                     </div>
-                </div>
-            @empty
-                <div class="col-span-1 sm:col-span-2 lg:col-span-3 text-center py-16 bg-[#140b22] rounded-3xl border border-amber-500/20">
-                    <p class="text-base text-amber-200/70">No items found in this category.</p>
-                    <a href="{{ route('shop.index') }}" class="inline-block mt-3 px-4 py-2 rounded-xl text-xs font-bold text-[#1a1128] bg-amber-400 hover:bg-amber-300">
-                        View All Items
-                    </a>
-                </div>
-            @endforelse
+                @endforeach
+            @endif
+
+            {{-- Digital Astrology Services (PDF & Consultations) --}}
+            @if(($type ?? 'all') === 'all' || ($type ?? '') === 'digital_pdf' || ($type ?? '') === 'consultation')
+                @foreach($services as $product)
+                    <div class="bg-[#140b22] rounded-3xl p-5 flex flex-col justify-between transition-all duration-300 shadow-xl group hover:shadow-2xl hover:shadow-amber-500/10 border border-amber-500/25 hover:border-amber-400/60">
+                        <div>
+                            <div class="relative rounded-2xl overflow-hidden bg-[#0d0716] border border-amber-500/20 aspect-[3/4] max-h-80 mb-4 flex items-center justify-center p-3">
+                                <img src="{{ asset($product->image_path) }}"
+                                     alt="{{ $product->title }}"
+                                     class="w-full h-full object-contain rounded-xl transform group-hover:scale-105 transition-transform duration-300">
+
+                                @if($product->badge)
+                                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-400 text-[#1a1128] shadow-md">
+                                        {{ $product->badge }}
+                                    </span>
+                                @endif
+
+                                <span class="absolute top-3 right-3 px-2.5 py-0.5 rounded text-[10px] font-semibold bg-[#1a1128]/95 text-amber-200 border border-amber-500/40 uppercase tracking-wider shadow">
+                                    {{ $product->type === 'digital_pdf' ? '📱 Instant PDF' : '🔮 Consultation' }}
+                                </span>
+                            </div>
+
+                            <div class="space-y-1 mb-2">
+                                <h3 class="font-cinzel text-base sm:text-lg font-bold text-amber-200 group-hover:text-amber-300 transition-colors line-clamp-1">
+                                    {{ $product->title }}
+                                </h3>
+                                @if($product->title_ml)
+                                    <p class="text-xs text-amber-400 font-medium">
+                                        {{ $product->title_ml }}
+                                    </p>
+                                @endif
+                            </div>
+
+                            <p class="text-[11px] text-amber-300/80 font-medium mb-2 flex items-center space-x-1">
+                                <span>✍️</span>
+                                <span>DR. E. K. Raja Varma (Vidya Vachaspathi)</span>
+                            </p>
+
+                            <p class="text-xs text-amber-100/75 line-clamp-2 leading-relaxed mb-4">
+                                {{ $product->subtitle ?: Str::limit($product->description, 110) }}
+                            </p>
+                        </div>
+
+                        <div class="pt-3 border-t border-amber-500/20 space-y-2.5">
+                            <div class="flex items-baseline justify-between">
+                                <div class="flex items-baseline space-x-2">
+                                    <span class="font-cinzel text-xl sm:text-2xl font-extrabold text-amber-300">
+                                        {{ $product->formatted_price }}
+                                    </span>
+                                    @if($product->formatted_original_price)
+                                        <span class="text-xs line-through text-amber-300/50">
+                                            {{ $product->formatted_original_price }}
+                                        </span>
+                                    @endif
+                                </div>
+                                <span class="text-[10px] text-amber-200/60 font-medium">Taxes Included</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <button @click="openCheckout({{ $product->toJson() }})"
+                                        class="py-2.5 px-3 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all text-center flex items-center justify-center space-x-1">
+                                    <span>⚡</span>
+                                    <span>Book / Buy</span>
+                                </button>
+
+                                <a href="{{ route('shop.show', $product->slug) }}"
+                                   class="py-2.5 px-3 rounded-xl font-cinzel font-semibold text-xs tracking-wider text-amber-200 border border-amber-500/30 hover:bg-amber-500/10 transition-colors text-center flex items-center justify-center">
+                                    Details →
+                                </a>
+                            </div>
+
+                            <div class="text-center">
+                                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma, I would like to order: ' . $product->title . ' (' . $product->formatted_price . '). Please share payment & delivery details.') }}"
+                                   target="_blank"
+                                   class="text-[11px] text-emerald-400 hover:text-emerald-300 inline-flex items-center space-x-1">
+                                    <span>💬</span>
+                                    <span>Or order via WhatsApp (+91 7907052160)</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
         </div>
 
         <!-- Bottom Razorpay Trust Banner -->

@@ -16,6 +16,7 @@ class RazorpayComplianceAndShopTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->seed(\Database\Seeders\BookSeeder::class);
         $this->seed(ShopSeeder::class);
     }
 
@@ -62,18 +63,18 @@ class RazorpayComplianceAndShopTest extends TestCase
         // Catalog
         $response = $this->get('/shop');
         $response->assertStatus(200);
-        $response->assertSee('Kerala Jyothisha Deepika');
+        $response->assertSee('Manoratham');
         $response->assertSee('Deluxe Vedic Jathakam');
-        $response->assertSee('Razorpay');
+        $response->assertSee('₹100');
 
         // Individual Product
-        $book = Product::where('slug', 'kerala-jyothisha-deepika')->first();
+        $book = Product::where('slug', 'manoratham')->first();
         $this->assertNotNull($book);
 
         $response = $this->get('/shop/' . $book->slug);
         $response->assertStatus(200);
-        $response->assertSee('₹499');
-        $response->assertSee('DR. E. K. Raja Varma');
+        $response->assertSee('₹100');
+        $response->assertSee('ഡോ. ഇ. കെ. രാജ വർമ്മ');
     }
 
     public function test_razorpay_order_creation_and_payment_verification_flow(): void

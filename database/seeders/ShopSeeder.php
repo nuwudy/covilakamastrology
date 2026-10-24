@@ -9,110 +9,169 @@ class ShopSeeder extends Seeder
 {
     public function run(): void
     {
+        // Remove any old placeholder books
+        Product::whereIn('slug', [
+            'kerala-jyothisha-deepika',
+            'vivaha-porutham-compatibility',
+            'ratna-shastra-vedic-remedies'
+        ])->delete();
+
         $products = [
-            // 1. Book: Kerala Jyothisha Deepika
+            // 1. Book: Manoratham
             [
                 'type' => 'book',
-                'title' => 'Kerala Jyothisha Deepika',
-                'title_ml' => 'കേരള ജ്യോതിഷ ദീപിക',
-                'slug' => 'kerala-jyothisha-deepika',
-                'subtitle' => 'The Master Compendium of Kerala Vedic Astrology & Horoscope Science',
-                'description' => 'Authored by DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, Gold Medalist & Ph.D.), this authoritative volume provides an extensive, practical treatise on classical Kerala Parashara astrology, Ashtamangala Prasnam calculations, Gochara transits, and planetary house interpretations. Written with authentic Sanskrit shlokas, English annotations, and Malayalam explanations for serious astrology practitioners, students, and enthusiasts.',
-                'price' => 499.00,
-                'original_price' => 799.00,
-                'image_path' => 'images/shop/book-kerala-jyothisha-deepika-opt.jpg',
-                'badge' => 'Bestseller ★★★★★',
+                'title' => 'മനോരഥം (Manoratham)',
+                'title_ml' => 'മനോരഥം',
+                'slug' => 'manoratham',
+                'subtitle' => 'മനസ്സിന്റെ രഥം - സാഹിത്യ കൃതി',
+                'description' => 'ഡോ. ഇ. കെ. രാജ വർമ്മയുടെ ആദ്യ സാഹിത്യ കൃതി. മനുഷ്യമനസ്സിന്റെ വികാരങ്ങളെയും ചിന്തകളെയും ആഴത്തിൽ അടയാളപ്പെടുത്തുന്ന രചന.',
+                'price' => 100.00,
+                'original_price' => 150.00,
+                'image_path' => 'images/books/manoratham.jpg',
+                'badge' => 'സാഹിത്യ കൃതി',
                 'details' => [
-                    'author' => 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
-                    'language' => 'Malayalam & English',
-                    'binding' => 'Deluxe Royal Hardcover with Gold Foil Embossing',
-                    'pages' => 384,
-                    'publisher' => 'Covilakam Vedic Publications (Est. 1954)',
-                    'edition' => '2026 Gold Medalist Deluxe Edition',
-                    'isbn' => '978-81-948210-1-4',
-                    'delivery_time' => '3 - 6 Business Days via India Post Speed Post',
-                    'shipping_fee' => 'Free Delivery Across India',
-                    'key_topics' => [
-                        'Ashtamangala Prasnam Calculation Principles',
-                        'Bhavadhipathi (House Lords) & Planetary Aspect Analysis',
-                        'Dasa-Bhukthi Deep Predictive Cycles',
-                        'Authentic Kerala Remedial Poojas & Temple Rituals',
-                        'Real Case Studies of Kerala Horoscopes'
-                    ]
+                    'author' => 'ഡോ. ഇ. കെ. രാജ വർമ്മ (വിദ്യാ വാചസ്പതി)',
+                    'language' => 'Malayalam',
+                    'publisher' => 'JB Publications',
+                    'delivery_time' => 'Courier Delivery across Kerala / Abroad',
+                    'shipping_fee' => 'Speed Post Delivery Available',
                 ],
                 'is_active' => true,
                 'sort_order' => 1,
             ],
 
-            // 2. Book: Vivaha Porutham
+            // 2. Book: Randamoozham
             [
                 'type' => 'book',
-                'title' => 'Vivaha Porutham & Compatibility',
-                'title_ml' => 'വിവാഹ പൊരുത്ത രഹസ്യങ്ങൾ',
-                'slug' => 'vivaha-porutham-compatibility',
-                'subtitle' => 'Comprehensive Guide to Vedic Marriage Compatibility & Dosha Pariharam',
-                'description' => 'A definitive masterwork on Vedic matrimonial matching (Porutham) by DR. E. K. Raja Varma. Covering all 10 classical Poruthams (Dina, Gana, Mahendra, Sthree Deergha, Yoni, Rasi, Rasyadhipathi, Vasyam, Rajju, and Vedha), subtle Kuja Dosha (Chovva Dosham) evaluations, Papa Samyam balance, and Dasa Sandhi calculations. Includes practical solutions to overcome horoscope incompatibilities.',
-                'price' => 399.00,
-                'original_price' => 599.00,
-                'image_path' => 'images/shop/book-vedic-marriage-porutham-opt.jpg',
-                'badge' => 'Essential Matrimonial Guide',
+                'title' => 'രണ്ടാമൂഴം (Randamoozham)',
+                'title_ml' => 'രണ്ടാമൂഴം',
+                'slug' => 'randamoozham',
+                'subtitle' => 'ജീവിതാനുഭവങ്ങളുടെ രണ്ടാം ഭാവം',
+                'description' => 'ജീവിതത്തിലെ വേറിട്ട കാഴ്ചപ്പാടുകളും അനുഭവങ്ങളും ലളിതമായ ശൈലിയിൽ അവതരിപ്പിക്കുന്ന ഡോ. ഇ. കെ. രാജ വർമ്മയുടെ രണ്ടാമത്തെ പുസ്തകം.',
+                'price' => 120.00,
+                'original_price' => 180.00,
+                'image_path' => 'images/books/randamoozham.jpg',
+                'badge' => 'ജീവിതാനുഭവങ്ങൾ',
                 'details' => [
-                    'author' => 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
-                    'language' => 'Malayalam & English',
-                    'binding' => 'Premium Collector Edition Hardcover',
-                    'pages' => 280,
-                    'publisher' => 'Covilakam Vedic Publications',
-                    'edition' => 'Revised 4th Edition',
-                    'isbn' => '978-81-948210-2-1',
-                    'delivery_time' => '3 - 6 Business Days via India Post Speed Post',
-                    'shipping_fee' => 'Free Delivery Across India',
-                    'key_topics' => [
-                        'Complete 10-Porutham Classical Rules & Exceptions',
-                        'Kuja Dosham (Mars Affliction) Myth vs Reality',
-                        'Papa Samyam (Malefic Score) Scientific Computation',
-                        'Dasa Sandhi Timing & Vulnerable Life Periods',
-                        'Vedic Remedies for Marital Harmony & Delay in Marriage'
-                    ]
+                    'author' => 'ഡോ. ഇ. കെ. രാജ വർമ്മ (വിദ്യാ വാചസ്പതി)',
+                    'language' => 'Malayalam',
+                    'publisher' => 'GB Publications',
+                    'delivery_time' => 'Courier Delivery across Kerala / Abroad',
                 ],
                 'is_active' => true,
                 'sort_order' => 2,
             ],
 
-            // 3. Book: Ratna Shastra & Remedies
+            // 3. Book: Thrimanam
             [
                 'type' => 'book',
-                'title' => 'Ratna Shastra & Vedic Remedies',
-                'title_ml' => 'രത്നശാസ്ത്രവും ഗ്രഹദോഷങ്ങളും',
-                'slug' => 'ratna-shastra-vedic-remedies',
-                'subtitle' => 'Planetary Gemology, Graha Shanti Mantras & Effective Vedic Remedies',
-                'description' => 'An illuminating handbook guiding seekers and astrologers on prescribing authentic astrological gemstones (Navaratna) for health, career prosperity, marital bliss, and planetary afflictions. Authored by DR. E. K. Raja Varma, with detailed instructions on gem identification, carat weight, metal setting, auspicious wearing muhurthams, and sanctifying Vedic mantras.',
-                'price' => 450.00,
-                'original_price' => 650.00,
-                'image_path' => 'images/shop/book-ratna-shastra-remedies-opt.jpg',
-                'badge' => 'Practical Gemology',
+                'title' => 'ത്രിമാനം (Thrimanam)',
+                'title_ml' => 'ത്രിമാനം',
+                'slug' => 'thrimanam',
+                'subtitle' => 'ജീവിതത്തിന്റെ മൂന്ന് മാനങ്ങൾ',
+                'description' => 'മനുഷ്യജീവിതത്തിന്റെയും ദർശനങ്ങളുടെയും മൂന്ന് വ്യത്യസ്ത തലങ്ങളെ ആസ്പദമാക്കി രചിച്ച മൂന്നാമത്തെ കൃതി.',
+                'price' => 120.00,
+                'original_price' => 180.00,
+                'image_path' => 'images/books/thrimanam.jpg',
+                'badge' => 'ദാർശനിക രചന',
                 'details' => [
-                    'author' => 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
-                    'language' => 'Malayalam & English',
-                    'binding' => 'Fine Navy Linen Hardbound with Embossed Gilded Crest',
-                    'pages' => 312,
-                    'publisher' => 'Covilakam Vedic Publications',
-                    'edition' => 'Expanded Illustrated Edition',
-                    'isbn' => '978-81-948210-3-8',
-                    'delivery_time' => '3 - 6 Business Days via India Post Speed Post',
-                    'shipping_fee' => 'Free Delivery Across India',
-                    'key_topics' => [
-                        'Navaratna Properties & Planetary Associations',
-                        'How to Avoid Flawed or Unlucky Gemstones',
-                        'Ascendant (Lagna) Based Lucky Stone Calculations',
-                        'Sanctification Mantras & Metal Alloys (Panchaloha / Gold)',
-                        'Simple Temple Pariharams & Daily Astro Rituals'
-                    ]
+                    'author' => 'ഡോ. ഇ. കെ. രാജ വർമ്മ (വിദ്യാ വാചസ്പതി)',
+                    'language' => 'Malayalam',
+                    'publisher' => 'Covilakam Publications',
+                    'delivery_time' => 'Courier Delivery across Kerala / Abroad',
                 ],
                 'is_active' => true,
                 'sort_order' => 3,
             ],
 
-            // 4. Digital Download: Deluxe Vedic Jathakam PDF Report
+            // 4. Book: Chathurangam
+            [
+                'type' => 'book',
+                'title' => 'ചതുരംഗം (Chathurangam)',
+                'title_ml' => 'ചതുരംഗം',
+                'slug' => 'chathurangam',
+                'subtitle' => 'ജീവിതമാകുന്ന ചതുരംഗക്കളം',
+                'description' => 'ചതുരംഗക്കളത്തിലെ കരുനീക്കങ്ങൾ പോലെ ജീവിതത്തിലെ സാഹചര്യങ്ങളെയും വെല്ലുവിളികളെയും അടയാളപ്പെടുത്തുന്ന നാലാമത്തെ പുസ്തകം.',
+                'price' => 150.00,
+                'original_price' => 200.00,
+                'image_path' => 'images/books/chathurangam.jpg',
+                'badge' => 'ജീവിതവീക്ഷണം',
+                'details' => [
+                    'author' => 'ഡോ. ഇ. കെ. രാജ വർമ്മ (വിദ്യാ വാചസ്പതി)',
+                    'language' => 'Malayalam',
+                    'publisher' => 'Watermelon Publications',
+                    'delivery_time' => 'Courier Delivery across Kerala / Abroad',
+                ],
+                'is_active' => true,
+                'sort_order' => 4,
+            ],
+
+            // 5. Book: Panchamrutham
+            [
+                'type' => 'book',
+                'title' => 'പഞ്ചാമൃതം (Panchamrutham)',
+                'title_ml' => 'പഞ്ചാമൃതം',
+                'slug' => 'panchamrutham',
+                'subtitle' => 'ജീവിതയാത്രയിൽ വഴികാട്ടിയാകാവുന്ന 101 ചിന്താശകലങ്ങളുടെ സമാഹാരം',
+                'description' => 'മനുഷ്യന്റെ ദൈനംദിന ജീവിതയാത്രയിൽ ആത്മവിശ്വാസവും വെളിച്ചവും പകരുന്ന 101 മഹത്തായ ചിന്താശകലങ്ങളുടെ സമാഹാരം.',
+                'price' => 150.00,
+                'original_price' => 200.00,
+                'image_path' => 'images/books/panchamrutham.jpg',
+                'badge' => '101 ചിന്താശകലങ്ങൾ',
+                'details' => [
+                    'author' => 'ഡോ. ഇ. കെ. രാജ വർമ്മ (വിദ്യാ വാചസ്പതി)',
+                    'language' => 'Malayalam',
+                    'publisher' => 'സ്നേഹഭൂമി പബ്ലിക്കേഷൻസ്',
+                    'delivery_time' => 'Courier Delivery across Kerala / Abroad',
+                ],
+                'is_active' => true,
+                'sort_order' => 5,
+            ],
+
+            // 6. Book: Shashtangam
+            [
+                'type' => 'book',
+                'title' => 'ഷഷ്ടാംഗം (Shashtangam)',
+                'title_ml' => 'ഷഷ്ടാംഗം',
+                'slug' => 'shashtangam',
+                'subtitle' => '15 ചെറുകഥകളുടെ സമാഹാരം (Interactive Digital Flipbook)',
+                'description' => 'ഡോ. ഇ. കെ. രാജ വർമ്മ രചിച്ച 15 മനോഹരമായ മലയാള ചെറുകഥകളുടെ സമാഹാരം. ഓൺലൈനായി പേജുകൾ മറിച്ചു വായിക്കാനുള്ള ഡിജിറ്റൽ പതിപ്പും ലഭ്യമാണ്.',
+                'price' => 150.00,
+                'original_price' => 200.00,
+                'image_path' => 'images/books/shashtangam.jpg',
+                'badge' => '15 ചെറുകഥകൾ',
+                'details' => [
+                    'author' => 'ഡോ. ഇ. കെ. രാജ വർമ്മ (വിദ്യാ വാചസ്പതി)',
+                    'language' => 'Malayalam',
+                    'publisher' => 'Covilakam Digital Edition',
+                    'delivery_time' => 'Instant Digital Flipbook + Hardcover Courier',
+                ],
+                'is_active' => true,
+                'sort_order' => 6,
+            ],
+
+            // 7. Work: Rajageetham Audio CD
+            [
+                'type' => 'book',
+                'title' => 'രാജഗീതം (Rajageetham - Audio CD)',
+                'title_ml' => 'രാജഗീതം',
+                'slug' => 'rajageetham',
+                'subtitle' => 'സംഗീത ആൽബം & സർഗ്ഗാത്മക സൃഷ്ടികൾ',
+                'description' => 'ഡോ. ഇ. കെ. രാജ വർമ്മയുടെ സർഗ്ഗാത്മക സംഗീത-സാഹിത്യ സൃഷ്ടികളുടെ ഓഡിയോ ശേഖരം.',
+                'price' => 100.00,
+                'original_price' => 150.00,
+                'image_path' => 'images/books/rajageetham.jpg',
+                'badge' => 'സംഗീത ആൽബം',
+                'details' => [
+                    'author' => 'ഡോ. ഇ. കെ. രാജ വർമ്മ (വിദ്യാ വാചസ്പതി)',
+                    'publisher' => 'Covilakam Creations',
+                    'format' => 'Audio CD / Digital Audio Tracks',
+                ],
+                'is_active' => true,
+                'sort_order' => 7,
+            ],
+
+            // 8. Digital Download: Deluxe Vedic Jathakam PDF Report
             [
                 'type' => 'digital_pdf',
                 'title' => 'Complete Deluxe Vedic Jathakam (PDF Report)',
@@ -139,10 +198,10 @@ class ShopSeeder extends Seeder
                     ]
                 ],
                 'is_active' => true,
-                'sort_order' => 4,
+                'sort_order' => 8,
             ],
 
-            // 5. Service: Personal Astrological Consultation with DR. E. K. Raja Varma
+            // 9. Service: Personal Astrological Consultation with DR. E. K. Raja Varma
             [
                 'type' => 'consultation',
                 'title' => 'Personal Astro Consultation with DR. E. K. Raja Varma',
@@ -169,10 +228,10 @@ class ShopSeeder extends Seeder
                     ]
                 ],
                 'is_active' => true,
-                'sort_order' => 5,
+                'sort_order' => 9,
             ],
 
-            // 6. Service: Matrimonial Porutham 10-Point Analysis
+            // 10. Service: Matrimonial Porutham 10-Point Analysis
             [
                 'type' => 'consultation',
                 'title' => 'Matrimonial Porutham (10-Point Compatibility Analysis)',
@@ -197,7 +256,7 @@ class ShopSeeder extends Seeder
                     ]
                 ],
                 'is_active' => true,
-                'sort_order' => 6,
+                'sort_order' => 10,
             ],
         ];
 
