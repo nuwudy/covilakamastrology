@@ -473,5 +473,8 @@ class DatabaseSeeder extends Seeder
 
         // Call Shop & Razorpay Bookstore Seeder
         $this->call(ShopSeeder::class);
+
+        // Call Dr. E. K. Raja Varma's Real Books Seeder
+        $this->call(BookSeeder::class);
     }
 }

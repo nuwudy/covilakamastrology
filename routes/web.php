@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BookController as AdminBookController;
 use App\Http\Controllers\Admin\ConsultationController as AdminConsultationController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MediaLibraryController;
@@ -108,7 +109,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('/orders/{id}/status', [AdminOrderController::class, 'updateDeliveryStatus'])->name('orders.status');
     Route::delete('/orders/{id}', [AdminOrderController::class, 'destroy'])->name('orders.destroy');
 
-    // 3. Vedic Astrology Video Gallery (Full CRUD & Smart YouTube Parser)
+    // 3. Books & Publications (Full CRUD)
+    Route::resource('books', AdminBookController::class)->except(['show']);
+
+    // 4. Vedic Astrology Video Gallery (Full CRUD & Smart YouTube Parser)
     Route::resource('videos', AdminVideoController::class)->except(['show']);
     Route::post('/videos/{video}/toggle', [AdminVideoController::class, 'toggleStatus'])->name('videos.toggle');
 

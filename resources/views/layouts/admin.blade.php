@@ -122,6 +122,18 @@
                         @endif
                     </a>
 
+                    <!-- Books & Publications -->
+                    <a href="{{ route('admin.books.index') }}"
+                       class="flex items-center justify-between px-3.5 py-3 rounded-xl transition-all {{ request()->routeIs('admin.books.*') ? 'sidebar-active' : 'text-amber-100/70 hover:text-amber-200 hover:bg-amber-500/10' }}">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-base">📚</span>
+                            <span class="font-medium">Books & Works</span>
+                        </div>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                            {{ \App\Models\Book::count() }}
+                        </span>
+                    </a>
+
                     <!-- 2. Vedic Astrology Video Gallery -->
                     <a href="{{ route('admin.videos.index') }}"
                        class="flex items-center justify-between px-3.5 py-3 rounded-xl transition-all {{ request()->routeIs('admin.videos.*') ? 'sidebar-active' : 'text-amber-100/70 hover:text-amber-200 hover:bg-amber-500/10' }}">

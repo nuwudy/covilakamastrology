@@ -1551,6 +1551,153 @@
     </section>
 
     <!-- ========================================================================= -->
+    <!-- SECTION 5.5: Dr. E. K. Raja Varma's Books & Publications                  -->
+    <!-- Authentic Malayalam Literary, Philosophical & Audio Works                 -->
+    <!-- ========================================================================= -->
+    <section id="books" class="py-24 bg-[#0c0615] relative border-t border-amber-500/20 overflow-hidden">
+        <!-- Ambient Cosmic Background Glows -->
+        <div class="absolute -top-32 left-1/4 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none"></div>
+        <div class="absolute -bottom-32 right-1/4 w-[500px] h-[500px] bg-purple-700/10 rounded-full blur-[140px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                <div class="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-amber-300 bg-amber-500/10 px-4 py-1.5 rounded-full border border-amber-500/30 shadow-lg shadow-amber-500/5">
+                    <span>📚</span>
+                    <span>സാഹിത്യ കൃതികളും പ്രകാശനങ്ങൾ | Authored Publications</span>
+                    <span>•</span>
+                    <span>DR. E. K. Raja Varma</span>
+                </div>
+                <h2 class="font-cinzel text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+                    ഗ്രന്ഥങ്ങളും രചനകളും <span class="gold-gradient-text">Books & Works</span>
+                </h2>
+                <div class="w-28 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
+                <p class="text-xs sm:text-sm text-amber-100/80 leading-relaxed font-sans">
+                    വേദിക് ജ്യോതിഷാചാര്യൻ <strong>ഡോ. ഇ. കെ. രാജ വർമ്മ (വിദ്യാ വാചസ്പതി)</strong> രചിച്ച സാഹിത്യ-ദാർശനിക കൃതികളും സംഗീത ആൽബവും. താങ്കൾക്ക് ആവശ്യമായ പുസ്തകങ്ങൾ വാട്സാപ്പ് വഴി നേരിട്ട് ഓർഡർ ചെയ്യാവുന്നതാണ്.
+                </p>
+                <p class="text-[11px] text-amber-300/70">
+                    Order your authentic printed copy directly on WhatsApp or explore digital preview flipbooks.
+                </p>
+            </div>
+
+            <!-- Books Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-7">
+                @foreach($books as $book)
+                <div class="group relative rounded-3xl p-0.5 bg-gradient-to-b from-amber-500/30 via-amber-500/10 to-purple-900/30 hover:from-amber-400 hover:to-yellow-500/60 transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-amber-500/10 flex flex-col justify-between">
+                    <div class="rounded-[22px] bg-[#160d26] h-full flex flex-col justify-between overflow-hidden border border-amber-500/20 group-hover:border-amber-400/40 transition-colors">
+
+                        <div>
+                            <!-- Cover Image Container with Price Badge -->
+                            <div class="relative bg-gradient-to-b from-[#211339] to-[#0f0819] p-4 flex items-center justify-center overflow-hidden border-b border-amber-500/15">
+                                <!-- Royal Gold Price Tag Badge -->
+                                <div class="absolute top-3 right-3 z-10">
+                                    <div class="px-3 py-1 rounded-full text-xs font-black text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 shadow-lg border border-amber-200/60 flex items-center space-x-1 tracking-wide">
+                                        <span>₹{{ number_format($book->price ?? 0, 0) }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Publisher Tag (Top Left) -->
+                                @if($book->publisher)
+                                <div class="absolute top-3 left-3 z-10">
+                                    <span class="text-[10px] font-semibold text-amber-200/90 bg-[#120820]/90 backdrop-blur-md px-2.5 py-0.5 rounded-md border border-amber-500/30 shadow">
+                                        {{ Str::limit($book->publisher, 22) }}
+                                    </span>
+                                </div>
+                                @endif
+
+                                <!-- Book Cover Artwork -->
+                                <div class="relative w-48 sm:w-52 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl shadow-black/80 border border-amber-500/30 group-hover:border-amber-400/70 transition-all duration-300 group-hover:scale-[1.03]">
+                                    <img src="{{ asset($book->cover_image) }}"
+                                         alt="{{ $book->title }}"
+                                         loading="lazy"
+                                         class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                </div>
+                            </div>
+
+                            <!-- Content Details -->
+                            <div class="p-5 space-y-2.5">
+                                <div class="flex items-center space-x-1.5 text-[11px] text-amber-400/80 font-mono">
+                                    <span>Work #{{ $book->sort_order }}</span>
+                                    <span>•</span>
+                                    <span class="text-amber-200/70">ഡോ. ഇ. കെ. രാജ വർമ്മ</span>
+                                </div>
+
+                                <h3 class="font-cinzel text-lg font-bold text-white group-hover:text-amber-300 transition-colors leading-snug">
+                                    {{ $book->title }}
+                                </h3>
+
+                                @if($book->subtitle)
+                                <p class="text-xs text-amber-200/80 font-medium leading-relaxed">
+                                    {{ $book->subtitle }}
+                                </p>
+                                @endif
+
+                                <p class="text-[11px] text-zinc-400 leading-relaxed line-clamp-3">
+                                    {{ $book->description }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Card Actions -->
+                        <div class="p-5 pt-0 space-y-2">
+                            <!-- Button 1: WhatsApp Order Button -->
+                            @php
+                                $waPrice = $book->price ? number_format($book->price, 0) : '100';
+                                $waText = "Namaskaram Dr. E. K. Raja Varma Sir, I would like to order a copy of your book '" . $book->title . "' (Price: ₹" . $waPrice . "). Please share the GPay/delivery details.";
+                                $waUrl = "https://wa.me/917907052160?text=" . rawurlencode($waText);
+                            @endphp
+                            <a href="{{ $waUrl }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="w-full py-2.5 px-3 rounded-xl font-bold text-xs text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md hover:shadow-amber-500/25 flex items-center justify-center space-x-2 transition-all transform hover:-translate-y-0.5">
+                                <span>🛒</span>
+                                <span>വാങ്ങുക / Buy Copy (₹{{ number_format($book->price ?? 0, 0) }})</span>
+                            </a>
+
+                            <!-- Button 2: Preview / Read Online -->
+                            @if($book->ebook_url)
+                                @php
+                                    $isFlipbook = Str::contains($book->ebook_url, ['fliphtml5', 'flipbook']);
+                                    $isAudio = Str::contains(strtolower($book->title), ['audio', 'cd', 'rajageetham']);
+                                    $btnLabel = $isFlipbook ? '📖 Read Flipbook' : ($isAudio ? '🎵 Listen / Preview' : '🔍 Preview Cover / Details');
+                                @endphp
+                                <a href="{{ $book->ebook_url }}"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="w-full py-2 px-3 rounded-xl text-xs font-semibold text-amber-200 bg-[#211335] border border-amber-500/30 hover:border-amber-400 hover:bg-[#2b1945] hover:text-white flex items-center justify-center space-x-1.5 transition-all">
+                                    <span>{{ $btnLabel }}</span>
+                                    <span class="text-[10px] opacity-75">↗</span>
+                                </a>
+                            @endif
+                        </div>
+
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
+            <!-- Bottom Support / Help Callout -->
+            <div class="mt-14 max-w-2xl mx-auto p-6 rounded-2xl bg-gradient-to-r from-amber-500/10 via-purple-900/20 to-amber-500/10 border border-amber-500/30 text-center space-y-3">
+                <div class="text-xs font-bold uppercase tracking-wider text-amber-300">
+                    Need Bulk Copies or Courier Delivery Across Kerala / Abroad?
+                </div>
+                <p class="text-xs text-amber-100/80">
+                    Dr. E. K. Raja Varma will personally sign author copies upon request. GPay and courier services are available across India and internationally.
+                </p>
+                <div class="pt-1">
+                    <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma Sir, I would like to inquire about book courier delivery / signed copies.') }}"
+                       target="_blank"
+                       class="inline-flex items-center space-x-2 px-5 py-2 rounded-xl text-xs font-bold text-[#1a1128] bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400 shadow-lg transition-all">
+                        <span>💬 Message Dr. Raja Varma on WhatsApp (+91 7907052160)</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========================================================================= -->
     <!-- SECTION 6: Multi-Language Astrology Text Section (4-Language Alpine.js)  -->
     <!-- Malayalam, English, Hindi, Tamil                                         -->
     <!-- ========================================================================= -->
