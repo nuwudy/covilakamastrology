@@ -41,59 +41,79 @@
                 </div>
             </div>
 
-            <!-- Quick Links -->
+            <!-- Quick Links & Bookstore -->
             <div>
                 <h4 class="font-cinzel text-sm font-bold tracking-wider text-amber-300 uppercase mb-4 pb-1 border-b border-amber-500/20 inline-block">
-                    Quick Navigation
+                    Explore & Shop
                 </h4>
                 <ul class="space-y-2.5 text-xs">
                     <li><a href="{{ route('home') }}#hero" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Home Portal</span></a></li>
+                    <li><a href="{{ route('shop.index') }}" class="text-amber-300 font-bold hover:text-amber-200 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Vedic Bookstore & Shop</span></a></li>
                     <li><a href="{{ route('home') }}#dob-calculator" class="text-amber-300 font-semibold hover:text-amber-200 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Instant Free DOB Reading</span></a></li>
+                    <li><a href="{{ route('shop.show', 'deluxe-vedic-jathakam-pdf-report') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Deluxe Jathakam (PDF Report)</span></a></li>
                     <li><a href="{{ route('home') }}#services" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Core Astro Services</span></a></li>
-                    <li><a href="{{ route('home') }}#why-covilakam" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Why DR. E. K. Raja Varma</span></a></li>
                     <li><a href="{{ route('home') }}#videos" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>YouTube Video Gallery</span></a></li>
-                    <li><a href="{{ route('home') }}#philosophy" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Vedic Philosophy (4 Languages)</span></a></li>
                     <li><a href="{{ route('blog.index') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Astrology Articles & Insights</span></a></li>
                     <li><a href="{{ route('visiting-card') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Digital Visiting Card</span></a></li>
-                    @auth
-                        <li><a href="{{ route('admin.dashboard') }}" class="text-amber-400 font-semibold hover:text-amber-200 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Admin Dashboard</span></a></li>
-                    @else
-                        <li><a href="{{ route('admin.login') }}" class="text-amber-400/80 hover:text-amber-200 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Admin Login</span></a></li>
-                    @endauth
+                    <li><a href="{{ route('policies.about') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>About DR. E. K. Raja Varma</span></a></li>
+                    <li><a href="{{ route('policies.contact') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Contact Us & Inquiries</span></a></li>
                 </ul>
             </div>
 
-            <!-- Core Services -->
+            <!-- Razorpay Compliance & Customer Policies -->
             <div>
                 <h4 class="font-cinzel text-sm font-bold tracking-wider text-amber-300 uppercase mb-4 pb-1 border-b border-amber-500/20 inline-block">
-                    Consultation Services
+                    Policies & Compliance
                 </h4>
                 <ul class="space-y-2 text-xs">
-                    <li class="flex items-center space-x-2 text-amber-100/90">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                        <span>Accurate Predictions (കൃത്യമായ ഗ്രഹഫലം)</span>
+                    <li>
+                        <a href="{{ route('policies.terms') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5">
+                            <span class="text-amber-500">⚖️</span>
+                            <span>Terms and Conditions</span>
+                        </a>
                     </li>
-                    <li class="flex items-center space-x-2 text-amber-100/90">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                        <span>Jathakam Reports (സമ്പൂർണ്ണ ജാതകം)</span>
+                    <li>
+                        <a href="{{ route('policies.privacy') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5">
+                            <span class="text-amber-500">🔒</span>
+                            <span>Privacy Policy</span>
+                        </a>
                     </li>
-                    <li class="flex items-center space-x-2 text-amber-100/90">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                        <span>Marriage Match Reports (വിവാഹ പൊരുത്തം)</span>
+                    <li>
+                        <a href="{{ route('policies.refund') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5">
+                            <span class="text-amber-500">🔄</span>
+                            <span>Cancellation & Refund Policy</span>
+                        </a>
                     </li>
-                    <li class="flex items-center space-x-2 text-amber-100/90">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                        <span>Gem Prediction Reports (ഭാഗ്യ രത്നം)</span>
+                    <li>
+                        <a href="{{ route('policies.shipping') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5">
+                            <span class="text-amber-500">📦</span>
+                            <span>Shipping & Delivery Policy</span>
+                        </a>
                     </li>
-                    <li class="flex items-center space-x-2 text-amber-100/90">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                        <span>Muhoorthams (ശുഭ മുഹൂർത്തം)</span>
+                    <li>
+                        <a href="{{ route('policies.contact') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5">
+                            <span class="text-amber-500">📍</span>
+                            <span>Grievance & Merchant Info</span>
+                        </a>
                     </li>
-                    <li class="flex items-center space-x-2 text-amber-100/90">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                        <span>Online Astro Counselling</span>
+                    <li>
+                        <a href="{{ route('policies.about') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5">
+                            <span class="text-amber-500">🏛️</span>
+                            <span>About the Astrologer</span>
+                        </a>
                     </li>
                 </ul>
+
+                <!-- Razorpay Trust Badge in Column -->
+                <div class="mt-4 p-3 rounded-xl border border-amber-500/25 bg-[#1a1128] text-[11px] text-amber-200/80 space-y-1">
+                    <div class="flex items-center space-x-1.5 text-amber-300 font-bold">
+                        <span>🛡️</span>
+                        <span>Razorpay Verified</span>
+                    </div>
+                    <p class="text-[10px] text-amber-100/70 leading-relaxed">
+                        Secure 256-bit encrypted checkout for book purchases & consultations.
+                    </p>
+                </div>
             </div>
 
             <!-- Official Contact & Payment Info -->
@@ -127,6 +147,12 @@
                         <span class="break-all">ekrvarma@gmail.com</span>
                     </div>
 
+                    <!-- Operating Location -->
+                    <div class="flex items-start space-x-2.5">
+                        <span class="text-amber-400 font-bold">Location:</span>
+                        <span>Kerala, India (PIN: 686574)</span>
+                    </div>
+
                     <!-- Website -->
                     <div class="flex items-start space-x-2.5">
                         <span class="text-amber-400 font-bold">Web:</span>
@@ -134,12 +160,14 @@
                     </div>
                 </div>
 
-                <!-- Google Pay Quick Badge -->
-                <div class="mt-3 p-2.5 rounded-xl border border-amber-500/30 bg-[#1e132e] text-[11px] text-amber-200">
+                <!-- Accepted Payment Methods Bar -->
+                <div class="mt-3 p-2.5 rounded-xl border border-amber-500/30 bg-[#1e132e] text-[11px] text-amber-200 space-y-1">
                     <p class="font-semibold text-amber-300 flex items-center space-x-1">
-                        <span>💳 GPay Accepted: 094473 27450</span>
+                        <span>💳 Accepted Payment Methods:</span>
                     </p>
-                    <p class="text-[10px] text-amber-300/70 mt-0.5">Online consultations delivered via WhatsApp, Voice Call, & PDF reports.</p>
+                    <p class="text-[10px] text-amber-300/80">
+                        UPI (Google Pay, PhonePe, Paytm) • Cards (Visa, MasterCard, RuPay) • NetBanking • Razorpay
+                    </p>
                 </div>
             </div>
         </div>
@@ -150,15 +178,21 @@
             <span>Kovilakam Astrology • കോവിലകം ജ്യോതിഷം • Kovilakam Jyothisham • Covilakam Jyothisham • Malayalam Astrology Online • Kerala Astrologer • ജാതക പരിശോധന • വിവാഹ പൊരുത്തം • മുഹൂർത്തം • Online Jathakam Kerala • DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</span>
         </div>
 
-        <!-- Bottom Copyright -->
+        <!-- Bottom Copyright & Policy Links Bar -->
         <div class="mt-6 pt-6 border-t border-amber-500/20 flex flex-col sm:flex-row items-center justify-between text-[11px] text-amber-300/60 gap-4">
             <p>
                 © {{ date('Y') }} <strong>Covilakam Astrology</strong> (Kovilakam Astrology). All rights reserved. Directed by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>.
             </p>
-            <div class="flex items-center space-x-4">
-                <span>Explore. Discover. Transform.</span>
+            <div class="flex flex-wrap items-center justify-center gap-3 text-[11px]">
+                <a href="{{ route('policies.terms') }}" class="hover:text-amber-200 transition-colors">Terms & Conditions</a>
                 <span>•</span>
-                <span>IAF Fellow #11009</span>
+                <a href="{{ route('policies.privacy') }}" class="hover:text-amber-200 transition-colors">Privacy Policy</a>
+                <span>•</span>
+                <a href="{{ route('policies.refund') }}" class="hover:text-amber-200 transition-colors">Refund Policy</a>
+                <span>•</span>
+                <a href="{{ route('policies.shipping') }}" class="hover:text-amber-200 transition-colors">Shipping Policy</a>
+                <span>•</span>
+                <a href="{{ route('policies.contact') }}" class="hover:text-amber-200 transition-colors">Contact</a>
                 <span>•</span>
                 @auth
                     <a href="{{ route('admin.dashboard') }}" class="text-amber-400 hover:text-amber-200 transition-colors inline-flex items-center space-x-1 font-semibold">

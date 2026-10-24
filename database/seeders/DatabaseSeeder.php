@@ -470,5 +470,8 @@ class DatabaseSeeder extends Seeder
         foreach ($mediaItems as $media) {
             \App\Models\MediaItem::create($media);
         }
+
+        // Call Shop & Razorpay Bookstore Seeder
+        $this->call(ShopSeeder::class);
     }
 }

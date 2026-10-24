@@ -1984,6 +1984,149 @@
 
             </div>
         </div>
+    <!-- ========================================================================= -->
+    <!-- SECTION: Vedic Astrology Bookstore & Digital Jathakam Shop (Razorpay Verified) -->
+    <!-- ========================================================================= -->
+    <section id="bookstore" class="py-20 lg:py-28 bg-gradient-to-b from-[#0a0512] via-[#140b22] to-[#0d0716] relative overflow-hidden border-t border-amber-500/20">
+        <!-- Star dust & Glow -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber-500/5 rounded-full blur-[140px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full border border-amber-500/40 bg-amber-500/10 text-amber-300 text-xs font-semibold">
+                    <span>📚 Published Works & Certified Services</span>
+                </div>
+                <h2 class="font-cinzel text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+                    Vedic Bookstore & <span class="gold-gradient-text">Jathakam Shop</span>
+                </h2>
+                <p class="text-xs sm:text-sm text-amber-200/70 max-w-2xl mx-auto leading-relaxed">
+                    Authored and directed by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, 2026 Gold Medalist & Ph.D.)</strong>. Order printed hardcover books with free delivery across India or download instant 30-page Deluxe Jathakam PDF reports via secure Razorpay checkout.
+                </p>
+
+                <!-- Payment Trust Pill -->
+                <div class="pt-2 flex flex-wrap items-center justify-center gap-3 text-[11px] text-amber-200/80">
+                    <span class="px-3 py-1 rounded-full bg-[#1a1128] border border-amber-500/25">🔒 100% Razorpay Secure Payments</span>
+                    <span class="px-3 py-1 rounded-full bg-[#1a1128] border border-amber-500/25">⚡ UPI • GPay • PhonePe • Cards</span>
+                    <span class="px-3 py-1 rounded-full bg-[#1a1128] border border-amber-500/25">📦 Free Domestic Speed Post</span>
+                </div>
+            </div>
+
+            <!-- 4 Featured Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Book 1 -->
+                <div class="bg-[#180e2b] rounded-3xl border border-amber-500/25 p-5 flex flex-col justify-between hover:border-amber-400/60 transition-all duration-300 shadow-xl group hover:shadow-2xl hover:shadow-amber-500/10">
+                    <div>
+                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-[#0d0716] border border-amber-500/30 p-2 mb-4 relative">
+                            <img src="{{ asset('images/shop/book-kerala-jyothisha-deepika-opt.jpg') }}" alt="Kerala Jyothisha Deepika" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-3 left-3 px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-400 text-[#1a1128]">Bestseller</span>
+                        </div>
+                        <h3 class="font-cinzel text-base font-bold text-amber-200 line-clamp-1">Kerala Jyothisha Deepika</h3>
+                        <p class="text-xs text-amber-400/90 font-medium mt-0.5">കേരള ജ്യോതിഷ ദീപിക</p>
+                        <p class="text-[11px] text-amber-100/70 mt-1 line-clamp-2">Master compendium of Parashara astrology & Ashtamangala Prasnam by DR. E. K. Raja Varma.</p>
+                        <div class="mt-3 p-2 bg-[#10071c] rounded-xl text-[10px] text-amber-200/70 space-y-0.5">
+                            <div>📖 384 Pages • Deluxe Hardbound</div>
+                            <div class="text-emerald-400">✓ Free Delivery Across India</div>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-amber-500/20 mt-4 space-y-2">
+                        <div class="flex items-baseline justify-between">
+                            <span class="font-cinzel text-xl font-bold text-amber-300">₹499</span>
+                            <span class="text-xs line-through text-amber-300/50">₹799</span>
+                        </div>
+                        <a href="{{ route('shop.show', 'kerala-jyothisha-deepika') }}" class="w-full py-2.5 rounded-xl text-center font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all block">
+                            Order Book (₹499)
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Book 2 -->
+                <div class="bg-[#180e2b] rounded-3xl border border-amber-500/25 p-5 flex flex-col justify-between hover:border-amber-400/60 transition-all duration-300 shadow-xl group hover:shadow-2xl hover:shadow-amber-500/10">
+                    <div>
+                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-[#0d0716] border border-amber-500/30 p-2 mb-4 relative">
+                            <img src="{{ asset('images/shop/book-vedic-marriage-porutham-opt.jpg') }}" alt="Vivaha Porutham & Compatibility" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-3 left-3 px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-400 text-[#1a1128]">Matrimonial Guide</span>
+                        </div>
+                        <h3 class="font-cinzel text-base font-bold text-amber-200 line-clamp-1">Vivaha Porutham & Guide</h3>
+                        <p class="text-xs text-amber-400/90 font-medium mt-0.5">വിവാഹ പൊരുത്ത രഹസ്യങ്ങൾ</p>
+                        <p class="text-[11px] text-amber-100/70 mt-1 line-clamp-2">Complete 10-Porutham marriage matching, Kuja Dosha & Papa Samyam balance guide.</p>
+                        <div class="mt-3 p-2 bg-[#10071c] rounded-xl text-[10px] text-amber-200/70 space-y-0.5">
+                            <div>📖 280 Pages • Illustrated Hardcover</div>
+                            <div class="text-emerald-400">✓ Free Delivery Across India</div>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-amber-500/20 mt-4 space-y-2">
+                        <div class="flex items-baseline justify-between">
+                            <span class="font-cinzel text-xl font-bold text-amber-300">₹399</span>
+                            <span class="text-xs line-through text-amber-300/50">₹599</span>
+                        </div>
+                        <a href="{{ route('shop.show', 'vivaha-porutham-compatibility') }}" class="w-full py-2.5 rounded-xl text-center font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all block">
+                            Order Book (₹399)
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Book 3 -->
+                <div class="bg-[#180e2b] rounded-3xl border border-amber-500/25 p-5 flex flex-col justify-between hover:border-amber-400/60 transition-all duration-300 shadow-xl group hover:shadow-2xl hover:shadow-amber-500/10">
+                    <div>
+                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-[#0d0716] border border-amber-500/30 p-2 mb-4 relative">
+                            <img src="{{ asset('images/shop/book-ratna-shastra-remedies-opt.jpg') }}" alt="Ratna Shastra & Vedic Remedies" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-3 left-3 px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-400 text-[#1a1128]">Gemology Handbook</span>
+                        </div>
+                        <h3 class="font-cinzel text-base font-bold text-amber-200 line-clamp-1">Ratna Shastra & Remedies</h3>
+                        <p class="text-xs text-amber-400/90 font-medium mt-0.5">രത്നശാസ്ത്രവും ഗ്രഹദോഷങ്ങളും</p>
+                        <p class="text-[11px] text-amber-100/70 mt-1 line-clamp-2">Navaratna gemstone recommendations, wearing muhurthams & Vedic remedial rituals.</p>
+                        <div class="mt-3 p-2 bg-[#10071c] rounded-xl text-[10px] text-amber-200/70 space-y-0.5">
+                            <div>📖 312 Pages • Gilded Edition</div>
+                            <div class="text-emerald-400">✓ Free Delivery Across India</div>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-amber-500/20 mt-4 space-y-2">
+                        <div class="flex items-baseline justify-between">
+                            <span class="font-cinzel text-xl font-bold text-amber-300">₹450</span>
+                            <span class="text-xs line-through text-amber-300/50">₹650</span>
+                        </div>
+                        <a href="{{ route('shop.show', 'ratna-shastra-vedic-remedies') }}" class="w-full py-2.5 rounded-xl text-center font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all block">
+                            Order Book (₹450)
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Digital PDF Product -->
+                <div class="bg-gradient-to-b from-[#24123d] to-[#160c26] rounded-3xl border-2 border-amber-400/50 p-5 flex flex-col justify-between hover:border-amber-300 transition-all duration-300 shadow-2xl group hover:shadow-amber-500/20">
+                    <div>
+                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-[#0d0716] border border-amber-500/30 p-2 mb-4 relative flex items-center justify-center">
+                            <img src="{{ asset('images/shop/jathakam-pdf-report-mockup-opt.jpg') }}" alt="Deluxe Vedic Jathakam PDF" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-3 left-3 px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-400 text-[#1a1128]">Instant Download</span>
+                        </div>
+                        <h3 class="font-cinzel text-base font-bold text-amber-200 line-clamp-1">Deluxe Vedic Jathakam (PDF)</h3>
+                        <p class="text-xs text-amber-400/90 font-medium mt-0.5">സമ്പൂർണ്ണ ഡിജിറ്റൽ ജാതകം</p>
+                        <p class="text-[11px] text-amber-100/70 mt-1 line-clamp-2">Exquisite 30+ page personalized birth chart, 25-year Dasa-Bhukthi timeline & remedies.</p>
+                        <div class="mt-3 p-2 bg-[#12081f] rounded-xl text-[10px] text-amber-200/70 space-y-0.5">
+                            <div>⚡ Instant Download + WhatsApp Delivery</div>
+                            <div class="text-emerald-400">✓ Printable High-Res PDF</div>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-amber-500/20 mt-4 space-y-2">
+                        <div class="flex items-baseline justify-between">
+                            <span class="font-cinzel text-xl font-bold text-amber-300">₹299</span>
+                            <span class="text-xs line-through text-amber-300/50">₹999</span>
+                        </div>
+                        <a href="{{ route('shop.show', 'deluxe-vedic-jathakam-pdf-report') }}" class="w-full py-2.5 rounded-xl text-center font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all block">
+                            Get Jathakam PDF (₹299)
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View Full Bookstore Link -->
+            <div class="mt-12 text-center">
+                <a href="{{ route('shop.index') }}" class="inline-flex items-center space-x-2 px-8 py-4 rounded-2xl font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-2xl transition-all transform hover:-translate-y-0.5">
+                    <span>🛒</span>
+                    <span>Browse All Vedic Books & Services Shop →</span>
+                </a>
+            </div>
+        </div>
     </section>
 
     <!-- Google Pay & UPI QR Code Lightbox Modal -->

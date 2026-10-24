@@ -107,6 +107,21 @@
                         </div>
                     </a>
 
+                    <!-- Orders & Razorpay Transactions -->
+                    <a href="{{ route('admin.orders.index') }}"
+                       class="flex items-center justify-between px-3.5 py-3 rounded-xl transition-all {{ request()->routeIs('admin.orders.*') ? 'sidebar-active' : 'text-amber-100/70 hover:text-amber-200 hover:bg-amber-500/10' }}">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-base">🛒</span>
+                            <span class="font-medium">Orders & Razorpay</span>
+                        </div>
+                        @php $ordersCount = \App\Models\Order::where('payment_status', 'paid')->count(); @endphp
+                        @if($ordersCount > 0)
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                            {{ $ordersCount }}
+                        </span>
+                        @endif
+                    </a>
+
                     <!-- 2. Vedic Astrology Video Gallery -->
                     <a href="{{ route('admin.videos.index') }}"
                        class="flex items-center justify-between px-3.5 py-3 rounded-xl transition-all {{ request()->routeIs('admin.videos.*') ? 'sidebar-active' : 'text-amber-100/70 hover:text-amber-200 hover:bg-amber-500/10' }}">

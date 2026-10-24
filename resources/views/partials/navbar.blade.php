@@ -40,7 +40,10 @@
                 <a href="{{ route('home') }}#services" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Services</a>
                 <a href="{{ route('home') }}#why-covilakam" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Why Covilakam</a>
                 <a href="{{ route('home') }}#videos" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Videos</a>
-                <a href="{{ route('home') }}#philosophy" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Philosophy</a>
+                <a href="{{ route('shop.index') }}" class="text-amber-300 font-bold hover:text-amber-100 transition-colors py-1 flex items-center space-x-1">
+                    <span>📚</span>
+                    <span>Bookstore</span>
+                </a>
                 <a href="{{ route('blog.index') }}" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Blog</a>
                 <a href="{{ route('visiting-card') }}" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Visiting Card</a>
                 <a href="{{ route('admin.media.index') }}" class="text-amber-200/90 hover:text-amber-300 transition-colors py-1 flex items-center space-x-1">
@@ -105,6 +108,10 @@
                 <a @click="mobileMenuOpen = false" href="{{ route('home') }}#why-covilakam" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">Why Covilakam Astrology</a>
                 <a @click="mobileMenuOpen = false" href="{{ route('home') }}#videos" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">YouTube Video Gallery</a>
                 <a @click="mobileMenuOpen = false" href="{{ route('home') }}#philosophy" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">Astrology Philosophy</a>
+                <a @click="mobileMenuOpen = false" href="{{ route('shop.index') }}" class="px-3 py-2 rounded-lg text-amber-300 font-bold bg-amber-500/20 border border-amber-500/30 flex items-center justify-between">
+                    <span>📚 Vedic Bookstore & Shop</span>
+                    <span class="text-xs px-2 py-0.5 rounded-full bg-amber-400 text-[#1a1128] font-bold">New</span>
+                </a>
                 <a @click="mobileMenuOpen = false" href="{{ route('blog.index') }}" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">Astrology Blogs</a>
                 <a @click="mobileMenuOpen = false" href="{{ route('visiting-card') }}" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">Digital Visiting Card</a>
                 <a @click="mobileMenuOpen = false" href="{{ route('admin.media.index') }}" class="px-3 py-2 rounded-lg text-amber-200 hover:text-amber-300 hover:bg-amber-500/10 flex items-center justify-between">
