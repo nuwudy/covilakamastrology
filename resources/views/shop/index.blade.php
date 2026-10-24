@@ -8,6 +8,7 @@
      x-data="{
         activeTab: '{{ $type ?? 'all' }}',
         checkoutModalOpen: false,
+        flipbookModalOpen: false,
         selectedProduct: null,
         customerName: '',
         customerPhone: '',
@@ -211,6 +212,12 @@
                    class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap {{ ($type ?? '') === 'consultation' ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-[#1a1128] shadow-md font-bold' : 'text-amber-200/70 hover:text-amber-100 hover:bg-amber-500/10' }}">
                     🔮 Consultations & Porutham
                 </a>
+                <a href="#flipbook-reader"
+                   @click.prevent="document.getElementById('flipbook-reader').scrollIntoView({behavior: 'smooth'})"
+                   class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap text-amber-300 hover:text-white bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 flex items-center space-x-1.5">
+                    <span>📖</span>
+                    <span>Read Flipbook (ഷഷ്ടാംഗം)</span>
+                </a>
             </div>
         </div>
 
@@ -294,15 +301,24 @@
                                 @php
                                     $isFlipbook = Str::contains($book->ebook_url, ['fliphtml5', 'flipbook']);
                                     $isAudio = Str::contains(strtolower($book->title), ['audio', 'cd', 'rajageetham']);
-                                    $btnLabel = $isFlipbook ? '📖 Read Flipbook' : ($isAudio ? '🎵 Listen Tracks' : '🔍 Preview Details');
+                                    $btnLabel = $isFlipbook ? '📖 Read Flipbook Below' : ($isAudio ? '🎵 Listen Tracks' : '🔍 Preview Details');
                                 @endphp
-                                <a href="{{ $book->ebook_url }}"
-                                   target="_blank"
-                                   rel="noopener noreferrer"
-                                   class="w-full py-2 px-3 rounded-xl text-xs font-semibold text-amber-200 bg-[#211335] border border-amber-500/30 hover:border-amber-400 hover:bg-[#2b1945] hover:text-white flex items-center justify-center space-x-1 transition-all text-center">
-                                    <span>{{ $btnLabel }}</span>
-                                    <span class="text-[10px] opacity-75">↗</span>
-                                </a>
+                                @if($isFlipbook)
+                                    <button type="button"
+                                            @click="document.getElementById('flipbook-reader').scrollIntoView({behavior: 'smooth'})"
+                                            class="w-full py-2 px-3 rounded-xl text-xs font-bold text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md flex items-center justify-center space-x-1.5 transition-all text-center">
+                                        <span>📖 Read Flipbook Directly Here</span>
+                                        <span class="text-xs">↓</span>
+                                    </button>
+                                @else
+                                    <a href="{{ $book->ebook_url }}"
+                                       target="_blank"
+                                       rel="noopener noreferrer"
+                                       class="w-full py-2 px-3 rounded-xl text-xs font-semibold text-amber-200 bg-[#211335] border border-amber-500/30 hover:border-amber-400 hover:bg-[#2b1945] hover:text-white flex items-center justify-center space-x-1 transition-all text-center">
+                                        <span>{{ $btnLabel }}</span>
+                                        <span class="text-[10px] opacity-75">↗</span>
+                                    </a>
+                                @endif
                             @endif
                         </div>
                     </div>
@@ -391,6 +407,87 @@
                     </div>
                 @endforeach
             @endif
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- INTERACTIVE DIGITAL FLIPBOOK EMBED: ഷഷ്ടാംഗം (Shashtangam)               -->
+        <!-- Readable directly on site via FlipHTML5 interactive 3D page-flip engine   -->
+        <!-- ========================================================================= -->
+        <div id="flipbook-reader" class="mt-16 bg-[#160d26] border-2 border-amber-500/40 rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden">
+            <!-- Ambient Glow -->
+            <div class="absolute -top-20 -right-20 w-80 h-80 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+            <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-purple-700/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+            <div class="relative z-10 space-y-6">
+                <!-- Header & Info -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-amber-500/20">
+                    <div class="space-y-1.5">
+                        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span>Live Interactive Flipbook • ഓൺലൈൻ വായനശാല</span>
+                        </div>
+                        <h2 class="font-cinzel text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white">
+                            ഷഷ്ടാംഗം (Shashtangam) <span class="gold-gradient-text">— Digital Reader</span>
+                        </h2>
+                        <p class="text-xs sm:text-sm text-amber-200/80 font-medium">
+                            15 മലയാള ചെറുകഥകളുടെ സമാഹാരം • ഡോ. ഇ. കെ. രാജ വർമ്മ (വിദ്യാ വാചസ്പതി)
+                        </p>
+                        <p class="text-[11px] text-zinc-400 max-w-2xl leading-relaxed">
+                            Turn pages interactively using mouse click or touch swipe. Zoom in to read comfortably. Hardcover printed copies are available via courier across India & abroad.
+                        </p>
+                    </div>
+
+                    <!-- Toolbar Actions -->
+                    <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+                        <button type="button"
+                                @click="flipbookModalOpen = true"
+                                class="px-4 py-2.5 rounded-xl text-xs font-bold text-amber-200 bg-[#211335] border border-amber-500/40 hover:border-amber-300 hover:text-white transition-all flex items-center space-x-1.5 shadow">
+                            <span>⛶</span>
+                            <span>Fullscreen Mode</span>
+                        </button>
+
+                        <a href="https://wa.me/917907052160?text={{ rawurlencode("Namaskaram Dr. E. K. Raja Varma Sir, I am reading your book 'ഷഷ്ടാംഗം (Shashtangam)' online and would like to order an author-signed printed hardcover copy (Price: ₹150). Please share GPay/courier details.") }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="px-5 py-2.5 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-xl transition-all flex items-center space-x-1.5 transform hover:-translate-y-0.5">
+                            <span>🛒</span>
+                            <span>Buy Signed Hardcover (₹150)</span>
+                        </a>
+
+                        <a href="https://online.fliphtml5.com/kvuzr/xfdb/"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="p-2.5 rounded-xl text-xs text-amber-300 hover:text-white bg-[#0f0819] border border-amber-500/30 hover:border-amber-400 transition-colors"
+                           title="Open in FlipHTML5 window">
+                            ↗
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Embedded Flipbook Iframe Container -->
+                <div class="relative w-full rounded-2xl overflow-hidden border-2 border-amber-500/30 bg-black shadow-2xl">
+                    <iframe src="https://online.fliphtml5.com/kvuzr/xfdb/"
+                            class="w-full h-[620px] sm:h-[750px] lg:h-[840px] rounded-2xl"
+                            seamless="seamless"
+                            scrolling="no"
+                            frameborder="0"
+                            allowtransparency="true"
+                            allowfullscreen="true"
+                            webkitallowfullscreen="true"
+                            mozallowfullscreen="true"></iframe>
+                </div>
+
+                <!-- Reader Navigation Tips & Helpline -->
+                <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-amber-200/70 pt-2 gap-3">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-amber-400">💡 Tip:</span>
+                        <span>Click the corners or drag to flip pages • Press the fullscreen icon inside the viewer for an immersive book reading experience.</span>
+                    </div>
+                    <div class="shrink-0 text-amber-300/80">
+                        Publisher: <strong class="text-amber-200 font-semibold">Covilakam Digital Edition</strong>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Bottom Razorpay Trust Banner -->
@@ -514,6 +611,55 @@
                     🔒 256-Bit SSL Encrypted • Powered by Razorpay • UPI, Cards & NetBanking
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- FULLSCREEN DISTRACTION-FREE DIGITAL FLIPBOOK LIGHTBOX MODAL               -->
+    <!-- ========================================================================= -->
+    <div x-show="flipbookModalOpen"
+         x-cloak
+         class="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex flex-col p-2 sm:p-4"
+         role="dialog" aria-modal="true">
+        <!-- Top bar -->
+        <div class="flex items-center justify-between px-3 sm:px-6 py-3 border-b border-amber-500/30 bg-[#140b22] rounded-t-2xl">
+            <div class="flex items-center space-x-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <div>
+                    <h3 class="text-amber-300 font-cinzel font-bold text-sm sm:text-base">
+                        ഷഷ്ടാംഗം (Shashtangam) — Fullscreen Reading Lounge
+                    </h3>
+                    <p class="text-[11px] text-amber-200/60 hidden sm:block">
+                        15 ചെറുകഥകളുടെ സമാഹാരം • ഡോ. ഇ. കെ. രാജ വർമ്മ (വിദ്യാ വാചസ്പതി)
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <a href="https://wa.me/917907052160?text={{ rawurlencode("Namaskaram Dr. E. K. Raja Varma Sir, I am reading 'ഷഷ്ടാംഗം (Shashtangam)' online and would like to order an author-signed printed copy (Price: ₹150). Please share GPay/delivery details.") }}"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="px-3 sm:px-4 py-1.5 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow transition-all">
+                    🛒 Buy Copy (₹150)
+                </a>
+
+                <button type="button"
+                        @click="flipbookModalOpen = false"
+                        class="px-3 py-1.5 rounded-xl text-xs font-semibold text-amber-200 bg-white/10 hover:bg-white/20 hover:text-white transition-colors">
+                    ✕ Close
+                </button>
+            </div>
+        </div>
+
+        <!-- Fullscreen Frame -->
+        <div class="flex-1 w-full h-full p-1 bg-black rounded-b-2xl overflow-hidden border border-amber-500/20">
+            <iframe src="https://online.fliphtml5.com/kvuzr/xfdb/"
+                    class="w-full h-full rounded-xl"
+                    seamless="seamless"
+                    scrolling="no"
+                    frameborder="0"
+                    allowtransparency="true"
+                    allowfullscreen="true"></iframe>
         </div>
     </div>
 </div>
