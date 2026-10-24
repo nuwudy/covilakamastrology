@@ -208,88 +208,24 @@
             </div>
         </div>
 
-        <!-- Spotlight Banner: Featured Bestseller Book & Digital Jathakam -->
-        @if(($type ?? 'all') === 'all' && $featuredBook)
-            <div class="mb-14 bg-gradient-to-br from-[#1a0f2e] via-[#150a24] to-[#25103a] rounded-3xl border border-amber-500/35 p-6 sm:p-10 shadow-2xl relative overflow-hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                    <div class="lg:col-span-4 text-center">
-                        <div class="relative inline-block group">
-                            <div class="w-56 sm:w-64 mx-auto rounded-2xl overflow-hidden shadow-2xl border border-amber-500/40 transform group-hover:scale-105 transition-transform duration-300">
-                                <img src="{{ asset($featuredBook->image_path) }}"
-                                     alt="{{ $featuredBook->title }}"
-                                     class="w-full h-auto object-cover">
-                            </div>
-                            <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[10px] font-bold bg-amber-400 text-[#1a1128] shadow-lg">
-                                ★ BESTSELLER BOOK
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="lg:col-span-8 space-y-4">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">
-                                Deluxe Hardcover • 384 Pages
-                            </span>
-                            <span class="text-xs text-emerald-400 font-medium">Free Delivery Across India</span>
-                        </div>
-
-                        <h2 class="font-cinzel text-2xl sm:text-4xl font-bold text-amber-300">
-                            {{ $featuredBook->title }}
-                        </h2>
-                        <p class="font-sans text-xs sm:text-sm text-amber-400 font-medium">
-                            {{ $featuredBook->title_ml }} • By DR. E. K. Raja Varma
-                        </p>
-
-                        <p class="text-xs sm:text-sm text-amber-100/80 leading-relaxed">
-                            {{ $featuredBook->description }}
-                        </p>
-
-                        <div class="flex items-baseline space-x-3 pt-1">
-                            <span class="font-cinzel text-3xl font-bold text-amber-300">
-                                {{ $featuredBook->formatted_price }}
-                            </span>
-                            @if($featuredBook->formatted_original_price)
-                                <span class="text-sm line-through text-amber-300/50">
-                                    {{ $featuredBook->formatted_original_price }}
-                                </span>
-                                <span class="text-xs font-bold text-emerald-400 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
-                                    {{ $featuredBook->discount_percentage }}% OFF
-                                </span>
-                            @endif
-                            <span class="text-[11px] text-amber-200/60">(Inclusive of all taxes & free courier)</span>
-                        </div>
-
-                        <div class="pt-3 flex flex-wrap items-center gap-3">
-                            <button @click="openCheckout({{ $featuredBook->toJson() }})"
-                                    class="px-6 py-3 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-xl transition-all transform hover:-translate-y-0.5 flex items-center space-x-2">
-                                <span>⚡</span>
-                                <span>Buy Now via Razorpay</span>
-                            </button>
-
-                            <a href="{{ route('shop.show', $featuredBook->slug) }}"
-                               class="px-5 py-3 rounded-xl font-cinzel font-semibold text-xs tracking-wider text-amber-200 border border-amber-500/30 hover:bg-amber-500/10 transition-colors">
-                                View Full Details & Chapters →
-                            </a>
-
-                            <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma, I would like to order the book: ' . $featuredBook->title . ' (₹499). Please share dispatch details.') }}"
-                               target="_blank"
-                               class="px-4 py-3 rounded-xl text-xs font-medium text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/10 transition-colors flex items-center space-x-1.5">
-                                <span>💬</span>
-                                <span>Order on WhatsApp</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
-
-        <!-- Products Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Products Multi-Column Grid (No awkward single column banner) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             @forelse($products as $product)
-                <div class="bg-[#140b22] rounded-3xl border border-amber-500/25 p-5 flex flex-col justify-between hover:border-amber-400/60 transition-all duration-300 shadow-xl group hover:shadow-2xl hover:shadow-amber-500/10">
+                @php
+                    $isFeatured = ($product->slug === 'kerala-jyothisha-deepika');
+                @endphp
+                <div class="bg-[#140b22] rounded-3xl p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 shadow-xl group hover:shadow-2xl hover:shadow-amber-500/10 {{ $isFeatured ? 'border-2 border-amber-400 ring-1 ring-amber-400/50 shadow-amber-500/15 relative' : 'border border-amber-500/25 hover:border-amber-400/60' }}">
+
+                    @if($isFeatured)
+                        <div class="absolute -top-3 left-6 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-[#1a1128] shadow-lg flex items-center space-x-1 z-20">
+                            <span>★</span>
+                            <span>FLAGSHIP BESTSELLER</span>
+                        </div>
+                    @endif
+
                     <div>
-                        <!-- Product Image Box -->
-                        <div class="relative rounded-2xl overflow-hidden bg-[#0d0716] border border-amber-500/20 aspect-[4/3] mb-4 flex items-center justify-center p-2">
+                        <!-- Product Image Box (Authentic Portrait Frame) -->
+                        <div class="relative rounded-2xl overflow-hidden bg-[#0d0716] border border-amber-500/20 aspect-[3/4] max-h-80 mb-5 flex items-center justify-center p-3">
                             <img src="{{ asset($product->image_path) }}"
                                  alt="{{ $product->title }}"
                                  class="w-full h-full object-contain rounded-xl transform group-hover:scale-105 transition-transform duration-300">
@@ -300,47 +236,53 @@
                                 </span>
                             @endif
 
-                            <span class="absolute top-3 right-3 px-2 py-0.5 rounded text-[10px] font-semibold bg-[#1a1128]/90 text-amber-200 border border-amber-500/30 uppercase">
-                                {{ $product->type === 'book' ? 'Physical Book' : ($product->type === 'digital_pdf' ? 'Instant PDF' : 'Consultation') }}
+                            <span class="absolute top-3 right-3 px-2.5 py-0.5 rounded text-[10px] font-semibold bg-[#1a1128]/95 text-amber-200 border border-amber-500/40 uppercase tracking-wider shadow">
+                                {{ $product->type === 'book' ? '📖 Hardcover' : ($product->type === 'digital_pdf' ? '📱 Instant PDF' : '🔮 Consultation') }}
                             </span>
                         </div>
 
-                        <!-- Titles -->
-                        <div class="space-y-1 mb-2">
-                            <h3 class="font-cinzel text-lg font-bold text-amber-200 group-hover:text-amber-300 transition-colors line-clamp-1">
+                        <!-- Product Titles -->
+                        <div class="space-y-1 mb-2.5">
+                            <h3 class="font-cinzel text-lg sm:text-xl font-bold text-amber-200 group-hover:text-amber-300 transition-colors line-clamp-1">
                                 {{ $product->title }}
                             </h3>
                             @if($product->title_ml)
-                                <p class="text-xs text-amber-400/90 font-medium">
+                                <p class="text-xs text-amber-400 font-medium">
                                     {{ $product->title_ml }}
                                 </p>
                             @endif
                         </div>
 
+                        <!-- Author attribution -->
+                        <p class="text-[11px] text-amber-300/80 font-medium mb-3 flex items-center space-x-1">
+                            <span>✍️</span>
+                            <span>DR. E. K. Raja Varma (Vidya Vachaspathi)</span>
+                        </p>
+
                         <!-- Subtitle / Short description -->
-                        <p class="text-xs text-amber-100/70 line-clamp-2 leading-relaxed mb-4">
+                        <p class="text-xs text-amber-100/75 line-clamp-2 leading-relaxed mb-4">
                             {{ $product->subtitle ?: Str::limit($product->description, 110) }}
                         </p>
 
                         <!-- Key Specs list -->
                         @if(!empty($product->details))
-                            <div class="bg-[#1a1128] p-3 rounded-xl border border-amber-500/15 text-[11px] text-amber-200/80 space-y-1 mb-4">
-                                @if(isset($product->details['author']))
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-amber-400">Author:</span>
-                                        <span class="text-right truncate ml-2">DR. E. K. Raja Varma</span>
-                                    </div>
-                                @endif
+                            <div class="bg-[#1a1128] p-3 rounded-xl border border-amber-500/15 text-[11px] text-amber-200/80 space-y-1.5 mb-4">
                                 @if(isset($product->details['delivery_time']))
                                     <div class="flex items-center justify-between">
-                                        <span class="text-amber-400">Delivery:</span>
-                                        <span class="text-emerald-400 font-medium">{{ $product->details['delivery_time'] }}</span>
+                                        <span class="text-amber-400 font-medium">Delivery:</span>
+                                        <span class="text-emerald-400 font-semibold">{{ $product->details['delivery_time'] }}</span>
                                     </div>
                                 @endif
                                 @if(isset($product->details['format']))
                                     <div class="flex items-center justify-between">
-                                        <span class="text-amber-400">Format:</span>
+                                        <span class="text-amber-400 font-medium">Format:</span>
                                         <span>{{ $product->details['format'] }}</span>
+                                    </div>
+                                @endif
+                                @if(isset($product->details['pages']))
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-amber-400 font-medium">Pages:</span>
+                                        <span>{{ $product->details['pages'] }}</span>
                                     </div>
                                 @endif
                             </div>
@@ -348,37 +290,54 @@
                     </div>
 
                     <!-- Price & Actions Footer -->
-                    <div class="pt-3 border-t border-amber-500/20 space-y-3">
+                    <div class="pt-4 border-t border-amber-500/20 space-y-3">
                         <div class="flex items-baseline justify-between">
                             <div class="flex items-baseline space-x-2">
-                                <span class="font-cinzel text-2xl font-extrabold text-amber-300">
+                                <span class="font-cinzel text-2xl sm:text-3xl font-extrabold text-amber-300">
                                     {{ $product->formatted_price }}
                                 </span>
                                 @if($product->formatted_original_price)
                                     <span class="text-xs line-through text-amber-300/50">
                                         {{ $product->formatted_original_price }}
                                     </span>
+                                    <span class="text-[10px] font-bold text-emerald-400 px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
+                                        {{ $product->discount_percentage }}% OFF
+                                    </span>
                                 @endif
                             </div>
-                            <span class="text-[10px] text-amber-200/60">Taxes Included</span>
+                            <span class="text-[10px] text-amber-200/60 font-medium">Taxes Included</span>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-2">
+                        <!-- Action Buttons -->
+                        <div class="grid grid-cols-2 gap-2.5">
                             <button @click="openCheckout({{ $product->toJson() }})"
-                                    class="py-2.5 px-3 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all text-center">
-                                Buy Now
+                                    class="py-2.5 px-3 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all text-center flex items-center justify-center space-x-1">
+                                <span>⚡</span>
+                                <span>Buy Now</span>
                             </button>
 
                             <a href="{{ route('shop.show', $product->slug) }}"
-                               class="py-2.5 px-3 rounded-xl font-cinzel font-semibold text-xs tracking-wider text-amber-200 border border-amber-500/30 hover:bg-amber-500/10 transition-colors text-center">
+                               class="py-2.5 px-3 rounded-xl font-cinzel font-semibold text-xs tracking-wider text-amber-200 border border-amber-500/30 hover:bg-amber-500/10 transition-colors text-center flex items-center justify-center">
                                 Details →
+                            </a>
+                        </div>
+
+                        <div class="text-center">
+                            <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma, I would like to order: ' . $product->title . ' (' . $product->formatted_price . '). Please share payment & delivery details.') }}"
+                               target="_blank"
+                               class="text-[11px] text-emerald-400 hover:text-emerald-300 inline-flex items-center space-x-1">
+                                <span>💬</span>
+                                <span>Or order via WhatsApp (+91 7907052160)</span>
                             </a>
                         </div>
                     </div>
                 </div>
             @empty
-                <div class="col-span-3 text-center py-12">
-                    <p class="text-sm text-amber-200/70">No products found in this category.</p>
+                <div class="col-span-1 sm:col-span-2 lg:col-span-3 text-center py-16 bg-[#140b22] rounded-3xl border border-amber-500/20">
+                    <p class="text-base text-amber-200/70">No items found in this category.</p>
+                    <a href="{{ route('shop.index') }}" class="inline-block mt-3 px-4 py-2 rounded-xl text-xs font-bold text-[#1a1128] bg-amber-400 hover:bg-amber-300">
+                        View All Items
+                    </a>
                 </div>
             @endforelse
         </div>
