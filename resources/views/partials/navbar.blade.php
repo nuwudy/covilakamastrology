@@ -68,21 +68,15 @@
             </div>
 
             <!-- Mobile Action Area -->
-            <div class="flex items-center space-x-1.5 sm:space-x-2.5 lg:hidden shrink-0">
-                <!-- 1-Tap Quick Jump to Free DOB Reading -->
-                <a href="{{ route('home') }}#dob-calculator"
-                   class="inline-flex items-center space-x-1 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-bold text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 shadow-md hover:from-amber-200 hover:to-yellow-300 transition-all whitespace-nowrap shrink-0">
-                    <span>✨ Free DOB</span>
-                </a>
-
+            <div class="flex items-center lg:hidden shrink-0">
                 <!-- Mobile Hamburger Button -->
                 <button @click="mobileMenuOpen = !mobileMenuOpen"
-                        class="p-1.5 sm:p-2 rounded-lg text-amber-300 hover:text-amber-100 hover:bg-amber-500/10 focus:outline-none shrink-0"
+                        class="p-2 rounded-xl text-amber-300 hover:text-amber-100 hover:bg-amber-500/10 focus:outline-none transition-colors shrink-0"
                         aria-label="Toggle Navigation">
-                    <svg x-show="!mobileMenuOpen" class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg x-show="!mobileMenuOpen" class="w-7 h-7 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
                     </svg>
-                    <svg x-show="mobileMenuOpen" x-cloak class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg x-show="mobileMenuOpen" x-cloak class="w-7 h-7 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                 </button>

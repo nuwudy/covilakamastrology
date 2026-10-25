@@ -272,6 +272,9 @@
         </div>
     </div>
 
+    <!-- Floating Free DOB Reading Widget -->
+    @include('partials.floating-dob')
+
     <!-- Floating WhatsApp Widget -->
     @include('partials.floating-whatsapp')
 
