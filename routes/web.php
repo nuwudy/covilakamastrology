@@ -15,12 +15,17 @@ use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\VideoController;
 use App\Models\Product;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Route;
 
 // Public Front-End Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Exclusive Vedic Astrology Video Gallery (Cinema / Movie Showcase)
+Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
+Route::get('/videos/{id}', [VideoController::class, 'show'])->name('videos.show');
 
 Route::post('/calculate-dob', [ConsultationController::class, 'calculateDob'])->name('consultations.calculate-dob');
 Route::patch('/consultations/{id}/service', [ConsultationController::class, 'updateService'])->name('consultations.update-service');
@@ -59,9 +64,11 @@ Route::get('/orders/{order_number}/download-jathakam', [ShopController::class, '
 Route::get('/sitemap.xml', function () {
     $posts = \App\Models\Post::where('is_published', true)->orderBy('updated_at', 'desc')->get();
     $products = Product::where('is_active', true)->get();
+    $videos = \App\Models\Video::where('is_active', true)->get();
     $xml = '<?xml version="1.0" encoding="UTF-8"?>';
     $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
     $xml .= '<url><loc>' . url('/') . '</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>';
+    $xml .= '<url><loc>' . route('videos.index') . '</loc><changefreq>daily</changefreq><priority>0.9</priority></url>';
     $xml .= '<url><loc>' . route('shop.index') . '</loc><changefreq>daily</changefreq><priority>0.9</priority></url>';
     $xml .= '<url><loc>' . url('/blog') . '</loc><changefreq>daily</changefreq><priority>0.8</priority></url>';
     $xml .= '<url><loc>' . route('policies.about') . '</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>';

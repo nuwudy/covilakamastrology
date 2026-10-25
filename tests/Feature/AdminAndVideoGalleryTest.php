@@ -71,21 +71,75 @@ class AdminAndVideoGalleryTest extends TestCase
         $this->assertEquals('bV6yfbEqGLw', Video::parseYoutubeId('bV6yfbEqGLw'));
     }
 
-    public function test_homepage_renders_all_videos_and_footer_login_link(): void
+    public function test_homepage_renders_videos_and_watch_all_button(): void
     {
         $response = $this->get('/');
         $response->assertStatus(200);
 
-        // Video Gallery elements
+        // Video Gallery elements on homepage
         $response->assertSee('Vedic Astrology', false);
         $response->assertSee('Video Gallery', false);
         $response->assertSee('ZFzqmHgEDKQ', false);
-        $response->assertSee('xAo9vh-tMpw', false);
         $response->assertSee('Featured Insight • Online Astro Counselling', false);
         $response->assertSee('activeVideoModal', false); // Lightbox modal
 
+        // Watch All Video buttons leading to dedicated video gallery page
+        $response->assertSee(route('videos.index'), false);
+        $response->assertSee('Watch All Vedic Astrology Videos', false);
+
+        // Header navigation connects to videos page
+        $response->assertSee(route('videos.index'), false);
+
         // Footer guest link
         $response->assertSee('Admin Login', false);
+    }
+
+    public function test_exclusive_video_gallery_page_renders_with_prominent_hero_and_two_column_mobile_grid(): void
+    {
+        $response = $this->get('/videos');
+        $response->assertStatus(200);
+
+        // Cinematic branding
+        $response->assertSee('VEDIC ASTROLOGY', false);
+        $response->assertSee('CINEMA GALLERY', false);
+        $response->assertSee('FEATURED PREMIERE', false);
+        $response->assertSee('Watch Premiere Now', false);
+
+        // Strict 2-column mobile grid check
+        $response->assertSee('grid-cols-2', false);
+        $response->assertSee('md:grid-cols-3', false);
+        $response->assertSee('lg:grid-cols-4', false);
+
+        // Video items present
+        $response->assertSee('ZFzqmHgEDKQ', false);
+        $response->assertSee('xAo9vh-tMpw', false);
+        $response->assertSee('ugqn3yZzljU', false);
+        $response->assertSee('x6X8KEY30k4', false);
+        $response->assertSee('bV6yfbEqGLw', false);
+        $response->assertSee('7K_26WT8-uk', false);
+        $response->assertSee('cJEyRaRa5-w', false);
+        $response->assertSee('TFOfLMwuxTo', false);
+
+        // Cinema interactive controls: category filters, search & theater modal
+        $response->assertSee('activeCategory', false);
+        $response->assertSee('searchQuery', false);
+        $response->assertSee('activeVideoModal', false);
+        $response->assertSee('Cinema Theater', false);
+
+        // VIP Consultation ticket box
+        $response->assertSee('Direct Personal Astrology Consultation', false);
+        $response->assertSee('Book Consultation Online', false);
+    }
+
+    public function test_individual_video_show_page_loads_with_player(): void
+    {
+        $response = $this->get('/videos/ZFzqmHgEDKQ');
+        $response->assertStatus(200);
+
+        $response->assertSee('Now Showing Premiere', false);
+        $response->assertSee('Back to Cinema Video Gallery', false);
+        $response->assertSee('ZFzqmHgEDKQ', false);
+        $response->assertSee('More Vedic Astrology', false);
     }
 
     public function test_admin_can_login_with_provided_credentials(): void

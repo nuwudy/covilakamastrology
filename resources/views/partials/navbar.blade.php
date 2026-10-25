@@ -39,7 +39,10 @@
                 </a>
                 <a href="{{ route('home') }}#services" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Services</a>
                 <a href="{{ route('home') }}#why-covilakam" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Why Covilakam</a>
-                <a href="{{ route('home') }}#videos" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Videos</a>
+                <a href="{{ route('videos.index') }}" class="{{ request()->routeIs('videos.*') ? 'text-amber-300 font-bold border-b-2 border-amber-400' : 'text-amber-100/80 hover:text-amber-300' }} transition-colors py-1 flex items-center space-x-1">
+                    <span>Videos</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                </a>
                 <a href="{{ route('home') }}#books" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Books</a>
                 <a href="{{ route('shop.index') }}" class="text-amber-300 font-bold hover:text-amber-100 transition-colors py-1 flex items-center space-x-1">
                     <span>📚</span>
@@ -103,7 +106,13 @@
                 </a>
                 <a @click="mobileMenuOpen = false" href="{{ route('home') }}#services" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">Core Services</a>
                 <a @click="mobileMenuOpen = false" href="{{ route('home') }}#why-covilakam" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">Why Covilakam Astrology</a>
-                <a @click="mobileMenuOpen = false" href="{{ route('home') }}#videos" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">YouTube Video Gallery</a>
+                <a @click="mobileMenuOpen = false" href="{{ route('videos.index') }}" class="px-3 py-2 rounded-lg {{ request()->routeIs('videos.*') ? 'text-amber-300 font-bold bg-amber-500/20 border border-amber-500/30' : 'text-amber-100 hover:text-amber-300 hover:bg-amber-500/10' }} flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-red-400">🎬</span>
+                        <span>Vedic Video Gallery</span>
+                    </div>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/30 font-semibold">Cinema</span>
+                </a>
                 <a @click="mobileMenuOpen = false" href="{{ route('home') }}#books" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">Dr. Raja Varma's Books (രചനകൾ)</a>
                 <a @click="mobileMenuOpen = false" href="{{ route('home') }}#philosophy" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">Astrology Philosophy</a>
                 <a @click="mobileMenuOpen = false" href="{{ route('shop.index') }}" class="px-3 py-2 rounded-lg text-amber-300 font-bold bg-amber-500/20 border border-amber-500/30 flex items-center justify-between">

@@ -1238,6 +1238,13 @@
                 <p class="text-xs sm:text-sm text-amber-100/80 leading-relaxed font-sans">
                     Watch illuminating Malayalam video discourses by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong> covering online astro-counselling, remedies, Kaalapurusha Vaastu, marriage compatibility, and Raja Yogas.
                 </p>
+                <div class="pt-2">
+                    <a href="{{ route('videos.index') }}"
+                       class="inline-flex items-center space-x-2 px-5 py-2 rounded-full text-xs font-bold text-amber-200 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 hover:border-amber-300 transition-all shadow-md group">
+                        <span>🎬 Explore Full Video Gallery ({{ $videos->count() }} Discourses)</span>
+                        <span class="text-amber-400 group-hover:translate-x-1 transition-transform">→</span>
+                    </a>
+                </div>
             </div>
 
             @php
@@ -1245,6 +1252,7 @@
                 $gridVideos = $videos->filter(function($v) use ($featuredVideo) {
                     return $v->id !== ($featuredVideo->id ?? null);
                 });
+                $previewVideos = $gridVideos->take(3);
             @endphp
 
             @if($featuredVideo)
@@ -1324,6 +1332,12 @@
                                         <span>Play Video in Modal</span>
                                     </button>
 
+                                    <a href="{{ route('videos.index') }}"
+                                       class="px-4 py-3 rounded-xl text-xs font-bold text-amber-300 bg-[#160d26] border border-amber-500/40 hover:border-amber-300 hover:text-white transition-all flex items-center space-x-2">
+                                        <span>🎬</span>
+                                        <span>Watch All Videos</span>
+                                    </a>
+
                                     <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I watched your YouTube video: "' . $featuredVideo->title . '" and would like to ask a question.') }}"
                                        target="_blank"
                                        class="px-4 py-3 rounded-xl text-xs font-semibold text-amber-200 bg-[#201335] border border-amber-500/40 hover:border-amber-300 hover:text-white transition-all flex items-center space-x-2">
@@ -1339,9 +1353,9 @@
             </div>
             @endif
 
-            <!-- UNIFIED GRID FOR ALL VIDEOS -->
+            <!-- CURATED PREVIEW GRID FOR HOME PAGE (With Watch All Action) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($gridVideos as $video)
+                @foreach($previewVideos as $video)
                 <div class="rounded-3xl p-0.5 bg-gradient-to-b from-amber-500/30 via-amber-500/10 to-purple-900/20 hover:from-amber-400/60 hover:to-amber-600/30 transition-all duration-300 group shadow-xl">
                     <div class="rounded-[22px] bg-[#160d26] h-full flex flex-col justify-between overflow-hidden border border-amber-500/20 group-hover:border-amber-400/50 transition-colors">
                         
@@ -1436,17 +1450,32 @@
                 @endforeach
             </div>
 
-            <!-- YouTube Channel Link Button -->
-            <div class="mt-16 text-center">
-                <a href="https://www.youtube.com/@CovilakamAstrology"
-                   target="_blank"
-                   class="inline-flex items-center space-x-3 px-8 py-4 rounded-2xl bg-[#160d26] border-2 border-red-500/50 hover:border-red-400 text-white font-bold text-xs uppercase tracking-wider shadow-xl hover:shadow-red-500/20 transition-all">
-                    <span class="w-7 h-7 rounded-full bg-red-600 flex items-center justify-center text-white">
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
-                    </span>
-                    <span>Subscribe to DR. E. K. Raja Varma Official YouTube Channel</span>
-                    <span class="text-amber-400">→</span>
-                </a>
+            <!-- PROMINENT "WATCH ALL" CINEMA BUTTON & CHANNEL LINK -->
+            <div class="mt-14 text-center space-y-4">
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <!-- High Impact Watch All Button -->
+                    <a href="{{ route('videos.index') }}"
+                       class="w-full sm:w-auto inline-flex items-center justify-center space-x-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-[#140b22] font-black text-sm uppercase tracking-wider shadow-2xl shadow-amber-500/30 hover:scale-105 transition-all duration-300 group">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        <span>Watch All Vedic Astrology Videos ({{ $videos->count() }})</span>
+                        <span class="group-hover:translate-x-1 transition-transform">→</span>
+                    </a>
+
+                    <!-- YouTube Channel Link -->
+                    <a href="https://www.youtube.com/@CovilakamAstrology"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="w-full sm:w-auto inline-flex items-center justify-center space-x-2.5 px-6 py-4 rounded-2xl bg-[#160d26] border border-red-500/50 hover:border-red-400 text-white font-bold text-xs uppercase tracking-wider shadow-xl hover:shadow-red-500/20 transition-all">
+                        <span class="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center text-white shrink-0">
+                            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                        </span>
+                        <span>YouTube Channel</span>
+                    </a>
+                </div>
+
+                <p class="text-xs text-amber-200/60 font-medium">
+                    Explore all discourses with Malayalam commentary, topic search, and interactive cinema theater.
+                </p>
             </div>
         </div>
 
