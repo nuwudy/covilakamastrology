@@ -62,8 +62,8 @@ class CovilakamAstrologyTest extends TestCase
         // First Seeded Blog Post
         $response->assertSee('ജ്യോതിഷവും ജീവിതസരണിയും');
 
-        // Media Library Navbar Link
-        $response->assertSee('Media Library');
+        // Footer Admin Login Link for authorized personnel
+        $response->assertSee('Admin Login');
     }
 
     public function test_vedic_dob_calculator_service(): void

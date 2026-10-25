@@ -47,10 +47,12 @@
                 </a>
                 <a href="{{ route('blog.index') }}" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Blog</a>
                 <a href="{{ route('visiting-card') }}" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Visiting Card</a>
-                <a href="{{ route('admin.media.index') }}" class="text-amber-200/90 hover:text-amber-300 transition-colors py-1 flex items-center space-x-1">
-                    <span>📁</span>
-                    <span>Media Library</span>
+                @auth
+                <a href="{{ route('admin.dashboard') }}" class="text-amber-300 font-semibold hover:text-amber-100 transition-colors py-1 flex items-center space-x-1">
+                    <span>⚙️</span>
+                    <span>Dashboard</span>
                 </a>
+                @endauth
             </nav>
 
             <!-- Actions / CTA Button -->
@@ -110,10 +112,12 @@
                 </a>
                 <a @click="mobileMenuOpen = false" href="{{ route('blog.index') }}" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">Astrology Blogs</a>
                 <a @click="mobileMenuOpen = false" href="{{ route('visiting-card') }}" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">Digital Visiting Card</a>
-                <a @click="mobileMenuOpen = false" href="{{ route('admin.media.index') }}" class="px-3 py-2 rounded-lg text-amber-200 hover:text-amber-300 hover:bg-amber-500/10 flex items-center justify-between">
-                    <span>Admin Media Library</span>
-                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">Admin</span>
+                @auth
+                <a @click="mobileMenuOpen = false" href="{{ route('admin.dashboard') }}" class="px-3 py-2 rounded-lg text-amber-300 hover:text-amber-100 bg-amber-500/20 flex items-center justify-between font-semibold">
+                    <span>⚙️ Admin Dashboard</span>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/30 text-amber-200">Logged In</span>
                 </a>
+                @endauth
 
                 <div class="pt-3 border-t border-amber-500/20 flex flex-col gap-2">
                     <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to consult with you.') }}"

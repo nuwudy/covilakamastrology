@@ -44,7 +44,7 @@
                 <div>
                     <label class="block font-semibold text-amber-200 mb-1.5">Admin Email / Username *</label>
                     <div class="relative">
-                        <input type="text" name="email" value="{{ old('email', 'varmaji@covilakamastrology.com') }}" required autofocus
+                        <input type="email" name="email" value="{{ old('email') }}" placeholder="admin@covilakamastrology.com" required autofocus autocomplete="email"
                                class="w-full px-4 py-3 rounded-xl bg-[#231538] border border-amber-500/30 text-white placeholder-amber-200/40 focus:outline-none focus:border-amber-400 transition-colors text-xs font-mono">
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                 <div>
                     <label class="block font-semibold text-amber-200 mb-1.5">Password *</label>
                     <div class="relative" x-data="{ show: false }">
-                        <input :type="show ? 'text' : 'password'" name="password" required
+                        <input :type="show ? 'text' : 'password'" name="password" required autocomplete="current-password"
                                placeholder="••••••••••••"
                                class="w-full px-4 py-3 rounded-xl bg-[#231538] border border-amber-500/30 text-white placeholder-amber-200/40 focus:outline-none focus:border-amber-400 transition-colors text-xs pr-10">
                         <button type="button" @click="show = !show"
@@ -82,14 +82,9 @@
                 </div>
             </form>
 
-            <!-- Pre-filled Credential Note -->
-            <div class="mt-6 pt-5 border-t border-amber-500/20 text-center space-y-1.5 text-[11px] text-amber-200/70">
-                <p class="font-mono text-amber-300 font-semibold">Authorized Admin Accounts:</p>
-                <div class="space-y-0.5 font-mono text-[11px] text-amber-100/90 select-all">
-                    <p>varmaji@covilakamastrology.com</p>
-                    <p class="text-amber-300/60 text-[10px]">or admin@covilakamastrology.com</p>
-                </div>
-                <p class="text-[10px] text-amber-400/80">Default Password: <code class="bg-black/40 px-1.5 py-0.5 rounded text-amber-300 select-all font-bold">Covilakam@2026</code></p>
+            <!-- Security Notice -->
+            <div class="mt-6 pt-5 border-t border-amber-500/20 text-center text-[11px] text-amber-200/50">
+                <span>🔒 Secure Administrator Portal • Authorized Access Only</span>
             </div>
 
         </div>
