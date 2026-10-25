@@ -42,9 +42,9 @@
                 @csrf
 
                 <div>
-                    <label class="block font-semibold text-amber-200 mb-1.5">Admin Email / Username *</label>
+                    <label class="block font-semibold text-amber-200 mb-1.5">Email Address *</label>
                     <div class="relative">
-                        <input type="email" name="email" value="{{ old('email') }}" placeholder="admin@covilakamastrology.com" required autofocus autocomplete="email"
+                        <input type="email" name="email" value="{{ old('email') }}" placeholder="Enter your email" required autofocus autocomplete="email"
                                class="w-full px-4 py-3 rounded-xl bg-[#231538] border border-amber-500/30 text-white placeholder-amber-200/40 focus:outline-none focus:border-amber-400 transition-colors text-xs font-mono">
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                     <label class="block font-semibold text-amber-200 mb-1.5">Password *</label>
                     <div class="relative" x-data="{ show: false }">
                         <input :type="show ? 'text' : 'password'" name="password" required autocomplete="current-password"
-                               placeholder="••••••••••••"
+                               placeholder="Enter your password"
                                class="w-full px-4 py-3 rounded-xl bg-[#231538] border border-amber-500/30 text-white placeholder-amber-200/40 focus:outline-none focus:border-amber-400 transition-colors text-xs pr-10">
                         <button type="button" @click="show = !show"
                                 class="absolute right-3 top-3 text-amber-400/70 hover:text-white focus:outline-none">
