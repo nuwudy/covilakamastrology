@@ -111,7 +111,7 @@
                         <span class="text-red-400">🎬</span>
                         <span>Vedic Video Gallery</span>
                     </div>
-                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/30 font-semibold">Cinema</span>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-semibold">Videos</span>
                 </a>
                 <a @click="mobileMenuOpen = false" href="{{ route('home') }}#books" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">Dr. Raja Varma's Books (രചനകൾ)</a>
                 <a @click="mobileMenuOpen = false" href="{{ route('home') }}#philosophy" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">Astrology Philosophy</a>

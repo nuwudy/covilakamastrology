@@ -1474,7 +1474,7 @@
                 </div>
 
                 <p class="text-xs text-amber-200/60 font-medium">
-                    Explore all discourses with Malayalam commentary, topic search, and interactive cinema theater.
+                    Explore all discourses with Malayalam commentary, topic search, and interactive video player.
                 </p>
             </div>
         </div>

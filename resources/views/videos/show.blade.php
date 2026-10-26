@@ -44,17 +44,17 @@
 
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
 
-        <!-- Breadcrumb & Back to Cinema Link -->
+        <!-- Breadcrumb & Back to Gallery Link -->
         <div class="flex items-center justify-between gap-4 mb-6 text-xs">
             <a href="{{ route('videos.index') }}"
                class="inline-flex items-center space-x-2 text-amber-300 hover:text-amber-100 bg-[#160d26] px-4 py-2 rounded-xl border border-amber-500/30 transition-all">
                 <span>←</span>
-                <span>Back to Cinema Video Gallery</span>
+                <span>Back to Video Gallery</span>
             </a>
 
             <div class="flex items-center space-x-2 text-amber-300/70">
                 <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                <span>Now Showing Premiere</span>
+                <span>Now Playing Discourse</span>
             </div>
         </div>
 

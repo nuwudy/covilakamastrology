@@ -88,15 +88,15 @@
         <!-- ========================================================================= -->
         <div class="text-center max-w-4xl mx-auto mb-10 sm:mb-14 space-y-4">
             
-            <!-- Cinema Badge -->
+            <!-- Header Badge -->
             <div class="inline-flex items-center space-x-2 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-amber-300 bg-amber-500/10 px-4 py-1.5 rounded-full border border-amber-500/30 shadow-lg shadow-amber-500/5">
                 <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                <span>Exclusive Cinema Premiere • Vedic Astrology Video Showcase</span>
+                <span>Official Video Gallery • Vedic Astrology Discourses</span>
             </div>
 
             <!-- Page Title -->
             <h1 class="font-cinzel text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-wide">
-                VEDIC ASTROLOGY <span class="gold-gradient-text">CINEMA GALLERY</span>
+                VEDIC ASTROLOGY <span class="gold-gradient-text">VIDEO GALLERY</span>
             </h1>
 
             <div class="flex items-center justify-center space-x-4">
@@ -201,10 +201,10 @@
                         <!-- Right / Bottom: Movie Details & Synopsis -->
                         <div class="lg:col-span-5 p-6 sm:p-8 lg:p-10 space-y-5">
                             
-                            <!-- Movie Category & Rating -->
+                            <!-- Video Category & Rating -->
                             <div class="flex flex-wrap items-center justify-between gap-2 border-b border-amber-500/20 pb-3">
                                 <span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                                    Episode #01 • Online Astrology Insights
+                                    ★ Featured Discourse • Episode #{{ $featuredVideo->sort_order }}
                                 </span>
                                 <div class="flex items-center space-x-1 text-amber-400 text-xs font-semibold">
                                     <span>★ 5.0</span>
@@ -212,7 +212,7 @@
                                 </div>
                             </div>
 
-                            <!-- Movie Title -->
+                            <!-- Video Title -->
                             <h2 class="font-['Noto_Sans_Malayalam',sans-serif] text-xl sm:text-2xl lg:text-3xl font-bold text-white leading-snug">
                                 {{ $featuredVideo->title }}
                             </h2>
@@ -222,7 +222,7 @@
                                 {{ $featuredVideo->description }}
                             </p>
 
-                            <!-- Cast & Production Meta -->
+                            <!-- Cast & Presentation Meta -->
                             <div class="grid grid-cols-2 gap-3 text-xs bg-[#1a102c]/80 rounded-2xl p-3.5 border border-amber-500/20">
                                 <div>
                                     <span class="text-amber-300/60 text-[10px] uppercase font-bold block">Scholar / Speaker</span>
@@ -230,7 +230,7 @@
                                 </div>
                                 <div>
                                     <span class="text-amber-300/60 text-[10px] uppercase font-bold block">Subject Domain</span>
-                                    <strong class="text-amber-200 font-semibold truncate block">Astro Counselling & Remedies</strong>
+                                    <strong class="text-amber-200 font-semibold truncate block">Vedic Wisdom & Philosophy</strong>
                                 </div>
                             </div>
 
@@ -301,25 +301,31 @@
                             @click="activeCategory = 'marriage'"
                             :class="activeCategory === 'marriage' ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-[#140b22] font-black' : 'text-amber-200/80 hover:text-white bg-[#1e1233] border border-amber-500/20'"
                             class="px-3.5 py-2 rounded-xl text-xs whitespace-nowrap transition-all shadow-sm">
-                        💍 Marriage & Porutham
+                        💍 Marriage & Compatibility
                     </button>
                     <button type="button"
-                            @click="activeCategory = 'vaastu'"
-                            :class="activeCategory === 'vaastu' ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-[#140b22] font-black' : 'text-amber-200/80 hover:text-white bg-[#1e1233] border border-amber-500/20'"
+                            @click="activeCategory = 'education'"
+                            :class="activeCategory === 'education' ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-[#140b22] font-black' : 'text-amber-200/80 hover:text-white bg-[#1e1233] border border-amber-500/20'"
                             class="px-3.5 py-2 rounded-xl text-xs whitespace-nowrap transition-all shadow-sm">
-                        🏛️ Vaastu & Kalapurusha
+                        📚 Education & Learning
                     </button>
                     <button type="button"
-                            @click="activeCategory = 'remedies'"
-                            :class="activeCategory === 'remedies' ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-[#140b22] font-black' : 'text-amber-200/80 hover:text-white bg-[#1e1233] border border-amber-500/20'"
+                            @click="activeCategory = 'psychology'"
+                            :class="activeCategory === 'psychology' ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-[#140b22] font-black' : 'text-amber-200/80 hover:text-white bg-[#1e1233] border border-amber-500/20'"
                             class="px-3.5 py-2 rounded-xl text-xs whitespace-nowrap transition-all shadow-sm">
-                        🪐 Yogas & Remedies
+                        💬 Love & Psychology
                     </button>
                     <button type="button"
                             @click="activeCategory = 'counselling'"
                             :class="activeCategory === 'counselling' ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-[#140b22] font-black' : 'text-amber-200/80 hover:text-white bg-[#1e1233] border border-amber-500/20'"
                             class="px-3.5 py-2 rounded-xl text-xs whitespace-nowrap transition-all shadow-sm">
-                        🔮 Online Astro Guidance
+                        🔮 Online Astrology
+                    </button>
+                    <button type="button"
+                            @click="activeCategory = 'literary'"
+                            :class="activeCategory === 'literary' ? 'bg-gradient-to-r from-amber-400 to-yellow-500 text-[#140b22] font-black' : 'text-amber-200/80 hover:text-white bg-[#1e1233] border border-amber-500/20'"
+                            class="px-3.5 py-2 rounded-xl text-xs whitespace-nowrap transition-all shadow-sm">
+                        📜 Poetry & Philosophy
                     </button>
                 </div>
 
@@ -332,7 +338,7 @@
                     </div>
                     <input type="text"
                            x-model="searchQuery"
-                           placeholder="Search videos (e.g. വാസ്തു, പൊരുത്തം)..."
+                           placeholder="Search videos (e.g. പൊരുത്തം, വിദ്യാഭ്യാസം)..."
                            class="w-full pl-9 pr-8 py-2 rounded-xl bg-[#1b102e] border border-amber-500/30 text-xs text-white placeholder-amber-200/40 focus:outline-none focus:border-amber-400">
                     <button type="button"
                             x-show="searchQuery"
@@ -346,7 +352,7 @@
         </div>
 
         <!-- ========================================================================= -->
-        <!-- THE CINEMA GALLERY GRID: STRICTLY 2 COLUMNS ON MOBILE, 3-4 ON PC          -->
+        <!-- THE VIDEO GALLERY GRID: STRICTLY 2 COLUMNS ON MOBILE, 3-4 ON PC           -->
         <!-- ========================================================================= -->
         <div class="space-y-4">
             
@@ -355,7 +361,7 @@
                     Discourses Collection (<span x-text="'{{ $videos->count() }} Discourses'"></span>)
                 </span>
                 <span class="text-[11px] text-amber-300/60">
-                    Tap any poster to play in cinema theater
+                    Tap any video to play discourse
                 </span>
             </div>
 
@@ -368,12 +374,18 @@
                     $titleLower = mb_strtolower($video->title);
                     $descLower = mb_strtolower($video->description);
                     $category = 'counselling';
-                    if (str_contains($titleLower, 'കല്യാണം') || str_contains($titleLower, 'പൊരുത്തം') || str_contains($titleLower, 'വിവാഹ')) {
+                    if (str_contains($titleLower, 'കണ്ടവരുണ്ടോ') || str_contains($titleLower, 'കവിത')) {
+                        $category = 'literary';
+                    } elseif (str_contains($titleLower, 'കല്യാണം') || str_contains($titleLower, 'പൊരുത്തം') || str_contains($titleLower, 'ചൊവ്വാദോഷം') || str_contains($titleLower, 'വിവാഹ')) {
                         $category = 'marriage';
+                    } elseif (str_contains($titleLower, 'പഠിക്കാൻ') || str_contains($titleLower, 'പഠന') || str_contains($titleLower, 'വിദ്യാഭ്യാസം')) {
+                        $category = 'education';
+                    } elseif (str_contains($titleLower, 'മെസ്സേജ്') || str_contains($titleLower, 'പ്രണയം')) {
+                        $category = 'psychology';
                     } elseif (str_contains($titleLower, 'വാസ്തു') || str_contains($titleLower, 'ശരീരഭാഗങ്ങൾ') || str_contains($titleLower, 'കാലപുരുഷ')) {
                         $category = 'vaastu';
-                    } elseif (str_contains($titleLower, 'യോഗ') || str_contains($titleLower, 'കഷ്ടകാലം') || str_contains($titleLower, 'സ്ത്രീകൾക്ക് ദോഷം') || str_contains($titleLower, 'മനുഷ്യർ')) {
-                        $category = 'remedies';
+                    } elseif (str_contains($titleLower, 'ഓൺലൈൻ') || str_contains($titleLower, 'ജ്യോതിഷം')) {
+                        $category = 'counselling';
                     }
                 @endphp
 
@@ -607,14 +619,14 @@
                         <span class="w-3 h-3 rounded-full bg-red-500"></span>
                         <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
                         <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-                        <span class="text-xs font-mono text-amber-300/80 ml-2">Cinema Theater • Covilakam Astrology</span>
+                        <span class="text-xs font-mono text-amber-300/80 ml-2">Vedic Video Player • Covilakam Astrology</span>
                     </div>
 
                     <!-- Close Button -->
                     <button type="button"
                             @click="closeVideo()"
                             class="p-1.5 rounded-full text-amber-300 hover:text-white hover:bg-white/10 transition-colors focus:outline-none"
-                            aria-label="Close Cinema Player">
+                            aria-label="Close Video Player">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                         </svg>

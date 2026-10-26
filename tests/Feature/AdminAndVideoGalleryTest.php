@@ -20,55 +20,51 @@ class AdminAndVideoGalleryTest extends TestCase
         $this->seed(DatabaseSeeder::class);
     }
 
-    public function test_eight_real_youtube_videos_are_seeded_in_exact_order(): void
+    public function test_six_real_youtube_videos_are_seeded_in_exact_order(): void
     {
         $videos = Video::orderBy('sort_order', 'asc')->get();
 
-        $this->assertCount(8, $videos);
+        $this->assertCount(6, $videos);
 
         // Video 1
         $this->assertEquals(1, $videos[0]->sort_order);
-        $this->assertEquals('ZFzqmHgEDKQ', $videos[0]->youtube_id);
-        $this->assertStringContainsString('ഓൺലൈൻ അസ്ട്രോളജി', $videos[0]->title);
+        $this->assertEquals('5LGNeJ2OJdc', $videos[0]->youtube_id);
+        $this->assertStringContainsString('കണ്ടവരുണ്ടോ', $videos[0]->title);
 
         // Video 2
         $this->assertEquals(2, $videos[1]->sort_order);
-        $this->assertEquals('xAo9vh-tMpw', $videos[1]->youtube_id);
-        $this->assertStringContainsString('ഇവ ചെയ്തില്ലെങ്കിൽ സ്ത്രീകൾക്ക് ദോഷം ആണോ ?', $videos[1]->title);
+        $this->assertEquals('ZFzqmHgEDKQ', $videos[1]->youtube_id);
+        $this->assertStringContainsString('ഓൺലൈൻ ജ്യോതിഷം', $videos[1]->title);
 
         // Video 3
         $this->assertEquals(3, $videos[2]->sort_order);
-        $this->assertEquals('ugqn3yZzljU', $videos[2]->youtube_id);
+        $this->assertEquals('bV6yfbEqGLw', $videos[2]->youtube_id);
+        $this->assertStringContainsString('കല്യാണത്തിന് പൊരുത്തം', $videos[3 - 1]->title);
 
         // Video 4
         $this->assertEquals(4, $videos[3]->sort_order);
-        $this->assertEquals('x6X8KEY30k4', $videos[3]->youtube_id);
+        $this->assertEquals('R5D1mF3Jf64', $videos[3]->youtube_id);
+        $this->assertStringContainsString('മെസ്സേജിലൂടെ പ്രണയം', $videos[3]->title);
 
         // Video 5
         $this->assertEquals(5, $videos[4]->sort_order);
-        $this->assertEquals('bV6yfbEqGLw', $videos[4]->youtube_id);
+        $this->assertEquals('PurQ3FTbsuU', $videos[4]->youtube_id);
+        $this->assertStringContainsString('അവർക്കു പഠിക്കാൻ പറ്റാത്തതിന്', $videos[4]->title);
 
         // Video 6
         $this->assertEquals(6, $videos[5]->sort_order);
-        $this->assertEquals('7K_26WT8-uk', $videos[5]->youtube_id);
-
-        // Video 7
-        $this->assertEquals(7, $videos[6]->sort_order);
-        $this->assertEquals('cJEyRaRa5-w', $videos[6]->youtube_id);
-
-        // Video 8
-        $this->assertEquals(8, $videos[7]->sort_order);
-        $this->assertEquals('TFOfLMwuxTo', $videos[7]->youtube_id);
-        $this->assertStringContainsString('വിവാഹ പൊരുത്തം അറിയേണ്ടത്', $videos[7]->title);
+        $this->assertEquals('cLnlMm6qP74', $videos[5]->youtube_id);
+        $this->assertStringContainsString('ചൊവ്വാദോഷമാണ്', $videos[5]->title);
     }
 
     public function test_smart_youtube_id_parser_handles_various_formats(): void
     {
+        $this->assertEquals('5LGNeJ2OJdc', Video::parseYoutubeId('https://youtu.be/5LGNeJ2OJdc?si=mO3USNoPfDtO4MXR'));
         $this->assertEquals('ZFzqmHgEDKQ', Video::parseYoutubeId('https://youtu.be/ZFzqmHgEDKQ?si=NxacyL_HjoelrMl0'));
-        $this->assertEquals('xAo9vh-tMpw', Video::parseYoutubeId('https://www.youtube.com/watch?v=xAo9vh-tMpw'));
-        $this->assertEquals('ugqn3yZzljU', Video::parseYoutubeId('https://www.youtube.com/embed/ugqn3yZzljU'));
-        $this->assertEquals('x6X8KEY30k4', Video::parseYoutubeId('https://youtube.com/shorts/x6X8KEY30k4?feature=share'));
         $this->assertEquals('bV6yfbEqGLw', Video::parseYoutubeId('bV6yfbEqGLw'));
+        $this->assertEquals('R5D1mF3Jf64', Video::parseYoutubeId('https://youtu.be/R5D1mF3Jf64?si=07K6H8hahXpz3dA9'));
+        $this->assertEquals('PurQ3FTbsuU', Video::parseYoutubeId('https://youtu.be/PurQ3FTbsuU?si=W-DOQF6g6mA_rqQx'));
+        $this->assertEquals('cLnlMm6qP74', Video::parseYoutubeId('https://youtu.be/cLnlMm6qP74?si=yf5IkZS6dngHlOF1'));
     }
 
     public function test_homepage_renders_videos_and_watch_all_button(): void
@@ -79,8 +75,7 @@ class AdminAndVideoGalleryTest extends TestCase
         // Video Gallery elements on homepage
         $response->assertSee('Vedic Astrology', false);
         $response->assertSee('Video Gallery', false);
-        $response->assertSee('ZFzqmHgEDKQ', false);
-        $response->assertSee('Featured Insight • Online Astro Counselling', false);
+        $response->assertSee('5LGNeJ2OJdc', false);
         $response->assertSee('activeVideoModal', false); // Lightbox modal
 
         // Watch All Video buttons leading to dedicated video gallery page
@@ -99,10 +94,11 @@ class AdminAndVideoGalleryTest extends TestCase
         $response = $this->get('/videos');
         $response->assertStatus(200);
 
-        // Cinematic branding
+        // Video branding with CINEMA removed from title
         $response->assertSee('VEDIC ASTROLOGY', false);
-        $response->assertSee('CINEMA GALLERY', false);
-        $response->assertSee('FEATURED PREMIERE', false);
+        $response->assertSee('VIDEO GALLERY', false);
+        $response->assertDontSee('CINEMA GALLERY', false);
+        $response->assertSee('Featured Discourse', false);
         $response->assertSee('Watch Premiere Now', false);
 
         // Strict 2-column mobile grid check
@@ -110,21 +106,19 @@ class AdminAndVideoGalleryTest extends TestCase
         $response->assertSee('md:grid-cols-3', false);
         $response->assertSee('lg:grid-cols-4', false);
 
-        // Video items present
+        // The 6 seeded YouTube video IDs are present
+        $response->assertSee('5LGNeJ2OJdc', false);
         $response->assertSee('ZFzqmHgEDKQ', false);
-        $response->assertSee('xAo9vh-tMpw', false);
-        $response->assertSee('ugqn3yZzljU', false);
-        $response->assertSee('x6X8KEY30k4', false);
         $response->assertSee('bV6yfbEqGLw', false);
-        $response->assertSee('7K_26WT8-uk', false);
-        $response->assertSee('cJEyRaRa5-w', false);
-        $response->assertSee('TFOfLMwuxTo', false);
+        $response->assertSee('R5D1mF3Jf64', false);
+        $response->assertSee('PurQ3FTbsuU', false);
+        $response->assertSee('cLnlMm6qP74', false);
 
-        // Cinema interactive controls: category filters, search & theater modal
+        // Interactive controls: category filters, search & theater modal
         $response->assertSee('activeCategory', false);
         $response->assertSee('searchQuery', false);
         $response->assertSee('activeVideoModal', false);
-        $response->assertSee('Cinema Theater', false);
+        $response->assertSee('Vedic Video Player', false);
 
         // VIP Consultation ticket box
         $response->assertSee('Direct Personal Astrology Consultation', false);
@@ -133,12 +127,12 @@ class AdminAndVideoGalleryTest extends TestCase
 
     public function test_individual_video_show_page_loads_with_player(): void
     {
-        $response = $this->get('/videos/ZFzqmHgEDKQ');
+        $response = $this->get('/videos/5LGNeJ2OJdc');
         $response->assertStatus(200);
 
-        $response->assertSee('Now Showing Premiere', false);
-        $response->assertSee('Back to Cinema Video Gallery', false);
-        $response->assertSee('ZFzqmHgEDKQ', false);
+        $response->assertSee('Now Playing Discourse', false);
+        $response->assertSee('Back to Video Gallery', false);
+        $response->assertSee('5LGNeJ2OJdc', false);
         $response->assertSee('More Vedic Astrology', false);
     }
 
