@@ -46,27 +46,42 @@ class Book extends Model
 
     public function getProductAttribute(): ?Product
     {
-        static $slugMap = [
-            1 => 'manoratham',
-            2 => 'randamoozham',
-            3 => 'thrimanam',
-            4 => 'chathurangam',
-            5 => 'panchamrutham',
-            6 => 'shashtangam',
-            7 => 'rajageetham',
-        ];
+        try {
+            if (!\Illuminate\Support\Facades\Schema::hasTable('products')) {
+                return null;
+            }
 
-        $slug = $slugMap[$this->sort_order] ?? null;
-        if ($slug) {
-            return Product::where('slug', $slug)->first();
+            static $slugMap = [
+                1 => 'manoratham',
+                2 => 'randamoozham',
+                3 => 'thrimanam',
+                4 => 'chathurangam',
+                5 => 'panchamrutham',
+                6 => 'shashtangam',
+                7 => 'rajageetham',
+            ];
+
+            $slug = $slugMap[$this->sort_order] ?? null;
+            if ($slug) {
+                return Product::where('slug', $slug)->first();
+            }
+
+            return Product::where('type', 'book')->where('title', 'like', '%' . ($this->malayalam_title ?? '') . '%')->first();
+        } catch (\Throwable $e) {
+            return null;
         }
-
-        return Product::where('type', 'book')->where('title', 'like', '%' . ($this->malayalam_title ?? '') . '%')->first();
     }
 
     public function getShopUrlAttribute(): string
     {
-        $prod = $this->product;
-        return $prod ? route('shop.show', $prod->slug) : route('shop.index');
+        try {
+            $prod = $this->product;
+            if ($prod && !empty($prod->slug)) {
+                return url('/shop/' . $prod->slug);
+            }
+        } catch (\Throwable $e) {
+            // Fallback
+        }
+        return url('/shop');
     }
 }

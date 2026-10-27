@@ -44,11 +44,11 @@
                     <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
                 </a>
                 <a href="{{ route('home') }}#books" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Books</a>
-                <a href="{{ route('shop.index') }}" class="text-amber-300 font-bold hover:text-amber-100 transition-colors py-1 flex items-center space-x-1">
+                <a href="{{ url('/shop') }}" class="text-amber-300 font-bold hover:text-amber-100 transition-colors py-1 flex items-center space-x-1">
                     <span>📚</span>
                     <span>Bookstore</span>
                 </a>
-                <a href="{{ route('razorpay.checkout') }}" class="{{ request()->routeIs('razorpay.checkout') ? 'text-amber-300 font-bold border-b-2 border-amber-400' : 'text-amber-100/80 hover:text-amber-300' }} transition-colors py-1 flex items-center space-x-1">
+                <a href="{{ url('/checkout') }}" class="{{ request()->is('checkout') ? 'text-amber-300 font-bold border-b-2 border-amber-400' : 'text-amber-100/80 hover:text-amber-300' }} transition-colors py-1 flex items-center space-x-1">
                     <span>💳</span>
                     <span>Pay Online</span>
                 </a>
@@ -119,11 +119,11 @@
                 </a>
                 <a @click="mobileMenuOpen = false" href="{{ route('home') }}#books" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">Dr. Raja Varma's Books (രചനകൾ)</a>
                 <a @click="mobileMenuOpen = false" href="{{ route('home') }}#philosophy" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">Astrology Philosophy</a>
-                <a @click="mobileMenuOpen = false" href="{{ route('shop.index') }}" class="px-3 py-2 rounded-lg text-amber-300 font-bold bg-amber-500/20 border border-amber-500/30 flex items-center justify-between">
+                <a @click="mobileMenuOpen = false" href="{{ url('/shop') }}" class="px-3 py-2 rounded-lg text-amber-300 font-bold bg-amber-500/20 border border-amber-500/30 flex items-center justify-between">
                     <span>📚 Vedic Bookstore & Shop</span>
                     <span class="text-xs px-2 py-0.5 rounded-full bg-amber-400 text-[#1a1128] font-bold">New</span>
                 </a>
-                <a @click="mobileMenuOpen = false" href="{{ route('razorpay.checkout') }}" class="px-3 py-2 rounded-lg {{ request()->routeIs('razorpay.checkout') ? 'text-amber-300 font-bold bg-amber-500/20 border border-amber-500/30' : 'text-amber-100 hover:text-amber-300 hover:bg-amber-500/10' }} flex items-center justify-between">
+                <a @click="mobileMenuOpen = false" href="{{ url('/checkout') }}" class="px-3 py-2 rounded-lg {{ request()->is('checkout') ? 'text-amber-300 font-bold bg-amber-500/20 border border-amber-500/30' : 'text-amber-100 hover:text-amber-300 hover:bg-amber-500/10' }} flex items-center justify-between">
                     <span>💳 Pay Online (Razorpay)</span>
                     <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-semibold">Instant</span>
                 </a>

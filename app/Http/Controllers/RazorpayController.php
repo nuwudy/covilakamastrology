@@ -70,6 +70,14 @@ class RazorpayController extends Controller
             ], 401);
         }
 
+        if (!class_exists(\Razorpay\Api\Api::class)) {
+            Log::error('Razorpay SDK not found in vendor. Please run composer install on the server.');
+            return response()->json([
+                'success' => false,
+                'error' => 'Razorpay SDK is not installed. Please run composer install on the server.',
+            ], 500);
+        }
+
         try {
             $api = new Api($keyId, $keySecret);
 
@@ -98,10 +106,10 @@ class RazorpayController extends Controller
                 'key_id' => $keyId, // Key ID is public to frontend (never Secret)
             ], 200);
 
-        } catch (BadRequestError $e) {
+        } catch (\Throwable $e) {
             $message = $e->getMessage();
             $code = $e->getCode();
-            Log::error("Razorpay API BadRequestError ({$code}): {$message}");
+            Log::error("Razorpay API Exception ({$code}): {$message}");
 
             // Handle authentication failures (HTTP 401 / unauthorized)
             if ($code === 401 || str_contains(strtolower($message), 'unauthorized') || str_contains(strtolower($message), 'authentication')) {
@@ -181,17 +189,23 @@ class RazorpayController extends Controller
             // Signature mismatch: return 400, do NOT mark as paid
             Log::warning("Razorpay Signature Verification Failed! Order: {$orderId}, Payment: {$paymentId}");
 
-            // Ensure database order is NOT marked as paid
-            $order = Order::where('razorpay_order_id', $orderId)
-                ->orWhere('order_number', $request->input('order_number'))
-                ->first();
+            // Ensure database order is NOT marked as paid if table exists
+            try {
+                if (\Illuminate\Support\Facades\Schema::hasTable('orders')) {
+                    $order = Order::where('razorpay_order_id', $orderId)
+                        ->orWhere('order_number', $request->input('order_number'))
+                        ->first();
 
-            if ($order && $order->payment_status !== 'paid') {
-                $order->update([
-                    'payment_status' => 'failed',
-                    'razorpay_payment_id' => $paymentId,
-                    'razorpay_signature' => $signature,
-                ]);
+                    if ($order && $order->payment_status !== 'paid') {
+                        $order->update([
+                            'payment_status' => 'failed',
+                            'razorpay_payment_id' => $paymentId,
+                            'razorpay_signature' => $signature,
+                        ]);
+                    }
+                }
+            } catch (\Throwable $e) {
+                Log::warning('Order lookup/update failed in verifyPayment: ' . $e->getMessage());
             }
 
             return response()->json([
@@ -204,26 +218,33 @@ class RazorpayController extends Controller
         Log::info("Razorpay Signature Successfully Verified. Order: {$orderId}, Payment: {$paymentId}");
 
         // If order exists in DB, mark it as paid
-        $order = Order::where('razorpay_order_id', $orderId)
-            ->orWhere('order_number', $request->input('order_number'))
-            ->first();
+        $order = null;
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('orders')) {
+                $order = Order::where('razorpay_order_id', $orderId)
+                    ->orWhere('order_number', $request->input('order_number'))
+                    ->first();
 
-        if ($order) {
-            $deliveryStatus = 'pending';
-            if ($order->product_type === 'digital_pdf') {
-                $deliveryStatus = 'ready_for_download';
-            } elseif ($order->product_type === 'consultation') {
-                $deliveryStatus = 'scheduled';
-            } else {
-                $deliveryStatus = 'processing_shipment';
+                if ($order) {
+                    $deliveryStatus = 'pending';
+                    if ($order->product_type === 'digital_pdf') {
+                        $deliveryStatus = 'ready_for_download';
+                    } elseif ($order->product_type === 'consultation') {
+                        $deliveryStatus = 'scheduled';
+                    } else {
+                        $deliveryStatus = 'processing_shipment';
+                    }
+
+                    $order->update([
+                        'payment_status' => 'paid',
+                        'razorpay_payment_id' => $paymentId,
+                        'razorpay_signature' => $signature,
+                        'delivery_status' => $deliveryStatus,
+                    ]);
+                }
             }
-
-            $order->update([
-                'payment_status' => 'paid',
-                'razorpay_payment_id' => $paymentId,
-                'razorpay_signature' => $signature,
-                'delivery_status' => $deliveryStatus,
-            ]);
+        } catch (\Throwable $e) {
+            Log::warning('Order paid update failed in verifyPayment: ' . $e->getMessage());
         }
 
         return response()->json([

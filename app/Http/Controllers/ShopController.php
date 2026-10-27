@@ -103,7 +103,7 @@ class ShopController extends Controller
         $razorpayOrderId = 'order_' . uniqid();
 
         // Create order via Razorpay API SDK
-        if ($keyId && $keySecret) {
+        if ($keyId && $keySecret && class_exists(\Razorpay\Api\Api::class)) {
             try {
                 $api = new Api($keyId, $keySecret);
                 $razorpayOrder = $api->order->create([

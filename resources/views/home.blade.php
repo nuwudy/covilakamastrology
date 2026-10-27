@@ -1612,7 +1612,7 @@
 
                 <!-- Bookstore Direct Connection Banner -->
                 <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-                    <a href="{{ route('shop.index') }}"
+                    <a href="{{ url('/shop') }}"
                        class="inline-flex items-center space-x-2 px-5 py-2.5 rounded-full text-xs font-bold text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-lg shadow-amber-500/20 transition-all transform hover:-translate-y-0.5">
                         <span>📚</span>
                         <span>Visit Vedic Bookstore (Buy Books Online)</span>
