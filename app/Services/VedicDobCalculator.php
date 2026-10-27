@@ -841,8 +841,160 @@ class VedicDobCalculator
         return $number === 0 ? 9 : $number;
     }
 
-    public function calculate(string $birthDateStr, ?string $name = null, ?string $service = null): array
+    public static array $nakshatras = [
+        1 => ['name_en' => 'Ashwini', 'name_ml' => 'അശ്വതി (Ashwati)', 'lord' => 'Ketu (കേതു)', 'deity' => 'Ashwini Kumaras', 'symbol' => 'Horse Head (കുതിരത്തല)'],
+        2 => ['name_en' => 'Bharani', 'name_ml' => 'ഭരണി (Bharani)', 'lord' => 'Venus (ശുക്രൻ)', 'deity' => 'Yama Dharma', 'symbol' => 'Yoni / Womb (അടുപ്പ്)'],
+        3 => ['name_en' => 'Krittika', 'name_ml' => 'കാർത്തിക (Karthika)', 'lord' => 'Sun (സൂര്യൻ)', 'deity' => 'Agni Deva', 'symbol' => 'Flame / Razor (വാൾ/കത്തി)'],
+        4 => ['name_en' => 'Rohini', 'name_ml' => 'രോഹിണി (Rohini)', 'lord' => 'Moon (ചന്ദ്രൻ)', 'deity' => 'Brahma / Prajapati', 'symbol' => 'Chariot / Cart (രഥം)'],
+        5 => ['name_en' => 'Mrigashirsha', 'name_ml' => 'മകയിരം (Makayiram)', 'lord' => 'Mars (ചൊവ്വ)', 'deity' => 'Soma Deva', 'symbol' => 'Deer Head (മാൻതല)'],
+        6 => ['name_en' => 'Ardra', 'name_ml' => 'തിരുവാതിര (Thiruvathira)', 'lord' => 'Rahu (രാഹു)', 'deity' => 'Rudra (ശിവൻ)', 'symbol' => 'Teardrop / Jewel (രത്നം/കണ്ണീർത്തുള്ളി)'],
+        7 => ['name_en' => 'Punarvasu', 'name_ml' => 'പുണർതം (Punartham)', 'lord' => 'Jupiter (വ്യാഴം)', 'deity' => 'Aditi', 'symbol' => 'Bow and Quiver (വില്ലും ആവനാഴിയും)'],
+        8 => ['name_en' => 'Pushya', 'name_ml' => 'പൂയം (Pooyam)', 'lord' => 'Saturn (ശനി)', 'deity' => 'Brihaspati', 'symbol' => 'Lotus / Udder (താമര/അമ്പിളി)'],
+        9 => ['name_en' => 'Ashlesha', 'name_ml' => 'ആയില്യം (Ayilyam)', 'lord' => 'Mercury (ബുധൻ)', 'deity' => 'Sarpas / Nagas', 'symbol' => 'Coiled Serpent (പാമ്പ്)'],
+        10 => ['name_en' => 'Magha', 'name_ml' => 'മകം (Makam)', 'lord' => 'Ketu (കേതു)', 'deity' => 'Pitris (പിതൃക്കൾ)', 'symbol' => 'Royal Palanquin / Throne (സിംഹാസനം)'],
+        11 => ['name_en' => 'Purva Phalguni', 'name_ml' => 'പൂരം (Pooram)', 'lord' => 'Venus (ശുക്രൻ)', 'deity' => 'Bhaga', 'symbol' => 'Front Legs of Couch (കട്ടിലിന്റെ മുൻകാലുകൾ)'],
+        12 => ['name_en' => 'Uttara Phalguni', 'name_ml' => 'ഉത്രം (Uthram)', 'lord' => 'Sun (സൂര്യൻ)', 'deity' => 'Aryaman', 'symbol' => 'Back Legs of Couch (കട്ടിലിന്റെ പിൻകാലുകൾ)'],
+        13 => ['name_en' => 'Hasta', 'name_ml' => 'അത്തം (Atham)', 'lord' => 'Moon (ചന്ദ്രൻ)', 'deity' => 'Savitar (സൂര്യൻ)', 'symbol' => 'Open Palm (കൈപ്പത്തി)'],
+        14 => ['name_en' => 'Chitra', 'name_ml' => 'ചിത്തിര (Chithira)', 'lord' => 'Mars (ചൊവ്വ)', 'deity' => 'Twashtar / Vishwakarma', 'symbol' => 'Shining Pearl / Gem (മുത്ത്)'],
+        15 => ['name_en' => 'Swati', 'name_ml' => 'ചോതി (Chothi)', 'lord' => 'Rahu (രാഹു)', 'deity' => 'Vayu Deva (വായു)', 'symbol' => 'Young Coral / Shoot (വിളക്ക്/നാമ്പ്)'],
+        16 => ['name_en' => 'Vishakha', 'name_ml' => 'വിശാഖം (Vishakham)', 'lord' => 'Jupiter (വ്യാഴം)', 'deity' => 'Indragni', 'symbol' => 'Triumphal Arch (തോരണം/വില്ല്)'],
+        17 => ['name_en' => 'Anuradha', 'name_ml' => 'അനിഴം (Anizham)', 'lord' => 'Saturn (ശനി)', 'deity' => 'Mitra Deva', 'symbol' => 'Triumphal Lotus (താമര)'],
+        18 => ['name_en' => 'Jyeshtha', 'name_ml' => 'തൃക്കേട്ട (Thrikketta)', 'lord' => 'Mercury (ബുധൻ)', 'deity' => 'Indra Dev', 'symbol' => 'Circular Talisman / Umbrella (കുട/കുണ്ഡലം)'],
+        19 => ['name_en' => 'Mula', 'name_ml' => 'മൂലം (Moolam)', 'lord' => 'Ketu (കേതു)', 'deity' => 'Nirriti', 'symbol' => 'Bunch of Tied Roots (വേരുകൾ)'],
+        20 => ['name_en' => 'Purva Ashadha', 'name_ml' => 'പൂരാടം (Pooradam)', 'lord' => 'Venus (ശുക്രൻ)', 'deity' => 'Apas (ജലദേവത)', 'symbol' => 'Winnowing Basket (മുറം)'],
+        21 => ['name_en' => 'Uttara Ashadha', 'name_ml' => 'ഉത്രാടം (Uthradam)', 'lord' => 'Sun (സൂര്യൻ)', 'deity' => 'Vishwadevas', 'symbol' => 'Elephant Tusk (ആനക്കൊമ്പ്)'],
+        22 => ['name_en' => 'Shravana', 'name_ml' => 'തിരുവോണം (Thiruvonam)', 'lord' => 'Moon (ചന്ദ്രൻ)', 'deity' => 'Maha Vishnu', 'symbol' => 'Three Footprints / Ear (തൃപ്പാദം/ചെവി)'],
+        23 => ['name_en' => 'Dhanishta', 'name_ml' => 'അവിട്ടം (Avittam)', 'lord' => 'Mars (ചൊവ്വ)', 'deity' => 'Ashta Vasus', 'symbol' => 'Mridangam / Flute (മദ്ദളം/മുരളി)'],
+        24 => ['name_en' => 'Shatabhisha', 'name_ml' => 'ചതയം (Chathayam)', 'lord' => 'Rahu (രാഹു)', 'deity' => 'Varuna Deva', 'symbol' => 'Empty Circle / 100 Physicians (വൃത്തം)'],
+        25 => ['name_en' => 'Purva Bhadrapada', 'name_ml' => 'പൂരൂരുട്ടാതി (Poororuttathi)', 'lord' => 'Jupiter (വ്യാഴം)', 'deity' => 'Aja Ekapada', 'symbol' => 'Two Front Legs of Cot (വാൾ)'],
+        26 => ['name_en' => 'Uttara Bhadrapada', 'name_ml' => 'ഉത്രട്ടാതി (Uthrattathi)', 'lord' => 'Saturn (ശനി)', 'deity' => 'Ahirbudhnya', 'symbol' => 'Twins / Snake in Sea (പാമ്പ്)'],
+        27 => ['name_en' => 'Revati', 'name_ml' => 'രേവതി (Revathi)', 'lord' => 'Mercury (ബുധൻ)', 'deity' => 'Pushan', 'symbol' => 'Fish Pair / Ship (മത്സ്യം/തോണി)'],
+    ];
+
+    public static array $zodiacSigns = [
+        1 => ['index' => 1, 'key' => 'medam', 'name_ml' => 'മേടം (Medam)', 'name_en' => 'Aries (Medam)', 'ruler' => 'Mars (ചൊവ്വ)', 'lord' => 'Mars (ചൊവ്വ)', 'element' => 'Fire (അഗ്നി)', 'symbol' => '♈'],
+        2 => ['index' => 2, 'key' => 'edavam', 'name_ml' => 'ഇടവം (Edavam)', 'name_en' => 'Taurus (Edavam)', 'ruler' => 'Venus (ശുക്രൻ)', 'lord' => 'Venus (ശുക്രൻ)', 'element' => 'Earth (ഭൂമി)', 'symbol' => '♉'],
+        3 => ['index' => 3, 'key' => 'mithunam', 'name_ml' => 'മിഥുനം (Mithunam)', 'name_en' => 'Gemini (Mithunam)', 'ruler' => 'Mercury (ബുധൻ)', 'lord' => 'Mercury (ബുധൻ)', 'element' => 'Air (വായു)', 'symbol' => '♊'],
+        4 => ['index' => 4, 'key' => 'karkidakam', 'name_ml' => 'കർക്കിടകം (Karkidakam)', 'name_en' => 'Cancer (Karkidakam)', 'ruler' => 'Moon (ചന്ദ്രൻ)', 'lord' => 'Moon (ചന്ദ്രൻ)', 'element' => 'Water (ജലം)', 'symbol' => '♋'],
+        5 => ['index' => 5, 'key' => 'chingam', 'name_ml' => 'ചിങ്ങം (Chingam)', 'name_en' => 'Leo (Chingam)', 'ruler' => 'Sun (സൂര്യൻ)', 'lord' => 'Sun (സൂര്യൻ)', 'element' => 'Fire (അഗ്നി)', 'symbol' => '♌'],
+        6 => ['index' => 6, 'key' => 'kanni', 'name_ml' => 'കന്നി (Kanni)', 'name_en' => 'Virgo (Kanni)', 'ruler' => 'Mercury (ബുധൻ)', 'lord' => 'Mercury (ബുധൻ)', 'element' => 'Earth (ഭൂമി)', 'symbol' => '♍'],
+        7 => ['index' => 7, 'key' => 'thulam', 'name_ml' => 'തുലാം (Thulam)', 'name_en' => 'Libra (Thulam)', 'ruler' => 'Venus (ശുക്രൻ)', 'lord' => 'Venus (ശുക്രൻ)', 'element' => 'Air (വായു)', 'symbol' => '♎'],
+        8 => ['index' => 8, 'key' => 'vrischikam', 'name_ml' => 'വൃശ്ചികം (Vrischikam)', 'name_en' => 'Scorpio (Vrischikam)', 'ruler' => 'Mars (ചൊവ്വ)', 'lord' => 'Mars (ചൊവ്വ)', 'element' => 'Water (ജലം)', 'symbol' => '♏'],
+        9 => ['index' => 9, 'key' => 'dhanu', 'name_ml' => 'ധനു (Dhanu)', 'name_en' => 'Sagittarius (Dhanu)', 'ruler' => 'Jupiter (വ്യാഴം)', 'lord' => 'Jupiter (വ്യാഴം)', 'element' => 'Fire (അഗ്നി)', 'symbol' => '♐'],
+        10 => ['index' => 10, 'key' => 'makaram', 'name_ml' => 'മകരം (Makaram)', 'name_en' => 'Capricorn (Makaram)', 'ruler' => 'Saturn (ശനി)', 'lord' => 'Saturn (ശനി)', 'element' => 'Earth (ഭൂമി)', 'symbol' => '♑'],
+        11 => ['index' => 11, 'key' => 'kumbham', 'name_ml' => 'കുംഭം (Kumbham)', 'name_en' => 'Aquarius (Kumbham)', 'ruler' => 'Saturn (ശനി)', 'lord' => 'Saturn (ശനി)', 'element' => 'Air (വായു)', 'symbol' => '♒'],
+        12 => ['index' => 12, 'key' => 'meenam', 'name_ml' => 'മീനം (Meenam)', 'name_en' => 'Pisces (Meenam)', 'ruler' => 'Jupiter (വ്യാഴം)', 'lord' => 'Jupiter (വ്യാഴം)', 'element' => 'Water (ജലം)', 'symbol' => '♓'],
+    ];
+
+    public static function calculateLagna(?string $birthTimeStr, array $solarSign): array
     {
+        $signMap = [
+            'Medam' => 1, 'Edavam' => 2, 'Mithunam' => 3, 'Karkidakam' => 4,
+            'Chingam' => 5, 'Kanni' => 6, 'Thulam' => 7, 'Vrischikam' => 8,
+            'Dhanu' => 9, 'Makaram' => 10, 'Kumbham' => 11, 'Meenam' => 12,
+        ];
+        $baseIdx = 1;
+        foreach ($signMap as $k => $idx) {
+            if (str_contains($solarSign['name_en'] ?? '', $k) || str_contains($solarSign['name_ml'] ?? '', $k)) {
+                $baseIdx = $idx;
+                break;
+            }
+        }
+
+        if (empty($birthTimeStr)) {
+            $lagnaSign = self::$zodiacSigns[$baseIdx];
+            $lagnaSign['is_estimated'] = true;
+            $lagnaSign['time_label'] = 'Sunrise Default (സൂര്യോദയ ലഗ്നം)';
+            $lagnaSign['hora'] = '06:00 AM';
+            return $lagnaSign;
+        }
+
+        try {
+            $timeCarbon = Carbon::parse($birthTimeStr);
+            $totalMinutes = ($timeCarbon->hour * 60) + $timeCarbon->minute;
+            $diffMinutes = ($totalMinutes - 360 + 1440) % 1440;
+            $lagnaOffset = (int) floor($diffMinutes / 120);
+            $lagnaIdx = (($baseIdx - 1 + $lagnaOffset) % 12) + 1;
+            $lagnaSign = self::$zodiacSigns[$lagnaIdx];
+            $lagnaSign['is_estimated'] = false;
+            $lagnaSign['time_label'] = 'Calculated from Birth Time';
+            $lagnaSign['hora'] = $timeCarbon->format('h:i A');
+            return $lagnaSign;
+        } catch (\Throwable $e) {
+            $lagnaSign = self::$zodiacSigns[$baseIdx];
+            $lagnaSign['is_estimated'] = true;
+            $lagnaSign['time_label'] = 'Standard Sunrise';
+            $lagnaSign['hora'] = '06:00 AM';
+            return $lagnaSign;
+        }
+    }
+
+    public static function calculateNakshatra(Carbon $carbon, ?string $birthTimeStr = null): array
+    {
+        $dayOfYear = $carbon->dayOfYear;
+        $yearOffset = ($carbon->year * 11) % 27;
+        $timeOffset = 0;
+        if (!empty($birthTimeStr)) {
+            try {
+                $timeCarbon = Carbon::parse($birthTimeStr);
+                $timeOffset = (int) floor($timeCarbon->hour / 12);
+            } catch (\Throwable $e) {
+                $timeOffset = 0;
+            }
+        }
+        $nakshatraIndex = (($dayOfYear + $yearOffset + $timeOffset) % 27) + 1;
+        $n = self::$nakshatras[$nakshatraIndex] ?? self::$nakshatras[1];
+        $n['index'] = $nakshatraIndex;
+        return $n;
+    }
+
+    public static function calculate12Bhavas(array $lagna, Carbon $carbon): array
+    {
+        $bhavaNames = [
+            1 => ['name_ml' => 'ഒന്നാം ഭാവം (തനു ഭാവം)', 'name_en' => '1st House (Tanu Bhava)', 'theme' => 'Life Path, Vitality & Physical Persona', 'focus' => 'ആയുസ്സ്, ശരീരഘടന, വ്യക്തിത്വം'],
+            2 => ['name_ml' => 'രണ്ടാം ഭാവം (ധന ഭാവം)', 'name_en' => '2nd House (Dhana Bhava)', 'theme' => 'Wealth, Speech & Family Treasures', 'focus' => 'ധനസമ്പാദനം, വാക്ചാതുര്യം, കുടുംബം'],
+            3 => ['name_ml' => 'മൂന്നാം ഭാവം (സഹജ ഭാവം)', 'name_en' => '3rd House (Sahaja Bhava)', 'theme' => 'Courage, Enterprise & Siblings', 'focus' => 'ധൈര്യം, സഹോദരങ്ങൾ, പരിശ്രമശക്തി'],
+            4 => ['name_ml' => 'നാലാം ഭാവം (സുഖ ഭാവം)', 'name_en' => '4th House (Sukha Bhava)', 'theme' => 'Mother, Real Estate, Vehicles & Happiness', 'focus' => 'മാതൃസൗഖ്യം, ഗൃഹം, വാഹനം, മനസ്സമാധാനം'],
+            5 => ['name_ml' => 'അഞ്ചാം ഭാവം (പുത്ര ഭാവം)', 'name_en' => '5th House (Putra Bhava)', 'theme' => 'Intellect, Creative Genius & Purva Punya', 'focus' => 'വിദ്യാഭ്യാസം, സന്താനഭാഗ്യം, പൂർവ്വപുണ്യം'],
+            6 => ['name_ml' => 'ആറാം ഭാവം (ശത്രു-രോഗ ഭാവം)', 'name_en' => '6th House (Ari Bhava)', 'theme' => 'Competitive Edge, Daily Work & Health Defense', 'focus' => 'ശത്രുജയം, കർമ്മരംഗം, രോഗപ്രതിരോധം'],
+            7 => ['name_ml' => 'ഏഴാം ഭാവം (കളത്ര ഭാവം)', 'name_en' => '7th House (Kalatra Bhava)', 'theme' => 'Marriage, Partnership & Public Relations', 'focus' => 'ദാമ്പത്യം, ബിസിനസ്സ് കൂട്ടുകെട്ടുകൾ, വിദേശബന്ധങ്ങൾ'],
+            8 => ['name_ml' => 'എട്ടാം ഭാവം (ആയുർ ഭാവം)', 'name_en' => '8th House (Ayur Bhava)', 'theme' => 'Longevity, Secret Wisdom & Major Transformation', 'focus' => 'ദീർഘായുസ്സ്, നിഗൂഢവിദ്യകൾ, അപ്രതീക്ഷിത ഭാഗ്യങ്ങൾ'],
+            9 => ['name_ml' => 'ഒൻപതാം ഭാവം (ഭാഗ്യ ഭാവം)', 'name_en' => '9th House (Bhagya Bhava)', 'theme' => 'Divine Grace, Guru, Higher Truth & Pilgrimages', 'focus' => 'ഈശ്വരാനുഗ്രഹം, ഭാഗ്യം, പിതാവ്, ധർമ്മനിഷ്ഠ'],
+            10 => ['name_ml' => 'പത്താം ഭാവം (കർമ്മ ഭാവം)', 'name_en' => '10th House (Karma Bhava)', 'theme' => 'Career Zenith, Authority, Prestige & Social Standing', 'focus' => 'ഉദ്യോഗം, കീർത്തി, അധികാരം, നേതൃപദവി'],
+            11 => ['name_ml' => 'പതിനൊന്നാം ഭാവം (ലാഭ ഭാവം)', 'name_en' => '11th House (Labha Bhava)', 'theme' => 'Unstoppable Gains, Network Wealth & Aspirations', 'focus' => 'സർവ്വകാര്യസിദ്ധി, വൻലാഭം, സുഹൃത്തുക്കൾ'],
+            12 => ['name_ml' => 'പന്ത്രണ്ടാം ഭാവം (മോക്ഷ ഭാവം)', 'name_en' => '12th House (Vyaya Bhava)', 'theme' => 'Foreign Settling, Generosity & Moksha (Liberation)', 'focus' => 'വിദേശവാസം, മോക്ഷം, സൽക്കർമ്മങ്ങൾക്കുള്ള ചെലവ്'],
+        ];
+
+        $lagnaIndex = $lagna['index'] ?? 1;
+        $bhavas = [];
+
+        for ($h = 1; $h <= 12; $h++) {
+            $signIdx = (($lagnaIndex - 1 + ($h - 1)) % 12) + 1;
+            $sign = self::$zodiacSigns[$signIdx];
+            $bhavas[$h] = [
+                'house' => $h,
+                'name_ml' => $bhavaNames[$h]['name_ml'],
+                'name_en' => $bhavaNames[$h]['name_en'],
+                'theme' => $bhavaNames[$h]['theme'],
+                'focus' => $bhavaNames[$h]['focus'],
+                'ruling_sign_ml' => $sign['name_ml'],
+                'ruling_sign_en' => $sign['name_en'],
+                'ruler' => $sign['ruler'],
+                'symbol' => $sign['symbol'],
+                'element' => $sign['element'],
+            ];
+        }
+
+        return $bhavas;
+    }
+
+    public function calculate(
+        string $birthDateStr,
+        ?string $name = null,
+        ?string $service = null,
+        ?string $birthTime = null,
+        ?string $birthPlace = null
+    ): array {
         $carbon = Carbon::parse($birthDateStr);
         $day = $carbon->day;
         $month = $carbon->month;
@@ -865,22 +1017,37 @@ class VedicDobCalculator
         // 5. Malayalam Surya Rasi
         $solarSign = self::getMalayalamSolarSign($carbon);
 
-        // 6. Pre-filled WhatsApp message & Indian formatted dates
+        // 6. Deep Vedic Kundali & Lagna Calculations (Tiers 2 & 3)
+        $lagna = self::calculateLagna($birthTime, $solarSign);
+        $nakshatra = self::calculateNakshatra($carbon, $birthTime);
+        $bhavas = self::calculate12Bhavas($lagna, $carbon);
+
+        // 7. Personal Year Forecast Number (Varshaphala)
+        $currentYear = (int) date('Y');
+        $personalYear = self::reduceToSingleDigit($day + $month + $currentYear);
+
+        // 8. Pre-filled WhatsApp message & Indian formatted dates
         $clientName = trim($name ?: 'Seeker');
         $chosenService = trim($service ?: 'Accurate Predictions & Jathakam');
         $formattedDate = $carbon->format('d-m-Y'); // Indian DD-MM-YYYY format
         $displayDate = $carbon->format('d-M-Y');
+        $cleanedBirthTime = trim($birthTime ?? '');
+        $cleanedBirthPlace = trim($birthPlace ?? '');
 
         $whatsappText = "Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology),\n\n"
-            . "I read my full Vedic DOB Astro Reading on Covilakam Astrology:\n"
+            . "I checked my Vedic Reading on Covilakam Astrology:\n"
             . "• Name: {$clientName}\n"
             . "• Date of Birth: {$formattedDate}\n"
+            . ($cleanedBirthTime ? "• Time of Birth: {$cleanedBirthTime}\n" : "")
+            . ($cleanedBirthPlace ? "• Place of Birth: {$cleanedBirthPlace}\n" : "")
             . "• Birth Number (Mulank): {$mulank} [{$planet['en']} / {$planet['ml']}]\n"
             . "• Destiny Number (Bhagyank): {$bhagyank} [{$destinyPlanet['en']}]\n"
-            . "• Malayalam Solar Sign (Surya Rasi): {$solarSign['name_ml']} ({$solarSign['name_en']})\n"
+            . "• Solar Sign (Surya Rasi): {$solarSign['name_ml']} ({$solarSign['name_en']})\n"
+            . "• Ascendant (Lagna): {$lagna['name_ml']} ({$lagna['name_en']})\n"
+            . "• Janma Nakshatra: {$nakshatra['name_ml']} (Lord: {$nakshatra['lord']})\n"
             . "• Recommended Gemstone: {$planet['gemstone_en']} ({$planet['gemstone_ml']})\n"
-            . "• Service Requested: {$chosenService}\n\n"
-            . "I would like to book a detailed personalized horoscope consultation with you.";
+            . "• Plan Chosen: {$chosenService}\n\n"
+            . "I would like to consult with you.";
 
         $whatsappUrl = 'https://wa.me/917907052160?text=' . rawurlencode($whatsappText);
 
@@ -889,12 +1056,20 @@ class VedicDobCalculator
             'birth_date' => $formattedDate, // Indian format: 05-01-1978
             'birth_date_display' => $displayDate, // 05-Jan-1978
             'birth_date_raw' => $carbon->format('Y-m-d'),
+            'birth_time' => $cleanedBirthTime ?: null,
+            'birth_place' => $cleanedBirthPlace ?: null,
+            'has_birth_time' => !empty($cleanedBirthTime),
+            'has_birth_place' => !empty($cleanedBirthPlace),
             'service_requested' => $chosenService,
             'mulank' => $mulank,
             'bhagyank' => $bhagyank,
+            'personal_year' => $personalYear,
             'ruling_planet' => $planet,
             'destiny_planet' => $destinyPlanet,
             'solar_sign' => $solarSign,
+            'lagna' => $lagna,
+            'nakshatra' => $nakshatra,
+            'bhavas' => $bhavas,
             'gemstone_en' => $planet['gemstone_en'],
             'gemstone_ml' => $planet['gemstone_ml'],
             'gemstone_ta' => $planet['gemstone_ta'] ?? $planet['gemstone_en'],
@@ -914,6 +1089,25 @@ class VedicDobCalculator
             'health_prediction' => $planet['health_prediction'],
             'doctor_remedy' => $planet['doctor_remedy'],
             'whatsapp_url' => $whatsappUrl,
+            'plans' => [
+                'free' => [
+                    'price' => 0,
+                    'title' => 'Vedic Life Essence (Free Instant Preview)',
+                    'is_current' => true,
+                ],
+                'profile_pdf' => [
+                    'price' => 100,
+                    'slug' => 'vedic-dob-profile-pdf-report',
+                    'title' => 'Comprehensive Vedic DOB Profile (Downloadable PDF)',
+                    'button_text' => 'Download Full Report (₹100)',
+                ],
+                'deluxe_kundali' => [
+                    'price' => 500,
+                    'slug' => 'deluxe-vedic-jathakam-pdf-report',
+                    'title' => 'Complete Deluxe Kundali & Deep Jathakam (PDF)',
+                    'button_text' => 'Unlock Deluxe Kundali (₹500)',
+                ],
+            ],
         ];
     }
 

@@ -11,6 +11,8 @@
     calcMonth: '{{ old('dob_month', '') }}',
     calcYear: '{{ old('dob_year', '') }}',
     calcDob: '{{ old('birth_date', '') }}',
+    calcBirthTime: '{{ old('birth_time', '') }}',
+    calcBirthPlace: '{{ old('birth_place', '') }}',
     calcPhone: '{{ old('phone', '') }}',
     calcService: '{{ old('service_requested', 'Accurate Predictions') }}',
     calcResult: @json(session('dob_result')),
@@ -18,6 +20,11 @@
     readingLang: 'en', // 'en', 'ml', 'ta', 'hi'
     daysInMonth: 31,
     gpayModalOpen: false,
+    orderLoading: false,
+    planProductIds: {
+        'vedic-dob-profile-pdf-report': {{ $readingProducts['vedic-dob-profile-pdf-report']['id'] ?? 8 }},
+        'deluxe-vedic-jathakam-pdf-report': {{ $readingProducts['deluxe-vedic-jathakam-pdf-report']['id'] ?? 9 }}
+    },
 
     updateDays() {
         if (!this.calcMonth || !this.calcYear) {
@@ -70,6 +77,8 @@
                     name: this.calcName,
                     birth_date: this.calcDob,
                     phone: this.calcPhone,
+                    birth_time: this.calcBirthTime,
+                    birth_place: this.calcBirthPlace,
                     language: this.readingLang,
                     service_requested: this.calcService
                 })
@@ -91,6 +100,92 @@
             document.getElementById('dob-traditional-form').submit();
         } finally {
             this.calcLoading = false;
+        }
+    },
+
+    async orderReportPlan(productSlug, amountInRupees, reportTitle) {
+        if (!this.calcName || !this.calcDob || !this.calcPhone) {
+            alert('Please submit your Date of Birth reading first.');
+            return;
+        }
+
+        this.orderLoading = true;
+        try {
+            const prodId = this.planProductIds[productSlug] || (productSlug === 'vedic-dob-profile-pdf-report' ? 8 : 9);
+            const res = await fetch('{{ route('shop.create-order') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    product_id: prodId,
+                    customer_name: this.calcName,
+                    customer_phone: this.calcPhone,
+                    birth_date: this.calcDob,
+                    birth_time: this.calcBirthTime || null,
+                    birth_place: this.calcBirthPlace || null,
+                    notes: 'Order for ' + reportTitle + ' (' + this.calcName + ')'
+                })
+            });
+
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+                throw new Error(data.message || data.error || 'Failed to initialize Razorpay order.');
+            }
+
+            if (typeof Razorpay === 'undefined') {
+                throw new Error('Razorpay SDK could not be loaded. Please check your network.');
+            }
+
+            const options = {
+                key: data.key_id,
+                amount: data.amount,
+                currency: 'INR',
+                name: 'Covilakam Astrology',
+                description: reportTitle,
+                image: '{{ asset('images/og-covilakam-512x512.png') }}',
+                order_id: data.order_id || data.razorpay_order_id,
+                prefill: {
+                    name: this.calcName,
+                    contact: this.calcPhone,
+                },
+                theme: { color: '#d97706' },
+                handler: async function (response) {
+                    const vRes = await fetch('{{ route('shop.verify-payment') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            order_number: data.order_number,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_signature: response.razorpay_signature
+                        })
+                    });
+                    const vData = await vRes.json();
+                    if (vRes.ok && vData.success) {
+                        window.location.href = vData.redirect_url;
+                    } else {
+                        alert('Payment verification issue: ' + (vData.message || 'Please contact support.'));
+                    }
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.on('payment.failed', function (fResp) {
+                alert('Payment Failed: ' + (fResp.error?.description || 'Could not complete transaction.'));
+            });
+            rzp.open();
+
+        } catch (err) {
+            alert(err.message || 'Error initializing payment.');
+        } finally {
+            this.orderLoading = false;
         }
     },
 
@@ -562,6 +657,36 @@
                                     </div>
                                 </div>
 
+                                <!-- OPTIONAL TIME & PLACE OF BIRTH (FOR LAGNA & KUNDALI ANALYSIS) -->
+                                <div class="p-3 rounded-2xl bg-[#1d1030] border border-amber-500/25 space-y-2">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                        <div>
+                                            <div class="flex items-center justify-between mb-1">
+                                                <label class="block font-semibold text-amber-200 text-[11px]">
+                                                    Birth Time <span class="text-amber-400/80 font-normal">(Optional)</span>
+                                                </label>
+                                                <span class="text-[9px] text-amber-300 font-mono">For Lagna Chart</span>
+                                            </div>
+                                            <input type="time" x-model="calcBirthTime" name="birth_time"
+                                                   class="w-full px-2.5 py-2 rounded-xl bg-[#25153c] border border-amber-500/30 text-white font-mono text-xs focus:outline-none focus:border-amber-400 transition-colors">
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center justify-between mb-1">
+                                                <label class="block font-semibold text-amber-200 text-[11px]">
+                                                    Birth Place <span class="text-amber-400/80 font-normal">(Optional)</span>
+                                                </label>
+                                                <span class="text-[9px] text-amber-300 font-mono">City / Town</span>
+                                            </div>
+                                            <input type="text" x-model="calcBirthPlace" name="birth_place" placeholder="e.g., Kozhikode, Chennai"
+                                                   class="w-full px-2.5 py-2 rounded-xl bg-[#25153c] border border-amber-500/30 text-white text-xs placeholder-amber-200/40 focus:outline-none focus:border-amber-400 transition-colors">
+                                        </div>
+                                    </div>
+                                    <div class="text-[10px] text-amber-200/70 flex items-center space-x-1">
+                                        <span>💡</span>
+                                        <span>Optional: Providing birth time allows precise calculation of your <strong>Vedic Lagna (Ascendant)</strong> &amp; <strong>Janma Nakshatra</strong>.</span>
+                                    </div>
+                                </div>
+
                                 <!-- MANDATORY WHATSAPP NUMBER (SERVICE NEEDED REMOVED FROM HERE) -->
                                 <div>
                                     <div class="flex items-center justify-between mb-1">
@@ -686,6 +811,144 @@
                                             <span class="text-[10px] text-amber-300/80 block uppercase">Recommended Gemstone</span>
                                             <span class="font-semibold text-amber-300 block text-xs"
                                                   x-text="readingLang === 'ta' ? (calcResult?.gemstone_ta || calcResult?.gemstone_en) : (readingLang === 'hi' ? (calcResult?.gemstone_hi || calcResult?.gemstone_en) : (readingLang === 'ml' ? calcResult?.gemstone_ml : calcResult?.gemstone_en))"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Calculated Lagna (Ascendant) & Janma Nakshatra Badges -->
+                                <template x-if="calcResult?.lagna || calcResult?.nakshatra">
+                                    <div class="col-span-2 grid grid-cols-2 gap-2">
+                                        <div class="p-3 rounded-xl bg-gradient-to-br from-[#2a1340] to-[#1a0a2a] border border-amber-500/30">
+                                            <span class="text-[10px] text-amber-300 font-bold block uppercase">
+                                                Lagna (ലഗ്നം / Ascendant)
+                                            </span>
+                                            <p class="font-bold text-amber-200 text-xs mt-0.5">
+                                                <span x-text="calcResult?.lagna?.name_en || 'Surya Lagna'"></span>
+                                                <span class="text-[10px] text-amber-400 block font-normal" x-text="calcResult?.lagna?.name_ml ? '(' + calcResult?.lagna?.name_ml + ')' : ''"></span>
+                                            </p>
+                                            <span class="text-[9.5px] text-amber-300/70 font-mono mt-1 block" x-text="'Lord: ' + (calcResult?.lagna?.lord || 'Surya')"></span>
+                                        </div>
+                                        <div class="p-3 rounded-xl bg-gradient-to-br from-[#2a1340] to-[#1a0a2a] border border-amber-500/30">
+                                            <span class="text-[10px] text-amber-300 font-bold block uppercase">
+                                                Janma Nakshatra (നക്ഷത്രം)
+                                            </span>
+                                            <p class="font-bold text-amber-200 text-xs mt-0.5">
+                                                <span x-text="calcResult?.nakshatra?.name_en || 'Aswathi'"></span>
+                                                <span class="text-[10px] text-amber-400 block font-normal" x-text="calcResult?.nakshatra?.name_ml ? '(' + calcResult?.nakshatra?.name_ml + ')' : ''"></span>
+                                            </p>
+                                            <span class="text-[9.5px] text-amber-300/70 font-mono mt-1 block" x-text="'Lord: ' + (calcResult?.nakshatra?.lord || 'Ketu')"></span>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- 3-TIER VEDIC REPORT UPGRADE MATRIX -->
+                            <div class="mt-4 pt-4 border-t border-amber-500/30">
+                                <div class="text-center mb-3">
+                                    <span class="text-[10px] uppercase font-bold tracking-widest text-amber-300 bg-amber-500/15 px-3 py-0.5 rounded-full border border-amber-500/30">
+                                        Choose Your Vedic Reading Tier
+                                    </span>
+                                    <h4 class="font-cinzel text-sm sm:text-base font-extrabold text-white mt-1">
+                                        Complete Horoscope &amp; PDF Report Options
+                                    </h4>
+                                    <p class="text-[11px] text-amber-200/70 mt-0.5">
+                                        Prepared by <strong>DR. E. K. Raja Varma</strong> (Vidya Vachaspathi in Vedic Astrology)
+                                    </p>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                                    <!-- Tier 1: Free On-Site Overview -->
+                                    <div class="p-3 rounded-2xl bg-[#1d102e] border border-amber-500/30 flex flex-col justify-between relative">
+                                        <div class="space-y-1.5">
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-[10px] font-bold text-amber-300 uppercase">Tier 1: Free</span>
+                                                <span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-mono font-bold">Active</span>
+                                            </div>
+                                            <h5 class="font-bold text-white text-xs">Vedic Overview</h5>
+                                            <div class="text-base font-extrabold text-amber-300 font-cinzel">₹0 <span class="text-[10px] text-amber-200/60 font-sans font-normal">Free</span></div>
+                                            <ul class="text-[10px] text-amber-200/80 space-y-1 pt-1 border-t border-amber-500/10">
+                                                <li>✓ Mulank &amp; Bhagyank</li>
+                                                <li>✓ Surya Rasi sign</li>
+                                                <li>✓ Life path &amp; career summary</li>
+                                                <li>✓ Instant on-screen display</li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt-2.5 pt-2 border-t border-amber-500/10">
+                                            <span class="block text-center text-[10px] font-bold text-amber-300/80 bg-amber-500/10 py-1 rounded-lg">
+                                                Viewing Below ↓
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tier 2: ₹100 Comprehensive PDF Report -->
+                                    <div class="p-3 rounded-2xl bg-gradient-to-b from-[#2a1342] to-[#1c0c2d] border-2 border-amber-400/60 shadow-lg flex flex-col justify-between relative transform hover:scale-[1.01] transition-transform">
+                                        <div class="absolute -top-2.5 right-2 bg-gradient-to-r from-amber-400 to-yellow-400 text-black text-[9px] font-black px-2 py-0.5 rounded-full shadow">
+                                            POPULAR
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-[10px] font-bold text-amber-300 uppercase">Tier 2: Certified</span>
+                                            </div>
+                                            <h5 class="font-bold text-white text-xs">Vedic DOB Profile PDF</h5>
+                                            <div class="text-base font-extrabold text-amber-300 font-cinzel">₹100 <span class="text-[10px] text-amber-200/60 font-sans font-normal">One-time</span></div>
+                                            <ul class="text-[10px] text-amber-100/90 space-y-1 pt-1 border-t border-amber-500/20">
+                                                <li>✓ Complete 6+ Page certified report</li>
+                                                <li>✓ 12-Month Personal Year forecast</li>
+                                                <li>✓ Navagraha &amp; Lucky Gemstone guide</li>
+                                                <li>✓ Instant PDF Download &amp; WhatsApp</li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt-2.5 pt-2 border-t border-amber-500/20">
+                                            <button type="button"
+                                                    :disabled="orderLoading"
+                                                    @click="orderReportPlan('vedic-dob-profile-pdf-report', 100, 'Tier 2: ₹100 Vedic DOB Profile PDF')"
+                                                    class="w-full py-2 px-2 rounded-xl text-[11px] font-bold text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow transition-all flex items-center justify-center space-x-1 cursor-pointer">
+                                                <template x-if="orderLoading">
+                                                    <svg class="animate-spin h-3.5 w-3.5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                    </svg>
+                                                </template>
+                                                <template x-if="!orderLoading">
+                                                    <span>📄 Download ₹100 PDF</span>
+                                                </template>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tier 3: ₹500 Deluxe Kundali & Doctor Consultation -->
+                                    <div class="p-3 rounded-2xl bg-gradient-to-b from-[#33134e] to-[#1b0a2c] border-2 border-yellow-400/70 shadow-xl flex flex-col justify-between relative transform hover:scale-[1.01] transition-transform">
+                                        <div class="absolute -top-2.5 right-2 bg-gradient-to-r from-yellow-300 to-amber-400 text-black text-[9px] font-black px-2 py-0.5 rounded-full shadow">
+                                            DELUXE
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-[10px] font-bold text-yellow-300 uppercase">Tier 3: Deluxe</span>
+                                            </div>
+                                            <h5 class="font-bold text-white text-xs">Deluxe Vedic Jathakam</h5>
+                                            <div class="text-base font-extrabold text-yellow-300 font-cinzel">₹500 <span class="text-[10px] text-amber-200/60 font-sans font-normal">All-Inclusive</span></div>
+                                            <ul class="text-[10px] text-amber-100/90 space-y-1 pt-1 border-t border-amber-500/20">
+                                                <li>✓ <strong>Lagna Chakra &amp; 12 Bhavas</strong></li>
+                                                <li>✓ <strong>Janma Nakshatra &amp; Pada</strong></li>
+                                                <li>✓ Dasa-Bhukthi life timeline</li>
+                                                <li>✓ <strong>Priority WhatsApp Doctor Review</strong></li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt-2.5 pt-2 border-t border-amber-500/20">
+                                            <button type="button"
+                                                    :disabled="orderLoading"
+                                                    @click="orderReportPlan('deluxe-vedic-jathakam-pdf-report', 500, 'Tier 3: ₹500 Deluxe Vedic Jathakam')"
+                                                    class="w-full py-2 px-2 rounded-xl text-[11px] font-extrabold text-black bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-500 hover:from-yellow-200 hover:to-amber-300 shadow-lg transition-all flex items-center justify-center space-x-1 cursor-pointer">
+                                                <template x-if="orderLoading">
+                                                    <svg class="animate-spin h-3.5 w-3.5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                    </svg>
+                                                </template>
+                                                <template x-if="!orderLoading">
+                                                    <span>👑 Get ₹500 Deluxe</span>
+                                                </template>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

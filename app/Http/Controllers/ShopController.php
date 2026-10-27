@@ -276,7 +276,8 @@ class ShopController extends Controller
         $birthPlace = $order->birth_details['birth_place'] ?? 'Kerala, India';
 
         $calculator = new VedicDobCalculator();
-        $jathakamData = $calculator->calculate($birthDate, $customerName, 'Deluxe Vedic Jathakam');
+        $serviceTitle = $order->product_title ?: 'Deluxe Vedic Jathakam';
+        $jathakamData = $calculator->calculate($birthDate, $customerName, $serviceTitle, $birthTime, $birthPlace);
 
         return view('shop.jathakam-pdf-template', compact(
             'order',

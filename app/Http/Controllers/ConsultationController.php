@@ -19,14 +19,20 @@ class ConsultationController extends Controller
             'phone' => 'required|string|min:8|max:30',
             'service_requested' => 'nullable|string|max:150',
             'language' => 'nullable|string|in:en,ml,ta,hi',
+            'birth_time' => 'nullable|string|max:30',
+            'birth_place' => 'nullable|string|max:150',
         ]);
 
         $selectedLang = $validated['language'] ?? 'en';
+        $birthTime = $validated['birth_time'] ?? null;
+        $birthPlace = $validated['birth_place'] ?? null;
 
         $calculation = $calculator->calculate(
             $validated['birth_date'],
             $validated['name'],
-            $validated['service_requested'] ?? 'Accurate Predictions'
+            $validated['service_requested'] ?? 'Accurate Predictions',
+            $birthTime,
+            $birthPlace
         );
 
         $calculation['selected_language'] = $selectedLang;
@@ -43,6 +49,14 @@ class ConsultationController extends Controller
         ];
         $langLabel = $langLabels[$selectedLang] ?? 'English';
 
+        $notes = "DOB Reading ({$langLabel}) | Mulank: {$calculation['mulank']}, Bhagyank: {$calculation['bhagyank']}, Ruling: {$rulingPlanetName}, Gemstone: {$calculation['gemstone_en']}";
+        if ($birthTime) {
+            $notes .= " | Time: {$birthTime}";
+        }
+        if ($birthPlace) {
+            $notes .= " | Place: {$birthPlace}";
+        }
+
         // Save consultation lead with pending status for Admin Dashboard collection
         $consultation = Consultation::create([
             'name' => $validated['name'],
@@ -52,7 +66,7 @@ class ConsultationController extends Controller
             'birth_date' => $validated['birth_date'],
             'calculated_summary' => $calculation,
             'status' => 'pending',
-            'message' => "DOB Reading ({$langLabel}) | Mulank: {$calculation['mulank']}, Bhagyank: {$calculation['bhagyank']}, Ruling: {$rulingPlanetName}, Gemstone: {$calculation['gemstone_en']}",
+            'message' => $notes,
         ]);
 
         $calculation['consultation_id'] = $consultation->id;

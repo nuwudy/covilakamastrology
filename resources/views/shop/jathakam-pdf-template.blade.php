@@ -110,12 +110,26 @@
             </div>
             <div>
                 <span class="text-[10px] text-amber-400 print:text-amber-800 uppercase font-bold block">Time of Birth (ജനന സമയം):</span>
-                <span class="text-amber-100 print:text-gray-800 font-medium">{{ $birthTime }}</span>
+                <span class="text-amber-100 print:text-gray-800 font-medium">{{ $birthTime ?: 'Not Specified' }}</span>
             </div>
             <div>
                 <span class="text-[10px] text-amber-400 print:text-amber-800 uppercase font-bold block">Place of Birth (ജനന സ്ഥലം):</span>
-                <span class="text-amber-100 print:text-gray-800 font-medium">{{ $birthPlace }}</span>
+                <span class="text-amber-100 print:text-gray-800 font-medium">{{ $birthPlace ?: 'Not Specified' }}</span>
             </div>
+            @if(!empty($jathakamData['lagna']))
+            <div class="pt-2 border-t border-amber-500/10 col-span-2">
+                <span class="text-[10px] text-amber-400 print:text-amber-800 uppercase font-bold block">Lagna (ലഗ്നം / Ascendant):</span>
+                <strong class="text-amber-200 print:text-gray-900 text-xs">{{ $jathakamData['lagna']['name_en'] }} ({{ $jathakamData['lagna']['name_ml'] }})</strong>
+                <span class="text-[10px] text-amber-300/70 print:text-gray-600 block">Lord: {{ $jathakamData['lagna']['lord'] }} • Element: {{ $jathakamData['lagna']['element'] }}</span>
+            </div>
+            @endif
+            @if(!empty($jathakamData['nakshatra']))
+            <div class="pt-2 border-t border-amber-500/10 col-span-2">
+                <span class="text-[10px] text-amber-400 print:text-amber-800 uppercase font-bold block">Janma Nakshatra (നക്ഷത്രം):</span>
+                <strong class="text-amber-200 print:text-gray-900 text-xs">{{ $jathakamData['nakshatra']['name_en'] }} ({{ $jathakamData['nakshatra']['name_ml'] }})</strong>
+                <span class="text-[10px] text-amber-300/70 print:text-gray-600 block">Star Lord: {{ $jathakamData['nakshatra']['lord'] }} • Deity: {{ $jathakamData['nakshatra']['deity'] }}</span>
+            </div>
+            @endif
         </div>
 
         <!-- Astrological Charts Section (Traditional South Indian Format) -->
@@ -278,6 +292,47 @@
                     </table>
                 </div>
             </div>
+
+            @if(!empty($jathakamData['bhavas']))
+            <!-- 12 Astrological Houses (Bhavas) Analysis -->
+            <div class="bg-[#12081f] print:bg-white p-5 rounded-2xl border border-amber-500/20 space-y-3 page-break">
+                <h3 class="font-cinzel text-xs font-bold text-amber-300 print:text-amber-900 uppercase tracking-wider flex items-center justify-between">
+                    <span>12 Astrological Houses Analysis (ദ്വാദശ ഭാവ വിചാരം)</span>
+                    <span class="text-[10px] text-amber-400 print:text-amber-800 font-semibold">Bhavas 1 to 12</span>
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead>
+                            <tr class="border-b border-amber-500/20 text-amber-400 print:text-amber-900 text-[10px] uppercase">
+                                <th class="py-2">Bhava</th>
+                                <th class="py-2">House Name</th>
+                                <th class="py-2">Zodiac Rasi &amp; Lord</th>
+                                <th class="py-2">Domain &amp; Vedic Forecast</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-amber-500/10 text-amber-100/90 print:text-gray-800 text-[11px]">
+                            @foreach($jathakamData['bhavas'] as $bhava)
+                            <tr>
+                                <td class="py-2 font-bold text-amber-300 print:text-amber-900">#{{ $bhava['house'] }}</td>
+                                <td class="py-2 font-semibold">
+                                    {{ $bhava['name_en'] }}
+                                    <span class="text-[10px] text-amber-400/80 block font-normal">{{ $bhava['name_ml'] }}</span>
+                                </td>
+                                <td class="py-2">
+                                    {{ $bhava['ruling_sign_en'] }}
+                                    <span class="text-[10px] text-amber-300/70 block">Lord: {{ $bhava['ruler'] }}</span>
+                                </td>
+                                <td class="py-2 text-[10.5px]">
+                                    <strong class="text-amber-200 print:text-gray-900">{{ $bhava['theme'] }}</strong>
+                                    <p class="text-[10px] text-amber-200/70 print:text-gray-600 mt-0.5">{{ $bhava['focus'] }}</p>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
 
             <!-- Gemstone & Vedic Remedies Section -->
             <div class="bg-gradient-to-r from-amber-950/40 via-[#1a1128] to-purple-950/40 print:bg-amber-50 p-6 rounded-2xl border border-amber-500/30 print:border-amber-400 space-y-4">

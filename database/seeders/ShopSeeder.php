@@ -171,18 +171,47 @@ class ShopSeeder extends Seeder
                 'sort_order' => 7,
             ],
 
-            // 8. Digital Download: Deluxe Vedic Jathakam PDF Report
+            // 8. Digital Download: Elaborate Vedic DOB Astrological Profile PDF Report (₹100)
             [
                 'type' => 'digital_pdf',
-                'title' => 'Complete Deluxe Vedic Jathakam (PDF Report)',
-                'title_ml' => 'സമ്പൂർണ്ണ ഡിജിറ്റൽ ജാതകം (PDF)',
-                'slug' => 'deluxe-vedic-jathakam-pdf-report',
-                'subtitle' => 'Comprehensive 30+ Page Personalized Kundali, Dasa-Bhukthi & Life Predictions',
-                'description' => 'Receive an exquisite 30+ page personalized Vedic Horoscope Report prepared with mathematical precision by Covilakam Astrology under the guidance of DR. E. K. Raja Varma. Includes full Rasi & Navamsha charts, Bhava Sphutam, planet dignities, Ashtakavarga, next 25-year Vimshottari Dasa-Bhukthi timeline, Sade Sati & Kandaka Shani analysis, and tailored Vedic remedial recommendations.',
-                'price' => 299.00,
-                'original_price' => 999.00,
+                'title' => 'Elaborate Vedic DOB Astrological Profile (PDF Report)',
+                'title_ml' => 'വിശദമായ വേദിക് ജനനതീയതി ജ്യോതിഷ റിപ്പോർട്ട് (PDF)',
+                'slug' => 'vedic-dob-profile-pdf-report',
+                'subtitle' => 'Comprehensive Multi-Page Downloadable Vedic DOB Reading with Planetary Remedies',
+                'description' => 'Complete, certified multi-page Vedic numerology and astrological life profile report based on your Date of Birth. Includes 4 Life Pillars (Career & Wealth, Love & Family Harmony, Health & Longevity, Spiritual Remedies & Mantras), lucky gemstones, auspicious colors, and year-ahead planetary cycle forecast certified under the supervision of DR. E. K. Raja Varma.',
+                'price' => 100.00,
+                'original_price' => 250.00,
                 'image_path' => 'images/shop/jathakam-pdf-report-mockup-opt.jpg',
-                'badge' => 'Instant Digital PDF + WhatsApp Delivery',
+                'badge' => 'Instant Digital PDF Download (₹100)',
+                'details' => [
+                    'format' => 'Printable High-Resolution PDF (Certified by Dr. Raja Varma)',
+                    'delivery_mode' => 'Instant Download after Payment',
+                    'languages_available' => 'Malayalam / English / Tamil / Hindi',
+                    'verification' => 'Certified under supervision of DR. E. K. Raja Varma',
+                    'key_inclusions' => [
+                        'Mulank (Birth Number) & Bhagyank (Destiny Number) Deep Analysis',
+                        '4 Life Pillars (Career, Love, Health, Remedies)',
+                        'Prescribed Gemstone, Wearing Rules, Lucky Days & Auspicious Colors',
+                        'Deva Mantras with Sanskrit transliteration',
+                        'Year Ahead Planetary Cycle Forecast'
+                    ]
+                ],
+                'is_active' => true,
+                'sort_order' => 8,
+            ],
+
+            // 9. Digital Download: Complete Deluxe Vedic Kundali & Deep Jathakam PDF Report (₹500)
+            [
+                'type' => 'digital_pdf',
+                'title' => 'Deluxe Vedic Jathakam & Deep Kundali (PDF Report)',
+                'title_ml' => 'സമ്പൂർണ്ണ ഡീലക്സ് വേദിക് ജാതകം & കുണ്ഡലി (PDF)',
+                'slug' => 'deluxe-vedic-jathakam-pdf-report',
+                'subtitle' => 'Comprehensive 30+ Page Personalized Kundali, Lagna, Rasi, Bhavas, Dasa-Bhukthi & Life Predictions',
+                'description' => 'Receive an exquisite 30+ page personalized Vedic Horoscope Report prepared with mathematical precision by Covilakam Astrology under the guidance of DR. E. K. Raja Varma. Incorporating optional Time and Place of Birth, it includes full Lagna (Ascendant), Chandra Rasi, Janma Nakshatra, Rasi & Navamsha charts, 12 Bhavas (Astrological Houses) deep career & marriage analysis, 25-year Vimshottari Dasa-Bhukthi timeline, Sade Sati & dosha check, and tailored Vedic remedial recommendations.',
+                'price' => 500.00,
+                'original_price' => 1200.00,
+                'image_path' => 'images/shop/jathakam-pdf-report-mockup-opt.jpg',
+                'badge' => 'Instant Deluxe PDF + Priority Consultation Access (₹500)',
                 'details' => [
                     'format' => 'High-Resolution Printable PDF (Color, 30+ Pages)',
                     'delivery_mode' => 'Instant Download + Sent Directly to Customer WhatsApp & Email',
@@ -190,18 +219,20 @@ class ShopSeeder extends Seeder
                     'languages_available' => 'Malayalam / English',
                     'verification' => 'Reviewed under supervision of DR. E. K. Raja Varma',
                     'key_inclusions' => [
-                        'Precise Rasi, Navamsha & Bhava Planetary Charts',
+                        'Lagna (Ascendant Sign), Chandra Rasi & Janma Nakshatra',
+                        'Precise Rasi, Navamsha & 12 Bhava (Houses) Planetary Charts',
                         'Full 12 Houses (Bhavas) In-Depth Career, Health & Marriage Analysis',
                         'Detailed 25-Year Vimshottari Dasa & Bhukthi Timeline with dates',
                         'Shani Gochara (Sade Sati / Ezharara Shani) Detailed Analysis',
-                        'Lucky Gemstone, Auspicious Day, Favorable Colors & Deva Mantras'
+                        'Lucky Gemstone, Auspicious Day, Favorable Colors & Deva Mantras',
+                        'Priority WhatsApp Direct Access with Dr. Raja Varma'
                     ]
                 ],
                 'is_active' => true,
-                'sort_order' => 8,
+                'sort_order' => 9,
             ],
 
-            // 9. Service: Personal Astrological Consultation with DR. E. K. Raja Varma
+            // 10. Service: Personal Astrological Consultation with DR. E. K. Raja Varma
             [
                 'type' => 'consultation',
                 'title' => 'Personal Astro Consultation with DR. E. K. Raja Varma',
@@ -228,10 +259,10 @@ class ShopSeeder extends Seeder
                     ]
                 ],
                 'is_active' => true,
-                'sort_order' => 9,
+                'sort_order' => 10,
             ],
 
-            // 10. Service: Matrimonial Porutham 10-Point Analysis
+            // 11. Service: Matrimonial Porutham 10-Point Analysis
             [
                 'type' => 'consultation',
                 'title' => 'Matrimonial Porutham (10-Point Compatibility Analysis)',
@@ -256,7 +287,7 @@ class ShopSeeder extends Seeder
                     ]
                 ],
                 'is_active' => true,
-                'sort_order' => 10,
+                'sort_order' => 11,
             ],
         ];
 

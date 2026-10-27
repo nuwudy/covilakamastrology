@@ -25,6 +25,18 @@ class HomeController extends Controller
         $books = Book::where('is_active', true)->orderBy('sort_order', 'asc')->get();
         $razorpayKeyId = config('services.razorpay.key_id');
 
+        $readingProducts = [];
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('products')) {
+                $readingProducts = \App\Models\Product::whereIn('slug', [
+                    'vedic-dob-profile-pdf-report',
+                    'deluxe-vedic-jathakam-pdf-report'
+                ])->get()->keyBy('slug')->toArray();
+            }
+        } catch (\Throwable $e) {
+            $readingProducts = [];
+        }
+
         return view('home', compact(
             'settings',
             'qualifications',
@@ -33,7 +45,8 @@ class HomeController extends Controller
             'translations',
             'posts',
             'books',
-            'razorpayKeyId'
+            'razorpayKeyId',
+            'readingProducts'
         ));
     }
 }
