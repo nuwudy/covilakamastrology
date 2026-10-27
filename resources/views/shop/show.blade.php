@@ -66,11 +66,15 @@
                 const data = await response.json();
 
                 if (!response.ok || !data.success) {
-                    throw new Error(data.message || 'Failed to initialize order.');
+                    throw new Error(data.message || data.error || 'Failed to initialize order.');
+                }
+
+                if (!data.key_id) {
+                    throw new Error('Razorpay Key ID is not loaded. Please run php artisan optimize:clear on the server.');
                 }
 
                 const self = this;
-                if (typeof Razorpay !== 'undefined' && data.key_id) {
+                if (typeof Razorpay !== 'undefined') {
                     const options = {
                         key: data.key_id,
                         amount: data.amount,

@@ -71,11 +71,15 @@
                 const data = await response.json();
 
                 if (!response.ok || !data.success) {
-                    throw new Error(data.message || 'Failed to initialize order.');
+                    throw new Error(data.message || data.error || 'Failed to initialize order.');
+                }
+
+                if (!data.key_id || data.key_id.includes('sampleKey')) {
+                    throw new Error('Razorpay Key ID is not loaded. Please run php artisan optimize:clear on the server.');
                 }
 
                 // Check if Razorpay script is ready and key is available
-                if (typeof Razorpay !== 'undefined' && data.key_id && !data.key_id.includes('sampleKey')) {
+                if (typeof Razorpay !== 'undefined') {
                     const options = {
                         key: data.key_id,
                         amount: data.amount,

@@ -2722,6 +2722,14 @@
                     const activeOrderId = orderData.order_id || orderData.razorpay_order_id;
                     const activeKeyId = orderData.key_id || self.keyId;
 
+                    if (!activeKeyId) {
+                        throw new Error('Razorpay Key ID is not loaded. Please run php artisan optimize:clear on the server.');
+                    }
+
+                    if (!activeOrderId) {
+                        throw new Error('Razorpay Order ID could not be generated. Please try again.');
+                    }
+
                     const options = {
                         key: activeKeyId,
                         amount: orderData.amount,

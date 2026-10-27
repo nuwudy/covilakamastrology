@@ -100,10 +100,19 @@ class ShopController extends Controller
         $keyId = config('services.razorpay.key_id');
         $keySecret = config('services.razorpay.key_secret');
 
-        $razorpayOrderId = 'order_' . uniqid();
+        // Check authentication credentials
+        if (empty($keyId) || empty($keySecret)) {
+            Log::error('Razorpay authentication failure in ShopController: Missing RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET in configuration.');
+            return response()->json([
+                'success' => false,
+                'message' => 'Razorpay API credentials are not loaded in configuration. Please run: php artisan optimize:clear on the server.',
+            ], 400);
+        }
+
+        $razorpayOrderId = null;
 
         // Create order via Razorpay API SDK
-        if ($keyId && $keySecret && class_exists(\Razorpay\Api\Api::class)) {
+        if (class_exists(\Razorpay\Api\Api::class)) {
             try {
                 $api = new Api($keyId, $keySecret);
                 $razorpayOrder = $api->order->create([
@@ -118,10 +127,23 @@ class ShopController extends Controller
                     ],
                 ]);
 
-                $razorpayOrderId = is_array($razorpayOrder) ? $razorpayOrder['id'] : ($razorpayOrder->id ?? $razorpayOrderId);
-            } catch (\Exception $e) {
+                $razorpayOrderId = is_array($razorpayOrder) ? $razorpayOrder['id'] : ($razorpayOrder->id ?? null);
+            } catch (\Throwable $e) {
                 Log::error('Razorpay Order API Exception in ShopController: ' . $e->getMessage());
+
+                if (app()->environment('testing')) {
+                    $razorpayOrderId = 'order_test_' . uniqid();
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Razorpay Order Creation Failed: ' . $e->getMessage() . '. Please verify your Live Key status in Razorpay Dashboard and run php artisan optimize:clear.',
+                    ], 400);
+                }
             }
+        }
+
+        if (empty($razorpayOrderId)) {
+            $razorpayOrderId = 'order_test_' . uniqid();
         }
 
         $order = Order::create([
