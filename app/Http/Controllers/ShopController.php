@@ -10,6 +10,8 @@ use App\Services\VedicDobCalculator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Razorpay\Api\Api;
+use Razorpay\Api\Errors\BadRequestError;
 
 class ShopController extends Controller
 {
@@ -100,29 +102,25 @@ class ShopController extends Controller
 
         $razorpayOrderId = 'order_' . uniqid();
 
-        // Attempt actual Razorpay API order creation if live/test credentials exist and not sample
-        if ($keyId && $keySecret && !str_contains($keyId, 'sampleKey')) {
+        // Create order via Razorpay API SDK
+        if ($keyId && $keySecret) {
             try {
-                $response = Http::withBasicAuth($keyId, $keySecret)
-                    ->post('https://api.razorpay.com/v1/orders', [
-                        'amount' => $amountInPaise,
-                        'currency' => 'INR',
-                        'receipt' => $orderNumber,
-                        'payment_capture' => 1,
-                        'notes' => [
-                            'product' => $product->title,
-                            'customer' => $validated['customer_name'],
-                            'phone' => $validated['customer_phone'],
-                        ],
-                    ]);
+                $api = new Api($keyId, $keySecret);
+                $razorpayOrder = $api->order->create([
+                    'amount' => $amountInPaise,
+                    'currency' => 'INR',
+                    'receipt' => $orderNumber,
+                    'payment_capture' => 1,
+                    'notes' => [
+                        'product' => $product->title,
+                        'customer' => $validated['customer_name'],
+                        'phone' => $validated['customer_phone'],
+                    ],
+                ]);
 
-                if ($response->successful()) {
-                    $razorpayOrderId = $response->json('id');
-                } else {
-                    Log::warning('Razorpay Order API response error: ' . $response->body());
-                }
+                $razorpayOrderId = is_array($razorpayOrder) ? $razorpayOrder['id'] : ($razorpayOrder->id ?? $razorpayOrderId);
             } catch (\Exception $e) {
-                Log::error('Razorpay Order API Exception: ' . $e->getMessage());
+                Log::error('Razorpay Order API Exception in ShopController: ' . $e->getMessage());
             }
         }
 
@@ -146,9 +144,11 @@ class ShopController extends Controller
 
         return response()->json([
             'success' => true,
+            'order_id' => $razorpayOrderId,
             'order_number' => $order->order_number,
             'razorpay_order_id' => $razorpayOrderId,
             'amount' => $amountInPaise,
+            'currency' => 'INR',
             'amount_display' => $product->formatted_price,
             'key_id' => $keyId,
             'product_title' => $product->title,
@@ -164,18 +164,31 @@ class ShopController extends Controller
     public function verifyPayment(Request $request)
     {
         $validated = $request->validate([
-            'order_number' => 'required|string',
+            'order_number' => 'nullable|string',
             'razorpay_payment_id' => 'required|string',
-            'razorpay_order_id' => 'nullable|string',
-            'razorpay_signature' => 'nullable|string',
+            'razorpay_order_id' => 'required|string',
+            'razorpay_signature' => 'required|string',
         ]);
 
-        $order = Order::where('order_number', $validated['order_number'])->firstOrFail();
+        $order = null;
+        if (!empty($validated['order_number'])) {
+            $order = Order::where('order_number', $validated['order_number'])->first();
+        }
+        if (!$order && !empty($validated['razorpay_order_id'])) {
+            $order = Order::where('razorpay_order_id', $validated['razorpay_order_id'])->first();
+        }
+
+        if (!$order) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Order not found.',
+            ], 404);
+        }
 
         $keySecret = config('services.razorpay.key_secret');
-        $isSignatureValid = true;
+        $isSignatureValid = false;
 
-        if ($keySecret && !str_contains($keySecret, 'sampleSecret') && !empty($validated['razorpay_signature'])) {
+        if ($keySecret && !empty($validated['razorpay_signature']) && !empty($validated['razorpay_order_id'])) {
             $expectedSignature = hash_hmac(
                 'sha256',
                 $validated['razorpay_order_id'] . '|' . $validated['razorpay_payment_id'],
@@ -197,7 +210,7 @@ class ShopController extends Controller
             $order->update([
                 'payment_status' => 'paid',
                 'razorpay_payment_id' => $validated['razorpay_payment_id'],
-                'razorpay_signature' => $validated['razorpay_signature'] ?? null,
+                'razorpay_signature' => $validated['razorpay_signature'],
                 'delivery_status' => $deliveryStatus,
             ]);
 

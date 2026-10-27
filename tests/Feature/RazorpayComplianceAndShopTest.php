@@ -101,12 +101,15 @@ class RazorpayComplianceAndShopTest extends TestCase
         $this->assertNotNull($order);
         $this->assertEquals('pending', $order->payment_status);
 
-        // 2. Verify Payment
+        // 2. Verify Payment with HMAC-SHA256 signature
+        $secret = config('services.razorpay.key_secret');
+        $validSignature = hash_hmac('sha256', $order->razorpay_order_id . '|pay_test_123456789', $secret);
+
         $verifyRes = $this->postJson('/checkout/verify-payment', [
             'order_number' => $orderNumber,
             'razorpay_payment_id' => 'pay_test_123456789',
             'razorpay_order_id' => $order->razorpay_order_id,
-            'razorpay_signature' => 'dummy_signature',
+            'razorpay_signature' => $validSignature,
         ]);
 
         $verifyRes->assertStatus(200);

@@ -23,6 +23,7 @@ class HomeController extends Controller
         $translations = AstrologyTranslation::orderBy('sort_order', 'asc')->get()->keyBy('language_code');
         $posts = Post::published()->orderBy('published_at', 'desc')->take(6)->get();
         $books = Book::where('is_active', true)->orderBy('sort_order', 'asc')->get();
+        $razorpayKeyId = config('services.razorpay.key_id');
 
         return view('home', compact(
             'settings',
@@ -31,7 +32,8 @@ class HomeController extends Controller
             'videos',
             'translations',
             'posts',
-            'books'
+            'books',
+            'razorpayKeyId'
         ));
     }
 }

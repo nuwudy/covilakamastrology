@@ -69,15 +69,16 @@
                     throw new Error(data.message || 'Failed to initialize order.');
                 }
 
-                if (typeof Razorpay !== 'undefined' && data.key_id && !data.key_id.includes('sampleKey')) {
+                const self = this;
+                if (typeof Razorpay !== 'undefined' && data.key_id) {
                     const options = {
                         key: data.key_id,
                         amount: data.amount,
-                        currency: 'INR',
+                        currency: data.currency || 'INR',
                         name: 'Covilakam Astrology',
                         description: '{{ $product->title }}',
                         image: '{{ asset('images/og-covilakam-512x512.png') }}',
-                        order_id: data.razorpay_order_id,
+                        order_id: data.order_id || data.razorpay_order_id,
                         prefill: {
                             name: data.customer_name,
                             contact: data.customer_phone,
@@ -86,53 +87,55 @@
                         theme: {
                             color: '#d97706'
                         },
+                        modal: {
+                            ondismiss: function () {
+                                self.loading = false;
+                                self.errorMessage = 'Payment was cancelled. You can try again whenever you are ready.';
+                            }
+                        },
                         handler: async function (response) {
-                            const verifyRes = await fetch('{{ route('shop.verify-payment') }}', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
-                                    'Accept': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    order_number: data.order_number,
-                                    razorpay_payment_id: response.razorpay_payment_id,
-                                    razorpay_order_id: response.razorpay_order_id,
-                                    razorpay_signature: response.razorpay_signature
-                                })
-                            });
+                            try {
+                                self.loading = true;
+                                const verifyRes = await fetch('{{ route('shop.verify-payment') }}', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                                        'Accept': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        order_number: data.order_number,
+                                        razorpay_payment_id: response.razorpay_payment_id,
+                                        razorpay_order_id: response.razorpay_order_id,
+                                        razorpay_signature: response.razorpay_signature
+                                    })
+                                });
 
-                            const verifyData = await verifyRes.json();
-                            if (verifyData.success) {
-                                window.location.href = verifyData.redirect_url;
-                            } else {
-                                alert('Payment verification failed: ' + verifyData.message);
+                                const verifyData = await verifyRes.json();
+                                if (verifyRes.ok && verifyData.success) {
+                                    window.location.href = verifyData.redirect_url;
+                                } else {
+                                    self.errorMessage = 'Verification Error: ' + (verifyData.message || verifyData.error || 'Payment signature mismatch.');
+                                }
+                            } catch (vErr) {
+                                self.errorMessage = 'Network error verifying payment: ' + vErr.message;
+                            } finally {
+                                self.loading = false;
                             }
                         }
                     };
+
                     const rzp = new Razorpay(options);
-                    rzp.open();
-                } else {
-                    // Demo fallback
-                    const verifyRes = await fetch('{{ route('shop.verify-payment') }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            order_number: data.order_number,
-                            razorpay_payment_id: 'pay_demo_' + Date.now(),
-                            razorpay_order_id: data.razorpay_order_id,
-                            razorpay_signature: 'demo_sig'
-                        })
+
+                    rzp.on('payment.failed', function (resp) {
+                        self.loading = false;
+                        const errorReason = resp.error?.description || resp.error?.reason || 'Payment failed.';
+                        self.errorMessage = 'Payment Failed: ' + errorReason;
                     });
 
-                    const verifyData = await verifyRes.json();
-                    if (verifyData.success) {
-                        window.location.href = verifyData.redirect_url;
-                    }
+                    rzp.open();
+                } else {
+                    throw new Error('Razorpay checkout SDK could not be loaded.');
                 }
             } catch (err) {
                 this.errorMessage = err.message || 'An error occurred during checkout.';

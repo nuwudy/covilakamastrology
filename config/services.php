@@ -36,8 +36,8 @@ return [
     ],
 
     'razorpay' => [
-        'key_id' => env('RAZORPAY_KEY_ID', 'rzp_test_sampleKey123'),
-        'key_secret' => env('RAZORPAY_KEY_SECRET', 'sampleSecret456'),
+        'key_id' => env('RAZORPAY_KEY_ID'),
+        'key_secret' => env('RAZORPAY_KEY_SECRET'),
         'merchant_name' => env('RAZORPAY_MERCHANT_NAME', 'Covilakam Astrology - DR. E. K. Raja Varma'),
     ],
 

@@ -14,6 +14,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PolicyController;
+use App\Http\Controllers\RazorpayController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\VideoController;
 use App\Models\Product;
@@ -52,6 +53,11 @@ Route::get('/terms-and-conditions', [PolicyController::class, 'terms'])->name('p
 Route::get('/privacy-policy', [PolicyController::class, 'privacy'])->name('policies.privacy');
 Route::get('/refund-policy', [PolicyController::class, 'refund'])->name('policies.refund');
 Route::get('/shipping-policy', [PolicyController::class, 'shipping'])->name('policies.shipping');
+
+// Razorpay Standard Checkout Frontend & Web Aliases
+Route::get('/checkout', [RazorpayController::class, 'checkoutPage'])->name('razorpay.checkout');
+Route::post('/api/create-order', [RazorpayController::class, 'createOrder'])->name('razorpay.create-order');
+Route::post('/api/verify-payment', [RazorpayController::class, 'verifyPayment'])->name('razorpay.verify-payment');
 
 // Vedic Bookstore & Astrology Services Shop Routes
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');

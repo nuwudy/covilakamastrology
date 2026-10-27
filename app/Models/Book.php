@@ -43,4 +43,30 @@ class Book extends Model
 
         return 'https://wa.me/917907052160?text=' . rawurlencode($message);
     }
+
+    public function getProductAttribute(): ?Product
+    {
+        static $slugMap = [
+            1 => 'manoratham',
+            2 => 'randamoozham',
+            3 => 'thrimanam',
+            4 => 'chathurangam',
+            5 => 'panchamrutham',
+            6 => 'shashtangam',
+            7 => 'rajageetham',
+        ];
+
+        $slug = $slugMap[$this->sort_order] ?? null;
+        if ($slug) {
+            return Product::where('slug', $slug)->first();
+        }
+
+        return Product::where('type', 'book')->where('title', 'like', '%' . ($this->malayalam_title ?? '') . '%')->first();
+    }
+
+    public function getShopUrlAttribute(): string
+    {
+        $prod = $this->product;
+        return $prod ? route('shop.show', $prod->slug) : route('shop.index');
+    }
 }

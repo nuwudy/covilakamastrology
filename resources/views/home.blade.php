@@ -1583,7 +1583,9 @@
     <!-- SECTION 5.5: Dr. E. K. Raja Varma's Books & Publications                  -->
     <!-- Authentic Malayalam Literary, Philosophical & Audio Works                 -->
     <!-- ========================================================================= -->
-    <section id="books" class="py-24 bg-[#0c0615] relative border-t border-amber-500/20 overflow-hidden">
+    <section id="books"
+             x-data="homeBookCheckout({ keyId: '{{ $razorpayKeyId }}' })"
+             class="py-24 bg-[#0c0615] relative border-t border-amber-500/20 overflow-hidden">
         <!-- Ambient Cosmic Background Glows -->
         <div class="absolute -top-32 left-1/4 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none"></div>
         <div class="absolute -bottom-32 right-1/4 w-[500px] h-[500px] bg-purple-700/10 rounded-full blur-[140px] pointer-events-none"></div>
@@ -1605,8 +1607,18 @@
                     വേദിക് ജ്യോതിഷാചാര്യൻ <strong>ഡോ. ഇ. കെ. രാജ വർമ്മ (വിദ്യാ വാചസ്പതി)</strong> രചിച്ച സാഹിത്യ-ദാർശനിക കൃതികളും സംഗീത ആൽബവും. താങ്കൾക്ക് ആവശ്യമായ പുസ്തകങ്ങൾ വാട്സാപ്പ് വഴി നേരിട്ട് ഓർഡർ ചെയ്യാവുന്നതാണ്.
                 </p>
                 <p class="text-[11px] text-amber-300/70">
-                    Order your authentic printed copy directly on WhatsApp or explore digital preview flipbooks.
+                    Order your authentic printed copy directly with instant Razorpay Payment, or visit our Vedic Bookstore.
                 </p>
+
+                <!-- Bookstore Direct Connection Banner -->
+                <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+                    <a href="{{ route('shop.index') }}"
+                       class="inline-flex items-center space-x-2 px-5 py-2.5 rounded-full text-xs font-bold text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-lg shadow-amber-500/20 transition-all transform hover:-translate-y-0.5">
+                        <span>📚</span>
+                        <span>Visit Vedic Bookstore (Buy Books Online)</span>
+                        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-black/20 text-[#1a1128] font-bold">Razorpay Integrated</span>
+                    </a>
+                </div>
             </div>
 
             <!-- Books Grid -->
@@ -1670,35 +1682,62 @@
 
                         <!-- Card Actions -->
                         <div class="p-5 pt-0 space-y-2">
-                            <!-- Button 1: WhatsApp Order Button -->
                             @php
+                                $prod = $book->product;
+                                $prodId = $prod ? $prod->id : '';
+                                $bookPrice = (int) round($book->price ?? 100);
                                 $waPrice = $book->price ? number_format($book->price, 0) : '100';
                                 $waText = "Namaskaram Dr. E. K. Raja Varma Sir, I would like to order a copy of your book '" . $book->title . "' (Price: ₹" . $waPrice . "). Please share the GPay/delivery details.";
                                 $waUrl = "https://wa.me/917907052160?text=" . rawurlencode($waText);
                             @endphp
-                            <a href="{{ $waUrl }}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="w-full py-2.5 px-3 rounded-xl font-bold text-xs text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md hover:shadow-amber-500/25 flex items-center justify-center space-x-2 transition-all transform hover:-translate-y-0.5">
-                                <span>🛒</span>
-                                <span>വാങ്ങുക / Buy Copy (₹{{ number_format($book->price ?? 0, 0) }})</span>
+
+                            <!-- Button 1: Pay Online via Razorpay -->
+                            <button type="button"
+                                    @click="openCheckout({
+                                        product_id: '{{ $prodId }}',
+                                        title: '{{ addslashes($book->title) }}',
+                                        price: {{ $bookPrice }},
+                                        formatted_price: '₹{{ number_format($book->price ?? 0, 0) }}',
+                                        cover: '{{ asset($book->cover_image) }}',
+                                        publisher: '{{ addslashes($book->publisher ?? '') }}',
+                                        shop_url: '{{ $book->shop_url }}'
+                                    })"
+                                    class="w-full py-2.5 px-3 rounded-xl font-bold text-xs text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md hover:shadow-amber-500/25 flex items-center justify-center space-x-1.5 transition-all transform hover:-translate-y-0.5">
+                                <span>💳</span>
+                                <span>വാങ്ങുക / Pay with Razorpay (₹{{ number_format($book->price ?? 0, 0) }})</span>
+                            </button>
+
+                            <!-- Button 2: Add to Cart / View in Bookstore -->
+                            <a href="{{ $book->shop_url }}"
+                               class="w-full py-2 px-3 rounded-xl text-xs font-semibold text-amber-200 bg-[#211335] border border-amber-500/30 hover:border-amber-400 hover:bg-[#2b1945] hover:text-white flex items-center justify-center space-x-1.5 transition-all">
+                                <span>🛒 Add to Cart / View in Bookstore</span>
+                                <span class="text-[10px] opacity-75">→</span>
                             </a>
 
-                            <!-- Button 2: Preview / Read Online -->
-                            @if($book->ebook_url)
-                                @php
-                                    $isFlipbook = Str::contains($book->ebook_url, ['fliphtml5', 'flipbook']);
-                                    $isAudio = Str::contains(strtolower($book->title), ['audio', 'cd', 'rajageetham']);
-                                    $btnLabel = $isFlipbook ? '📖 Read Flipbook' : ($isAudio ? '🎵 Listen / Preview' : '🔍 Preview Cover / Details');
-                                @endphp
-                                <a href="{{ $book->ebook_url }}"
+                            <!-- Extra Links: Preview & WhatsApp -->
+                            <div class="flex items-center gap-2 pt-1">
+                                @if($book->ebook_url)
+                                    @php
+                                        $isFlipbook = Str::contains($book->ebook_url, ['fliphtml5', 'flipbook']);
+                                        $isAudio = Str::contains(strtolower($book->title), ['audio', 'cd', 'rajageetham']);
+                                        $btnLabel = $isFlipbook ? '📖 Read Flipbook' : ($isAudio ? '🎵 Listen' : '🔍 Preview');
+                                    @endphp
+                                    <a href="{{ $book->ebook_url }}"
+                                       target="_blank"
+                                       rel="noopener noreferrer"
+                                       class="flex-1 py-1.5 px-2 rounded-lg text-[11px] font-medium text-amber-300/85 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 hover:text-amber-200 text-center transition-all truncate">
+                                        <span>{{ $btnLabel }}</span>
+                                        <span class="text-[9px] opacity-75">↗</span>
+                                    </a>
+                                @endif
+
+                                <a href="{{ $waUrl }}"
                                    target="_blank"
                                    rel="noopener noreferrer"
-                                   class="w-full py-2 px-3 rounded-xl text-xs font-semibold text-amber-200 bg-[#211335] border border-amber-500/30 hover:border-amber-400 hover:bg-[#2b1945] hover:text-white flex items-center justify-center space-x-1.5 transition-all">
-                                    <span>{{ $btnLabel }}</span>
-                                    <span class="text-[10px] opacity-75">↗</span>
+                                   class="flex-1 py-1.5 px-2 rounded-lg text-[11px] font-medium text-emerald-300/90 bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 hover:text-emerald-200 text-center transition-all truncate">
+                                    <span>💬 WhatsApp</span>
                                 </a>
-                            @endif
+                            </div>
                         </div>
 
                     </div>
@@ -1717,9 +1756,167 @@
                 <div class="pt-1">
                     <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma Sir, I would like to inquire about book courier delivery / signed copies.') }}"
                        target="_blank"
-                       class="inline-flex items-center space-x-2 px-5 py-2 rounded-xl text-xs font-bold text-[#1a1128] bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400 shadow-lg transition-all">
+                       rel="noopener noreferrer"
+                       class="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl text-xs font-bold text-[#1a1128] bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400 shadow-lg transition-all">
                         <span>💬 Message Dr. Raja Varma on WhatsApp (+91 7907052160)</span>
                     </a>
+                </div>
+            </div>
+
+            <!-- Razorpay Instant Book Checkout Modal (Standalone Dialog) -->
+            <div x-show="modalOpen"
+                 x-cloak
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 z-[9999] overflow-y-auto bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+                 @keydown.escape.window="closeCheckout()">
+
+                <!-- Modal Dialog Container -->
+                <div @click.stop
+                     x-show="modalOpen"
+                     x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0 scale-95"
+                     x-transition:enter-end="opacity-100 scale-100"
+                     x-transition:leave="transition ease-in duration-200"
+                     x-transition:leave-start="opacity-100 scale-100"
+                     x-transition:leave-end="opacity-0 scale-95"
+                     class="relative w-full max-w-lg bg-[#11091d] border border-amber-500/40 rounded-3xl shadow-2xl p-6 sm:p-8 text-white overflow-hidden text-left">
+
+                    <!-- Ambient Glow Effects inside modal -->
+                    <div class="absolute -top-24 -right-24 w-56 h-56 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -bottom-24 -left-24 w-56 h-56 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <!-- Top Bar: Trust Badge & Close Button -->
+                    <div class="flex items-center justify-between pb-3 border-b border-amber-500/20 mb-5">
+                        <div class="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                            <span>🛡️</span>
+                            <span>Razorpay Standard Checkout</span>
+                        </div>
+                        <button type="button"
+                                @click="closeCheckout()"
+                                aria-label="Close modal"
+                                class="text-stone-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center transition text-sm">
+                            ✕
+                        </button>
+                    </div>
+
+                    <!-- Selected Book Presentation Box -->
+                    <div class="flex items-center gap-4 p-3.5 rounded-2xl bg-[#1b102e] border border-amber-500/25 mb-5 shadow-inner">
+                        <template x-if="selectedBook?.cover">
+                            <img :src="selectedBook.cover"
+                                 :alt="selectedBook.title"
+                                 class="w-16 h-22 object-cover rounded-xl border border-amber-400/40 shadow-lg shrink-0">
+                        </template>
+                        <div class="min-w-0 flex-1">
+                            <h3 class="font-cinzel text-base font-bold text-amber-100 leading-snug truncate" x-text="selectedBook?.title"></h3>
+                            <p class="text-xs text-amber-200/70 truncate mt-0.5" x-text="selectedBook?.publisher || 'Author: DR. E. K. Raja Varma'"></p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <span class="text-sm font-black font-mono text-amber-300" x-text="selectedBook?.formatted_price"></span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold">
+                                    📦 Free Courier Delivery
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Error Alert -->
+                    <div x-show="errorMessage"
+                         x-cloak
+                         class="mb-4 p-3 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-start gap-2 shadow-lg">
+                        <span class="text-red-400 text-sm">⚠️</span>
+                        <span x-text="errorMessage" class="leading-relaxed"></span>
+                    </div>
+
+                    <!-- Checkout Delivery & Payment Form -->
+                    <form @submit.prevent="submitOrder()" class="space-y-4">
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider font-semibold text-amber-200 mb-1.5">
+                                Your Full Name <span class="text-amber-400">*</span>
+                            </label>
+                            <input type="text"
+                                   x-model="form.customer_name"
+                                   placeholder="Enter your full name"
+                                   required
+                                   class="w-full bg-[#1b102e] border border-amber-500/30 rounded-xl px-4 py-2.5 text-sm text-white placeholder-stone-400 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider font-semibold text-amber-200 mb-1.5">
+                                    Mobile Number <span class="text-amber-400">*</span>
+                                </label>
+                                <input type="tel"
+                                       x-model="form.customer_phone"
+                                       placeholder="10-digit mobile number"
+                                       required
+                                       class="w-full bg-[#1b102e] border border-amber-500/30 rounded-xl px-4 py-2.5 text-sm text-white placeholder-stone-400 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition">
+                                <span class="text-[10px] text-stone-400 mt-1 block">For Speed Post dispatch updates</span>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider font-semibold text-amber-200 mb-1.5">
+                                    Email Address <span class="text-stone-400">(Optional)</span>
+                                </label>
+                                <input type="email"
+                                       x-model="form.customer_email"
+                                       placeholder="you@example.com"
+                                       class="w-full bg-[#1b102e] border border-amber-500/30 rounded-xl px-4 py-2.5 text-sm text-white placeholder-stone-400 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition">
+                                <span class="text-[10px] text-stone-400 mt-1 block">For Razorpay digital tax receipt</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider font-semibold text-amber-200 mb-1.5">
+                                Delivery Postal Address <span class="text-amber-400">*</span>
+                            </label>
+                            <textarea x-model="form.shipping_address"
+                                      rows="2"
+                                      placeholder="House Name / Street, City, District, PIN Code"
+                                      required
+                                      class="w-full bg-[#1b102e] border border-amber-500/30 rounded-xl px-4 py-2.5 text-sm text-white placeholder-stone-400 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"></textarea>
+                        </div>
+
+                        <!-- Price Breakdown Summary -->
+                        <div class="p-3.5 rounded-xl bg-black/40 border border-amber-500/20 text-xs space-y-1.5 text-stone-300">
+                            <div class="flex justify-between">
+                                <span>Courier / Speed Post:</span>
+                                <span class="text-emerald-400 font-semibold">FREE across India</span>
+                            </div>
+                            <div class="flex justify-between pt-1.5 border-t border-amber-500/20 text-sm font-bold text-amber-300">
+                                <span>Total Payable via Razorpay:</span>
+                                <span class="font-mono text-base text-amber-300" x-text="selectedBook?.formatted_price"></span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons Row -->
+                        <div class="pt-1 space-y-2.5">
+                            <!-- Primary Razorpay Button -->
+                            <button type="submit"
+                                    :disabled="loading"
+                                    class="w-full py-3.5 px-4 rounded-xl font-cinzel font-bold text-sm tracking-wider uppercase bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 hover:from-amber-300 hover:to-yellow-400 text-stone-950 shadow-xl shadow-amber-900/40 transition-all flex items-center justify-center space-x-2 disabled:opacity-50">
+                                <template x-if="loading">
+                                    <span class="animate-spin mr-2">⏳</span>
+                                </template>
+                                <span x-text="loading ? 'Connecting to Razorpay...' : 'Pay with Razorpay Now (' + (selectedBook?.formatted_price || '') + ')'"></span>
+                            </button>
+
+                            <!-- Secondary Add to Cart / Store Button -->
+                            <a :href="selectedBook?.shop_url || '{{ route('shop.index') }}'"
+                               class="w-full py-2.5 px-3 rounded-xl text-xs font-semibold text-amber-200 bg-[#1e1133] border border-amber-500/30 hover:border-amber-400 hover:bg-[#2b184a] hover:text-white flex items-center justify-center space-x-1.5 transition-all text-center">
+                                <span>🛒 Add to Cart & Explore More in Bookstore</span>
+                                <span>→</span>
+                            </a>
+                        </div>
+
+                        <!-- Trust Footnote -->
+                        <div class="text-center pt-2 text-[11px] text-stone-400 flex items-center justify-center gap-1.5">
+                            <span>🔒 UPI (Google Pay, PhonePe, Paytm) • Cards • NetBanking • 256-Bit SSL</span>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -2422,6 +2619,182 @@
             if (btn) btn.innerHTML = origText;
             window.print();
         });
+    }
+</script>
+
+<!-- Razorpay Standard Checkout SDK & Homepage Books Checkout Handler -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    function homeBookCheckout(config) {
+        return {
+            keyId: config.keyId || '',
+            modalOpen: false,
+            loading: false,
+            errorMessage: null,
+            selectedBook: null,
+            form: {
+                customer_name: '',
+                customer_phone: '',
+                customer_email: '',
+                shipping_address: '',
+            },
+
+            openCheckout(book) {
+                this.selectedBook = book;
+                this.errorMessage = null;
+                this.loading = false;
+                this.modalOpen = true;
+            },
+
+            closeCheckout() {
+                if (!this.loading) {
+                    this.modalOpen = false;
+                }
+            },
+
+            async submitOrder() {
+                if (!this.form.customer_name || !this.form.customer_phone || !this.form.shipping_address) {
+                    this.errorMessage = 'Please fill in your name, mobile number, and courier address.';
+                    return;
+                }
+
+                this.loading = true;
+                this.errorMessage = null;
+                const self = this;
+
+                try {
+                    let orderData = null;
+
+                    // If product_id exists, use standard shop order creation
+                    if (self.selectedBook.product_id) {
+                        const res = await fetch('{{ route('shop.create-order') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                product_id: self.selectedBook.product_id,
+                                customer_name: self.form.customer_name,
+                                customer_phone: self.form.customer_phone,
+                                customer_email: self.form.customer_email || null,
+                                shipping_address: self.form.shipping_address,
+                                notes: 'Ordered from homepage #books: ' + self.selectedBook.title
+                            })
+                        });
+
+                        orderData = await res.json();
+                        if (!res.ok || !orderData.success) {
+                            throw new Error(orderData.message || orderData.error || 'Failed to create Razorpay order.');
+                        }
+                    } else {
+                        // Fallback to /api/create-order
+                        const res = await fetch('/api/create-order', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                amount: self.selectedBook.price * 100,
+                                currency: 'INR',
+                                receipt: 'rcpt_bk_' + Date.now(),
+                                notes: {
+                                    book: self.selectedBook.title,
+                                    customer: self.form.customer_name,
+                                    phone: self.form.customer_phone,
+                                    address: self.form.shipping_address
+                                }
+                            })
+                        });
+
+                        orderData = await res.json();
+                        if (!res.ok || !orderData.order_id) {
+                            throw new Error(orderData.error || 'Failed to create Razorpay order.');
+                        }
+                    }
+
+                    if (typeof Razorpay === 'undefined') {
+                        throw new Error('Razorpay checkout SDK could not be loaded. Please check your network connection.');
+                    }
+
+                    const activeOrderId = orderData.order_id || orderData.razorpay_order_id;
+                    const activeKeyId = orderData.key_id || self.keyId;
+
+                    const options = {
+                        key: activeKeyId,
+                        amount: orderData.amount,
+                        currency: orderData.currency || 'INR',
+                        name: 'Covilakam Astrology',
+                        description: self.selectedBook.title,
+                        image: '{{ asset('images/og-covilakam-512x512.png') }}',
+                        order_id: activeOrderId,
+                        prefill: {
+                            name: self.form.customer_name,
+                            contact: self.form.customer_phone,
+                            email: self.form.customer_email || ''
+                        },
+                        theme: {
+                            color: '#d97706'
+                        },
+                        modal: {
+                            ondismiss: function () {
+                                self.loading = false;
+                                self.errorMessage = 'Payment cancelled. You can reopen anytime to complete your book order.';
+                            }
+                        },
+                        handler: async function (response) {
+                            try {
+                                self.loading = true;
+                                const verifyUrl = orderData.order_number ? '{{ route('shop.verify-payment') }}' : '/api/verify-payment';
+                                const verifyRes = await fetch(verifyUrl, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                                        'Accept': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        order_number: orderData.order_number || null,
+                                        razorpay_payment_id: response.razorpay_payment_id,
+                                        razorpay_order_id: response.razorpay_order_id,
+                                        razorpay_signature: response.razorpay_signature
+                                    })
+                                });
+
+                                const verifyData = await verifyRes.json();
+                                if (verifyRes.ok && verifyData.success) {
+                                    if (verifyData.redirect_url) {
+                                        window.location.href = verifyData.redirect_url;
+                                    } else {
+                                        alert('Payment successful! Your order has been placed. Payment ID: ' + response.razorpay_payment_id);
+                                        self.modalOpen = false;
+                                    }
+                                } else {
+                                    self.errorMessage = 'Payment Signature Verification failed: ' + (verifyData.message || verifyData.error);
+                                }
+                            } catch (vErr) {
+                                self.errorMessage = 'Error verifying payment: ' + vErr.message;
+                            } finally {
+                                self.loading = false;
+                            }
+                        }
+                    };
+
+                    const rzp = new Razorpay(options);
+                    rzp.on('payment.failed', function (fResp) {
+                        self.loading = false;
+                        self.errorMessage = 'Payment Failed: ' + (fResp.error?.description || 'Could not complete transaction.');
+                    });
+                    rzp.open();
+
+                } catch (err) {
+                    self.loading = false;
+                    self.errorMessage = err.message || 'Error initializing checkout.';
+                }
+            }
+        };
     }
 </script>
 @endsection

@@ -57,6 +57,11 @@ class BooksTest extends TestCase
         $response->assertSee('₹150');
         $response->assertSee('https://wa.me/917907052160', false);
         $response->assertSee('https://online.fliphtml5.com/kvuzr/xfdb/#p=1', false);
+        $response->assertSee('Pay with Razorpay');
+        $response->assertSee('Add to Cart');
+        $response->assertSee('View in Bookstore');
+        $response->assertSee('checkout.razorpay.com/v1/checkout.js', false);
+        $response->assertSee(route('shop.index'), false);
     }
 
     public function test_admin_can_manage_books()
