@@ -36,7 +36,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             return redirect()->intended(route('admin.dashboard'))
-                ->with('success', 'Welcome back, DR. E. K. Raja Varma!');
+                ->with('success', 'Welcome back, Dr. E. K. Raja Varma!');
         }
 
         return back()->withErrors([

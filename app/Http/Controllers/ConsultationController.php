@@ -156,7 +156,7 @@ class ConsultationController extends Controller
         ]);
 
         // Construct pre-filled WhatsApp link
-        $msg = "Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology),\n\n"
+        $msg = "Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology),\n\n"
             . "I would like to book a consultation on Covilakam Astrology:\n"
             . "• Name: {$validated['name']}\n"
             . "• Service: {$validated['service_requested']}\n"

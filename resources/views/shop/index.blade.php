@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Dr. E. K. Raja Varma\'s Books, Literary Works & Astrology Services | Covilakam Astrology')
-@section('meta_description', 'Official Bookstore & Services Shop of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Explore authentic Malayalam literary books, philosophy, short stories, audio album, and certified Vedic astrology services.')
+@section('meta_description', 'Official Bookstore & Services Shop of Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Explore authentic Malayalam literary books, philosophy, short stories, audio album, and certified Vedic astrology services.')
 
 @section('content')
 <div class="pt-32 pb-24 bg-[#0d0716] min-h-screen text-amber-100/90 relative overflow-hidden"
@@ -239,11 +239,14 @@
                                      loading="lazy"
                                      class="w-full h-full object-contain rounded-xl transform group-hover:scale-105 transition-transform duration-300 shadow-xl">
 
-                                <!-- Royal Gold Price Tag Badge -->
-                                <div class="absolute top-3 right-3 z-10">
+                                <!-- Royal Gold Price Tag Badge + ₹50 Courier Charge -->
+                                <div class="absolute top-3 right-3 z-10 flex flex-col items-end gap-1">
                                     <div class="px-3 py-1 rounded-full text-xs font-black text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 shadow-lg border border-amber-200/60 flex items-center space-x-1 tracking-wide">
                                         <span>₹{{ number_format($book->price ?? 0, 0) }}</span>
                                     </div>
+                                    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#140a22]/90 text-amber-300 border border-amber-400/40 shadow">
+                                        + ₹50/- Courier
+                                    </span>
                                 </div>
 
                                 <!-- Publisher Tag -->
@@ -286,18 +289,43 @@
 
                         <!-- Card Actions -->
                         <div class="pt-3 border-t border-amber-500/20 space-y-2">
-                            <!-- WhatsApp Buy Button -->
                             @php
+                                $bookProd = $book->product;
+                                $bookPriceInt = (int) round($book->price ?? 100);
+                                $totalWithCourier = $bookPriceInt + 50;
                                 $waPrice = $book->price ? number_format($book->price, 0) : '100';
-                                $waText = "Namaskaram Dr. E. K. Raja Varma Sir, I would like to order a copy of your book '" . $book->title . "' (Price: ₹" . $waPrice . "). Please share the GPay/delivery details.";
+                                $waText = "Namaskaram Dr. E. K. Raja Varma Sir, I would like to order a copy of your book '" . $book->title . "' (Book Price: ₹" . $waPrice . " + ₹50/- Courier Charge = Total ₹" . $totalWithCourier . "). Please share the payment/delivery details.";
                                 $waUrl = "https://wa.me/917907052160?text=" . rawurlencode($waText);
                             @endphp
+
+                            <div class="px-2.5 py-1.5 rounded-lg bg-[#1c1030] border border-amber-500/25 flex items-center justify-between text-[11px]">
+                                <span class="text-amber-200/80">Book ₹{{ number_format($book->price ?? 0, 0) }} + ₹50 Courier</span>
+                                <span class="font-mono font-bold text-amber-300">Total: ₹{{ number_format($totalWithCourier, 0) }}</span>
+                            </div>
+
+                            @if($bookProd)
+                                <button type="button"
+                                        @click="openCheckout({{ $bookProd->toJson() }})"
+                                        class="w-full py-2.5 px-3 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all text-center flex items-center justify-center space-x-1.5">
+                                    <span>💳</span>
+                                    <span>വാങ്ങുക / Pay ₹{{ number_format($book->price ?? 0, 0) }} + ₹50 Courier</span>
+                                </button>
+                            @else
+                                <a href="https://razorpay.me/@covilakamastrology"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="w-full py-2.5 px-3 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all text-center flex items-center justify-center space-x-1.5">
+                                    <span>💳</span>
+                                    <span>വാങ്ങുക / Pay ₹{{ number_format($book->price ?? 0, 0) }} + ₹50 Courier</span>
+                                </a>
+                            @endif
+
                             <a href="{{ $waUrl }}"
                                target="_blank"
                                rel="noopener noreferrer"
-                               class="w-full py-2.5 px-3 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all text-center flex items-center justify-center space-x-1.5">
-                                <span>🛒</span>
-                                <span>വാങ്ങുക / Order on WhatsApp (₹{{ number_format($book->price ?? 0, 0) }})</span>
+                               class="w-full py-2 px-3 rounded-xl text-xs font-semibold text-emerald-300 bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 transition-all text-center flex items-center justify-center space-x-1.5">
+                                <span>💬</span>
+                                <span>Order via WhatsApp (₹{{ number_format($book->price ?? 0, 0) }} + ₹50 Courier)</span>
                             </a>
 
                             <!-- Preview / Flipbook -->
@@ -363,7 +391,7 @@
 
                             <p class="text-[11px] text-amber-300/80 font-medium mb-2 flex items-center space-x-1">
                                 <span>✍️</span>
-                                <span>DR. E. K. Raja Varma (Vidya Vachaspathi)</span>
+                                <span>Dr. E. K. Raja Varma (Vidya Vachaspathi)</span>
                             </p>
 
                             <p class="text-xs text-amber-100/75 line-clamp-2 leading-relaxed mb-4">
@@ -400,7 +428,7 @@
                             </div>
 
                             <div class="text-center">
-                                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma, I would like to order: ' . $product->title . ' (' . $product->formatted_price . '). Please share payment & delivery details.') }}"
+                                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma, I would like to order: ' . $product->title . ' (' . $product->formatted_price . '). Please share payment & delivery details.') }}"
                                    target="_blank"
                                    class="text-[11px] text-emerald-400 hover:text-emerald-300 inline-flex items-center space-x-1">
                                     <span>💬</span>
@@ -455,7 +483,7 @@
                            rel="noopener noreferrer"
                            class="px-5 py-2.5 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-xl transition-all flex items-center space-x-1.5 transform hover:-translate-y-0.5">
                             <span>🛒</span>
-                            <span>Buy Signed Hardcover (₹150)</span>
+                            <span>Buy Signed Hardcover (₹150 + ₹50 Courier)</span>
                         </a>
 
                         <a href="https://online.fliphtml5.com/kvuzr/xfdb/"
@@ -502,7 +530,7 @@
                     <span>Razorpay Compliant Merchant Store</span>
                 </h4>
                 <p class="text-xs text-amber-100/70 max-w-2xl leading-relaxed">
-                    Compliant with RBI digital payment standards & Consumer Protection (E-Commerce) Rules. Transparent returns, free domestic shipping across India, and guaranteed privacy for your birth data.
+                    Compliant with RBI digital payment standards & Consumer Protection (E-Commerce) Rules. Transparent returns, ₹50/- domestic book courier delivery across India, and guaranteed privacy for your birth data.
                 </p>
             </div>
             <div class="flex items-center space-x-3 shrink-0">
@@ -533,8 +561,8 @@
                 <span class="text-[10px] uppercase font-bold text-amber-400 tracking-wider">Checkout with Razorpay</span>
                 <h3 class="font-cinzel text-xl font-bold text-amber-300 mt-0.5" x-text="selectedProduct?.title"></h3>
                 <div class="flex items-center justify-between mt-2 text-xs">
-                    <span class="text-amber-200/70" x-text="selectedProduct?.type === 'book' ? 'Physical Book Dispatch' : (selectedProduct?.type === 'digital_pdf' ? 'Instant Digital PDF Download' : 'Personal Consultation')"></span>
-                    <span class="font-cinzel font-bold text-lg text-amber-300" x-text="selectedProduct?.formatted_price"></span>
+                    <span class="text-amber-200/70" x-text="selectedProduct?.type === 'book' ? 'Physical Book Dispatch (+ ₹50/- Courier Charge)' : (selectedProduct?.type === 'digital_pdf' ? 'Instant Digital PDF Download' : 'Personal Consultation')"></span>
+                    <span class="font-cinzel font-bold text-lg text-amber-300" x-text="selectedProduct?.type === 'book' ? ('₹' + (Number(selectedProduct?.price || 0) + 50)) : selectedProduct?.formatted_price"></span>
                 </div>
             </div>
 
@@ -568,7 +596,7 @@
                         <label class="block text-xs font-semibold text-amber-300 uppercase mb-1">Shipping Delivery Address (with PIN Code) *</label>
                         <textarea x-model="shippingAddress" rows="3" placeholder="House/Flat No, Street, City, State, PIN Code"
                                   class="w-full px-3.5 py-2.5 rounded-xl bg-[#0f0819] border border-amber-500/30 text-amber-100 text-xs focus:border-amber-400 focus:outline-none"></textarea>
-                        <p class="text-[10px] text-emerald-400 mt-1">✓ Dispatched within 24-48 hours via India Post Speed Post (Free Shipping)</p>
+                        <p class="text-[10px] text-emerald-400 mt-1">✓ Dispatched within 24-48 hours via India Post Speed Post (+ ₹50/- Courier Charge added)</p>
                     </div>
                 </template>
 
@@ -600,7 +628,7 @@
                 <button @click="submitOrder()"
                         :disabled="loading"
                         class="w-full mt-4 py-3.5 rounded-xl font-cinzel font-bold text-sm tracking-wider uppercase text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-xl transition-all flex items-center justify-center space-x-2 disabled:opacity-50">
-                    <span x-show="!loading">Proceed to Razorpay Secure Pay (<span x-text="selectedProduct?.formatted_price"></span>)</span>
+                    <span x-show="!loading">Proceed to Razorpay Secure Pay (<span x-text="selectedProduct?.type === 'book' ? ('₹' + (Number(selectedProduct?.price || 0) + 50) + ' incl. ₹50 Courier') : selectedProduct?.formatted_price"></span>)</span>
                     <span x-show="loading" class="flex items-center space-x-2">
                         <svg class="animate-spin h-4 w-4 text-[#1a1128]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -644,7 +672,7 @@
                    target="_blank"
                    rel="noopener noreferrer"
                    class="px-3 sm:px-4 py-1.5 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow transition-all">
-                    🛒 Buy Copy (₹150)
+                    🛒 Buy Copy (₹150 + ₹50 Courier)
                 </a>
 
                 <button type="button"

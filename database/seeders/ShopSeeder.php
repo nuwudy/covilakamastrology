@@ -178,7 +178,7 @@ class ShopSeeder extends Seeder
                 'title_ml' => 'വിശദമായ വേദിക് ജനനതീയതി ജ്യോതിഷ റിപ്പോർട്ട് (PDF)',
                 'slug' => 'vedic-dob-profile-pdf-report',
                 'subtitle' => 'Comprehensive Multi-Page Downloadable Vedic DOB Reading with Planetary Remedies',
-                'description' => 'Complete, certified multi-page Vedic numerology and astrological life profile report based on your Date of Birth. Includes 4 Life Pillars (Career & Wealth, Love & Family Harmony, Health & Longevity, Spiritual Remedies & Mantras), lucky gemstones, auspicious colors, and year-ahead planetary cycle forecast certified under the supervision of DR. E. K. Raja Varma.',
+                'description' => 'Complete, certified multi-page Vedic numerology and astrological life profile report based on your Date of Birth. Includes 4 Life Pillars (Career & Wealth, Love & Family Harmony, Health & Longevity, Spiritual Remedies & Mantras), lucky gemstones, auspicious colors, and year-ahead planetary cycle forecast certified under the supervision of Dr. E. K. Raja Varma.',
                 'price' => 100.00,
                 'original_price' => 250.00,
                 'image_path' => 'images/shop/jathakam-pdf-report-mockup-opt.jpg',
@@ -187,7 +187,7 @@ class ShopSeeder extends Seeder
                     'format' => 'Printable High-Resolution PDF (Certified by Dr. Raja Varma)',
                     'delivery_mode' => 'Instant Download after Payment',
                     'languages_available' => 'Malayalam / English / Tamil / Hindi',
-                    'verification' => 'Certified under supervision of DR. E. K. Raja Varma',
+                    'verification' => 'Certified under supervision of Dr. E. K. Raja Varma',
                     'key_inclusions' => [
                         'Mulank (Birth Number) & Bhagyank (Destiny Number) Deep Analysis',
                         '4 Life Pillars (Career, Love, Health, Remedies)',
@@ -207,7 +207,7 @@ class ShopSeeder extends Seeder
                 'title_ml' => 'സമ്പൂർണ്ണ ഡീലക്സ് വേദിക് ജാതകം & കുണ്ഡലി (PDF)',
                 'slug' => 'deluxe-vedic-jathakam-pdf-report',
                 'subtitle' => 'Comprehensive 30+ Page Personalized Kundali, Lagna, Rasi, Bhavas, Dasa-Bhukthi & Life Predictions',
-                'description' => 'Receive an exquisite 30+ page personalized Vedic Horoscope Report prepared with mathematical precision by Covilakam Astrology under the guidance of DR. E. K. Raja Varma. Incorporating optional Time and Place of Birth, it includes full Lagna (Ascendant), Chandra Rasi, Janma Nakshatra, Rasi & Navamsha charts, 12 Bhavas (Astrological Houses) deep career & marriage analysis, 25-year Vimshottari Dasa-Bhukthi timeline, Sade Sati & dosha check, and tailored Vedic remedial recommendations.',
+                'description' => 'Receive an exquisite 30+ page personalized Vedic Horoscope Report prepared with mathematical precision by Covilakam Astrology under the guidance of Dr. E. K. Raja Varma. Incorporating optional Time and Place of Birth, it includes full Lagna (Ascendant), Chandra Rasi, Janma Nakshatra, Rasi & Navamsha charts, 12 Bhavas (Astrological Houses) deep career & marriage analysis, 25-year Vimshottari Dasa-Bhukthi timeline, Sade Sati & dosha check, and tailored Vedic remedial recommendations.',
                 'price' => 500.00,
                 'original_price' => 1200.00,
                 'image_path' => 'images/shop/jathakam-pdf-report-mockup-opt.jpg',
@@ -217,7 +217,7 @@ class ShopSeeder extends Seeder
                     'delivery_mode' => 'Instant Download + Sent Directly to Customer WhatsApp & Email',
                     'delivery_time' => 'Instant Generation upon Razorpay Payment',
                     'languages_available' => 'Malayalam / English',
-                    'verification' => 'Reviewed under supervision of DR. E. K. Raja Varma',
+                    'verification' => 'Reviewed under supervision of Dr. E. K. Raja Varma',
                     'key_inclusions' => [
                         'Lagna (Ascendant Sign), Chandra Rasi & Janma Nakshatra',
                         'Precise Rasi, Navamsha & 12 Bhava (Houses) Planetary Charts',
@@ -232,14 +232,14 @@ class ShopSeeder extends Seeder
                 'sort_order' => 9,
             ],
 
-            // 10. Service: Personal Astrological Consultation with DR. E. K. Raja Varma
+            // 10. Service: Personal Astrological Consultation with Dr. E. K. Raja Varma
             [
                 'type' => 'consultation',
-                'title' => 'Personal Astro Consultation with DR. E. K. Raja Varma',
+                'title' => 'Personal Astro Consultation with Dr. E. K. Raja Varma',
                 'title_ml' => 'വ്യക്തിഗത ജ്യോതിഷ കൗൺസിലിംഗ്',
                 'slug' => 'personal-consultation-dr-ek-raja-varma',
                 'subtitle' => '30-Minute One-on-One Voice / WhatsApp Consultation with the Astrologer',
-                'description' => 'A direct, private, and deeply insightful one-on-one consultation with DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, 2026 Gold Medalist & Ph.D.). Discuss your birth chart, career decisions, matrimonial matters, health, financial transitions, or personal challenges, and receive actionable Vedic guidance combined with empathetic modern counselling.',
+                'description' => 'A direct, private, and deeply insightful one-on-one consultation with Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, 2026 Gold Medalist & Ph.D.). Discuss your birth chart, career decisions, matrimonial matters, health, financial transitions, or personal challenges, and receive actionable Vedic guidance combined with empathetic modern counselling.',
                 'price' => 999.00,
                 'original_price' => 1500.00,
                 'image_path' => 'images/og-covilakam-512x512.png',
@@ -269,7 +269,7 @@ class ShopSeeder extends Seeder
                 'title_ml' => 'വിവാഹ പൊരുത്ത പരിശോധന റിപ്പോർട്ട്',
                 'slug' => 'matrimonial-porutham-compatibility-service',
                 'subtitle' => 'Detailed Horoscope Matching for Bride and Groom with Written Verdict',
-                'description' => 'Complete traditional Kerala matrimonial horoscope matching (10 Poruthams, Chovva Dosham, Papa Samyam balance, and Dasa Sandhi examination). You will receive an official written matching report certified by DR. E. K. Raja Varma delivered directly to your WhatsApp.',
+                'description' => 'Complete traditional Kerala matrimonial horoscope matching (10 Poruthams, Chovva Dosham, Papa Samyam balance, and Dasa Sandhi examination). You will receive an official written matching report certified by Dr. E. K. Raja Varma delivered directly to your WhatsApp.',
                 'price' => 499.00,
                 'original_price' => 800.00,
                 'image_path' => 'images/shop/book-vedic-marriage-porutham-opt.jpg',

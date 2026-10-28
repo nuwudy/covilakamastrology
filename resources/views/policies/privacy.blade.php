@@ -34,7 +34,7 @@
             <section class="space-y-3">
                 <h2 class="font-cinzel text-xl font-bold text-amber-200">1. Commitment to Privacy</h2>
                 <p>
-                    At <strong>Covilakam Astrology</strong> (<em>കോവിലകം ജ്യോതിഷം</em>), directed by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>, we understand that sharing your personal birth details, family circumstances, and life questions requires deep trust. We are committed to protecting your privacy and treating all personal, astrological, and transactional information with utmost sanctity and confidentiality.
+                    At <strong>Covilakam Astrology</strong> (<em>കോവിലകം ജ്യോതിഷം</em>), directed by <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>, we understand that sharing your personal birth details, family circumstances, and life questions requires deep trust. We are committed to protecting your privacy and treating all personal, astrological, and transactional information with utmost sanctity and confidentiality.
                 </p>
             </section>
 
@@ -65,14 +65,14 @@
                     <li>To compute astrological charts and generate your personalized Jathakam PDF report.</li>
                     <li>To deliver horoscope reports, reading summaries, and consultation reminders to your verified WhatsApp number or email address.</li>
                     <li>To dispatch physical books via India Post Speed Post / Courier and send delivery tracking information.</li>
-                    <li>To communicate regarding scheduling, appointment slots, or follow-up clarifications with DR. E. K. Raja Varma.</li>
+                    <li>To communicate regarding scheduling, appointment slots, or follow-up clarifications with Dr. E. K. Raja Varma.</li>
                 </ul>
             </section>
 
             <section class="space-y-3">
                 <h2 class="font-cinzel text-xl font-bold text-amber-200">5. Strict Non-Disclosure Policy</h2>
                 <p>
-                    We have a strict <strong>Zero Third-Party Selling Policy</strong>. We do NOT sell, rent, monetize, or trade your personal or birth information with marketing agencies, telemarketers, or commercial brokers under any circumstance. Your information is accessed solely by DR. E. K. Raja Varma and authorized Covilakam Astrology staff strictly for fulfilling your requested astrological service or book order.
+                    We have a strict <strong>Zero Third-Party Selling Policy</strong>. We do NOT sell, rent, monetize, or trade your personal or birth information with marketing agencies, telemarketers, or commercial brokers under any circumstance. Your information is accessed solely by Dr. E. K. Raja Varma and authorized Covilakam Astrology staff strictly for fulfilling your requested astrological service or book order.
                 </p>
             </section>
 
@@ -87,7 +87,7 @@
                 <h2 class="font-cinzel text-xl font-bold text-amber-200">7. Grievance Redressal Officer</h2>
                 <div class="bg-[#1a1128] p-5 rounded-2xl border border-amber-500/20 text-xs sm:text-sm space-y-1.5">
                     <p>In accordance with Information Technology Act, 2000 and the Rules made thereunder:</p>
-                    <p><strong>Grievance Officer:</strong> DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</p>
+                    <p><strong>Grievance Officer:</strong> Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</p>
                     <p><strong>Entity:</strong> Covilakam Astrology (Kovilakam Astrology)</p>
                     <p><strong>Location:</strong> Kerala, India (PIN: 686574)</p>
                     <p><strong>Grievance Email:</strong> <a href="mailto:varmaji@covilakamastrology.com" class="text-amber-300">varmaji@covilakamastrology.com</a></p>

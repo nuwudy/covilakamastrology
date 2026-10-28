@@ -67,12 +67,12 @@
                         <span>Consultation Appointment Confirmation:</span>
                     </span>
                     <p class="text-amber-100/80 leading-relaxed">
-                        Your consultation with <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong> has been recorded. Our team will contact you on WhatsApp to confirm your preferred time slot.
+                        Your consultation with <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong> has been recorded. Our team will contact you on WhatsApp to confirm your preferred time slot.
                     </p>
-                    <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma, I have completed payment for my consultation (Order #' . $order->order_number . '). Looking forward to my session.') }}"
+                    <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma, I have completed payment for my consultation (Order #' . $order->order_number . '). Looking forward to my session.') }}"
                        target="_blank"
                        class="inline-flex items-center space-x-1.5 text-emerald-400 font-semibold hover:underline mt-1">
-                        <span>💬 Message DR. E. K. Raja Varma on WhatsApp</span>
+                        <span>💬 Message Dr. E. K. Raja Varma on WhatsApp</span>
                     </a>
                 </div>
             @endif

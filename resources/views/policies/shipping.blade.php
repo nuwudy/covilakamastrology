@@ -38,7 +38,7 @@
                     <h2 class="font-cinzel text-2xl font-bold text-amber-200">Part A: Physical Books (Vedic Astrology Publications)</h2>
                 </div>
                 <p>
-                    All printed Vedic literature, hardcover compendiums, and matrimonial reference books authored by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong> are packed securely in moisture-proof, damage-resistant corrugated packaging to ensure they arrive in pristine condition.
+                    All printed Vedic literature, hardcover compendiums, and matrimonial reference books authored by <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong> are packed securely in moisture-proof, damage-resistant corrugated packaging to ensure they arrive in pristine condition.
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
@@ -97,7 +97,7 @@
                 <div class="bg-amber-500/10 border border-amber-500/25 p-4 rounded-xl text-xs sm:text-sm text-amber-200">
                     <p class="font-bold text-amber-300 mb-1">⏱️ Astrologer-Verified Handwritten / Bespoke Charts:</p>
                     <p>
-                        If your order includes personalized astrologer verification or manual Porutham compatibility review by DR. E. K. Raja Varma, the finalized signed report will be delivered within <strong>12 to 24 hours</strong> of receiving complete birth data.
+                        If your order includes personalized astrologer verification or manual Porutham compatibility review by Dr. E. K. Raja Varma, the finalized signed report will be delivered within <strong>12 to 24 hours</strong> of receiving complete birth data.
                     </p>
                 </div>
             </section>

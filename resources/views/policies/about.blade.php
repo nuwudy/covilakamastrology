@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'About Us | Covilakam Astrology - DR. E. K. Raja Varma')
-@section('meta_description', 'About Covilakam Astrology, established in Kerala by DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, 2026 Gold Medalist & Ph.D.). Blending classical Parashara principles with modern compassionate Astro Counselling.')
+@section('title', 'About Us | Covilakam Astrology - Dr. E. K. Raja Varma')
+@section('meta_description', 'About Covilakam Astrology, established in Kerala by Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, 2026 Gold Medalist & Ph.D.). Blending classical Parashara principles with modern compassionate Astro Counselling.')
 
 @section('content')
 <div class="pt-32 pb-24 bg-[#0d0716] min-h-screen text-amber-100/90 relative overflow-hidden">
@@ -25,7 +25,7 @@
                 About Covilakam Astrology
             </h1>
             <p class="text-sm text-amber-200/70 mt-2 max-w-3xl leading-relaxed">
-                A sanctuary of authentic Vedic wisdom, classical Kerala Prasnam, and transformative psychological Astro Counselling, led by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>.
+                A sanctuary of authentic Vedic wisdom, classical Kerala Prasnam, and transformative psychological Astro Counselling, led by <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>.
             </p>
         </div>
 
@@ -35,7 +35,7 @@
                 <div class="relative inline-block">
                     <div class="w-64 h-64 sm:w-72 sm:h-72 mx-auto rounded-3xl p-1 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-2xl overflow-hidden">
                         <img src="{{ asset('images/og-covilakam-512x512.png') }}"
-                             alt="DR. E. K. Raja Varma"
+                             alt="Dr. E. K. Raja Varma"
                              class="w-full h-full object-cover rounded-[22px]">
                     </div>
                     <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 px-4 py-1.5 rounded-full bg-[#1a1128] border border-amber-500/50 shadow-lg text-[11px] font-bold text-amber-300 whitespace-nowrap">
@@ -46,23 +46,23 @@
 
             <div class="lg:col-span-7 space-y-4">
                 <h2 class="font-cinzel text-2xl font-bold text-amber-300">
-                    DR. E. K. Raja Varma
+                    Dr. E. K. Raja Varma
                 </h2>
                 <p class="text-xs text-amber-400 font-semibold tracking-wider uppercase">
-                    (Vidya Vachaspathi in Vedic Astrology • IAF Fellow #11009)
+                    (Vidya Vachaspathi in Vedic Astrology • IVAF Fellow #11009)
                 </p>
                 <p class="text-sm text-amber-100/80 leading-relaxed">
-                    With decades of disciplined astrological study, classical Sanskrit scholarship, and thousands of accurate horoscope readings across Kerala, India, and the global Malayali diaspora, <strong>DR. E. K. Raja Varma</strong> is revered for his ethical, compassionate approach to Jyothisha Shastra.
+                    With decades of disciplined astrological study, classical Sanskrit scholarship, and thousands of accurate horoscope readings across Kerala, India, and the global Malayali diaspora, <strong>Dr. E. K. Raja Varma</strong> is revered for his ethical, compassionate approach to Jyothisha Shastra.
                 </p>
                 <p class="text-sm text-amber-100/80 leading-relaxed">
-                    Rather than promoting fatalism or fear-inducing doshas, DR. E. K. Raja Varma combines traditional Kerala Parashara calculations with modern psychological counselling—empowering clients to understand their planetary cycles, harness auspicious timing, and navigate career, marriage, health, and spiritual growth with clarity and poise.
+                    Rather than promoting fatalism or fear-inducing doshas, Dr. E. K. Raja Varma combines traditional Kerala Parashara calculations with modern psychological counselling—empowering clients to understand their planetary cycles, harness auspicious timing, and navigate career, marriage, health, and spiritual growth with clarity and poise.
                 </p>
 
                 <!-- Credentials Badges -->
                 <div class="pt-2 flex flex-wrap gap-2 text-xs">
                     <span class="px-3 py-1 rounded-full border border-amber-500/40 bg-amber-500/10 text-amber-200">🎓 Ph.D. in Vedic Astrology</span>
                     <span class="px-3 py-1 rounded-full border border-amber-500/40 bg-amber-500/10 text-amber-200">🥇 Gold Medalist (2026)</span>
-                    <span class="px-3 py-1 rounded-full border border-amber-500/40 bg-amber-500/10 text-amber-200">📜 IAF Life Member #11009</span>
+                    <span class="px-3 py-1 rounded-full border border-amber-500/40 bg-amber-500/10 text-amber-200">📜 IVAF Life Member #11009</span>
                     <span class="px-3 py-1 rounded-full border border-amber-500/40 bg-amber-500/10 text-amber-200">✍️ Renowned Author & Scholar</span>
                 </div>
             </div>
@@ -90,7 +90,7 @@
                 <span class="text-3xl block mb-3">📖</span>
                 <h3 class="font-cinzel text-base font-bold text-amber-300 mb-2">Authentic Publications</h3>
                 <p class="text-xs text-amber-100/70 leading-relaxed">
-                    Our Bookstore offers authoritative published Vedic treatises authored by DR. E. K. Raja Varma, bringing classical Sanskrit knowledge to every home.
+                    Our Bookstore offers authoritative published Vedic treatises authored by Dr. E. K. Raja Varma, bringing classical Sanskrit knowledge to every home.
                 </p>
             </div>
         </div>

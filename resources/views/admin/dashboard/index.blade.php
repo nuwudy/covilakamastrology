@@ -16,7 +16,7 @@
                     Vidya Vachaspathi Management Console
                 </span>
                 <h1 class="font-cinzel text-2xl sm:text-3xl font-extrabold text-white mt-2">
-                    Namaskaram, <span class="gold-gradient-text">DR. E. K. Raja Varma</span>
+                    Namaskaram, <span class="gold-gradient-text">Dr. E. K. Raja Varma</span>
                 </h1>
                 <p class="text-xs sm:text-sm text-amber-100/70 mt-1 max-w-2xl">
                     Manage your authentic YouTube Video Gallery discourses, Vedic Wisdom Repository articles, free DOB predictions, and astrology translations from here.
@@ -226,7 +226,7 @@
                             $gem = $calc['gemstone_en'] ?? '';
                             $reportUrl = route('consultations.prediction', $lead->id);
                             $replyText = "Namaskaram {$lead->name},\n\n"
-                                . "This is DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) from Covilakam Astrology (കോവിലകം ജ്യോതിഷം).\n\n"
+                                . "This is Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) from Covilakam Astrology (കോവിലകം ജ്യോതിഷം).\n\n"
                                 . "Here is your Vedic Horoscope Summary:\n"
                                 . "• Date of Birth: " . ($lead->birth_date ? \Carbon\Carbon::parse($lead->birth_date)->format('d-m-Y') : '') . "\n"
                                 . "• Birth Number (Mulank): {$calc['mulank']} ({$rPlanet})\n"
@@ -236,7 +236,7 @@
                                 . "📜 View your complete dedicated report here:\n{$reportUrl}\n\n"
                                 . "Please let me know if you would like to proceed with a detailed personal consultation.";
                         } else {
-                            $replyText = "Namaskaram {$lead->name}, this is DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) from Covilakam Astrology regarding your inquiry for \"" . ($lead->service_requested ?? 'Astrology Reading') . "\". How may I guide you today?";
+                            $replyText = "Namaskaram {$lead->name}, this is Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) from Covilakam Astrology regarding your inquiry for \"" . ($lead->service_requested ?? 'Astrology Reading') . "\". How may I guide you today?";
                         }
                     @endphp
 

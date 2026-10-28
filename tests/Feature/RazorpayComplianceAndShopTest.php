@@ -55,7 +55,7 @@ class RazorpayComplianceAndShopTest extends TestCase
         // 6. About Us Page
         $response = $this->get('/about-us');
         $response->assertStatus(200);
-        $response->assertSee('DR. E. K. Raja Varma');
+        $response->assertSee('Dr. E. K. Raja Varma');
     }
 
     public function test_bookstore_catalog_and_product_show_pages(): void
@@ -74,7 +74,19 @@ class RazorpayComplianceAndShopTest extends TestCase
         $response = $this->get('/shop/' . $book->slug);
         $response->assertStatus(200);
         $response->assertSee('₹100');
+        $response->assertSee('+ ₹50/- Courier Charge');
         $response->assertSee('ഡോ. ഇ. കെ. രാജ വർമ്മ');
+
+        // Verify book order creation adds ₹50/- Courier Charge (100 + 50 = 150 INR = 15000 paise)
+        $bookOrderRes = $this->postJson('/checkout/create-order', [
+            'product_id' => $book->id,
+            'customer_name' => 'Anil Menon',
+            'customer_phone' => '+91 9847012345',
+            'shipping_address' => 'Kochi, Kerala 682001',
+        ]);
+        $bookOrderRes->assertStatus(200);
+        $this->assertEquals(15000, $bookOrderRes->json('amount'));
+        $this->assertEquals(50, $bookOrderRes->json('courier_charge'));
     }
 
     public function test_razorpay_order_creation_and_payment_verification_flow(): void
@@ -129,7 +141,7 @@ class RazorpayComplianceAndShopTest extends TestCase
         $pdfRes->assertSee('DELUXE VEDIC JATHAKAM REPORT');
         $pdfRes->assertSee('Suresh Kumar');
         $pdfRes->assertSee('Rasi Chakra');
-        $pdfRes->assertSee('DR. E. K. RAJA VARMA');
+        $pdfRes->assertSee('Dr. E. K. Raja Varma');
     }
 
     public function test_admin_orders_dashboard_is_protected_and_manageable(): void

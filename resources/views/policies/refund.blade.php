@@ -34,7 +34,7 @@
             <div class="p-4 rounded-xl border border-amber-500/30 bg-amber-500/10 text-xs sm:text-sm">
                 <p class="font-semibold text-amber-300 mb-1">Our Customer Satisfaction Commitment:</p>
                 <p>
-                    At <strong>Covilakam Astrology</strong>, directed by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>, we take pride in authentic Vedic scholarship and fair merchant ethics. We have structured this policy to be completely transparent regarding how cancellations, returns, and refunds are handled across our physical books, personalized consultations, and digital Jathakam downloads.
+                    At <strong>Covilakam Astrology</strong>, directed by <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>, we take pride in authentic Vedic scholarship and fair merchant ethics. We have structured this policy to be completely transparent regarding how cancellations, returns, and refunds are handled across our physical books, personalized consultations, and digital Jathakam downloads.
                 </p>
             </div>
 
@@ -44,7 +44,7 @@
                 <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm text-amber-100/80">
                     <li><strong>Advance Cancellation (Full Refund):</strong> If you wish to cancel a paid astrological consultation, you may do so up to <strong>24 hours prior</strong> to the scheduled appointment time. A <strong>100% full refund</strong> will be initiated without questions.</li>
                     <li><strong>Free Rescheduling:</strong> If an unforeseen circumstance arises, you may reschedule your appointment to another convenient date and time at no additional charge by notifying us via WhatsApp (+91 7907052160) at least 4 hours in advance.</li>
-                    <li><strong>Post-Consultation:</strong> Once an astrological consultation session with DR. E. K. Raja Varma has been completed, the consultation fee is non-refundable as the astrologer's professional time, esoteric study, and personalized reading have been fully rendered. However, we offer 7 days of complimentary WhatsApp follow-up clarifications on the points discussed during your reading.</li>
+                    <li><strong>Post-Consultation:</strong> Once an astrological consultation session with Dr. E. K. Raja Varma has been completed, the consultation fee is non-refundable as the astrologer's professional time, esoteric study, and personalized reading have been fully rendered. However, we offer 7 days of complimentary WhatsApp follow-up clarifications on the points discussed during your reading.</li>
                 </ul>
             </section>
 

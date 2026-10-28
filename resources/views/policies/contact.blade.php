@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Contact Us | Covilakam Astrology - DR. E. K. Raja Varma')
-@section('meta_description', 'Official contact page of Covilakam Astrology, directed by DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Get in touch for consultations, book inquiries, or support via WhatsApp, phone, or email.')
+@section('title', 'Contact Us | Covilakam Astrology - Dr. E. K. Raja Varma')
+@section('meta_description', 'Official contact page of Covilakam Astrology, directed by Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Get in touch for consultations, book inquiries, or support via WhatsApp, phone, or email.')
 
 @section('content')
 <div class="pt-32 pb-24 bg-[#0d0716] min-h-screen text-amber-100/90 relative overflow-hidden">
@@ -25,7 +25,7 @@
                 Contact Covilakam Astrology
             </h1>
             <p class="text-sm text-amber-200/70 mt-2 max-w-2xl">
-                Connect directly with <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, Gold Medalist & Ph.D.)</strong> for authentic astrology consultations, book store inquiries, or support.
+                Connect directly with <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, Gold Medalist & Ph.D.)</strong> for authentic astrology consultations, book store inquiries, or support.
             </p>
         </div>
 
@@ -37,12 +37,12 @@
                     <div class="flex items-center space-x-3.5">
                         <div class="w-12 h-12 rounded-full p-0.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-md shrink-0">
                             <img src="{{ asset('images/og-covilakam-512x512.png') }}"
-                                 alt="DR. E. K. Raja Varma"
+                                 alt="Dr. E. K. Raja Varma"
                                  class="w-full h-full rounded-full object-cover">
                         </div>
                         <div>
                             <h3 class="font-cinzel text-lg font-bold text-amber-300">COVILAKAM ASTROLOGY</h3>
-                            <p class="text-xs text-amber-400 font-medium">DR. E. K. Raja Varma</p>
+                            <p class="text-xs text-amber-400 font-medium">Dr. E. K. Raja Varma</p>
                             <p class="text-[10px] text-amber-200/60">(Vidya Vachaspathi in Vedic Astrology)</p>
                         </div>
                     </div>
@@ -134,7 +134,7 @@
                 <div class="bg-[#1a1128] p-6 sm:p-8 rounded-2xl border border-amber-500/30 shadow-2xl">
                     <h3 class="font-cinzel text-xl font-bold text-amber-300 mb-2">Send an Official Message</h3>
                     <p class="text-xs text-amber-200/60 mb-6">
-                        Fill in your details below. Your query will be directed personally to DR. E. K. Raja Varma.
+                        Fill in your details below. Your query will be directed personally to Dr. E. K. Raja Varma.
                     </p>
 
                     @if(session('success'))

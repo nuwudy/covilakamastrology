@@ -13,7 +13,7 @@
                 Books & Creative Publications
             </h1>
             <p class="text-xs text-amber-200/70 mt-1">
-                Manage the published literary works and audio albums authored by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>.
+                Manage the published literary works and audio albums authored by <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>.
             </p>
         </div>
 

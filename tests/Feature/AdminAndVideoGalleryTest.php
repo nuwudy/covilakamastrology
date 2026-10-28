@@ -154,7 +154,7 @@ class AdminAndVideoGalleryTest extends TestCase
         $response = $this->actingAs($admin)->get('/admin/dashboard');
         $response->assertStatus(200);
         $response->assertSee('Dashboard Overview');
-        $response->assertSee('DR. E. K. Raja Varma');
+        $response->assertSee('Dr. E. K. Raja Varma');
         $response->assertSee('Video Gallery');
         $response->assertSee('Articles & Wisdom', false);
     }
@@ -226,7 +226,7 @@ class AdminAndVideoGalleryTest extends TestCase
             'reading_time' => '4 min read',
             'excerpt' => 'Short test excerpt',
             'body' => '<p>Test body content for astrology insight.</p>',
-            'author_name' => 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
+            'author_name' => 'Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
             'is_published' => '1',
         ]);
         $createResponse->assertRedirect('/admin/posts');
@@ -243,7 +243,7 @@ class AdminAndVideoGalleryTest extends TestCase
             'reading_time' => '5 min read',
             'excerpt' => 'Updated excerpt',
             'body' => '<p>Updated body.</p>',
-            'author_name' => 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
+            'author_name' => 'Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)',
             'is_published' => '1',
         ]);
         $updateResponse->assertRedirect('/admin/posts');

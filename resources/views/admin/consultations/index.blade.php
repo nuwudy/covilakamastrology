@@ -175,7 +175,7 @@
                                     if ($mulank) {
                                         $reportUrl = route('consultations.prediction', $lead->id);
                                         $replyMsg = "Namaskaram {$lead->name},\n\n"
-                                            . "This is DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) from Covilakam Astrology (കോവിലകം ജ്യോതിഷം).\n\n"
+                                            . "This is Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) from Covilakam Astrology (കോവിലകം ജ്യോതിഷം).\n\n"
                                             . "Here is your Vedic Horoscope Reading:\n"
                                             . "• Date of Birth: " . ($lead->birth_date ? \Carbon\Carbon::parse($lead->birth_date)->format('d-m-Y') : '') . "\n"
                                             . "• Birth Number (Mulank): {$mulank} ({$rulingPlanetName})\n"
@@ -185,7 +185,7 @@
                                             . "📜 View your full dedicated report here:\n{$reportUrl}\n\n"
                                             . "Please let me know if you would like to proceed with a detailed personal horoscope consultation.";
                                     } else {
-                                        $replyMsg = "Namaskaram {$lead->name}, this is DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) from Covilakam Astrology regarding your inquiry for \"" . ($lead->service_requested ?? 'Astrology Reading') . "\". How may I guide you today?";
+                                        $replyMsg = "Namaskaram {$lead->name}, this is Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) from Covilakam Astrology regarding your inquiry for \"" . ($lead->service_requested ?? 'Astrology Reading') . "\". How may I guide you today?";
                                     }
                                 @endphp
                                 <a href="https://wa.me/{{ $targetPhone }}?text={{ rawurlencode($replyMsg) }}"

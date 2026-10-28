@@ -85,10 +85,10 @@
             </h1>
 
             <p class="font-cinzel text-xs sm:text-sm font-bold text-amber-200 print:text-amber-800">
-                DR. E. K. RAJA VARMA
+                Dr. E. K. Raja Varma
             </p>
             <p class="text-[11px] text-amber-300/80 print:text-gray-700 italic">
-                (Vidya Vachaspathi in Vedic Astrology • IAF Fellow #11009 • Ph.D. & 2026 Gold Medalist)
+                (Vidya Vachaspathi in Vedic Astrology • IVAF Fellow #11009 • Ph.D. & 2026 Gold Medalist)
             </p>
 
             <div class="pt-2">
@@ -387,14 +387,14 @@
 
             <div class="text-center sm:text-right space-y-1">
                 <div class="font-serif italic text-amber-300 print:text-gray-900 font-bold text-base">
-                    DR. E. K. Raja Varma
+                    Dr. E. K. Raja Varma
                 </div>
                 <div class="w-36 h-0.5 bg-amber-500/50 print:bg-gray-400 mx-auto sm:ml-auto"></div>
                 <p class="font-cinzel text-[10px] uppercase font-bold text-amber-400 print:text-gray-700">
                     Vidya Vachaspathi in Vedic Astrology
                 </p>
                 <p class="text-[9px] text-amber-200/60 print:text-gray-500">
-                    Ph.D. & 2026 Gold Medalist (IAF #11009)
+                    Ph.D. & 2026 Gold Medalist (IVAF #11009)
                 </p>
             </div>
         </div>

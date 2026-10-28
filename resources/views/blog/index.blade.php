@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Astrology Blogs & Vedic Articles | DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)')
-@section('meta_description', 'Explore articles on Vedic Astrology, Marriage Matching (Porutham), Navaratna Gemology, and Online Astro Counselling by DR. E. K. Raja Varma.')
+@section('title', 'Astrology Blogs & Vedic Articles | Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)')
+@section('meta_description', 'Explore articles on Vedic Astrology, Marriage Matching (Porutham), Navaratna Gemology, and Online Astro Counselling by Dr. E. K. Raja Varma.')
 
 @section('content')
 <div class="pt-32 pb-24 bg-[#0d0716] min-h-screen">
@@ -17,7 +17,7 @@
             </h1>
             <div class="w-24 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
             <p class="text-xs sm:text-sm text-amber-100/70">
-                In-depth articles authored by <strong>DR. E. K. Raja Varma</strong> (Vidya Vachaspathi in Vedic Astrology) to illuminate your spiritual and worldly path.
+                In-depth articles authored by <strong>Dr. E. K. Raja Varma</strong> (Vidya Vachaspathi in Vedic Astrology) to illuminate your spiritual and worldly path.
             </p>
         </div>
 

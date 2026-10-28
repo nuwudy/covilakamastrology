@@ -196,7 +196,7 @@
                                 {{ $product->type === 'book' ? 'Physical Hardcover Book' : ($product->type === 'digital_pdf' ? 'Instant Digital Download' : 'Astrological Service') }}
                             </span>
                             @if($product->type === 'book')
-                                <span class="text-xs text-emerald-400 font-medium">Free Speed Post in India</span>
+                                <span class="text-xs text-amber-300 font-semibold">+ ₹50/- Courier Charge</span>
                             @endif
                         </div>
 
@@ -210,16 +210,21 @@
                         @endif
 
                         <p class="text-xs text-amber-200/70 mt-1 font-sans">
-                            Author: <strong>DR. E. K. Raja Varma</strong> (Vidya Vachaspathi in Vedic Astrology)
+                            Author: <strong>Dr. E. K. Raja Varma</strong> (Vidya Vachaspathi in Vedic Astrology)
                         </p>
                     </div>
 
                     <!-- Pricing Display -->
                     <div class="p-4 rounded-2xl bg-[#1a1128] border border-amber-500/25 flex flex-wrap items-baseline justify-between gap-2">
-                        <div class="flex items-baseline space-x-3">
+                        <div class="flex flex-wrap items-baseline gap-3">
                             <span class="font-cinzel text-3xl font-extrabold text-amber-300">
                                 {{ $product->formatted_price }}
                             </span>
+                            @if($product->type === 'book')
+                                <span class="text-xs font-bold text-amber-300 px-2.5 py-1 rounded-lg bg-amber-500/15 border border-amber-500/30">
+                                    + ₹50/- Courier Charge (Total: ₹{{ number_format($product->price + 50, 0) }})
+                                </span>
+                            @endif
                             @if($product->formatted_original_price)
                                 <span class="text-sm line-through text-amber-300/50">
                                     {{ $product->formatted_original_price }}
@@ -229,7 +234,7 @@
                                 </span>
                             @endif
                         </div>
-                        <span class="text-xs text-amber-200/60 font-medium">Inclusive of all taxes</span>
+                        <span class="text-xs text-amber-200/60 font-medium">{{ $product->type === 'book' ? 'Book Cost + ₹50/- Courier' : 'Inclusive of all taxes' }}</span>
                     </div>
 
                     <!-- Description -->
@@ -275,15 +280,25 @@
                         <button @click="openCheckout()"
                                 class="w-full py-4 px-6 rounded-xl font-cinzel font-bold text-sm tracking-wider uppercase text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-xl transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-2">
                             <span>⚡</span>
-                            <span>Order Now via Razorpay ({{ $product->formatted_price }})</span>
+                            <span>Order Now via Razorpay ({{ $product->type === 'book' ? $product->formatted_price . ' + ₹50 Courier = ₹' . number_format($product->price + 50, 0) : $product->formatted_price }})</span>
                         </button>
 
-                        <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma, I would like to order: ' . $product->title . ' (' . $product->formatted_price . '). Please guide me.') }}"
-                           target="_blank"
-                           class="w-full py-3 px-6 rounded-xl text-xs font-medium text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/10 transition-colors flex items-center justify-center space-x-2">
-                            <span>💬</span>
-                            <span>Order / Inquire via WhatsApp (+91 7907052160)</span>
-                        </a>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <a href="https://razorpay.me/@covilakamastrology"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="w-full py-3 px-4 rounded-xl text-xs font-bold text-blue-200 bg-blue-600/20 border border-blue-400/40 hover:bg-blue-600/30 transition-colors flex items-center justify-center space-x-2">
+                                <span>💳</span>
+                                <span>Pay on razorpay.me</span>
+                            </a>
+
+                            <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma, I would like to order: ' . $product->title . ' (' . ($product->type === 'book' ? $product->formatted_price . ' + ₹50 Courier' : $product->formatted_price) . '). Please guide me.') }}"
+                               target="_blank"
+                               class="w-full py-3 px-4 rounded-xl text-xs font-medium text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/10 transition-colors flex items-center justify-center space-x-2">
+                                <span>💬</span>
+                                <span>Order via WhatsApp</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -335,7 +350,7 @@
                 <h3 class="font-cinzel text-xl font-bold text-amber-300 mt-0.5">{{ $product->title }}</h3>
                 <div class="flex items-center justify-between mt-2 text-xs">
                     <span class="text-amber-200/70">{{ $product->type === 'book' ? 'Physical Hardcover Dispatch' : ($product->type === 'digital_pdf' ? 'Instant Digital PDF Download' : 'Consultation Booking') }}</span>
-                    <span class="font-cinzel font-bold text-lg text-amber-300">{{ $product->formatted_price }}</span>
+                    <span class="font-cinzel font-bold text-lg text-amber-300">{{ $product->type === 'book' ? $product->formatted_price . ' + ₹50 Courier = ₹' . number_format($product->price + 50, 0) : $product->formatted_price }}</span>
                 </div>
             </div>
 
@@ -366,7 +381,7 @@
                         <label class="block text-xs font-semibold text-amber-300 uppercase mb-1">Shipping Delivery Address (with PIN Code) *</label>
                         <textarea x-model="shippingAddress" rows="3" placeholder="House/Flat No, Street, City, State, PIN Code"
                                   class="w-full px-3.5 py-2.5 rounded-xl bg-[#0f0819] border border-amber-500/30 text-amber-100 text-xs focus:border-amber-400 focus:outline-none"></textarea>
-                        <p class="text-[10px] text-emerald-400 mt-1">✓ Dispatched within 24-48 hours via India Post Speed Post (Free Delivery)</p>
+                        <p class="text-[10px] text-emerald-400 mt-1">✓ Dispatched within 24-48 hours via India Post Speed Post (+ ₹50/- Courier Charge included)</p>
                     </div>
                 @endif
 
@@ -396,7 +411,7 @@
                 <button @click="submitOrder()"
                         :disabled="loading"
                         class="w-full mt-4 py-3.5 rounded-xl font-cinzel font-bold text-sm tracking-wider uppercase text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-xl transition-all flex items-center justify-center space-x-2 disabled:opacity-50">
-                    <span x-show="!loading">Pay with Razorpay ({{ $product->formatted_price }})</span>
+                    <span x-show="!loading">Pay with Razorpay ({{ $product->type === 'book' ? '₹' . number_format($product->price + 50, 0) . ' incl. ₹50 Courier' : $product->formatted_price }})</span>
                     <span x-show="loading" class="flex items-center space-x-2">
                         <svg class="animate-spin h-4 w-4 text-[#1a1128]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

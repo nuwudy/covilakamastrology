@@ -13,7 +13,7 @@
                 Add New Book / Publication
             </h1>
             <p class="text-xs text-amber-200/70 mt-1">
-                Publish a work authored by DR. E. K. Raja Varma.
+                Publish a work authored by Dr. E. K. Raja Varma.
             </p>
         </div>
 

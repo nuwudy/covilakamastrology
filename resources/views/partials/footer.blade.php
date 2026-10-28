@@ -22,7 +22,7 @@
 
                 <div class="pt-2">
                     <p class="font-cinzel text-base font-bold text-amber-200">
-                        DR. E. K. Raja Varma
+                        Dr. E. K. Raja Varma
                     </p>
                     <p class="text-xs text-amber-400 font-medium">
                         (Vidya Vachaspathi in Vedic Astrology)
@@ -30,14 +30,14 @@
                 </div>
 
                 <p class="text-xs text-amber-100/70 leading-relaxed">
-                    Official portal of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Blending classical Parashara principles with modern psychological Astro Counselling since 2022.
+                    Official portal of Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Blending classical Parashara principles with modern psychological Astro Counselling since 2022.
                 </p>
 
                 <!-- Credentials Badges -->
                 <div class="pt-2 flex flex-wrap gap-1.5 text-[10px]">
                     <span class="px-2 py-0.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300">Ph.D. in Vedic Astrology</span>
                     <span class="px-2 py-0.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300">2026 Gold Medalist</span>
-                    <span class="px-2 py-0.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300">IAF Life Member #11009</span>
+                    <span class="px-2 py-0.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300">IVAF Life Member #11009</span>
                 </div>
             </div>
 
@@ -55,7 +55,7 @@
                     <li><a href="{{ route('videos.index') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Vedic Video Gallery (Watch All)</span></a></li>
                     <li><a href="{{ route('blog.index') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Astrology Articles & Insights</span></a></li>
                     <li><a href="{{ route('visiting-card') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Digital Visiting Card</span></a></li>
-                    <li><a href="{{ route('policies.about') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>About DR. E. K. Raja Varma</span></a></li>
+                    <li><a href="{{ route('policies.about') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>About Dr. E. K. Raja Varma</span></a></li>
                     <li><a href="{{ route('policies.contact') }}" class="hover:text-amber-300 transition-colors flex items-center space-x-1.5"><span class="text-amber-500">❖</span><span>Contact Us & Inquiries</span></a></li>
                 </ul>
             </div>
@@ -135,6 +135,12 @@
                         <span>094473 27450 / +91 9447327450</span>
                     </div>
 
+                    <!-- Razorpay -->
+                    <div class="flex items-start space-x-2.5">
+                        <span class="text-blue-400 font-bold">Razorpay:</span>
+                        <a href="https://razorpay.me/@covilakamastrology" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200 underline break-all">razorpay.me/@covilakamastrology</a>
+                    </div>
+
                     <!-- Email 1 -->
                     <div class="flex items-start space-x-2.5">
                         <span class="text-amber-400 font-bold">Email:</span>
@@ -175,13 +181,13 @@
         <!-- Search Keywords Indexing for Malayalees (Mallus) & Kerala Astrology -->
         <div class="mt-8 pt-4 border-t border-amber-500/15 text-[11px] text-amber-200/50 leading-relaxed text-center sm:text-left">
             <span class="text-amber-300/80 font-bold">Also Searched As:</span>
-            <span>Kovilakam Astrology • കോവിലകം ജ്യോതിഷം • Kovilakam Jyothisham • Covilakam Jyothisham • Malayalam Astrology Online • Kerala Astrologer • ജാതക പരിശോധന • വിവാഹ പൊരുത്തം • മുഹൂർത്തം • Online Jathakam Kerala • DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</span>
+            <span>Kovilakam Astrology • കോവിലകം ജ്യോതിഷം • Kovilakam Jyothisham • Covilakam Jyothisham • Malayalam Astrology Online • Kerala Astrologer • ജാതക പരിശോധന • വിവാഹ പൊരുത്തം • മുഹൂർത്തം • Online Jathakam Kerala • Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</span>
         </div>
 
         <!-- Bottom Copyright & Policy Links Bar -->
         <div class="mt-6 pt-6 border-t border-amber-500/20 flex flex-col sm:flex-row items-center justify-between text-[11px] text-amber-300/60 gap-4">
             <p>
-                © {{ date('Y') }} <strong>Covilakam Astrology</strong> (Kovilakam Astrology). All rights reserved. Directed by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>.
+                © {{ date('Y') }} <strong>Covilakam Astrology</strong> (Kovilakam Astrology). All rights reserved. Directed by <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>.
             </p>
             <div class="flex flex-wrap items-center justify-center gap-3 text-[11px]">
                 <a href="{{ route('policies.terms') }}" class="hover:text-amber-200 transition-colors">Terms & Conditions</a>

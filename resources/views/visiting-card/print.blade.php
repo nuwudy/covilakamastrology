@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Print Visiting Card - DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</title>
+    <title>Print Visiting Card - Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
@@ -90,19 +90,19 @@
                 </div>
             </div>
             <span class="text-[7.5px] font-bold text-amber-300 bg-amber-500/20 px-1.5 py-0.5 rounded border border-amber-400/40">
-                IAF #11009
+                IVAF #11009
             </span>
         </div>
 
         <!-- Middle Profile Info -->
         <div class="flex items-center space-x-3 py-1">
             <img src="{{ asset('storage/media/images/covilakam-4bcJQK.webp') }}"
-                 alt="DR. E. K. Raja Varma"
+                 alt="Dr. E. K. Raja Varma"
                  onerror="this.onerror=null; this.src='{{ asset('images/covilakam-hero.webp') }}';"
                  class="w-12 h-12 rounded-xl object-cover border border-amber-400 shrink-0">
             <div class="space-y-0.5">
                 <h2 class="font-cinzel text-xs font-black text-amber-200 leading-none">
-                    DR. E. K. Raja Varma
+                    Dr. E. K. Raja Varma
                 </h2>
                 <p class="font-cinzel text-[8.5px] font-bold text-amber-400 leading-tight">
                     (Vidya Vachaspathi in Vedic Astrology)

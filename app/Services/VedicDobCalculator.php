@@ -1034,7 +1034,7 @@ class VedicDobCalculator
         $cleanedBirthTime = trim($birthTime ?? '');
         $cleanedBirthPlace = trim($birthPlace ?? '');
 
-        $whatsappText = "Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology),\n\n"
+        $whatsappText = "Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology),\n\n"
             . "I checked my Vedic Reading on Covilakam Astrology:\n"
             . "• Name: {$clientName}\n"
             . "• Date of Birth: {$formattedDate}\n"

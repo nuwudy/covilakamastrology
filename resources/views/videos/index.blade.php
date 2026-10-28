@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Exclusive Vedic Astrology Video Gallery & Discourses | DR. E. K. Raja Varma | Covilakam Astrology')
-@section('meta_description', 'Watch exclusive Malayalam Vedic Astrology video discourses by DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, Gold Medalist). Exploring Online Astro Counselling, Marriage Compatibility (Porutham), Kaalapurusha Vaastu, and Raja Yogas.')
+@section('title', 'Exclusive Vedic Astrology Video Gallery & Discourses | Dr. E. K. Raja Varma | Covilakam Astrology')
+@section('meta_description', 'Watch exclusive Malayalam Vedic Astrology video discourses by Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, Gold Medalist). Exploring Online Astro Counselling, Marriage Compatibility (Porutham), Kaalapurusha Vaastu, and Raja Yogas.')
 
 @section('content')
 <div class="pt-28 sm:pt-32 pb-24 bg-[#090511] min-h-screen text-amber-100/90 relative overflow-hidden"
@@ -41,8 +41,8 @@
             const shareUrl = window.location.origin + '{{ route('videos.index') }}?watch=' + video.youtube_id;
             if (navigator.share) {
                 navigator.share({
-                    title: video.title + ' - DR. E. K. Raja Varma',
-                    text: 'Watch this Vedic Astrology Discourse by DR. E. K. Raja Varma:',
+                    title: video.title + ' - Dr. E. K. Raja Varma',
+                    text: 'Watch this Vedic Astrology Discourse by Dr. E. K. Raja Varma:',
                     url: shareUrl
                 }).catch(() => {});
             } else if (navigator.clipboard) {
@@ -191,7 +191,7 @@
                             <!-- Bottom Left Bar -->
                             <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-amber-200/90 font-medium">
                                 <div class="flex items-center space-x-2 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
-                                    <span>🎙️ DR. E. K. Raja Varma</span>
+                                    <span>🎙️ Dr. E. K. Raja Varma</span>
                                     <span>•</span>
                                     <span class="text-amber-400">Official Discourse</span>
                                 </div>
@@ -226,7 +226,7 @@
                             <div class="grid grid-cols-2 gap-3 text-xs bg-[#1a102c]/80 rounded-2xl p-3.5 border border-amber-500/20">
                                 <div>
                                     <span class="text-amber-300/60 text-[10px] uppercase font-bold block">Scholar / Speaker</span>
-                                    <strong class="text-amber-200 font-semibold truncate block">DR. E. K. Raja Varma</strong>
+                                    <strong class="text-amber-200 font-semibold truncate block">Dr. E. K. Raja Varma</strong>
                                 </div>
                                 <div>
                                     <span class="text-amber-300/60 text-[10px] uppercase font-bold block">Subject Domain</span>
@@ -252,7 +252,7 @@
                                 </button>
 
                                 <!-- Consult WhatsApp Button -->
-                                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma, I watched your featured video discourse: "' . $featuredVideo->title . '" and would like to ask a question.') }}"
+                                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma, I watched your featured video discourse: "' . $featuredVideo->title . '" and would like to ask a question.') }}"
                                    target="_blank"
                                    rel="noopener noreferrer"
                                    class="px-4 py-3.5 rounded-xl text-xs font-bold text-amber-200 bg-[#1e1233] border border-amber-500/40 hover:border-amber-300 hover:text-white transition-all flex items-center space-x-2 shrink-0">
@@ -454,7 +454,7 @@
                                 
                                 <!-- Speaker Name -->
                                 <div class="flex items-center space-x-1 text-[10px] sm:text-xs text-amber-400/80 font-medium truncate">
-                                    <span>DR. E. K. Raja Varma</span>
+                                    <span>Dr. E. K. Raja Varma</span>
                                 </div>
 
                                 <!-- Movie Title (2-Line Clamped) -->
@@ -499,7 +499,7 @@
                             </div>
 
                             <!-- WhatsApp Inquiry Button -->
-                            <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma, I watched your YouTube video: "' . $video->title . '" and would like to ask a question.') }}"
+                            <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma, I watched your YouTube video: "' . $video->title . '" and would like to ask a question.') }}"
                                target="_blank"
                                rel="noopener noreferrer"
                                class="w-full py-1.5 sm:py-2 px-2 rounded-lg sm:rounded-xl text-[10px] sm:text-[11px] font-semibold text-amber-200/90 bg-[#1e1233] border border-amber-500/30 hover:border-amber-400 hover:text-white flex items-center justify-center space-x-1 transition-all">
@@ -530,7 +530,7 @@
                                 <span>🎟️ VIP Box • Direct Personal Astrology Consultation</span>
                             </div>
                             <h2 class="font-cinzel text-2xl sm:text-3xl lg:text-4xl font-black text-white">
-                                Consult With <span class="gold-gradient-text">DR. E. K. Raja Varma</span>
+                                Consult With <span class="gold-gradient-text">Dr. E. K. Raja Varma</span>
                             </h2>
                             <p class="font-['Noto_Sans_Malayalam',sans-serif] text-xs sm:text-sm text-amber-100/80 leading-relaxed">
                                 വിഡിയോകളിൽ പ്രതിപാദിച്ച ദോഷ പരിഹാരങ്ങൾ, വിവാഹ പൊരുത്തം, ജാതക വിശകലനം, കാലപുരുഷ വാസ്തു എന്നിവ സംബന്ധിച്ച് താങ്കളുടെ സ്വന്തം ജാതക പ്രകാരം വിശദമായി സംസാരിക്കുന്നതിനായി നേരിട്ടോ ഫോൺ/വാട്ട്സ്ആപ്പ് വഴിയോ കൺസൾട്ട് ചെയ്യാം.
@@ -548,7 +548,7 @@
                                     class="w-full py-4 rounded-xl font-black text-xs uppercase tracking-wider text-[#140b22] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-xl shadow-amber-500/30 transition-all text-center">
                                 Book Consultation Online
                             </button>
-                            <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma, I would like to book a personal Vedic astrology consultation session.') }}"
+                            <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma, I would like to book a personal Vedic astrology consultation session.') }}"
                                target="_blank"
                                rel="noopener noreferrer"
                                class="w-full py-3.5 rounded-xl font-bold text-xs text-white bg-emerald-700/80 hover:bg-emerald-600 border border-emerald-500/40 shadow-lg transition-all flex items-center justify-center space-x-2">
@@ -683,7 +683,7 @@
                         </div>
                         
                         <div class="flex items-center gap-2">
-                            <a :href="'https://wa.me/917907052160?text=' + encodeURIComponent('Namaskaram DR. E. K. Raja Varma, I just watched your video discourse: \'' + currentVideo.title + '\' and would like to ask a question.')"
+                            <a :href="'https://wa.me/917907052160?text=' + encodeURIComponent('Namaskaram Dr. E. K. Raja Varma, I just watched your video discourse: \'' + currentVideo.title + '\' and would like to ask a question.')"
                                target="_blank"
                                rel="noopener noreferrer"
                                class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl font-bold text-xs text-[#140b22] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 flex items-center justify-center space-x-1.5 shadow-md">
@@ -719,7 +719,7 @@
             'duration' => 'PT12M00S',
             'author' => [
                 '@type' => 'Person',
-                'name' => 'DR. E. K. Raja Varma',
+                'name' => 'Dr. E. K. Raja Varma',
                 'jobTitle' => 'Vidya Vachaspathi in Vedic Astrology'
             ]
         ];

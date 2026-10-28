@@ -18,13 +18,13 @@
             <div class="flex items-center space-x-3">
                 <div class="relative">
                     <img src="{{ asset('storage/media/images/covilakam-4bcJQK.webp') }}"
-                         alt="DR. E. K. Raja Varma"
+                         alt="Dr. E. K. Raja Varma"
                          onerror="this.onerror=null; this.src='{{ asset('images/covilakam-hero.webp') }}';"
                          class="w-12 h-12 rounded-full object-cover border-2 border-amber-400 shadow-md">
                     <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-[#160d24] rounded-full"></span>
                 </div>
                 <div>
-                    <h4 class="font-cinzel text-sm font-bold text-amber-300">DR. E. K. Raja Varma</h4>
+                    <h4 class="font-cinzel text-sm font-bold text-amber-300">Dr. E. K. Raja Varma</h4>
                     <p class="text-[11px] text-amber-200/75 leading-tight">(Vidya Vachaspathi in Vedic Astrology)</p>
                     <span class="inline-block text-[10px] text-emerald-400 font-medium">● Available for Online Consultation</span>
                 </div>
@@ -43,7 +43,7 @@
                     <span>Namaskaram! 🙏</span>
                 </p>
                 <p>
-                    Connect with <strong>DR. E. K. Raja Varma</strong> (Vidya Vachaspathi in Vedic Astrology) for Online Astro Counselling, Accurate Predictions, Jathakam analysis, or Marriage Match Reports.
+                    Connect with <strong>Dr. E. K. Raja Varma</strong> (Vidya Vachaspathi in Vedic Astrology) for Online Astro Counselling, Accurate Predictions, Jathakam analysis, or Marriage Match Reports.
                 </p>
                 <span class="block text-[10px] text-amber-400/60 text-right mt-1.5 font-mono">Official WhatsApp: +91 7907052160</span>
             </div>
@@ -51,7 +51,7 @@
 
         <!-- Popup Footer CTA -->
         <div class="p-3 bg-[#11081a] border-t border-amber-500/20">
-            <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to book an online astrological consultation with you.') }}"
+            <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to book an online astrological consultation with you.') }}"
                target="_blank"
                @click="chatOpen = false; hasNotification = false"
                class="w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-lg hover:shadow-emerald-600/30 transition-all duration-200">

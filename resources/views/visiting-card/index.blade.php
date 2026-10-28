@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Digital Visiting Card | DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)')
-@section('meta_description', 'Official Digital Visiting Card of DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), Covilakam Astrology. Connect via WhatsApp +91 7907052160 or GPay 094473 27450.')
+@section('title', 'Digital Visiting Card | Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)')
+@section('meta_description', 'Official Digital Visiting Card of Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), Covilakam Astrology. Connect via WhatsApp +91 7907052160 or GPay 094473 27450.')
 
 @section('content')
 <style>
@@ -69,7 +69,7 @@
             </h1>
             <div class="w-24 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
             <p class="text-xs sm:text-sm text-amber-100/70">
-                Official credential card of <strong>DR. E. K. Raja Varma</strong> (Vidya Vachaspathi in Vedic Astrology).
+                Official credential card of <strong>Dr. E. K. Raja Varma</strong> (Vidya Vachaspathi in Vedic Astrology).
             </p>
         </div>
 
@@ -99,7 +99,7 @@
                     </div>
                     <div>
                         <span class="px-2.5 py-1 rounded-full bg-amber-500/20 border border-amber-400/50 text-[10px] font-bold text-amber-300">
-                            IAF Life Member #11009
+                            IVAF Life Member #11009
                         </span>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
                 <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6">
                     <div class="w-28 h-28 shrink-0 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-xl">
                         <img src="{{ asset('storage/media/images/covilakam-4bcJQK.webp') }}"
-                             alt="DR. E. K. Raja Varma"
+                             alt="Dr. E. K. Raja Varma"
                              crossorigin="anonymous"
                              onerror="this.onerror=null; this.src='{{ asset('images/covilakam-hero.webp') }}';"
                              class="w-full h-full object-cover rounded-2xl">
@@ -116,7 +116,7 @@
 
                     <div class="space-y-1.5 text-center sm:text-left">
                         <h3 class="font-cinzel text-2xl font-black text-amber-200">
-                            DR. E. K. Raja Varma
+                            Dr. E. K. Raja Varma
                         </h3>
                         <p class="font-cinzel text-sm font-bold text-amber-400">
                             (Vidya Vachaspathi in Vedic Astrology)
@@ -145,6 +145,10 @@
                     <div class="flex items-center space-x-2">
                         <span class="text-amber-400 font-bold">Phone / GPay:</span>
                         <a href="tel:+919447327450" class="font-mono text-amber-100 hover:text-amber-300">094473 27450</a>
+                    </div>
+                    <div class="col-span-1 sm:col-span-2 flex items-center space-x-2">
+                        <span class="text-blue-300 font-bold">Razorpay Online:</span>
+                        <a href="https://razorpay.me/@covilakamastrology" target="_blank" rel="noopener noreferrer" class="font-mono text-blue-200 hover:text-blue-100 underline">https://razorpay.me/@covilakamastrology</a>
                     </div>
                     <div class="flex items-center space-x-2">
                         <span class="text-amber-400 font-bold">Primary Email:</span>
@@ -183,7 +187,7 @@
                     <span>Print / Save as PDF</span>
                 </button>
 
-                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I saved your Digital Visiting Card from Covilakam Astrology and would like to consult with you.') }}"
+                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I saved your Digital Visiting Card from Covilakam Astrology and would like to consult with you.') }}"
                    target="_blank"
                    class="px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-emerald-600 hover:bg-emerald-500 shadow-xl flex items-center space-x-2 transition-all">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">

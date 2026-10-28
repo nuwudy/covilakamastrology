@@ -82,7 +82,7 @@
                     <label class="block font-semibold text-amber-200 mb-1.5">
                         Author Name
                     </label>
-                    <input type="text" name="author_name" value="{{ old('author_name', 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)') }}"
+                    <input type="text" name="author_name" value="{{ old('author_name', 'Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)') }}"
                            class="w-full px-4 py-3 rounded-xl bg-[#211335] border border-amber-500/30 text-white placeholder-amber-200/40 focus:outline-none focus:border-amber-400 text-xs">
                 </div>
             </div>

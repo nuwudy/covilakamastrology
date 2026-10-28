@@ -2,74 +2,74 @@
         @scroll.window="scrolled = (window.pageYOffset > 20)"
         :class="scrolled ? 'bg-[#140b22]/95 backdrop-blur-md border-b border-amber-500/30 shadow-2xl py-3' : 'bg-transparent border-b border-amber-500/15 py-4'"
         class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between gap-2 sm:gap-4">
+    <div class="max-w-[1440px] mx-auto px-3 sm:px-5 lg:px-6">
+        <div class="flex items-center justify-between gap-2 sm:gap-3 xl:gap-4">
             <!-- Brand & Astrologer Name -->
-            <a href="{{ route('home') }}" class="group flex items-center space-x-2.5 sm:space-x-3.5 focus:outline-none min-w-0 shrink">
-                <div class="w-9 h-9 sm:w-11 sm:h-12 rounded-full p-0.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-xl gold-glow group-hover:scale-105 transition-transform duration-300 shrink-0">
+            <a href="{{ route('home') }}" class="group flex items-center space-x-2 sm:space-x-3 focus:outline-none shrink-0">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 xl:w-11 xl:h-11 rounded-full p-0.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-xl gold-glow group-hover:scale-105 transition-transform duration-300 shrink-0">
                     <img src="{{ asset('images/og-covilakam-512x512.png') }}"
                          alt="Covilakam Astrology Logo"
                          class="w-full h-full rounded-full object-cover shadow-inner">
                 </div>
-                <div class="min-w-0 shrink">
-                    <div class="flex items-center space-x-1.5 sm:space-x-2">
-                        <span class="font-cinzel text-base sm:text-xl lg:text-2xl font-bold tracking-wider text-amber-300 group-hover:text-amber-200 transition-colors whitespace-nowrap">
+                <div class="shrink-0">
+                    <div class="flex items-center space-x-1.5">
+                        <span class="font-cinzel text-base sm:text-lg xl:text-xl font-bold tracking-wider text-amber-300 group-hover:text-amber-200 transition-colors whitespace-nowrap">
                             COVILAKAM
                         </span>
-                        <span class="font-cinzel text-[10px] sm:text-xs uppercase px-1.5 py-0.5 rounded border border-amber-500/40 text-amber-200 bg-amber-500/10 shrink-0">
+                        <span class="font-cinzel text-[10px] xl:text-xs uppercase px-1.5 py-0.5 rounded border border-amber-500/40 text-amber-200 bg-amber-500/10 shrink-0 whitespace-nowrap">
                             Astrology
                         </span>
                     </div>
-                    <p class="text-[10px] sm:text-xs text-amber-100/70 font-sans tracking-wide truncate">
-                        <strong class="text-amber-300 font-semibold">DR. E. K. Raja Varma</strong>
-                        <span class="text-[10px] text-amber-200/60 ml-0.5 hidden sm:inline">(Vidya Vachaspathi in Vedic Astrology)</span>
+                    <p class="text-[10px] xl:text-xs text-amber-100/70 font-sans tracking-wide whitespace-nowrap">
+                        <strong class="text-amber-300 font-semibold">Dr. E. K. Raja Varma</strong>
+                        <span class="text-[10px] text-amber-200/60 ml-0.5 hidden 2xl:inline">(Vidya Vachaspathi in Vedic Astrology)</span>
                     </p>
                 </div>
             </a>
 
             <!-- Desktop Navigation Links -->
-            <nav class="hidden lg:flex items-center space-x-6 text-sm font-medium">
-                <a href="{{ route('home') }}#hero" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Home</a>
-                <a href="{{ route('home') }}#dob-calculator" class="text-amber-300 font-semibold hover:text-amber-200 transition-colors py-1 flex items-center space-x-1">
-                    <span>Free DOB Reading</span>
-                    <span class="relative flex h-2 w-2">
+            <nav class="hidden lg:flex items-center space-x-2.5 xl:space-x-4 2xl:space-x-5 text-xs xl:text-sm font-medium whitespace-nowrap">
+                <a href="{{ route('home') }}#hero" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1 whitespace-nowrap">Home</a>
+                <a href="{{ route('home') }}#dob-calculator" class="text-amber-300 font-semibold hover:text-amber-200 transition-colors py-1 flex items-center space-x-1 whitespace-nowrap">
+                    <span class="whitespace-nowrap">Free DOB Reading</span>
+                    <span class="relative flex h-2 w-2 shrink-0">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                     </span>
                 </a>
-                <a href="{{ route('home') }}#services" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Services</a>
-                <a href="{{ route('home') }}#why-covilakam" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Why Covilakam</a>
-                <a href="{{ route('videos.index') }}" class="{{ request()->routeIs('videos.*') ? 'text-amber-300 font-bold border-b-2 border-amber-400' : 'text-amber-100/80 hover:text-amber-300' }} transition-colors py-1 flex items-center space-x-1">
-                    <span>Videos</span>
-                    <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                <a href="{{ route('home') }}#services" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1 whitespace-nowrap">Services</a>
+                <a href="{{ route('home') }}#why-covilakam" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1 whitespace-nowrap">Why Covilakam</a>
+                <a href="{{ route('videos.index') }}" class="{{ request()->routeIs('videos.*') ? 'text-amber-300 font-bold border-b-2 border-amber-400' : 'text-amber-100/80 hover:text-amber-300' }} transition-colors py-1 flex items-center space-x-1 whitespace-nowrap">
+                    <span class="whitespace-nowrap">Videos</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shrink-0"></span>
                 </a>
-                <a href="{{ route('home') }}#books" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Books</a>
-                <a href="{{ url('/shop') }}" class="text-amber-300 font-bold hover:text-amber-100 transition-colors py-1 flex items-center space-x-1">
+                <a href="{{ route('home') }}#books" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1 whitespace-nowrap">Books</a>
+                <a href="{{ url('/shop') }}" class="text-amber-300 font-bold hover:text-amber-100 transition-colors py-1 flex items-center space-x-1 whitespace-nowrap">
                     <span>📚</span>
-                    <span>Bookstore</span>
+                    <span class="whitespace-nowrap">Bookstore</span>
                 </a>
-                <a href="{{ url('/checkout') }}" class="{{ request()->is('checkout') ? 'text-amber-300 font-bold border-b-2 border-amber-400' : 'text-amber-100/80 hover:text-amber-300' }} transition-colors py-1 flex items-center space-x-1">
+                <a href="{{ url('/checkout') }}" class="{{ request()->is('checkout') ? 'text-amber-300 font-bold border-b-2 border-amber-400' : 'text-amber-100/80 hover:text-amber-300' }} transition-colors py-1 flex items-center space-x-1 whitespace-nowrap">
                     <span>💳</span>
-                    <span>Pay Online</span>
+                    <span class="whitespace-nowrap">Pay Online</span>
                 </a>
-                <a href="{{ route('blog.index') }}" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Blog</a>
-                <a href="{{ route('visiting-card') }}" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1">Visiting Card</a>
+                <a href="{{ route('blog.index') }}" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1 whitespace-nowrap">Blog</a>
+                <a href="{{ route('visiting-card') }}" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1 whitespace-nowrap">Visiting Card</a>
                 @auth
-                <a href="{{ route('admin.dashboard') }}" class="text-amber-300 font-semibold hover:text-amber-100 transition-colors py-1 flex items-center space-x-1">
+                <a href="{{ route('admin.dashboard') }}" class="text-amber-300 font-semibold hover:text-amber-100 transition-colors py-1 flex items-center space-x-1 whitespace-nowrap">
                     <span>⚙️</span>
-                    <span>Dashboard</span>
+                    <span class="whitespace-nowrap">Dashboard</span>
                 </a>
                 @endauth
             </nav>
 
             <!-- Actions / CTA Button -->
-            <div class="hidden sm:flex items-center space-x-3 shrink-0">
-                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to consult with you.') }}"
+            <div class="hidden sm:flex items-center space-x-2 xl:space-x-3 shrink-0">
+                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to consult with you.') }}"
                    target="_blank"
                    rel="noopener noreferrer"
-                   class="inline-flex items-center space-x-2 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md hover:shadow-amber-500/30 transition-all duration-200 transform hover:-translate-y-0.5">
+                   class="inline-flex items-center space-x-1.5 xl:space-x-2 px-3 xl:px-4 py-2 rounded-full text-xs xl:text-sm font-semibold text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md hover:shadow-amber-500/30 transition-all duration-200 transform hover:-translate-y-0.5 whitespace-nowrap">
                     <!-- WhatsApp SVG -->
-                    <svg class="w-4 h-4 text-[#1a1128]" fill="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 text-[#1a1128] shrink-0" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.947 2.796.947 3.179 0 5.766-2.587 5.767-5.766.001-3.181-2.586-5.767-5.767-5.767zm0 10.373c-.768 0-1.637-.251-2.327-.661l-.167-.099-1.58.414.422-1.539-.109-.174c-.453-.722-.693-1.564-.693-2.55 0-2.539 2.066-4.605 4.606-4.605 2.54 0 4.606 2.066 4.606 4.606 0 2.54-2.066 4.608-4.755 4.608z"/>
                     </svg>
                     <span>Chat +91 7907052160</span>
@@ -137,7 +137,13 @@
                 @endauth
 
                 <div class="pt-3 border-t border-amber-500/20 flex flex-col gap-2">
-                    <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to consult with you.') }}"
+                    <a href="https://razorpay.me/@covilakamastrology"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="w-full text-center py-2.5 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-blue-600 to-indigo-600 shadow-md">
+                        💳 Pay via Razorpay (razorpay.me/@covilakamastrology)
+                    </a>
+                    <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to consult with you.') }}"
                        target="_blank"
                        class="w-full text-center py-2.5 rounded-xl font-bold text-xs text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 shadow-md">
                         Chat on WhatsApp (+91 7907052160)

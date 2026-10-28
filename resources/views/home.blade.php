@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) | Covilakam Astrology')
+@section('title', 'Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) | Covilakam Astrology')
 
 @section('content')
 <div x-data="{
@@ -201,7 +201,7 @@
         let gemstone = this.readingLang === 'ml' ? (this.calcResult.gemstone_ml || this.calcResult.gemstone_en) : this.calcResult.gemstone_en;
         let chosenService = this.calcService || 'Accurate Predictions';
 
-        let msg = `Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology),\n\n` +
+        let msg = `Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology),\n\n` +
                   `I read my Vedic DOB Astro Reading on Covilakam Astrology:\n` +
                   `• Name: ${name}\n` +
                   `• Date of Birth: ${dob}\n` +
@@ -228,14 +228,14 @@
             reportUrl += (reportUrl.includes('?') ? '&' : '?') + 'lang=' + this.readingLang;
         }
 
-        let msg = `🔮 *My Vedic Astrology Reading by DR. E. K. Raja Varma* (Covilakam Astrology)\n\n` +
+        let msg = `🔮 *My Vedic Astrology Reading by Dr. E. K. Raja Varma* (Covilakam Astrology)\n\n` +
                   `👤 *Name:* ${name}\n` +
                   `📅 *Date of Birth:* ${dob}\n` +
                   `🪐 *Birth Number (Mulank):* ${mulank} (${rulingPlanet})\n` +
                   `🌟 *Destiny Number (Bhagyank):* ${bhagyank}\n` +
                   `💎 *Recommended Gemstone:* ${gemstone}\n\n` +
                   `📜 *Read my complete horoscope report on site:*\n${reportUrl}\n\n` +
-                  `🙏 *Consult DR. E. K. Raja Varma (Vidya Vachaspathi & Gold Medalist):*\nhttps://www.covilakamastrology.com`;
+                  `🙏 *Consult Dr. E. K. Raja Varma (Vidya Vachaspathi & Gold Medalist):*\nhttps://www.covilakamastrology.com`;
 
         return 'https://api.whatsapp.com/send?text=' + encodeURIComponent(msg);
     },
@@ -257,13 +257,13 @@
             reportUrl += (reportUrl.includes('?') ? '&' : '?') + 'lang=' + this.readingLang;
         }
 
-        let msg = `🔮 *Namaskaram ${name}, here is your Vedic Astro Reading by DR. E. K. Raja Varma* (Covilakam Astrology / കോവിലകം ജ്യോതിഷം):\n\n` +
+        let msg = `🔮 *Namaskaram ${name}, here is your Vedic Astro Reading by Dr. E. K. Raja Varma* (Covilakam Astrology / കോവിലകം ജ്യോതിഷം):\n\n` +
                   `📅 *Date of Birth:* ${dob}\n` +
                   `🪐 *Birth Number (Mulank):* ${mulank} (${rulingPlanet})\n` +
                   `🌟 *Destiny Number (Bhagyank):* ${bhagyank}\n` +
                   `💎 *Recommended Gemstone:* ${gemstone}\n\n` +
                   `📜 *View your full horoscope report on site:*\n${reportUrl}\n\n` +
-                  `🙏 *Consultation with DR. E. K. Raja Varma (Vidya Vachaspathi & Gold Medalist):*\nWhatsApp: +91 7907052160\nWebsite: https://www.covilakamastrology.com`;
+                  `🙏 *Consultation with Dr. E. K. Raja Varma (Vidya Vachaspathi & Gold Medalist):*\nWhatsApp: +91 7907052160\nWebsite: https://www.covilakamastrology.com`;
 
         return `https://wa.me/${sanitized}?text=` + encodeURIComponent(msg);
     },
@@ -324,7 +324,7 @@
                     <!-- Main Heading & Astrologer Identity -->
                     <div class="space-y-2">
                         <h1 class="font-cinzel text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
-                            <span class="gold-gradient-text block">DR. E. K. Raja Varma</span>
+                            <span class="gold-gradient-text block">Dr. E. K. Raja Varma</span>
                         </h1>
                         <p class="font-cinzel text-lg sm:text-2xl font-bold text-amber-300/90 tracking-wide">
                             (Vidya Vachaspathi in Vedic Astrology)
@@ -354,7 +354,7 @@
                         <div class="relative shrink-0">
                             <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl p-1.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-2xl gold-glow transform rotate-1 hover:rotate-0 transition-transform duration-300">
                                 <img src="{{ asset('storage/media/images/covilakam-4bcJQK.webp') }}?v={{ time() }}"
-                                     alt="DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)"
+                                     alt="Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)"
                                      onerror="this.onerror=null; this.src='{{ asset('images/covilakam-hero.webp') }}';"
                                      class="w-full h-full object-cover object-top rounded-xl border border-amber-300/60 shadow-inner">
                             </div>
@@ -372,7 +372,7 @@
                                 Conferred Ph.D. in Vedic Astrology (Specialisation in Online Astro Counselling) by IAMA Open University, Florida, and Gold Medalist at Shree Maharshi College of Vedic Astrology. Dedicated to helping you align with cosmic harmony since 2022.
                             </p>
                             <div class="text-[11px] text-amber-200/90 font-medium pt-0.5">
-                                <span class="text-amber-400 font-bold">IAF Life Member ID:</span> 11009
+                                <span class="text-amber-400 font-bold">IVAF Life Member ID:</span> 11009
                             </div>
                         </div>
                     </div>
@@ -422,7 +422,7 @@
                         </button>
 
                         <!-- CTA 2: Chat on WhatsApp (7907052160) -->
-                        <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to book an online astrological consultation.') }}"
+                        <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to book an online astrological consultation.') }}"
                            target="_blank"
                            class="flex items-center justify-center space-x-2.5 px-6 py-3.5 rounded-xl text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 border border-emerald-400/40 shadow-xl hover:shadow-emerald-500/30 transition-all duration-200 transform hover:-translate-y-0.5">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -432,7 +432,7 @@
                         </a>
                     </div>
 
-                    <!-- Official Google Pay & UPI Quick Scan Showcase Card in Hero Section -->
+                    <!-- Official Google Pay, Razorpay & UPI Quick Scan Showcase Card in Hero Section -->
                     <div class="mt-6 p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-[#221037]/95 via-[#2d0e25]/90 to-[#180c2a]/95 border-2 border-amber-400/50 shadow-2xl backdrop-blur-md">
                         <div class="flex flex-col sm:flex-row items-center gap-5 sm:gap-6">
                             
@@ -440,7 +440,7 @@
                             <div class="relative shrink-0 cursor-pointer group" @click="gpayModalOpen = true" title="Click to view full screen">
                                 <div class="w-44 sm:w-48 md:w-52 rounded-2xl p-2.5 bg-white shadow-2xl border-2 border-amber-400 group-hover:border-yellow-300 group-hover:scale-[1.02] transition-all duration-300">
                                     <img src="{{ asset('images/gpay-qr-card.jpg') }}" 
-                                         alt="Google Pay QR Scanner - DR. E. K. Raja Varma" 
+                                         alt="Google Pay QR Scanner - Dr. E. K. Raja Varma" 
                                          class="w-full h-auto object-contain rounded-xl">
                                 </div>
                                 <div class="absolute -bottom-2 inset-x-0 flex justify-center">
@@ -453,7 +453,7 @@
                                 </div>
                             </div>
 
-                            <!-- Payment & UPI Details -->
+                            <!-- Payment, Razorpay & UPI Details -->
                             <div class="flex-1 w-full text-center sm:text-left space-y-3">
                                 <div>
                                     <div class="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 mb-1">
@@ -463,12 +463,15 @@
                                         <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-[10px] border border-emerald-400/30">
                                             ● Instant GPay
                                         </span>
+                                        <span class="px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-bold text-[10px] border border-blue-400/30">
+                                            💳 Razorpay Verified
+                                        </span>
                                     </div>
                                     <h3 class="font-cinzel text-base sm:text-lg font-black text-white">
-                                        Google Pay • UPI Dakshina
+                                        Google Pay (GPay) & Razorpay • UPI Dakshina
                                     </h3>
                                     <p class="text-xs text-amber-200/90 font-medium">
-                                        DR. E. K. Raja Varma
+                                        Dr. E. K. Raja Varma
                                     </p>
                                 </div>
 
@@ -488,31 +491,38 @@
                                     </p>
                                 </div>
 
-                                <!-- GPay Phone & Supported Apps -->
+                                <!-- Razorpay Direct Provision & GPay Phone -->
                                 <div class="text-[11px] text-amber-100/90 space-y-1">
                                     <div class="flex items-center justify-between">
                                         <span class="text-amber-200/70">GPay / Phone:</span>
                                         <span class="font-mono font-bold text-amber-300">094473 27450</span>
                                     </div>
-                                    <p class="text-[10px] text-amber-200/70 pt-0.5">
-                                        Point any UPI app (GPay, PhonePe, Paytm, BHIM) or phone camera directly to scan.
-                                    </p>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-amber-200/70">Razorpay Link:</span>
+                                        <a href="https://razorpay.me/@covilakamastrology" target="_blank" rel="noopener noreferrer" class="font-mono font-bold text-blue-300 hover:text-blue-200 underline">razorpay.me/@covilakamastrology</a>
+                                    </div>
                                 </div>
 
                                 <!-- Quick Buttons -->
                                 <div class="pt-1 flex flex-wrap gap-2">
+                                    <a href="https://razorpay.me/@covilakamastrology"
+                                       target="_blank"
+                                       rel="noopener noreferrer"
+                                       class="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-md transition-all flex items-center justify-center space-x-1.5">
+                                        <span>💳 Pay via Razorpay</span>
+                                    </a>
                                     <button type="button" @click="gpayModalOpen = true"
                                             class="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl text-xs font-bold text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all flex items-center justify-center space-x-1.5">
                                         <svg class="w-3.5 h-3.5 text-[#1a1128]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
                                         </svg>
-                                        <span>Enlarge Fullscreen</span>
+                                        <span>Enlarge GPay QR</span>
                                     </button>
-                                    <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I scanned your Google Pay QR code (ekrvarma-1@oksbi).') }}"
-                                       target="_blank"
-                                       class="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-md transition-all flex items-center justify-center space-x-1.5">
-                                        <span>💬 Send on WhatsApp</span>
-                                    </a>
+                                    <button type="button"
+                                            @click="$dispatch('open-booking-modal', { service: 'Accurate Predictions' })"
+                                            class="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-md transition-all flex items-center justify-center space-x-1.5">
+                                        <span>📅 Pay & Consult Now</span>
+                                    </button>
                                 </div>
 
                             </div>
@@ -700,7 +710,7 @@
                                     <input type="tel" x-model="calcPhone" name="phone" required placeholder="e.g., +91 94473 27450"
                                            class="w-full px-3.5 py-2.5 rounded-xl bg-[#231538] border border-amber-500/30 text-white placeholder-amber-200/40 focus:outline-none focus:border-amber-400 transition-colors font-mono">
                                     <p class="text-[10px] text-amber-200/60 mt-1">
-                                        DR. E. K. Raja Varma will personally connect with your detailed horoscope predictions on WhatsApp.
+                                        Dr. E. K. Raja Varma will personally connect with your detailed horoscope predictions on WhatsApp.
                                     </p>
                                 </div>
 
@@ -852,7 +862,7 @@
                                         Complete Horoscope &amp; PDF Report Options
                                     </h4>
                                     <p class="text-[11px] text-amber-200/70 mt-0.5">
-                                        Prepared by <strong>DR. E. K. Raja Varma</strong> (Vidya Vachaspathi in Vedic Astrology)
+                                        Prepared by <strong>Dr. E. K. Raja Varma</strong> (Vidya Vachaspathi in Vedic Astrology)
                                     </p>
                                 </div>
 
@@ -1040,7 +1050,7 @@
                                         <!-- Doctor Remedy Guidance -->
                                         <div class="p-2.5 rounded-lg bg-amber-950/40 border border-amber-500/25">
                                             <span class="text-[10px] uppercase font-bold text-amber-300 block mb-0.5">
-                                                <span x-show="readingLang === 'en'">Spiritual Remedy by DR. E. K. Raja Varma:</span>
+                                                <span x-show="readingLang === 'en'">Spiritual Remedy by Dr. E. K. Raja Varma:</span>
                                                 <span x-show="readingLang === 'ml'">ഡോ. രാജവർമ്മ നിർദ്ദേശിക്കുന്ന പരിഹാരം:</span>
                                                 <span x-show="readingLang === 'ta'">டாக்டர் ராஜா வர்மாவின் ஆன்மீக பரிகாரம்:</span>
                                                 <span x-show="readingLang === 'hi'">डॉ. राजा वर्मा द्वारा अनुशंसित उपाय:</span>
@@ -1060,14 +1070,14 @@
                                 </div>
                             </div>
 
-                            <!-- Contact DR. E. K. Raja Varma & Reveal Service Needed -->
+                            <!-- Contact Dr. E. K. Raja Varma & Reveal Service Needed -->
                             <div class="pt-3 border-t border-amber-500/30 space-y-3">
                                 
                                 <div class="p-3.5 rounded-2xl bg-gradient-to-b from-[#1c102a] to-[#12081d] border-2 border-emerald-500/40 shadow-xl space-y-3">
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs font-bold text-emerald-300 flex items-center space-x-1.5">
                                             <span>💬</span>
-                                            <span>Connect with DR. E. K. Raja Varma on WhatsApp</span>
+                                            <span>Connect with Dr. E. K. Raja Varma on WhatsApp</span>
                                         </span>
                                         <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/30 font-semibold">
                                             Direct Astro Guidance
@@ -1097,7 +1107,7 @@
                                         <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                                             <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.947 2.796.947 3.179 0 5.766-2.587 5.767-5.766.001-3.181-2.586-5.767-5.767-5.767zm0 10.373c-.768 0-1.637-.251-2.327-.661l-.167-.099-1.58.414.422-1.539-.109-.174c-.453-.722-.693-1.564-.693-2.55 0-2.539 2.066-4.605 4.606-4.605 2.54 0 4.606 2.066 4.606 4.606 0 2.54-2.066 4.608-4.755 4.608z"/>
                                         </svg>
-                                        <span>Contact DR. E. K. Raja Varma on WhatsApp</span>
+                                        <span>Contact Dr. E. K. Raja Varma on WhatsApp</span>
                                     </a>
                                 </div>
 
@@ -1134,6 +1144,71 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SECTION 1.5: Official IVAF Lifetime Membership Certificate (Just Below Hero) -->
+    <!-- ========================================================================= -->
+    <section id="ivaf-certificate" class="relative py-14 sm:py-18 bg-gradient-to-b from-[#140a24] via-[#1c0f30] to-[#180a1c] border-t-2 border-amber-400/50 shadow-2xl overflow-hidden">
+        <div class="absolute inset-0 bg-radial from-amber-500/10 via-transparent to-transparent pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-8 space-y-2.5">
+                <div class="inline-flex items-center space-x-2 text-xs uppercase tracking-widest text-amber-300 font-bold bg-amber-500/20 px-4 py-1.5 rounded-full border border-amber-400/40 shadow-md">
+                    <span>🏛️</span>
+                    <span>Official International & Indian Vedic Astrology Recognition</span>
+                    <span>•</span>
+                    <span>Membership No.: 11009</span>
+                </div>
+                <h2 class="font-cinzel text-2xl sm:text-4xl font-extrabold text-white leading-tight">
+                    Certificate of Life Time Membership — <span class="gold-gradient-text">IVAF</span>
+                </h2>
+                <p class="text-xs sm:text-sm text-amber-100/85 leading-relaxed">
+                    Honored with <strong>Life Time Membership (No. 11009)</strong> by the <strong>International Vedic Astrology Federation (IVAF)</strong> / <strong>Indian Vedic Astrology Federation (IVAF)</strong> (USA • India • Australia) under <em>OLAPP (Oath to Learn Astrology through Psychoanalysis Process)</em> — presented to <strong>Dr. E. K. Raja Varma</strong>.
+                </p>
+            </div>
+
+            <!-- Certificate Frame Card -->
+            <div class="card-gold-frame rounded-3xl p-4 sm:p-7 bg-gradient-to-b from-[#231338]/95 to-[#130920]/95 border-2 border-amber-400/60 shadow-2xl max-w-4xl mx-auto">
+                <div class="relative rounded-2xl overflow-hidden bg-white p-2 sm:p-3 shadow-2xl border-2 border-amber-400">
+                    <a href="{{ asset('images/ivaf-certificate-11009.jpg') }}" target="_blank" rel="noopener noreferrer" class="block group" title="Click to open full-resolution IVAF Certificate">
+                        <img src="{{ asset('images/ivaf-certificate-11009.jpg') }}"
+                             alt="IVAF - International Vedic Astrology Federation Certificate of Life Time Membership - Dr. E. K. Raja Varma (Membership No. 11009)"
+                             class="w-full h-auto object-contain rounded-xl transition-transform duration-300 group-hover:scale-[1.01]">
+                    </a>
+                </div>
+
+                <div class="mt-5 flex flex-col sm:flex-row items-center justify-between gap-4 pt-3 border-t border-amber-500/25 text-center sm:text-left">
+                    <div class="space-y-1">
+                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                            <span class="px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40 text-[11px] font-bold">
+                                ✓ IVAF Life Member #11009
+                            </span>
+                            <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[11px] font-bold">
+                                OYMIVAF | LTMIVAF | AMIVAF | PMIVAF | PTMIVAF
+                            </span>
+                        </div>
+                        <p class="text-xs text-amber-100/75">
+                            Conferred upon <strong>Dr. E. K. Raja Varma</strong> in recognition of outstanding dedication to Vedic Astrology.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-center gap-2.5 shrink-0">
+                        <a href="{{ asset('images/ivaf-certificate-11009.jpg') }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="px-4 py-2.5 rounded-xl text-xs font-bold text-amber-200 bg-[#24143a] border border-amber-400/40 hover:bg-amber-500/20 transition-all">
+                            🔍 View Full Certificate ↗
+                        </a>
+                        <button type="button"
+                                @click="$dispatch('open-booking-modal', { service: 'Accurate Predictions' })"
+                                class="px-5 py-2.5 rounded-xl text-xs font-bold text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-lg transition-all">
+                            💳 Pay & Book Consultation
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1185,7 +1260,7 @@
                         <div class="relative w-full rounded-xl bg-[#0b0412] p-2 border border-amber-500/20 flex items-center justify-center h-48 sm:h-56 overflow-hidden group-hover:border-amber-400/50 transition-colors">
                             <a href="{{ asset('storage/media/images/screenshot-2026-10-22-084835-yzdRy8.webp') }}" target="_blank" class="block h-full w-full flex items-center justify-center group/img">
                                 <img src="{{ asset('storage/media/images/screenshot-2026-10-22-084835-yzdRy8.webp') }}"
-                                     alt="Academic Honor & Convocation Record - DR. E. K. Raja Varma"
+                                     alt="Academic Honor & Convocation Record - Dr. E. K. Raja Varma"
                                      onerror="this.onerror=null; this.src='{{ asset('images/convocation-record-1.webp') }}';"
                                      class="max-h-full max-w-full h-auto w-auto object-contain mx-auto rounded-lg shadow-md transition-transform duration-300 group-hover/img:scale-105">
                             </a>
@@ -1223,7 +1298,7 @@
                         <div class="relative w-full rounded-xl bg-[#0b0412] p-2 border border-amber-500/20 flex items-center justify-center h-48 sm:h-56 overflow-hidden group-hover:border-amber-400/50 transition-colors">
                             <a href="{{ asset('storage/media/images/vidya-vachaspathi-examination-gm9NIB.webp') }}" target="_blank" class="block h-full w-full flex items-center justify-center group/img">
                                 <img src="{{ asset('storage/media/images/vidya-vachaspathi-examination-gm9NIB.webp') }}"
-                                     alt="Vidya Vachaspathi Examination Gold Medal Merit - DR. E. K. Raja Varma"
+                                     alt="Vidya Vachaspathi Examination Gold Medal Merit - Dr. E. K. Raja Varma"
                                      onerror="this.onerror=null; this.src='{{ asset('images/convocation-record-2.webp') }}';"
                                      class="max-h-full max-w-full h-auto w-auto object-contain mx-auto rounded-lg shadow-md transition-transform duration-300 group-hover/img:scale-105">
                             </a>
@@ -1250,13 +1325,13 @@
             <div class="p-4 sm:p-6 rounded-2xl bg-gradient-to-r from-amber-500/15 via-yellow-400/10 to-amber-950/40 border border-amber-400/40 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
                 <div class="space-y-1">
                     <h3 class="font-cinzel text-base sm:text-lg font-bold text-amber-200">
-                        Consult with Vidya Vachaspathi Gold Medalist DR. E. K. Raja Varma
+                        Consult with Vidya Vachaspathi Gold Medalist Dr. E. K. Raja Varma
                     </h3>
                     <p class="text-xs text-amber-100/75">
                         Experience authentic traditional Vedic predictive astrology and personal counseling via phone or WhatsApp worldwide.
                     </p>
                 </div>
-                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I saw your Academic Honor and Convocation Gold Medal credentials. I would like to book a consultation.') }}"
+                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I saw your Academic Honor and Convocation Gold Medal credentials. I would like to book a consultation.') }}"
                    target="_blank"
                    class="shrink-0 px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-[#1a1128] bg-gradient-to-r from-amber-300 to-yellow-400 hover:from-amber-200 hover:to-yellow-300 shadow-lg hover:shadow-amber-400/30 transition-all flex items-center space-x-2">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -1283,7 +1358,7 @@
                 </h2>
                 <div class="w-24 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
                 <p class="text-xs sm:text-sm text-amber-100/70 leading-relaxed">
-                    Personalized consultations crafted through deep computational Parashara astrology and compassionate psychological counselling by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>.
+                    Personalized consultations crafted through deep computational Parashara astrology and compassionate psychological counselling by <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>.
                 </p>
             </div>
 
@@ -1317,16 +1392,27 @@
                         </p>
                     </div>
 
-                    <!-- Direct Pre-filled WhatsApp CTA -->
-                    <div class="pt-6 mt-6 border-t border-amber-500/20">
-                        <a href="https://wa.me/917907052160?text={{ rawurlencode($service->whatsapp_prefill ?: 'Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to consult regarding ' . $service->title) }}"
-                           target="_blank"
-                           class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-md flex items-center justify-center space-x-2 transition-all">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.947 2.796.947 3.179 0 5.766-2.587 5.767-5.766.001-3.181-2.586-5.767-5.767-5.767zm0 10.373c-.768 0-1.637-.251-2.327-.661l-.167-.099-1.58.414.422-1.539-.109-.174c-.453-.722-.693-1.564-.693-2.55 0-2.539 2.066-4.605 4.606-4.605 2.54 0 4.606 2.066 4.606 4.606 0 2.54-2.066 4.608-4.755 4.608z"/>
-                            </svg>
-                            <span>Consult on WhatsApp</span>
-                        </a>
+                    <!-- Step 1 Payment Option -> Step 2 Consultation Window CTA -->
+                    <div class="pt-6 mt-6 border-t border-amber-500/20 space-y-2">
+                        <button type="button"
+                                @click="$dispatch('open-booking-modal', { service: '{{ addslashes($service->title) }}' })"
+                                class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md flex items-center justify-center space-x-2 transition-all">
+                            <span>💳</span>
+                            <span>Pay & Book Consultation</span>
+                        </button>
+                        <div class="grid grid-cols-2 gap-2">
+                            <a href="https://razorpay.me/@covilakamastrology"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="py-2 px-3 rounded-xl text-[11px] font-bold text-blue-200 bg-blue-600/20 border border-blue-400/30 hover:bg-blue-600/30 text-center transition-all">
+                                🔗 Razorpay.me
+                            </a>
+                            <a href="https://wa.me/917907052160?text={{ rawurlencode(str_replace('DR.', 'Dr.', $service->whatsapp_prefill ?: 'Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to consult regarding ' . $service->title)) }}"
+                               target="_blank"
+                               class="py-2 px-3 rounded-xl text-[11px] font-bold text-emerald-200 bg-emerald-600/20 border border-emerald-400/30 hover:bg-emerald-600/30 text-center transition-all">
+                                💬 WhatsApp
+                            </a>
+                        </div>
                     </div>
                 </div>
                 @endforeach
@@ -1348,15 +1434,30 @@
                         </h3>
 
                         <p class="text-xs sm:text-sm text-amber-100/75 leading-relaxed">
-                            Specialized doctoral thesis domain of DR. E. K. Raja Varma. Holistic psychological support, career re-orientation, anxiety reduction, and confidential life path navigation via voice/video.
+                            Specialized doctoral thesis domain of Dr. E. K. Raja Varma. Holistic psychological support, career re-orientation, anxiety reduction, and confidential life path navigation via voice/video.
                         </p>
                     </div>
 
-                    <div class="pt-6 mt-6 border-t border-amber-500/20">
-                        <button @click="$dispatch('open-booking-modal', { service: 'Online Astro Counselling' })"
+                    <div class="pt-6 mt-6 border-t border-amber-500/20 space-y-2">
+                        <button type="button"
+                                @click="$dispatch('open-booking-modal', { service: 'Comprehensive Astro Counselling' })"
                                 class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-[#1a1128] bg-gradient-to-r from-amber-300 to-yellow-400 hover:from-amber-200 hover:to-yellow-300 shadow-md flex items-center justify-center space-x-2 transition-all">
-                            <span>Book Counselling Slot</span>
+                            <span>💳</span>
+                            <span>Pay & Book Counselling Slot</span>
                         </button>
+                        <div class="grid grid-cols-2 gap-2">
+                            <a href="https://razorpay.me/@covilakamastrology"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="py-2 px-3 rounded-xl text-[11px] font-bold text-blue-200 bg-blue-600/20 border border-blue-400/30 hover:bg-blue-600/30 text-center transition-all">
+                                🔗 Razorpay.me
+                            </a>
+                            <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma, I would like to book an Online Astro Counselling session.') }}"
+                               target="_blank"
+                               class="py-2 px-3 rounded-xl text-[11px] font-bold text-emerald-200 bg-emerald-600/20 border border-emerald-400/30 hover:bg-emerald-600/30 text-center transition-all">
+                                💬 WhatsApp
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1382,7 +1483,7 @@
                         Why Choose <br><span class="gold-gradient-text">Covilakam Astrology?</span>
                     </h2>
                     <p class="text-xs sm:text-sm text-amber-100/80 leading-relaxed">
-                        At Covilakam Astrology, you are guided personally by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>. Unlike automated computer horoscopes, each chart is calculated and contemplated manually with pure devotion and academic exactitude.
+                        At Covilakam Astrology, you are guided personally by <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>. Unlike automated computer horoscopes, each chart is calculated and contemplated manually with pure devotion and academic exactitude.
                     </p>
 
                     <!-- Core Credential Badges -->
@@ -1406,8 +1507,8 @@
                         <div class="flex items-start space-x-3 p-3 rounded-2xl bg-[#1b102c]/80 border border-amber-500/30">
                             <span class="text-amber-400 text-lg">🌐</span>
                             <div>
-                                <h4 class="font-bold text-xs sm:text-sm text-white">IAF Life Member (ID: 11009) & Practitioner Since 2022</h4>
-                                <p class="text-[11px] text-amber-200/70">International Astrology Federation fellowship adhering to highest ethical privacy standards.</p>
+                                <h4 class="font-bold text-xs sm:text-sm text-white">IVAF Life Member (ID: 11009) & Practitioner Since 2022</h4>
+                                <p class="text-[11px] text-amber-200/70">International Vedic Astrology Federation (IVAF) fellowship adhering to highest ethical privacy standards.</p>
                             </div>
                         </div>
                     </div>
@@ -1492,14 +1593,14 @@
                     <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
                     <span>Official YouTube Discourses</span>
                     <span>•</span>
-                    <span>DR. E. K. Raja Varma</span>
+                    <span>Dr. E. K. Raja Varma</span>
                 </div>
                 <h2 class="font-cinzel text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
                     Vedic Astrology <span class="gold-gradient-text">Video Gallery</span>
                 </h2>
                 <div class="w-28 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
                 <p class="text-xs sm:text-sm text-amber-100/80 leading-relaxed font-sans">
-                    Watch illuminating Malayalam video discourses by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong> covering online astro-counselling, remedies, Kaalapurusha Vaastu, marriage compatibility, and Raja Yogas.
+                    Watch illuminating Malayalam video discourses by <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong> covering online astro-counselling, remedies, Kaalapurusha Vaastu, marriage compatibility, and Raja Yogas.
                 </p>
                 <div class="pt-2">
                     <a href="{{ route('videos.index') }}"
@@ -1601,11 +1702,11 @@
                                         <span>Watch All Videos</span>
                                     </a>
 
-                                    <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I watched your YouTube video: "' . $featuredVideo->title . '" and would like to ask a question.') }}"
+                                    <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I watched your YouTube video: "' . $featuredVideo->title . '" and would like to ask a question.') }}"
                                        target="_blank"
                                        class="px-4 py-3 rounded-xl text-xs font-semibold text-amber-200 bg-[#201335] border border-amber-500/40 hover:border-amber-300 hover:text-white transition-all flex items-center space-x-2">
                                         <span class="text-emerald-400">💬</span>
-                                        <span>Consult DR. E. K. Raja Varma</span>
+                                        <span>Consult Dr. E. K. Raja Varma</span>
                                     </a>
                                 </div>
                             </div>
@@ -1700,11 +1801,11 @@
                                 </a>
                             </div>
 
-                            <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I watched your YouTube video: "' . $video->title . '" and would like to ask a question.') }}"
+                            <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I watched your YouTube video: "' . $video->title . '" and would like to ask a question.') }}"
                                target="_blank"
                                class="w-full py-2 px-3 rounded-xl text-[11px] font-semibold text-amber-200/90 bg-[#211335] border border-amber-500/30 hover:border-amber-400 hover:text-white flex items-center justify-center space-x-1.5 transition-all">
                                 <span class="text-emerald-400">💬</span>
-                                <span>Ask DR. E. K. Raja Varma</span>
+                                <span>Ask Dr. E. K. Raja Varma</span>
                             </a>
                         </div>
 
@@ -1822,10 +1923,10 @@
                             </a>
 
                             <div class="flex items-center space-x-2 w-full sm:w-auto">
-                                <a :href="'https://wa.me/917907052160?text=' + encodeURIComponent('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I watched your YouTube video: &quot;' + currentVideo.title + '&quot; and would like to ask a question.')"
+                                <a :href="'https://wa.me/917907052160?text=' + encodeURIComponent('Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I watched your YouTube video: &quot;' + currentVideo.title + '&quot; and would like to ask a question.')"
                                    target="_blank"
                                    class="w-full sm:w-auto px-5 py-2.5 rounded-xl font-bold text-xs text-[#1a1128] bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400 shadow-lg flex items-center justify-center space-x-2 transition-all">
-                                    <span>💬 Consult DR. E. K. Raja Varma on WhatsApp</span>
+                                    <span>💬 Consult Dr. E. K. Raja Varma on WhatsApp</span>
                                 </a>
 
                                 <button type="button"
@@ -1860,7 +1961,7 @@
                     <span>📚</span>
                     <span>സാഹിത്യ കൃതികളും പ്രകാശനങ്ങൾ | Authored Publications</span>
                     <span>•</span>
-                    <span>DR. E. K. Raja Varma</span>
+                    <span>Dr. E. K. Raja Varma</span>
                 </div>
                 <h2 class="font-cinzel text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
                     ഗ്രന്ഥങ്ങളും രചനകളും <span class="gold-gradient-text">Books & Works</span>
@@ -1893,11 +1994,14 @@
                         <div>
                             <!-- Cover Image Container with Price Badge -->
                             <div class="relative bg-gradient-to-b from-[#211339] to-[#0f0819] p-4 flex items-center justify-center overflow-hidden border-b border-amber-500/15">
-                                <!-- Royal Gold Price Tag Badge -->
-                                <div class="absolute top-3 right-3 z-10">
+                                <!-- Royal Gold Price Tag Badge + ₹50 Courier Charge -->
+                                <div class="absolute top-3 right-3 z-10 flex flex-col items-end gap-1">
                                     <div class="px-3 py-1 rounded-full text-xs font-black text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 shadow-lg border border-amber-200/60 flex items-center space-x-1 tracking-wide">
                                         <span>₹{{ number_format($book->price ?? 0, 0) }}</span>
                                     </div>
+                                    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#140a22]/90 text-amber-300 border border-amber-400/40 shadow">
+                                        + ₹50/- Courier
+                                    </span>
                                 </div>
 
                                 <!-- Publisher Tag (Top Left) -->
@@ -1949,10 +2053,18 @@
                                 $prod = $book->product;
                                 $prodId = $prod ? $prod->id : '';
                                 $bookPrice = (int) round($book->price ?? 100);
+                                $courierCharge = 50;
+                                $totalBookPrice = $bookPrice + $courierCharge;
                                 $waPrice = $book->price ? number_format($book->price, 0) : '100';
-                                $waText = "Namaskaram Dr. E. K. Raja Varma Sir, I would like to order a copy of your book '" . $book->title . "' (Price: ₹" . $waPrice . "). Please share the GPay/delivery details.";
+                                $waText = "Namaskaram Dr. E. K. Raja Varma Sir, I would like to order a copy of your book '" . $book->title . "' (Book Price: ₹" . $waPrice . " + ₹50/- Courier Charge = Total ₹" . $totalBookPrice . "). Please share the payment/delivery details.";
                                 $waUrl = "https://wa.me/917907052160?text=" . rawurlencode($waText);
                             @endphp
+
+                            <!-- Courier Charge Breakdown Pill -->
+                            <div class="px-2.5 py-1.5 rounded-lg bg-[#201236] border border-amber-500/25 flex items-center justify-between text-[11px]">
+                                <span class="text-amber-200/80">Book ₹{{ number_format($book->price ?? 0, 0) }} + ₹50 Courier</span>
+                                <span class="font-mono font-bold text-amber-300">Total: ₹{{ number_format($totalBookPrice, 0) }}</span>
+                            </div>
 
                             <!-- Button 1: Pay Online via Razorpay -->
                             <button type="button"
@@ -1960,14 +2072,17 @@
                                         product_id: '{{ $prodId }}',
                                         title: '{{ addslashes($book->title) }}',
                                         price: {{ $bookPrice }},
+                                        courier_charge: 50,
+                                        total_price: {{ $totalBookPrice }},
                                         formatted_price: '₹{{ number_format($book->price ?? 0, 0) }}',
+                                        formatted_total: '₹{{ number_format($totalBookPrice, 0) }}',
                                         cover: '{{ asset($book->cover_image) }}',
                                         publisher: '{{ addslashes($book->publisher ?? '') }}',
                                         shop_url: '{{ $book->shop_url }}'
                                     })"
                                     class="w-full py-2.5 px-3 rounded-xl font-bold text-xs text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md hover:shadow-amber-500/25 flex items-center justify-center space-x-1.5 transition-all transform hover:-translate-y-0.5">
                                 <span>💳</span>
-                                <span>വാങ്ങുക / Pay with Razorpay (₹{{ number_format($book->price ?? 0, 0) }})</span>
+                                <span>വാങ്ങുക / Pay ₹{{ number_format($book->price ?? 0, 0) }} + ₹50 Courier</span>
                             </button>
 
                             <!-- Button 2: Add to Cart / View in Bookstore -->
@@ -2076,11 +2191,11 @@
                         </template>
                         <div class="min-w-0 flex-1">
                             <h3 class="font-cinzel text-base font-bold text-amber-100 leading-snug truncate" x-text="selectedBook?.title"></h3>
-                            <p class="text-xs text-amber-200/70 truncate mt-0.5" x-text="selectedBook?.publisher || 'Author: DR. E. K. Raja Varma'"></p>
-                            <div class="flex items-center gap-2 mt-2">
+                            <p class="text-xs text-amber-200/70 truncate mt-0.5" x-text="selectedBook?.publisher || 'Author: Dr. E. K. Raja Varma'"></p>
+                            <div class="flex flex-wrap items-center gap-2 mt-2">
                                 <span class="text-sm font-black font-mono text-amber-300" x-text="selectedBook?.formatted_price"></span>
-                                <span class="text-[10px] px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold">
-                                    📦 Free Courier Delivery
+                                <span class="text-[10px] px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30 font-semibold">
+                                    📦 + ₹50/- Courier Charge
                                 </span>
                             </div>
                         </div>
@@ -2146,12 +2261,16 @@
                         <!-- Price Breakdown Summary -->
                         <div class="p-3.5 rounded-xl bg-black/40 border border-amber-500/20 text-xs space-y-1.5 text-stone-300">
                             <div class="flex justify-between">
-                                <span>Courier / Speed Post:</span>
-                                <span class="text-emerald-400 font-semibold">FREE across India</span>
+                                <span>Book Cost:</span>
+                                <span class="font-mono text-white font-semibold" x-text="selectedBook?.formatted_price"></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Courier Charge (Speed Post):</span>
+                                <span class="font-mono text-amber-300 font-semibold">+ ₹50</span>
                             </div>
                             <div class="flex justify-between pt-1.5 border-t border-amber-500/20 text-sm font-bold text-amber-300">
-                                <span>Total Payable via Razorpay:</span>
-                                <span class="font-mono text-base text-amber-300" x-text="selectedBook?.formatted_price"></span>
+                                <span>Total Payable (Book + ₹50 Courier):</span>
+                                <span class="font-mono text-base text-amber-300" x-text="selectedBook?.formatted_total || ('₹' + ((selectedBook?.price || 0) + 50))"></span>
                             </div>
                         </div>
 
@@ -2164,8 +2283,15 @@
                                 <template x-if="loading">
                                     <span class="animate-spin mr-2">⏳</span>
                                 </template>
-                                <span x-text="loading ? 'Connecting to Razorpay...' : 'Pay with Razorpay Now (' + (selectedBook?.formatted_price || '') + ')'"></span>
+                                <span x-text="loading ? 'Connecting to Razorpay...' : 'Pay with Razorpay Now (' + (selectedBook?.formatted_total || selectedBook?.formatted_price || '') + ')'"></span>
                             </button>
+
+                            <a href="https://razorpay.me/@covilakamastrology"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="w-full py-2.5 px-3 rounded-xl text-xs font-bold text-blue-200 bg-blue-600/20 border border-blue-400/40 hover:bg-blue-600/30 flex items-center justify-center space-x-1.5 transition-all text-center">
+                                <span>🔗 Or Pay Directly via razorpay.me/@covilakamastrology</span>
+                            </a>
 
                             <!-- Secondary Add to Cart / Store Button -->
                             <a :href="selectedBook?.shop_url || '{{ route('shop.index') }}'"
@@ -2318,9 +2444,9 @@
                 <!-- Bottom CTA -->
                 <div class="mt-8 pt-6 border-t border-amber-500/20 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p class="text-xs text-amber-200/70 italic">
-                        Guidance provided by DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)
+                        Guidance provided by Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)
                     </p>
-                    <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I read the Covilakam Astrology Vedic Philosophy and would like to consult with you.') }}"
+                    <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I read the Covilakam Astrology Vedic Philosophy and would like to consult with you.') }}"
                        target="_blank"
                        class="px-5 py-2.5 rounded-xl text-xs font-bold text-[#1a1128] bg-gradient-to-r from-amber-300 to-yellow-400 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all">
                         Discuss Your Life Path on WhatsApp
@@ -2333,7 +2459,7 @@
     <!-- ========================================================================= -->
     <!-- SECTION 7: Attractive Astrology Blogs Section                            -->
     <!-- First Post: "ജ്യോതിഷവും ജീവിതസരണിയും" (Astrology and the Path of Life)     -->
-    <!-- Author: DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)       -->
+    <!-- Author: Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)       -->
     <!-- ========================================================================= -->
     <section id="blogs" class="py-24 bg-[#120a1c] relative border-t border-amber-500/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -2347,7 +2473,7 @@
                         Astrology Insights & Articles
                     </h2>
                     <p class="text-xs sm:text-sm text-amber-100/70 max-w-xl">
-                        Authored by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong> to demystify celestial influences on human life.
+                        Authored by <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong> to demystify celestial influences on human life.
                     </p>
                 </div>
                 <div>
@@ -2429,7 +2555,7 @@
                 </h2>
                 <div class="w-24 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
                 <p class="text-xs sm:text-sm text-amber-100/70">
-                    Save, print, or share the official digital credential card of <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>.
+                    Save, print, or share the official digital credential card of <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>.
                 </p>
             </div>
 
@@ -2461,7 +2587,7 @@
                             </div>
                             <div class="text-right">
                                 <span class="px-2 py-0.5 rounded bg-amber-500/20 border border-amber-400/50 text-[10px] font-bold text-amber-300">
-                                    IAF #11009
+                                    IVAF #11009
                                 </span>
                             </div>
                         </div>
@@ -2470,14 +2596,14 @@
                         <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 mb-5">
                             <div class="w-24 h-24 shrink-0 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-lg">
                                 <img src="{{ asset('storage/media/images/covilakam-4bcJQK.webp') }}"
-                                     alt="DR. E. K. Raja Varma"
+                                     alt="Dr. E. K. Raja Varma"
                                      onerror="this.onerror=null; this.src='{{ asset('images/covilakam-hero.webp') }}';"
                                      class="w-full h-full object-cover rounded-2xl">
                             </div>
 
                             <div class="space-y-1 text-center sm:text-left">
                                 <h3 class="font-cinzel text-xl sm:text-2xl font-black text-amber-200">
-                                    DR. E. K. Raja Varma
+                                    Dr. E. K. Raja Varma
                                 </h3>
                                 <p class="font-cinzel text-xs sm:text-sm font-bold text-amber-400">
                                     (Vidya Vachaspathi in Vedic Astrology)
@@ -2552,7 +2678,7 @@
                             </div>
                             <div>
                                 <h3 class="font-cinzel text-lg font-bold text-white">Payment & Booking Info</h3>
-                                <p class="text-xs text-amber-200/70">Google Pay (GPay) & UPI Dakshina</p>
+                                <p class="text-xs text-amber-200/70">Razorpay & Google Pay (GPay) / UPI Dakshina</p>
                             </div>
                         </div>
 
@@ -2560,15 +2686,16 @@
                         <div class="p-4 rounded-2xl bg-gradient-to-br from-[#24133b] to-[#180b29] border border-amber-500/30 flex flex-col sm:flex-row items-center gap-5">
                             <div class="w-36 sm:w-44 shrink-0 bg-white p-2.5 rounded-2xl shadow-xl border-2 border-amber-400/80 cursor-pointer group"
                                  @click="gpayModalOpen = true" title="Click to enlarge QR Code">
-                                <img src="{{ asset('images/gpay-qr-card.jpg') }}" alt="Google Pay QR Code - DR. E. K. Raja Varma" class="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-200 rounded-xl">
+                                <img src="{{ asset('images/gpay-qr-card.jpg') }}" alt="Google Pay QR Code - Dr. E. K. Raja Varma" class="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-200 rounded-xl">
                             </div>
                             <div class="space-y-1.5 text-center sm:text-left">
                                 <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-400/30">
-                                    <span>● Verified Google Pay Account</span>
+                                    <span>● Verified Google Pay & Razorpay</span>
                                 </div>
-                                <p class="text-sm font-bold text-white">DR. E. K. Raja Varma</p>
+                                <p class="text-sm font-bold text-white">Dr. E. K. Raja Varma</p>
                                 <p class="text-xs text-amber-200 font-medium">UPI ID: <span class="font-mono text-amber-300 font-bold select-all">ekrvarma-1@oksbi</span></p>
                                 <p class="text-xs text-amber-100">GPay: <span class="font-mono font-bold text-amber-300">094473 27450</span></p>
+                                <p class="text-xs text-blue-200">Razorpay: <a href="https://razorpay.me/@covilakamastrology" target="_blank" rel="noopener noreferrer" class="font-mono font-bold text-blue-300 underline">razorpay.me/@covilakamastrology</a></p>
                                 <button type="button" @click="gpayModalOpen = true" class="mt-1 inline-flex items-center space-x-1 text-xs text-amber-300 hover:text-amber-200 font-semibold underline underline-offset-4">
                                     <span>🔍 Click to Enlarge QR Code</span>
                                 </button>
@@ -2576,6 +2703,10 @@
                         </div>
 
                         <div class="p-4 rounded-2xl bg-[#26163e] border border-amber-500/20 space-y-2">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-amber-200">Razorpay Payment Link:</span>
+                                <a href="https://razorpay.me/@covilakamastrology" target="_blank" rel="noopener noreferrer" class="font-mono font-bold text-blue-300 hover:text-blue-200 underline">razorpay.me/@covilakamastrology</a>
+                            </div>
                             <div class="flex items-center justify-between text-xs">
                                 <span class="text-amber-200">Google Pay (GPay) Number:</span>
                                 <span class="font-mono font-bold text-amber-300 text-sm">094473 27450</span>
@@ -2598,23 +2729,31 @@
                             <h4 class="font-bold text-amber-300 uppercase tracking-wider text-[11px]">How Online Consultation Works:</h4>
                             <div class="flex items-start space-x-2">
                                 <span class="text-amber-400 font-bold">1.</span>
-                                <span>Send your Birth Details (Date, Time, Place of Birth) and specific questions on WhatsApp.</span>
+                                <span><strong>First — Complete Payment:</strong> Pay securely via Razorpay (<a href="https://razorpay.me/@covilakamastrology" target="_blank" class="text-blue-300 underline">razorpay.me/@covilakamastrology</a>) or Google Pay (094473 27450 / ekrvarma-1@oksbi).</span>
                             </div>
                             <div class="flex items-start space-x-2">
                                 <span class="text-amber-400 font-bold">2.</span>
-                                <span>Complete payment via Google Pay (094473 27450 / ekrvarma-1@oksbi) and share confirmation.</span>
+                                <span><strong>Second — Consultation Window:</strong> Enter your Birth Details (Date, Time, Place of Birth) and questions in the Consultation Window.</span>
                             </div>
                             <div class="flex items-start space-x-2">
                                 <span class="text-amber-400 font-bold">3.</span>
-                                <span>DR. E. K. Raja Varma personally reviews your Jathakam and conducts in-depth consultation with detailed remedies.</span>
+                                <span>Dr. E. K. Raja Varma personally reviews your Jathakam and conducts an in-depth consultation with detailed remedies.</span>
                             </div>
                         </div>
 
-                        <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I would like to book a consultation and pay via GPay (094473 27450 / ekrvarma-1@oksbi).') }}"
-                           target="_blank"
-                           class="w-full py-3 rounded-xl font-bold text-xs sm:text-sm text-white bg-emerald-600 hover:bg-emerald-500 shadow-lg flex items-center justify-center space-x-2 transition-all">
-                            <span>Connect on WhatsApp for Payment Confirmation</span>
-                        </a>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <a href="https://razorpay.me/@covilakamastrology"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="w-full py-3 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg flex items-center justify-center space-x-1.5 transition-all">
+                                <span>💳 Pay via Razorpay</span>
+                            </a>
+                            <button type="button"
+                                    @click="$dispatch('open-booking-modal', { service: 'Accurate Predictions' })"
+                                    class="w-full py-3 rounded-xl font-bold text-xs text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-lg flex items-center justify-center space-x-1.5 transition-all">
+                                <span>📅 Open Consultation Window</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -2637,7 +2776,7 @@
                     Vedic Bookstore & <span class="gold-gradient-text">Jathakam Shop</span>
                 </h2>
                 <p class="text-xs sm:text-sm text-amber-200/70 max-w-2xl mx-auto leading-relaxed">
-                    Authored and directed by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, 2026 Gold Medalist & Ph.D.)</strong>. Order printed hardcover books with free delivery across India or download instant 30-page Deluxe Jathakam PDF reports via secure Razorpay checkout.
+                    Authored and directed by <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, 2026 Gold Medalist & Ph.D.)</strong>. Order printed books (+ ₹50/- Courier Charge across India) or download instant 30-page Deluxe Jathakam PDF reports via secure Razorpay checkout.
                 </p>
 
                 <!-- Payment Trust Pill -->
@@ -2659,10 +2798,10 @@
                         </div>
                         <h3 class="font-cinzel text-base font-bold text-amber-200 line-clamp-1">Kerala Jyothisha Deepika</h3>
                         <p class="text-xs text-amber-400/90 font-medium mt-0.5">കേരള ജ്യോതിഷ ദീപിക</p>
-                        <p class="text-[11px] text-amber-100/70 mt-1 line-clamp-2">Master compendium of Parashara astrology & Ashtamangala Prasnam by DR. E. K. Raja Varma.</p>
+                        <p class="text-[11px] text-amber-100/70 mt-1 line-clamp-2">Master compendium of Parashara astrology & Ashtamangala Prasnam by Dr. E. K. Raja Varma.</p>
                         <div class="mt-3 p-2 bg-[#10071c] rounded-xl text-[10px] text-amber-200/70 space-y-0.5">
                             <div>📖 384 Pages • Deluxe Hardbound</div>
-                            <div class="text-emerald-400">✓ Free Delivery Across India</div>
+                            <div class="text-amber-300">📦 + ₹50/- Courier Charge</div>
                         </div>
                     </div>
                     <div class="pt-3 border-t border-amber-500/20 mt-4 space-y-2">
@@ -2671,7 +2810,7 @@
                             <span class="text-xs line-through text-amber-300/50">₹799</span>
                         </div>
                         <a href="{{ route('shop.show', 'kerala-jyothisha-deepika') }}" class="w-full py-2.5 rounded-xl text-center font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all block">
-                            Order Book (₹499)
+                            Order Book (₹499 + ₹50 Courier)
                         </a>
                     </div>
                 </div>
@@ -2688,7 +2827,7 @@
                         <p class="text-[11px] text-amber-100/70 mt-1 line-clamp-2">Complete 10-Porutham marriage matching, Kuja Dosha & Papa Samyam balance guide.</p>
                         <div class="mt-3 p-2 bg-[#10071c] rounded-xl text-[10px] text-amber-200/70 space-y-0.5">
                             <div>📖 280 Pages • Illustrated Hardcover</div>
-                            <div class="text-emerald-400">✓ Free Delivery Across India</div>
+                            <div class="text-amber-300">📦 + ₹50/- Courier Charge</div>
                         </div>
                     </div>
                     <div class="pt-3 border-t border-amber-500/20 mt-4 space-y-2">
@@ -2697,7 +2836,7 @@
                             <span class="text-xs line-through text-amber-300/50">₹599</span>
                         </div>
                         <a href="{{ route('shop.show', 'vivaha-porutham-compatibility') }}" class="w-full py-2.5 rounded-xl text-center font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all block">
-                            Order Book (₹399)
+                            Order Book (₹399 + ₹50 Courier)
                         </a>
                     </div>
                 </div>
@@ -2714,7 +2853,7 @@
                         <p class="text-[11px] text-amber-100/70 mt-1 line-clamp-2">Navaratna gemstone recommendations, wearing muhurthams & Vedic remedial rituals.</p>
                         <div class="mt-3 p-2 bg-[#10071c] rounded-xl text-[10px] text-amber-200/70 space-y-0.5">
                             <div>📖 312 Pages • Gilded Edition</div>
-                            <div class="text-emerald-400">✓ Free Delivery Across India</div>
+                            <div class="text-amber-300">📦 + ₹50/- Courier Charge</div>
                         </div>
                     </div>
                     <div class="pt-3 border-t border-amber-500/20 mt-4 space-y-2">
@@ -2723,7 +2862,7 @@
                             <span class="text-xs line-through text-amber-300/50">₹650</span>
                         </div>
                         <a href="{{ route('shop.show', 'ratna-shastra-vedic-remedies') }}" class="w-full py-2.5 rounded-xl text-center font-cinzel font-bold text-xs uppercase tracking-wider text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-md transition-all block">
-                            Order Book (₹450)
+                            Order Book (₹450 + ₹50 Courier)
                         </a>
                     </div>
                 </div>
@@ -2802,7 +2941,7 @@
                     <span>👑 Official Astro Dakshina / Consultation Fee</span>
                 </div>
                 <h3 class="font-cinzel text-xl sm:text-2xl font-bold text-white pt-1">
-                    DR. E. K. Raja Varma
+                    Dr. E. K. Raja Varma
                 </h3>
                 <p class="text-xs text-amber-200/80">Vidya Vachaspathi & Vedic Astrologer • Covilakam</p>
             </div>
@@ -2810,7 +2949,7 @@
             <!-- Crisp QR Image Container -->
             <div class="p-3 bg-white rounded-2xl shadow-2xl border-4 border-amber-400/50 max-w-[300px] sm:max-w-[340px] mx-auto">
                 <img src="{{ asset('images/gpay-qr-card.jpg') }}"
-                     alt="Google Pay QR Code - DR. E. K. Raja Varma"
+                     alt="Google Pay QR Code - Dr. E. K. Raja Varma"
                      class="w-full h-auto object-contain rounded-xl">
             </div>
 
@@ -2835,17 +2974,25 @@
             </p>
 
             <!-- Actions -->
-            <div class="pt-1 flex flex-col sm:flex-row gap-2">
-                <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I have made payment via Google Pay (ekrvarma-1@oksbi / 094473 27450). Here is my confirmation.') }}"
+            <div class="pt-1 flex flex-col gap-2">
+                <a href="https://razorpay.me/@covilakamastrology"
                    target="_blank"
-                   class="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs text-white bg-emerald-600 hover:bg-emerald-500 shadow-lg flex items-center justify-center space-x-1.5 transition-all">
-                    <span>Share Receipt on WhatsApp</span>
+                   rel="noopener noreferrer"
+                   class="w-full py-2.5 px-4 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg flex items-center justify-center space-x-1.5 transition-all">
+                    <span>💳 Pay via Razorpay (razorpay.me/@covilakamastrology)</span>
                 </a>
-                <button type="button"
-                        @click="gpayModalOpen = false"
-                        class="py-2.5 px-4 rounded-xl text-xs font-semibold text-amber-200 bg-white/10 hover:bg-white/20 transition-all">
-                    Close
-                </button>
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology), I have made payment via Google Pay / Razorpay. Here is my confirmation.') }}"
+                       target="_blank"
+                       class="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs text-white bg-emerald-600 hover:bg-emerald-500 shadow-lg flex items-center justify-center space-x-1.5 transition-all">
+                        <span>Share Receipt on WhatsApp</span>
+                    </a>
+                    <button type="button"
+                            @click="gpayModalOpen = false"
+                            class="py-2.5 px-4 rounded-xl text-xs font-semibold text-amber-200 bg-white/10 hover:bg-white/20 transition-all">
+                        Close
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -2960,7 +3107,7 @@
                                 'Accept': 'application/json'
                             },
                             body: JSON.stringify({
-                                amount: self.selectedBook.price * 100,
+                                amount: ((self.selectedBook.price || 0) + 50) * 100,
                                 currency: 'INR',
                                 receipt: 'rcpt_bk_' + Date.now(),
                                 notes: {

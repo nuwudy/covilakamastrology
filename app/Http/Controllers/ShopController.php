@@ -85,7 +85,9 @@ class ShopController extends Controller
 
         $product = Product::findOrFail($validated['product_id']);
         $orderNumber = Order::generateOrderNumber();
-        $amountInPaise = (int) round($product->price * 100);
+        $courierCharge = $product->type === 'book' ? 50.00 : 0.00;
+        $totalAmount = (float) $product->price + $courierCharge;
+        $amountInPaise = (int) round($totalAmount * 100);
 
         $birthDetails = null;
         if (!empty($validated['birth_date'])) {
@@ -155,7 +157,7 @@ class ShopController extends Controller
             'product_id' => $product->id,
             'product_title' => $product->title,
             'product_type' => $product->type,
-            'amount' => $product->price,
+            'amount' => $totalAmount,
             'currency' => 'INR',
             'razorpay_order_id' => $razorpayOrderId,
             'payment_status' => 'pending',
@@ -170,8 +172,9 @@ class ShopController extends Controller
             'order_number' => $order->order_number,
             'razorpay_order_id' => $razorpayOrderId,
             'amount' => $amountInPaise,
+            'courier_charge' => $courierCharge,
             'currency' => 'INR',
-            'amount_display' => $product->formatted_price,
+            'amount_display' => '₹' . number_format($totalAmount, 0),
             'key_id' => $keyId,
             'product_title' => $product->title,
             'customer_name' => $order->customer_name,

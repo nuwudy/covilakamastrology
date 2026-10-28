@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $video->title . ' | Vedic Astrology Video Discourse | DR. E. K. Raja Varma')
+@section('title', $video->title . ' | Vedic Astrology Video Discourse | Dr. E. K. Raja Varma')
 @section('meta_description', Str::limit(strip_tags($video->description), 160))
 @section('og_image', "https://img.youtube.com/vi/{$video->youtube_id}/maxresdefault.jpg")
 
@@ -12,8 +12,8 @@
             const shareUrl = window.location.href;
             if (navigator.share) {
                 navigator.share({
-                    title: '{{ addslashes($video->title) }} - DR. E. K. Raja Varma',
-                    text: 'Watch this Vedic Astrology Discourse by DR. E. K. Raja Varma:',
+                    title: '{{ addslashes($video->title) }} - Dr. E. K. Raja Varma',
+                    text: 'Watch this Vedic Astrology Discourse by Dr. E. K. Raja Varma:',
                     url: shareUrl
                 }).catch(() => {});
             } else if (navigator.clipboard) {
@@ -107,7 +107,7 @@
                     </h1>
 
                     <div class="text-xs sm:text-sm text-amber-300/80 font-medium">
-                        Discourse by <strong class="text-amber-200">DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>
+                        Discourse by <strong class="text-amber-200">Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</strong>
                     </div>
 
                     <div class="font-['Noto_Sans_Malayalam',sans-serif] text-sm sm:text-base text-amber-100/85 leading-loose bg-[#1a102c]/60 p-5 sm:p-6 rounded-2xl border border-amber-500/20">
@@ -120,7 +120,7 @@
                             Have personal questions regarding this discourse?
                         </div>
                         <div class="flex items-center gap-3">
-                            <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram DR. E. K. Raja Varma, I watched your discourse: "' . $video->title . '" and would like to ask a question.') }}"
+                            <a href="https://wa.me/917907052160?text={{ rawurlencode('Namaskaram Dr. E. K. Raja Varma, I watched your discourse: "' . $video->title . '" and would like to ask a question.') }}"
                                target="_blank"
                                rel="noopener noreferrer"
                                class="px-5 py-3 rounded-xl font-bold text-xs text-[#140b22] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 flex items-center space-x-2 shadow-lg">
@@ -184,7 +184,7 @@
                                 {{ $other->title }}
                             </h3>
                             <div class="text-[10px] sm:text-xs text-amber-300/70">
-                                DR. E. K. Raja Varma
+                                Dr. E. K. Raja Varma
                             </div>
                         </div>
                     </div>
@@ -211,7 +211,7 @@
         'duration' => 'PT12M00S',
         'author' => [
             '@type' => 'Person',
-            'name' => 'DR. E. K. Raja Varma',
+            'name' => 'Dr. E. K. Raja Varma',
             'jobTitle' => 'Vidya Vachaspathi in Vedic Astrology'
         ]
     ];

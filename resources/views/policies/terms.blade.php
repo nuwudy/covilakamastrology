@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Terms and Conditions | Covilakam Astrology')
-@section('meta_description', 'Official Terms and Conditions for Covilakam Astrology, directed by DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Covers consultation services, Vedic books, digital Jathakam downloads, and Razorpay secure payment terms.')
+@section('meta_description', 'Official Terms and Conditions for Covilakam Astrology, directed by Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology). Covers consultation services, Vedic books, digital Jathakam downloads, and Razorpay secure payment terms.')
 
 @section('content')
 <div class="pt-32 pb-24 bg-[#0d0716] min-h-screen text-amber-100/90 relative overflow-hidden">
@@ -34,7 +34,7 @@
             <section class="space-y-3">
                 <h2 class="font-cinzel text-xl font-bold text-amber-200">1. Introduction & Acceptance of Terms</h2>
                 <p>
-                    Welcome to <strong>Covilakam Astrology</strong> (also known as <em>Kovilakam Astrology</em> / <em>കോവിലകം ജ്യോതിഷം</em>), accessible at <a href="{{ url('/') }}" class="text-amber-300 underline">{{ url('/') }}</a>. These Terms and Conditions govern your use of our portal, including the booking of personal Vedic astrological consultations, purchase and dispatch of Vedic astrology books, and digital ordering/download of personalized Jathakam (Horoscope) PDF reports directed by <strong>DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, Gold Medalist & Ph.D.)</strong>.
+                    Welcome to <strong>Covilakam Astrology</strong> (also known as <em>Kovilakam Astrology</em> / <em>കോവിലകം ജ്യോതിഷം</em>), accessible at <a href="{{ url('/') }}" class="text-amber-300 underline">{{ url('/') }}</a>. These Terms and Conditions govern your use of our portal, including the booking of personal Vedic astrological consultations, purchase and dispatch of Vedic astrology books, and digital ordering/download of personalized Jathakam (Horoscope) PDF reports directed by <strong>Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology, Gold Medalist & Ph.D.)</strong>.
                 </p>
                 <p>
                     By accessing our website, placing an order, or booking a consultation, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions in full. If you do not agree with any part of these terms, please do not use our services.
@@ -46,7 +46,7 @@
                 <ul class="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-amber-100/80">
                     <li><strong>Personal Astrological Consultations:</strong> One-on-one astrological guidance conducted via WhatsApp, voice call, video call, or in-person sessions based on traditional Kerala Parashara and Ashtamangala Prasnam methodologies.</li>
                     <li><strong>Digital Jathakam PDF Reports:</strong> Bespoke horoscope calculation documents generated using ancient astronomical and algorithmic principles, containing Rasi, Navamsha, and 25-year Dasa-Bhukthi timelines.</li>
-                    <li><strong>Vedic Astrology Books:</strong> Printed physical publications authored and published by DR. E. K. Raja Varma and Covilakam Vedic Publications, dispatched via Indian postal/courier services.</li>
+                    <li><strong>Vedic Astrology Books:</strong> Printed physical publications authored and published by Dr. E. K. Raja Varma and Covilakam Vedic Publications, dispatched via Indian postal/courier services.</li>
                 </ul>
             </section>
 
@@ -74,7 +74,7 @@
                 <div class="p-4 rounded-xl border border-amber-500/30 bg-amber-500/10 text-xs sm:text-sm">
                     <p class="font-semibold text-amber-300 mb-1">⚠️ Important Advisory Notice:</p>
                     <p>
-                        Vedic Astrology (Jyothisha Shastra) is a traditional, interpretive cosmic science offering probability trends and spiritual insights. Astrological readings, Jathakam reports, and counselling provided by DR. E. K. Raja Varma are intended for guidance, spiritual upliftment, and self-reflection. They are not intended as a substitute for professional legal, medical, psychiatric, or financial counsel. Customers are advised to exercise their own discretion and free will when making important life decisions.
+                        Vedic Astrology (Jyothisha Shastra) is a traditional, interpretive cosmic science offering probability trends and spiritual insights. Astrological readings, Jathakam reports, and counselling provided by Dr. E. K. Raja Varma are intended for guidance, spiritual upliftment, and self-reflection. They are not intended as a substitute for professional legal, medical, psychiatric, or financial counsel. Customers are advised to exercise their own discretion and free will when making important life decisions.
                     </p>
                 </div>
             </section>
@@ -89,7 +89,7 @@
             <section class="space-y-3">
                 <h2 class="font-cinzel text-xl font-bold text-amber-200">7. Intellectual Property Rights</h2>
                 <p>
-                    All content on this website, including book manuscripts, cover artwork, proprietary calculation scripts, Jathakam formats, articles, and brand logos, is the exclusive intellectual property of <strong>DR. E. K. Raja Varma and Covilakam Astrology</strong>. Unauthorized reproduction, distribution, scanning, or commercial reselling is strictly prohibited under the Copyright Act, 1957.
+                    All content on this website, including book manuscripts, cover artwork, proprietary calculation scripts, Jathakam formats, articles, and brand logos, is the exclusive intellectual property of <strong>Dr. E. K. Raja Varma and Covilakam Astrology</strong>. Unauthorized reproduction, distribution, scanning, or commercial reselling is strictly prohibited under the Copyright Act, 1957.
                 </p>
             </section>
 
@@ -104,7 +104,7 @@
                 <h2 class="font-cinzel text-xl font-bold text-amber-200">9. Merchant Contact Details</h2>
                 <div class="bg-[#1a1128] p-5 rounded-2xl border border-amber-500/20 text-xs sm:text-sm space-y-1.5">
                     <p><strong>Merchant / Practice Name:</strong> Covilakam Astrology (Kovilakam Astrology)</p>
-                    <p><strong>Directing Astrologer:</strong> DR. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</p>
+                    <p><strong>Directing Astrologer:</strong> Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</p>
                     <p><strong>Operating Address:</strong> Covilakam Astrology, Kerala, India (PIN: 686574)</p>
                     <p><strong>Primary WhatsApp:</strong> +91 7907052160</p>
                     <p><strong>Phone / GPay:</strong> 094473 27450 / +91 9447327450</p>
