@@ -187,15 +187,30 @@ class CovilakamAstrologyTest extends TestCase
         $response = $this->get('/blog');
         $response->assertStatus(200);
         $response->assertSee('ജ്യോതിഷവും ജീവിതസരണിയും');
+        $response->assertSee('ആയവ്യയപ്പൊരുത്തം');
+        $response->assertSee('രാശി സ്വരൂപങ്ങളും വ്യക്തി സ്വഭാവവും');
+        $response->assertSee('കാലപുരുഷനെന്ന മഹാപുരുഷൻ');
+        $response->assertSee('യോഗങ്ങളുടെ യോഗം');
 
-        $post = Post::where('slug', 'jyothishavum-jeevithasaranium')->first();
-        $this->assertNotNull($post);
+        $expectedSlugs = [
+            'jyothishavum-jeevithasaranium',
+            'aayavyaya-porutham',
+            'rashi-swaroopangalum-vyakthi-swabhavavum',
+            'kalapurushan-enna-mahapurushan',
+            'yogangalude-yogam',
+        ];
 
-        $showResponse = $this->get('/blog/' . $post->slug);
-        $showResponse->assertStatus(200);
-        $showResponse->assertSee($post->title);
-        $showResponse->assertSee('Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)');
-        $showResponse->assertSee('7907052160');
+        foreach ($expectedSlugs as $slug) {
+            $post = Post::where('slug', $slug)->first();
+            $this->assertNotNull($post, "Expected blog post with slug {$slug} to exist.");
+            $this->assertNotEmpty($post->featured_image);
+
+            $showResponse = $this->get('/blog/' . $post->slug);
+            $showResponse->assertStatus(200);
+            $showResponse->assertSee($post->title);
+            $showResponse->assertSee('Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)');
+            $showResponse->assertSee('7907052160');
+        }
     }
 
     public function test_visiting_card_pages(): void

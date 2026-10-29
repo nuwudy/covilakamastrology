@@ -59,3 +59,4 @@ return new class extends Migration
         // Non-destructive text standardization
     }
 };
+

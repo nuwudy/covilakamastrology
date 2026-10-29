@@ -476,5 +476,8 @@ class DatabaseSeeder extends Seeder
 
         // Call Dr. E. K. Raja Varma's Real Books Seeder
         $this->call(BookSeeder::class);
+
+        // Call Dr. E. K. Raja Varma's 5 Malayalam Blog Articles Seeder
+        $this->call(BlogPostsSeeder::class);
     }
 }
