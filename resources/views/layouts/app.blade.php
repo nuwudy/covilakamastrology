@@ -461,7 +461,223 @@
     <!-- Footer -->
     @include('partials.footer')
 
+    <!-- Covilakam Blog Share Modal (Works reliably on Desktop & Mobile for WhatsApp Paste / Share) -->
+    <div id="covilakam-share-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="relative w-full max-w-md rounded-3xl bg-[#180e29] border-2 border-amber-400/60 shadow-2xl overflow-hidden text-white p-5 sm:p-6 space-y-4">
+            <!-- Header -->
+            <div class="flex items-center justify-between border-b border-amber-500/25 pb-3">
+                <div class="flex items-center space-x-2">
+                    <span class="text-amber-300 text-lg">📤</span>
+                    <h3 class="font-cinzel text-base sm:text-lg font-bold text-amber-300">Share Blog & Featured Image</h3>
+                </div>
+                <button type="button" onclick="closeCovilakamShareModal()" class="w-8 h-8 rounded-full bg-[#251540] text-amber-200 hover:text-white hover:bg-amber-500/30 flex items-center justify-center font-bold transition-colors cursor-pointer">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Blog Preview Card with Feature Image -->
+            <div class="rounded-2xl overflow-hidden bg-[#120920] border border-amber-500/30">
+                <div class="aspect-video w-full overflow-hidden bg-[#1a1128] relative">
+                    <img id="covilakam-share-img" src="" alt="Blog Featured Image" class="w-full h-full object-cover">
+                </div>
+                <div class="p-3.5 space-y-1">
+                    <h4 id="covilakam-share-title" class="font-cinzel text-sm font-bold text-white line-clamp-2"></h4>
+                    <p id="covilakam-share-url-display" class="text-[11px] font-mono text-amber-300/80 truncate"></p>
+                </div>
+            </div>
+
+            <!-- Auto-copy feedback banner -->
+            <div id="covilakam-share-feedback" class="px-3.5 py-2 rounded-xl bg-emerald-500/15 border border-emerald-400/40 text-emerald-300 text-xs font-semibold text-center">
+                ✓ Blog Link & Title copied! You can press <strong>Ctrl+V (Paste)</strong> in WhatsApp now.
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="grid grid-cols-1 gap-2.5">
+                <!-- 1. Copy Link & Text (For Ctrl+V Paste in WhatsApp) -->
+                <button type="button" id="covilakam-btn-copy-link" onclick="copyModalBlogTextAndLink()"
+                        class="w-full py-3 px-4 rounded-xl font-bold text-xs sm:text-sm text-[#1a1128] bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-200 hover:to-yellow-300 shadow-lg flex items-center justify-center space-x-2 transition-all cursor-pointer">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
+                    </svg>
+                    <span id="covilakam-btn-copy-link-label">Copy Blog Link & Summary (Paste in WhatsApp)</span>
+                </button>
+
+                <!-- 2. Copy Feature Image to Clipboard (For Ctrl+V Image Paste in WhatsApp Web) -->
+                <button type="button" id="covilakam-btn-copy-image" onclick="copyModalFeatureImage()"
+                        class="w-full py-2.5 px-4 rounded-xl font-bold text-xs text-amber-200 bg-[#251540] hover:bg-[#311c54] border border-amber-400/50 flex items-center justify-center space-x-2 transition-all cursor-pointer">
+                    <svg class="w-4 h-4 text-amber-300 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <span id="covilakam-btn-copy-image-label">Copy Featured Image (Paste Photo in WhatsApp)</span>
+                </button>
+
+                <!-- 3. Direct Send on WhatsApp -->
+                <a id="covilakam-btn-wa" href="#" target="_blank" rel="noopener noreferrer"
+                   class="w-full py-2.5 px-4 rounded-xl font-bold text-xs text-white bg-emerald-600 hover:bg-emerald-500 shadow-lg flex items-center justify-center space-x-2 transition-all">
+                    <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.947 2.796.947 3.179 0 5.766-2.587 5.767-5.766.001-3.181-2.586-5.767-5.767-5.767zm0 10.373c-.768 0-1.637-.251-2.327-.661l-.167-.099-1.58.414.422-1.539-.109-.174c-.453-.722-.693-1.564-.693-2.55 0-2.539 2.066-4.605 4.606-4.605 2.54 0 4.606 2.066 4.606 4.606 0 2.54-2.066 4.608-4.755 4.608z"/>
+                    </svg>
+                    <span>Send Directly to WhatsApp</span>
+                </a>
+
+                <!-- 4. Social Row: Facebook, Telegram, Download Image -->
+                <div class="grid grid-cols-3 gap-2 pt-1">
+                    <a id="covilakam-btn-fb" href="#" target="_blank" rel="noopener noreferrer"
+                       class="py-2 px-3 rounded-xl font-bold text-[11px] text-white bg-[#1877F2] hover:bg-[#166fe5] text-center transition-all">
+                        Facebook
+                    </a>
+                    <a id="covilakam-btn-tg" href="#" target="_blank" rel="noopener noreferrer"
+                       class="py-2 px-3 rounded-xl font-bold text-[11px] text-white bg-[#229ED9] hover:bg-[#1e8ec4] text-center transition-all">
+                        Telegram
+                    </a>
+                    <a id="covilakam-btn-dl" href="#" download="covilakam-astrology-blog.jpg"
+                       class="py-2 px-3 rounded-xl font-bold text-[11px] text-amber-200 bg-[#251540] border border-amber-500/30 hover:border-amber-400 text-center transition-all">
+                        Save Image
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        window._currentShareBlog = {
+            title: '',
+            excerpt: '',
+            url: '',
+            imageUrl: '',
+            shareText: ''
+        };
+
+        window.copyTextToClipboardReliable = async function(text) {
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(text);
+                    return true;
+                }
+            } catch (e) {}
+
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                ta.style.top = '0';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                const ok = document.execCommand('copy');
+                document.body.removeChild(ta);
+                return ok;
+            } catch (e) {
+                return false;
+            }
+        };
+
+        window.closeCovilakamShareModal = function() {
+            const modal = document.getElementById('covilakam-share-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        };
+
+        window.copyModalBlogTextAndLink = async function() {
+            const data = window._currentShareBlog;
+            if (!data || !data.shareText) return;
+            await window.copyTextToClipboardReliable(data.shareText);
+            const lbl = document.getElementById('covilakam-btn-copy-link-label');
+            const fb = document.getElementById('covilakam-share-feedback');
+            if (lbl) {
+                lbl.textContent = '✓ Link & Summary Copied! Press Ctrl+V in WhatsApp';
+                setTimeout(() => {
+                    lbl.textContent = 'Copy Blog Link & Summary (Paste in WhatsApp)';
+                }, 3000);
+            }
+            if (fb) {
+                fb.innerHTML = '✓ <strong>Link & Summary Copied!</strong> Go to WhatsApp and press <strong>Ctrl+V (Paste)</strong>.';
+            }
+        };
+
+        window.copyModalFeatureImage = async function() {
+            const data = window._currentShareBlog;
+            if (!data || !data.imageUrl) return;
+            const lbl = document.getElementById('covilakam-btn-copy-image-label');
+            const fb = document.getElementById('covilakam-share-feedback');
+            if (lbl) lbl.textContent = 'Preparing Featured Image...';
+
+            try {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                await new Promise((resolve, reject) => {
+                    img.onload = resolve;
+                    img.onerror = reject;
+                    img.src = data.imageUrl;
+                });
+
+                // Draw composite card with Feature Image + Title & Website Footer Strip so pasting the image in WhatsApp includes the title and link visually!
+                const canvas = document.createElement('canvas');
+                const w = 1200;
+                const imgH = 630;
+                const footerH = 130;
+                canvas.width = w;
+                canvas.height = imgH + footerH;
+                const ctx = canvas.getContext('2d');
+
+                // Draw feature image
+                ctx.drawImage(img, 0, 0, w, imgH);
+
+                // Draw royal dark purple/gold footer bar
+                const grad = ctx.createLinearGradient(0, imgH, w, imgH + footerH);
+                grad.addColorStop(0, '#160b28');
+                grad.addColorStop(0.5, '#24113d');
+                grad.addColorStop(1, '#160b28');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, imgH, w, footerH);
+
+                // Gold border line
+                ctx.fillStyle = '#fbbf24';
+                ctx.fillRect(0, imgH, w, 4);
+
+                // Title text
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 28px sans-serif';
+                const shortTitle = data.title.length > 68 ? data.title.substring(0, 65) + '...' : data.title;
+                ctx.fillText(shortTitle, 32, imgH + 50);
+
+                // Author & URL
+                ctx.fillStyle = '#fcd34d';
+                ctx.font = 'bold 21px sans-serif';
+                ctx.fillText('Dr. E. K. Raja Varma (Covilakam Astrology)  •  WhatsApp: +91 7907052160', 32, imgH + 86);
+
+                ctx.fillStyle = '#e2e8f0';
+                ctx.font = '18px monospace';
+                ctx.fillText(data.url, 32, imgH + 114);
+
+                const pngBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                if (pngBlob && navigator.clipboard && window.ClipboardItem) {
+                    await navigator.clipboard.write([
+                        new ClipboardItem({ 'image/png': pngBlob })
+                    ]);
+                    if (lbl) {
+                        lbl.textContent = '✓ Image Copied! Press Ctrl+V in WhatsApp to Paste Photo';
+                        setTimeout(() => {
+                            lbl.textContent = 'Copy Featured Image (Paste Photo in WhatsApp)';
+                        }, 3500);
+                    }
+                    if (fb) {
+                        fb.innerHTML = '🖼️ <strong>Featured Image Card Copied!</strong> Press <strong>Ctrl+V (Paste)</strong> in WhatsApp to attach the photo.';
+                    }
+                    return;
+                }
+            } catch (err) {
+                console.error(err);
+            }
+
+            if (lbl) {
+                lbl.textContent = 'Could not copy image directly — Click "Save Image" below';
+            }
+        };
+
         window.shareCovilakamBlog = async function(options, btnElement) {
             const title = options.title || 'Covilakam Astrology';
             const excerpt = options.excerpt || '';
@@ -469,87 +685,58 @@
             const imageUrl = options.imageUrl || '';
             const shareText = `✨ *${title}*\n${excerpt ? excerpt + '\n\n' : ''}✍️ Dr. E. K. Raja Varma (Covilakam Astrology)\n📖 Read Full Article: ${url}`;
 
-            let originalHtml = '';
-            if (btnElement) {
-                originalHtml = btnElement.innerHTML;
-                btnElement.disabled = true;
+            window._currentShareBlog = { title, excerpt, url, imageUrl, shareText };
+
+            // Immediately copy the formatted blog link & summary to clipboard so Ctrl+V / Paste works right away!
+            await window.copyTextToClipboardReliable(shareText);
+
+            // Populate and open the Covilakam Share Modal
+            const modal = document.getElementById('covilakam-share-modal');
+            const imgEl = document.getElementById('covilakam-share-img');
+            const titleEl = document.getElementById('covilakam-share-title');
+            const urlEl = document.getElementById('covilakam-share-url-display');
+            const waBtn = document.getElementById('covilakam-btn-wa');
+            const fbBtn = document.getElementById('covilakam-btn-fb');
+            const tgBtn = document.getElementById('covilakam-btn-tg');
+            const dlBtn = document.getElementById('covilakam-btn-dl');
+            const fbBanner = document.getElementById('covilakam-share-feedback');
+
+            if (imgEl) imgEl.src = imageUrl;
+            if (titleEl) titleEl.textContent = title;
+            if (urlEl) urlEl.textContent = url;
+            if (waBtn) waBtn.href = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(shareText);
+            if (fbBtn) fbBtn.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+            if (tgBtn) tgBtn.href = 'https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent('✨ ' + title + ' — Dr. E. K. Raja Varma');
+            if (dlBtn) dlBtn.href = imageUrl;
+            if (fbBanner) {
+                fbBanner.innerHTML = '✓ <strong>Blog Link & Summary copied!</strong> You can press <strong>Ctrl+V (Paste)</strong> in WhatsApp right now.';
             }
 
-            try {
-                if (navigator.share) {
-                    let sharedWithFile = false;
-                    if (imageUrl && navigator.canShare) {
-                        try {
-                            const response = await fetch(imageUrl, { cache: 'force-cache' });
-                            if (response.ok) {
-                                const blob = await response.blob();
-                                const ext = (blob.type && blob.type.includes('png')) ? 'png' : 'jpg';
-                                const file = new File([blob], `covilakam-astrology-blog.${ext}`, { type: blob.type || 'image/jpeg' });
-                                const shareDataWithFile = {
-                                    title: title,
-                                    text: shareText,
-                                    url: url,
-                                    files: [file]
-                                };
-                                if (navigator.canShare(shareDataWithFile)) {
-                                    await navigator.share(shareDataWithFile);
-                                    sharedWithFile = true;
-                                }
-                            }
-                        } catch (imgErr) {
-                            // Fallback to standard URL share if image fetch or file share is blocked
-                        }
-                    }
-
-                    if (!sharedWithFile) {
-                        await navigator.share({
-                            title: title,
-                            text: shareText,
-                            url: url
-                        });
-                    }
-                    return;
-                }
-            } catch (err) {
-                if (err && err.name === 'AbortError') {
-                    return;
-                }
-            } finally {
-                if (btnElement) {
-                    btnElement.disabled = false;
-                    btnElement.innerHTML = originalHtml;
-                }
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
             }
-
-            // Desktop / Non-WebShare fallback: Open WhatsApp share (which renders the 1200x630 og:image preview card)
-            const waShareUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(shareText);
-            window.open(waShareUrl, '_blank', 'noopener,noreferrer');
         };
 
-        window.copyCovilakamBlogLink = function(url, btnElement) {
+        window.copyCovilakamBlogLink = async function(url, btnElement, title) {
             const targetUrl = url || window.location.href;
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(targetUrl).then(() => {
-                    if (btnElement) {
-                        const prev = btnElement.innerHTML;
-                        btnElement.innerHTML = '<span>✓ Link Copied!</span>';
-                        setTimeout(() => { btnElement.innerHTML = prev; }, 2000);
-                    }
-                });
-            } else {
-                const input = document.createElement('input');
-                input.value = targetUrl;
-                document.body.appendChild(input);
-                input.select();
-                document.execCommand('copy');
-                document.body.removeChild(input);
-                if (btnElement) {
-                    const prev = btnElement.innerHTML;
-                    btnElement.innerHTML = '<span>✓ Link Copied!</span>';
-                    setTimeout(() => { btnElement.innerHTML = prev; }, 2000);
-                }
+            const copyStr = title
+                ? `✨ *${title}*\n✍️ Dr. E. K. Raja Varma (Covilakam Astrology)\n📖 ${targetUrl}`
+                : targetUrl;
+
+            await window.copyTextToClipboardReliable(copyStr);
+            if (btnElement) {
+                const prev = btnElement.innerHTML;
+                btnElement.innerHTML = '<span>✓ Copied!</span>';
+                setTimeout(() => { btnElement.innerHTML = prev; }, 2000);
             }
         };
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                window.closeCovilakamShareModal();
+            }
+        });
     </script>
 
     @stack('scripts')

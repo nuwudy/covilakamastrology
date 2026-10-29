@@ -122,7 +122,13 @@
                                 {{ $post->author_name }}
                             </span>
                         </div>
-                        <div class="flex items-center space-x-2.5 shrink-0">
+                        <div class="flex items-center space-x-2 shrink-0">
+                            <button type="button"
+                                    onclick="copyCovilakamBlogLink(@js($cardPostUrl), this, @js($post->title))"
+                                    title="Copy Blog Link"
+                                    class="px-2.5 py-1 rounded-lg text-[11px] font-bold text-amber-200 bg-[#251540] hover:bg-amber-400 hover:text-[#1a1128] border border-amber-500/30 flex items-center space-x-1 transition-all cursor-pointer">
+                                <span>Copy Link</span>
+                            </button>
                             <button type="button"
                                     onclick="shareCovilakamBlog({
                                         title: @js($post->title),
@@ -139,7 +145,7 @@
                             </button>
                             <a href="{{ $cardPostUrl }}"
                                class="text-xs font-bold text-amber-300 hover:text-white transition-colors">
-                                Read Article →
+                                Read →
                             </a>
                         </div>
                     </div>
