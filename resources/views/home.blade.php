@@ -2488,18 +2488,45 @@
             <!-- Blog Cards Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach($posts as $post)
+                @php
+                    $homeCardImageUrl = $post->featured_image
+                        ? (str_starts_with($post->featured_image, 'http')
+                            ? $post->featured_image
+                            : (str_starts_with($post->featured_image, 'images/')
+                                ? asset($post->featured_image)
+                                : asset('storage/' . $post->featured_image)))
+                        : asset('images/og-covilakam-1200x630.jpg');
+                    $homeCardPostUrl = route('blog.show', $post->slug);
+                    $homeCardExcerpt = Str::limit(strip_tags($post->excerpt ?: $post->body), 130);
+                @endphp
                 <article class="card-gold-frame rounded-3xl overflow-hidden flex flex-col justify-between group">
                     <div>
-                        <!-- Featured Image with Fallback -->
-                        <a href="{{ route('blog.show', $post->slug) }}" class="block relative aspect-video overflow-hidden border-b border-amber-500/30">
-                            <img src="{{ asset($post->featured_image) }}"
-                                 alt="{{ $post->title }}"
-                                 onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'250\' viewBox=\'0 0 400 250\'><rect width=\'100%\' height=\'100%\' fill=\'%231a1128\'/><circle cx=\'200\' cy=\'125\' r=\'60\' fill=\'%23d4af37\' opacity=\'0.2\'/><text x=\'50%\' y=\'55%\' font-size=\'40\' fill=\'%23f3e5ab\' font-family=\'serif\' dominant-baseline=\'middle\' text-anchor=\'middle\'>ॐ</text></svg>';"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#1a1128]/90 text-amber-300 border border-amber-500/40 backdrop-blur-md">
+                        <!-- Featured Image with Fallback & Share Button -->
+                        <div class="relative aspect-video overflow-hidden border-b border-amber-500/30">
+                            <a href="{{ $homeCardPostUrl }}" class="block w-full h-full">
+                                <img src="{{ $homeCardImageUrl }}"
+                                     alt="{{ $post->title }}"
+                                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'250\' viewBox=\'0 0 400 250\'><rect width=\'100%\' height=\'100%\' fill=\'%231a1128\'/><circle cx=\'200\' cy=\'125\' r=\'60\' fill=\'%23d4af37\' opacity=\'0.2\'/><text x=\'50%\' y=\'55%\' font-size=\'40\' fill=\'%23f3e5ab\' font-family=\'serif\' dominant-baseline=\'middle\' text-anchor=\'middle\'>ॐ</text></svg>';"
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            </a>
+                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#1a1128]/90 text-amber-300 border border-amber-500/40 backdrop-blur-md pointer-events-none">
                                 {{ $post->category }}
                             </span>
-                        </a>
+                            <button type="button"
+                                    onclick="shareCovilakamBlog({
+                                        title: @js($post->title),
+                                        excerpt: @js($homeCardExcerpt),
+                                        url: @js($homeCardPostUrl),
+                                        imageUrl: @js($homeCardImageUrl)
+                                    }, this)"
+                                    title="Share Blog with Featured Image"
+                                    class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#1a1128]/90 hover:bg-amber-400 text-amber-300 hover:text-[#1a1128] border border-amber-500/50 backdrop-blur-md flex items-center space-x-1 transition-all cursor-pointer shadow-lg">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                                </svg>
+                                <span>Share</span>
+                            </button>
+                        </div>
 
                         <!-- Card Body -->
                         <div class="p-6 space-y-3">
@@ -2509,7 +2536,7 @@
                             </div>
 
                             <h3 class="font-cinzel text-lg font-bold text-white group-hover:text-amber-300 transition-colors leading-snug">
-                                <a href="{{ route('blog.show', $post->slug) }}">
+                                <a href="{{ $homeCardPostUrl }}">
                                     {{ $post->title }}
                                 </a>
                             </h3>
@@ -2522,16 +2549,32 @@
 
                     <!-- Author Attribution & Action -->
                     <div class="px-6 pb-6 pt-3 border-t border-amber-500/20">
-                        <div class="flex items-center justify-between">
-                            <div class="text-[11px] text-amber-200/80">
-                                <span class="block text-amber-400 font-semibold truncate max-w-[200px]">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="text-[11px] text-amber-200/80 min-w-0">
+                                <span class="block text-amber-400 font-semibold truncate max-w-[160px]">
                                     {{ $post->author_name }}
                                 </span>
                             </div>
-                            <a href="{{ route('blog.show', $post->slug) }}"
-                               class="text-xs font-bold text-amber-300 hover:text-white transition-colors">
-                                Read →
-                            </a>
+                            <div class="flex items-center space-x-2.5 shrink-0">
+                                <button type="button"
+                                        onclick="shareCovilakamBlog({
+                                            title: @js($post->title),
+                                            excerpt: @js($homeCardExcerpt),
+                                            url: @js($homeCardPostUrl),
+                                            imageUrl: @js($homeCardImageUrl)
+                                        }, this)"
+                                        title="Share Blog with Image"
+                                        class="px-2.5 py-1 rounded-lg text-[11px] font-bold text-amber-300 bg-[#251540] hover:bg-amber-400 hover:text-[#1a1128] border border-amber-500/30 flex items-center space-x-1 transition-all cursor-pointer">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                                    </svg>
+                                    <span>Share</span>
+                                </button>
+                                <a href="{{ $homeCardPostUrl }}"
+                                   class="text-xs font-bold text-amber-300 hover:text-white transition-colors">
+                                    Read →
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </article>

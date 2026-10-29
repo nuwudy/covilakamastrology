@@ -210,6 +210,9 @@ class CovilakamAstrologyTest extends TestCase
             $showResponse->assertSee($post->title);
             $showResponse->assertSee('Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)');
             $showResponse->assertSee('7907052160');
+            $showResponse->assertSee('Share with Image');
+            $showResponse->assertSee('shareCovilakamBlog');
+            $showResponse->assertSee($post->featured_image);
         }
     }
 

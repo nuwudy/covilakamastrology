@@ -461,6 +461,97 @@
     <!-- Footer -->
     @include('partials.footer')
 
+    <script>
+        window.shareCovilakamBlog = async function(options, btnElement) {
+            const title = options.title || 'Covilakam Astrology';
+            const excerpt = options.excerpt || '';
+            const url = options.url || window.location.href;
+            const imageUrl = options.imageUrl || '';
+            const shareText = `✨ *${title}*\n${excerpt ? excerpt + '\n\n' : ''}✍️ Dr. E. K. Raja Varma (Covilakam Astrology)\n📖 Read Full Article: ${url}`;
+
+            let originalHtml = '';
+            if (btnElement) {
+                originalHtml = btnElement.innerHTML;
+                btnElement.disabled = true;
+            }
+
+            try {
+                if (navigator.share) {
+                    let sharedWithFile = false;
+                    if (imageUrl && navigator.canShare) {
+                        try {
+                            const response = await fetch(imageUrl, { cache: 'force-cache' });
+                            if (response.ok) {
+                                const blob = await response.blob();
+                                const ext = (blob.type && blob.type.includes('png')) ? 'png' : 'jpg';
+                                const file = new File([blob], `covilakam-astrology-blog.${ext}`, { type: blob.type || 'image/jpeg' });
+                                const shareDataWithFile = {
+                                    title: title,
+                                    text: shareText,
+                                    url: url,
+                                    files: [file]
+                                };
+                                if (navigator.canShare(shareDataWithFile)) {
+                                    await navigator.share(shareDataWithFile);
+                                    sharedWithFile = true;
+                                }
+                            }
+                        } catch (imgErr) {
+                            // Fallback to standard URL share if image fetch or file share is blocked
+                        }
+                    }
+
+                    if (!sharedWithFile) {
+                        await navigator.share({
+                            title: title,
+                            text: shareText,
+                            url: url
+                        });
+                    }
+                    return;
+                }
+            } catch (err) {
+                if (err && err.name === 'AbortError') {
+                    return;
+                }
+            } finally {
+                if (btnElement) {
+                    btnElement.disabled = false;
+                    btnElement.innerHTML = originalHtml;
+                }
+            }
+
+            // Desktop / Non-WebShare fallback: Open WhatsApp share (which renders the 1200x630 og:image preview card)
+            const waShareUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(shareText);
+            window.open(waShareUrl, '_blank', 'noopener,noreferrer');
+        };
+
+        window.copyCovilakamBlogLink = function(url, btnElement) {
+            const targetUrl = url || window.location.href;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(targetUrl).then(() => {
+                    if (btnElement) {
+                        const prev = btnElement.innerHTML;
+                        btnElement.innerHTML = '<span>✓ Link Copied!</span>';
+                        setTimeout(() => { btnElement.innerHTML = prev; }, 2000);
+                    }
+                });
+            } else {
+                const input = document.createElement('input');
+                input.value = targetUrl;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                if (btnElement) {
+                    const prev = btnElement.innerHTML;
+                    btnElement.innerHTML = '<span>✓ Link Copied!</span>';
+                    setTimeout(() => { btnElement.innerHTML = prev; }, 2000);
+                }
+            }
+        };
+    </script>
+
     @stack('scripts')
 </body>
 </html>
