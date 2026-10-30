@@ -191,6 +191,8 @@ class CovilakamAstrologyTest extends TestCase
         $response->assertSee('രാശി സ്വരൂപങ്ങളും വ്യക്തി സ്വഭാവവും');
         $response->assertSee('കാലപുരുഷനെന്ന മഹാപുരുഷൻ');
         $response->assertSee('യോഗങ്ങളുടെ യോഗം');
+        $response->assertSee('ജ്യോതിഷത്തിൽ കൃത്രിമബുദ്ധി');
+        $response->assertSee('Astro Counselling – Yesterday, Today and Tomorrow');
 
         $expectedSlugs = [
             'jyothishavum-jeevithasaranium',
@@ -198,6 +200,8 @@ class CovilakamAstrologyTest extends TestCase
             'rashi-swaroopangalum-vyakthi-swabhavavum',
             'kalapurushan-enna-mahapurushan',
             'yogangalude-yogam',
+            'jyothishathil-krithrimabudhiyude-swadheenam',
+            'astro-counselling-yesterday-today-and-tomorrow',
         ];
 
         foreach ($expectedSlugs as $slug) {

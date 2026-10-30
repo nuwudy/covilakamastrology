@@ -21,7 +21,7 @@ class HomeController extends Controller
         $services = Service::orderBy('sort_order', 'asc')->get();
         $videos = Video::where('is_active', true)->orderBy('sort_order', 'asc')->get();
         $translations = AstrologyTranslation::orderBy('sort_order', 'asc')->get()->keyBy('language_code');
-        $posts = Post::published()->orderBy('published_at', 'desc')->take(6)->get();
+        $posts = Post::published()->orderBy('published_at', 'desc')->take(9)->get();
         $books = Book::where('is_active', true)->orderBy('sort_order', 'asc')->get();
         $razorpayKeyId = config('services.razorpay.key_id');
 
