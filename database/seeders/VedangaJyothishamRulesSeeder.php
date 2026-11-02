@@ -550,3 +550,4 @@ class VedangaJyothishamRulesSeeder extends Seeder
         return $rules;
     }
 }
+

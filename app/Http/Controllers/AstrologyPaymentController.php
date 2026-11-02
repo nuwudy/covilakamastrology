@@ -197,3 +197,4 @@ class AstrologyPaymentController extends Controller
         ]);
     }
 }
+

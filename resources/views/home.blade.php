@@ -135,10 +135,6 @@
             alert('Please select your Date of Birth in DD / MM / YYYY format.');
             return;
         }
-        if (!this.calcPhone || this.calcPhone.trim().length < 8) {
-            alert('Please enter your WhatsApp Number (minimum 8 digits) so your horoscope predictions can be delivered.');
-            return;
-        }
         this.calcLoading = true;
         try {
             this.syncBirthTime();
@@ -159,7 +155,7 @@
                     latitude: this.selectedCity ? this.selectedCity.lat : 9.9312,
                     longitude: this.selectedCity ? this.selectedCity.lng : 76.2673,
                     timezone: this.selectedCity ? this.selectedCity.tz : 'Asia/Kolkata',
-                    phone: this.calcPhone,
+                    phone: this.calcPhone || null,
                     language: this.readingLang,
                     service_requested: this.calcService
                 })
@@ -909,20 +905,20 @@
                                     </div>
                                 </div>
 
-                                <!-- MANDATORY WHATSAPP NUMBER (SERVICE NEEDED REMOVED FROM HERE) -->
+                                <!-- OPTIONAL WHATSAPP NUMBER -->
                                 <div>
                                     <div class="flex items-center justify-between mb-1">
                                         <label class="block font-semibold text-amber-200">
-                                            WhatsApp Number * <span class="text-rose-400 font-bold">(Mandatory)</span>
+                                            WhatsApp Number <span class="text-amber-400/80 font-normal text-[10px]">(Optional)</span>
                                         </label>
-                                        <span class="text-[10px] text-emerald-400 font-mono flex items-center space-x-1">
-                                            <span>💬 Direct Horoscope Delivery</span>
+                                        <span class="text-[10px] text-amber-300 font-mono flex items-center space-x-1">
+                                            <span>📩 To save card copy</span>
                                         </span>
                                     </div>
-                                    <input type="tel" x-model="calcPhone" name="phone" required placeholder="e.g., +91 94473 27450"
+                                    <input type="tel" x-model="calcPhone" name="phone" placeholder="Optional (e.g., +91 94473 27450)"
                                            class="w-full px-3.5 py-2.5 rounded-xl bg-[#231538] border border-amber-500/30 text-white placeholder-amber-200/40 focus:outline-none focus:border-amber-400 transition-colors font-mono">
                                     <p class="text-[10px] text-amber-200/60 mt-1">
-                                        Dr. E. K. Raja Varma will personally connect with your detailed horoscope predictions on WhatsApp.
+                                        Optional: Enter only if you would like your horoscope summary card sent to your WhatsApp.
                                     </p>
                                 </div>
 
@@ -1557,6 +1553,28 @@
                                         <span>📩</span>
                                         <span>Send Report to My WhatsApp (<span x-text="calcPhone"></span>)</span>
                                     </a>
+                                </template>
+
+                                <!-- Voluntary WhatsApp Saver if skipped earlier -->
+                                <template x-if="!calcPhone">
+                                    <div class="p-3 rounded-2xl bg-[#201033] border border-amber-500/30 space-y-2">
+                                        <div class="flex items-center justify-between text-xs">
+                                            <span class="font-bold text-amber-200 flex items-center gap-1.5">
+                                                <span>📩</span>
+                                                <span>Save summary card to your WhatsApp:</span>
+                                            </span>
+                                            <span class="text-[9px] text-amber-400 font-mono">100% Free</span>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <input type="tel" x-model="calcPhone" placeholder="Your WhatsApp (+91...)"
+                                                   class="flex-1 px-3 py-2 rounded-xl bg-[#2c1647] border border-amber-500/30 text-white text-xs font-mono placeholder-amber-200/40 focus:outline-none focus:border-amber-400">
+                                            <a :href="getVisitorOwnWhatsAppUrl()" target="_blank"
+                                               :class="(!calcPhone || calcPhone.trim().length < 8) ? 'opacity-40 pointer-events-none' : ''"
+                                               class="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-bold text-xs flex items-center gap-1 shadow-md transition-all cursor-pointer whitespace-nowrap">
+                                                <span>Send</span> &rarr;
+                                            </a>
+                                        </div>
+                                    </div>
                                 </template>
 
                                 <!-- Reader Share to WhatsApp Button -->

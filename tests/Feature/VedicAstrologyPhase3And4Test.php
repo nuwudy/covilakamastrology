@@ -109,6 +109,38 @@ class VedicAstrologyPhase3And4Test extends TestCase
     }
 
     /**
+     * Test API Calculation with optional phone omitted (Zero Friction Flow).
+     */
+    public function test_api_astrology_calculate_succeeds_without_phone(): void
+    {
+        $payload = [
+            'name' => 'Zero Friction Devotee',
+            'gender' => 'male',
+            'birth_date' => '2001-01-20',
+            'birth_time' => '12:00:00',
+            'is_approximate_time' => true,
+            'birth_place' => 'Ernakulam, Kerala',
+            // Notice: phone is completely omitted
+            'language' => 'en',
+        ];
+
+        $response = $this->postJson(route('astrology.calculate'), $payload);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'success' => true,
+        ]);
+
+        $uuid = $response->json('uuid');
+        $this->assertDatabaseHas('astrology_readings', [
+            'uuid' => $uuid,
+            'full_name' => 'Zero Friction Devotee',
+            'whatsapp_number' => null,
+            'paid_tier' => 'free',
+        ]);
+    }
+
+    /**
      * Test Razorpay Order Creation Endpoint.
      */
     public function test_astrology_create_order_for_tier_100_and_500(): void

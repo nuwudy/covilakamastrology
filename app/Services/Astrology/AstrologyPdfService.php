@@ -91,3 +91,4 @@ class AstrologyPdfService
         return $mpdf->Output('', 'S');
     }
 }
+

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->index();
             $table->string('full_name', 150);
             $table->string('gender', 20)->default('male');
-            $table->string('whatsapp_number', 35);
+            $table->string('whatsapp_number', 35)->nullable();
             $table->string('language', 10)->default('en');
             $table->date('dob');
             $table->time('birth_time')->default('12:00:00');

@@ -90,15 +90,23 @@ class CovilakamAstrologyTest extends TestCase
 
     public function test_calculate_dob_endpoint(): void
     {
-        // 1. Phone is required: missing phone should fail validation
+        // 1. Birth date is required: missing birth_date should fail validation
         $failResponse = $this->postJson('/calculate-dob', [
             'name' => 'Suresh Kumar',
-            'birth_date' => '1985-05-15',
         ]);
         $failResponse->assertStatus(422);
-        $failResponse->assertJsonValidationErrors(['phone']);
+        $failResponse->assertJsonValidationErrors(['birth_date']);
 
-        // 2. Successful calculation with mandatory phone & selected language
+        // 2. Successful calculation with optional phone omitted (zero friction)
+        $noPhoneResponse = $this->postJson('/calculate-dob', [
+            'name' => 'Suresh Kumar',
+            'birth_date' => '1985-05-15',
+            'language' => 'en',
+        ]);
+        $noPhoneResponse->assertStatus(200);
+        $noPhoneResponse->assertJson(['success' => true]);
+
+        // 3. Successful calculation with optional phone provided
         $response = $this->postJson('/calculate-dob', [
             'name' => 'Suresh Kumar',
             'birth_date' => '1985-05-15',

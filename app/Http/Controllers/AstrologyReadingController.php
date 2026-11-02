@@ -35,7 +35,7 @@ class AstrologyReadingController extends Controller
             'latitude' => 'nullable|numeric|between:-90,90',
             'longitude' => 'nullable|numeric|between:-180,180',
             'timezone' => 'nullable|string|max:60',
-            'phone' => 'required|string|min:8|max:30',
+            'phone' => 'nullable|string|max:30',
             'language' => 'nullable|string|in:en,ml,ta,hi',
         ]);
 
@@ -75,13 +75,15 @@ class AstrologyReadingController extends Controller
 
         $chartResult = $this->engine->calculate($calcInput);
 
+        $phone = !empty($validated['phone']) ? trim($validated['phone']) : null;
+
         // Persist to astrology_readings table
         $uuid = (string) Str::uuid();
         $reading = AstrologyReading::create([
             'uuid' => $uuid,
             'full_name' => $validated['name'],
             'gender' => $calcInput['gender'],
-            'whatsapp_number' => $validated['phone'],
+            'whatsapp_number' => $phone,
             'language' => $calcInput['language'],
             'dob' => $dobFormatted,
             'birth_time' => $birthTime,
@@ -97,8 +99,8 @@ class AstrologyReadingController extends Controller
         // Also track as Consultation lead for admin visibility
         $consultation = Consultation::create([
             'name' => $validated['name'],
-            'phone' => $validated['phone'],
-            'whatsapp_number' => $validated['phone'],
+            'phone' => $phone ?? 'Online Visitor',
+            'whatsapp_number' => $phone,
             'service_requested' => 'Free DOB Astro Reading',
             'birth_date' => $dobFormatted,
             'calculated_summary' => $chartResult,

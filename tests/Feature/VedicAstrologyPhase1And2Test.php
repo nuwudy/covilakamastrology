@@ -164,7 +164,7 @@ class VedicAstrologyPhase1And2Test extends TestCase
         $response->assertSee('Birth Time');
         $response->assertSee("I don't know my exact birth time", false);
         $response->assertSee('Birth Place (City / Town) *');
-        $response->assertSee('WhatsApp Number *');
+        $response->assertSee('WhatsApp Number');
 
         // Read-only print protection & Kundali chart markup
         $response->assertSee('free-reading-protected');

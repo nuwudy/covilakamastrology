@@ -18,7 +18,7 @@ class ConsultationController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:120',
             'birth_date' => 'required|date',
-            'phone' => 'required|string|min:8|max:30',
+            'phone' => 'nullable|string|max:30',
             'service_requested' => 'nullable|string|max:150',
             'language' => 'nullable|string|in:en,ml,ta,hi',
             'birth_time' => 'nullable|string|max:30',
@@ -59,11 +59,13 @@ class ConsultationController extends Controller
             $notes .= " | Place: {$birthPlace}";
         }
 
+        $userPhone = !empty($validated['phone']) ? trim($validated['phone']) : null;
+
         // Save consultation lead with pending status for Admin Dashboard collection
         $consultation = Consultation::create([
             'name' => $validated['name'],
-            'phone' => $validated['phone'],
-            'whatsapp_number' => $validated['phone'],
+            'phone' => $userPhone ?? 'Online Visitor',
+            'whatsapp_number' => $userPhone,
             'service_requested' => $validated['service_requested'] ?? 'Free DOB Astro Reading',
             'birth_date' => $validated['birth_date'],
             'calculated_summary' => $calculation,
@@ -78,7 +80,7 @@ class ConsultationController extends Controller
                 'uuid' => $readingUuid,
                 'full_name' => $validated['name'],
                 'gender' => $request->input('gender', 'male'),
-                'whatsapp_number' => $validated['phone'],
+                'whatsapp_number' => $userPhone,
                 'language' => $selectedLang,
                 'dob' => $validated['birth_date'],
                 'birth_time' => $birthTime ?: '12:00:00',
