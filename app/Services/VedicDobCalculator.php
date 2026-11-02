@@ -1022,6 +1022,21 @@ class VedicDobCalculator
         $nakshatra = self::calculateNakshatra($carbon, $birthTime);
         $bhavas = self::calculate12Bhavas($lagna, $carbon);
 
+        // 6b. Deep Sidereal Engine (Chitrapaksha Lahiri & Vedanga Jyothisham)
+        $astrologyDeep = [];
+        try {
+            $astroEngine = new \App\Services\Astrology\AstrologyEngineService();
+            $astrologyDeep = $astroEngine->calculate([
+                'name' => $name,
+                'birth_date' => $carbon->format('Y-m-d'),
+                'birth_time' => $birthTime ?: '12:00:00',
+                'is_approximate_time' => empty($birthTime),
+                'birth_place' => $birthPlace ?: 'Ernakulam / Kochi, Kerala, India',
+            ]);
+        } catch (\Throwable $e) {
+            $astrologyDeep = [];
+        }
+
         // 7. Personal Year Forecast Number (Varshaphala)
         $currentYear = (int) date('Y');
         $personalYear = self::reduceToSingleDigit($day + $month + $currentYear);
@@ -1108,6 +1123,24 @@ class VedicDobCalculator
                     'button_text' => 'Unlock Deluxe Kundali (₹500)',
                 ],
             ],
+            'shadvarga' => $astrologyDeep['shadvarga'] ?? [],
+            'chart_grid_d1' => $astrologyDeep['chart_grid_d1'] ?? [],
+            'chart_grid_d9' => $astrologyDeep['chart_grid_d9'] ?? [],
+            'dasha' => $astrologyDeep['dasha'] ?? null,
+            'garbhashishta' => $astrologyDeep['garbhashishta'] ?? null,
+            'active_dasha' => $astrologyDeep['active_dasha'] ?? null,
+            'dignities' => $astrologyDeep['dignities'] ?? [],
+            'ashtakavarga' => $astrologyDeep['ashtakavarga'] ?? [],
+            'yogas' => $astrologyDeep['yogas'] ?? [],
+            'panchanga' => [
+                'tithi' => $astrologyDeep['tithi'] ?? null,
+                'karana' => $astrologyDeep['karana'] ?? null,
+                'nityayoga' => $astrologyDeep['nityayoga'] ?? null,
+                'vara' => $astrologyDeep['vara'] ?? null,
+                'paksha' => $astrologyDeep['paksha'] ?? null,
+            ],
+            'ayanamsa_deg' => $astrologyDeep['ayanamsa_deg'] ?? null,
+            'gulika' => $astrologyDeep['gulika'] ?? null,
         ];
     }
 

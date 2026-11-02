@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\TranslationController as AdminTranslationController;
 use App\Http\Controllers\Admin\VideoController as AdminVideoController;
+use App\Http\Controllers\AstrologyReadingController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\HomeController;
@@ -29,6 +30,7 @@ Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
 Route::get('/videos/{id}', [VideoController::class, 'show'])->name('videos.show');
 
 Route::post('/calculate-dob', [ConsultationController::class, 'calculateDob'])->name('consultations.calculate-dob');
+Route::post('/api/astrology/calculate', [AstrologyReadingController::class, 'calculate'])->name('astrology.calculate');
 Route::patch('/consultations/{id}/service', [ConsultationController::class, 'updateService'])->name('consultations.update-service');
 Route::get('/prediction/{id}', [ConsultationController::class, 'showPrediction'])->name('consultations.prediction');
 Route::post('/book-consultation', [ConsultationController::class, 'store'])->name('consultations.store');

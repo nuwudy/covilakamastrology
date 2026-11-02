@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AstrologyReading;
 use App\Models\Consultation;
 use App\Services\VedicDobCalculator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ConsultationController extends Controller
 {
@@ -68,6 +70,30 @@ class ConsultationController extends Controller
             'status' => 'pending',
             'message' => $notes,
         ]);
+
+        // Also save to astrology_readings table
+        try {
+            $readingUuid = (string) Str::uuid();
+            $reading = AstrologyReading::create([
+                'uuid' => $readingUuid,
+                'full_name' => $validated['name'],
+                'gender' => $request->input('gender', 'male'),
+                'whatsapp_number' => $validated['phone'],
+                'language' => $selectedLang,
+                'dob' => $validated['birth_date'],
+                'birth_time' => $birthTime ?: '12:00:00',
+                'is_approximate_time' => empty($birthTime),
+                'birth_place' => $birthPlace ?: 'Ernakulam / Kochi, Kerala, India',
+                'latitude' => (float)($request->input('latitude', 9.9312)),
+                'longitude' => (float)($request->input('longitude', 76.2673)),
+                'timezone' => $request->input('timezone', 'Asia/Kolkata'),
+                'chart_data' => $calculation,
+                'paid_tier' => 'free',
+            ]);
+            $calculation['reading_uuid'] = $reading->uuid;
+        } catch (\Throwable $e) {
+            // Silently continue if reading already exists or database exception
+        }
 
         $calculation['consultation_id'] = $consultation->id;
         $calculation['report_url'] = route('consultations.prediction', $consultation->id);

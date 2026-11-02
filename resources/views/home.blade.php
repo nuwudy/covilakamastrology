@@ -3,6 +3,20 @@
 @section('title', 'Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology) | Covilakam Astrology')
 
 @section('content')
+<style>
+@media print {
+    .free-reading-protected {
+        display: none !important;
+    }
+}
+.free-reading-protected {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+</style>
+
 <div x-data="{
     // Free DOB Calculator Alpine State
     calcLoading: false,
@@ -15,6 +29,66 @@
     calcBirthPlace: '{{ old('birth_place', '') }}',
     calcPhone: '{{ old('phone', '') }}',
     calcService: '{{ old('service_requested', 'Accurate Predictions') }}',
+    calcGender: 'male',
+    calcBirthHour: '12',
+    calcBirthMinute: '00',
+    calcBirthAmpm: 'PM',
+    isApproximateTime: false,
+    citySearch: '',
+    cityDropdownOpen: false,
+    cities: [
+        { name: 'Ernakulam / Kochi, Kerala', lat: 9.9312, lng: 76.2673, tz: 'Asia/Kolkata' },
+        { name: 'Thiruvananthapuram, Kerala', lat: 8.5241, lng: 76.9366, tz: 'Asia/Kolkata' },
+        { name: 'Kozhikode (Calicut), Kerala', lat: 11.2588, lng: 75.7804, tz: 'Asia/Kolkata' },
+        { name: 'Thrissur, Kerala', lat: 10.5276, lng: 76.2144, tz: 'Asia/Kolkata' },
+        { name: 'Kollam, Kerala', lat: 8.8932, lng: 76.6141, tz: 'Asia/Kolkata' },
+        { name: 'Kannur, Kerala', lat: 11.8745, lng: 75.3704, tz: 'Asia/Kolkata' },
+        { name: 'Alappuzha, Kerala', lat: 9.4981, lng: 76.3388, tz: 'Asia/Kolkata' },
+        { name: 'Kottayam, Kerala', lat: 9.5916, lng: 76.5222, tz: 'Asia/Kolkata' },
+        { name: 'Palakkad, Kerala', lat: 10.7867, lng: 76.6548, tz: 'Asia/Kolkata' },
+        { name: 'Malappuram, Kerala', lat: 11.0732, lng: 76.0740, tz: 'Asia/Kolkata' },
+        { name: 'Kasaragod, Kerala', lat: 12.5102, lng: 74.9852, tz: 'Asia/Kolkata' },
+        { name: 'Pathanamthitta, Kerala', lat: 9.2648, lng: 76.7870, tz: 'Asia/Kolkata' },
+        { name: 'Chennai, Tamil Nadu', lat: 13.0827, lng: 80.2707, tz: 'Asia/Kolkata' },
+        { name: 'Bengaluru, Karnataka', lat: 12.9716, lng: 77.5946, tz: 'Asia/Kolkata' },
+        { name: 'Coimbatore, Tamil Nadu', lat: 11.0168, lng: 76.9558, tz: 'Asia/Kolkata' },
+        { name: 'Madurai, Tamil Nadu', lat: 9.9252, lng: 78.1198, tz: 'Asia/Kolkata' },
+        { name: 'Mumbai, Maharashtra', lat: 19.0760, lng: 72.8777, tz: 'Asia/Kolkata' },
+        { name: 'New Delhi, Delhi', lat: 28.6139, lng: 77.2090, tz: 'Asia/Kolkata' },
+        { name: 'Hyderabad, Telangana', lat: 17.3850, lng: 78.4867, tz: 'Asia/Kolkata' },
+        { name: 'Kolkata, West Bengal', lat: 22.5726, lng: 88.3639, tz: 'Asia/Kolkata' },
+        { name: 'Dubai, UAE', lat: 25.2048, lng: 55.2708, tz: 'Asia/Dubai' },
+        { name: 'Singapore', lat: 1.3521, lng: 103.8198, tz: 'Asia/Singapore' },
+        { name: 'London, UK', lat: 51.5074, lng: -0.1278, tz: 'Europe/London' },
+        { name: 'New York, USA', lat: 40.7128, lng: -74.0060, tz: 'America/New_York' },
+    ],
+    selectedCity: { name: 'Ernakulam / Kochi, Kerala', lat: 9.9312, lng: 76.2673, tz: 'Asia/Kolkata' },
+
+    get filteredCities() {
+        if (!this.citySearch || !this.citySearch.trim()) return this.cities.slice(0, 8);
+        let q = this.citySearch.toLowerCase();
+        return this.cities.filter(c => c.name.toLowerCase().includes(q));
+    },
+
+    selectCity(city) {
+        this.selectedCity = city;
+        this.calcBirthPlace = city.name;
+        this.citySearch = city.name;
+        this.cityDropdownOpen = false;
+    },
+
+    syncBirthTime() {
+        if (this.isApproximateTime) {
+            this.calcBirthTime = '12:00:00';
+            return;
+        }
+        let h = parseInt(this.calcBirthHour || '12', 10);
+        let m = String(this.calcBirthMinute || '00').padStart(2, '0');
+        let ampm = this.calcBirthAmpm || 'PM';
+        if (ampm === 'PM' && h < 12) h += 12;
+        if (ampm === 'AM' && h === 12) h = 0;
+        this.calcBirthTime = String(h).padStart(2, '0') + ':' + m + ':00';
+    },
     calcResult: @json(session('dob_result')),
     hasResult: {{ session('dob_result') ? 'true' : 'false' }},
     readingLang: 'en', // 'en', 'ml', 'ta', 'hi'
@@ -66,7 +140,8 @@
         }
         this.calcLoading = true;
         try {
-            let response = await fetch('{{ route('consultations.calculate-dob') }}', {
+            this.syncBirthTime();
+            let response = await fetch('{{ url('/api/astrology/calculate') }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,10 +150,15 @@
                 },
                 body: JSON.stringify({
                     name: this.calcName,
+                    gender: this.calcGender,
                     birth_date: this.calcDob,
-                    phone: this.calcPhone,
                     birth_time: this.calcBirthTime,
-                    birth_place: this.calcBirthPlace,
+                    is_approximate_time: this.isApproximateTime,
+                    birth_place: this.selectedCity ? this.selectedCity.name : this.calcBirthPlace,
+                    latitude: this.selectedCity ? this.selectedCity.lat : 9.9312,
+                    longitude: this.selectedCity ? this.selectedCity.lng : 76.2673,
+                    timezone: this.selectedCity ? this.selectedCity.tz : 'Asia/Kolkata',
+                    phone: this.calcPhone,
                     language: this.readingLang,
                     service_requested: this.calcService
                 })
@@ -200,11 +280,21 @@
         let solarSign = this.readingLang === 'ml' ? (this.calcResult.solar_sign?.name_ml || '') : (this.calcResult.solar_sign?.name_en || '');
         let gemstone = this.readingLang === 'ml' ? (this.calcResult.gemstone_ml || this.calcResult.gemstone_en) : this.calcResult.gemstone_en;
         let chosenService = this.calcService || 'Accurate Predictions';
+        let lagna = this.calcResult.lagna?.name_ml || this.calcResult.lagna?.name_en || '';
+        let rasi = this.calcResult.moon_sign?.name_ml || this.calcResult.solar_sign?.name_ml || '';
+        let nakshatra = this.calcResult.nakshatra?.name_ml || this.calcResult.nakshatra?.name_en || '';
+        let currentDasha = this.calcResult.active_dasha?.summary_ml || this.calcResult.active_dasha?.summary_en || '';
 
         let msg = `Namaskaram Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology),\n\n` +
-                  `I read my Vedic DOB Astro Reading on Covilakam Astrology:\n` +
+                  `I read my Vedic Kundali & Astro Reading on Covilakam Astrology:\n` +
                   `• Name: ${name}\n` +
                   `• Date of Birth: ${dob}\n` +
+                  (this.calcBirthTime ? `• Birth Time: ${this.calcBirthTime}\n` : '') +
+                  (this.calcBirthPlace ? `• Birth Place: ${this.calcBirthPlace}\n` : '') +
+                  (lagna ? `• Lagna (Ascendant): ${lagna}\n` : '') +
+                  (rasi ? `• Janma Rasi: ${rasi}\n` : '') +
+                  (nakshatra ? `• Janma Nakshatra: ${nakshatra}\n` : '') +
+                  (currentDasha ? `• Current Dasha: ${currentDasha}\n` : '') +
                   `• Birth Number (Mulank): ${mulank} (${rulingPlanet})\n` +
                   `• Destiny Number (Bhagyank): ${bhagyank} (${destinyPlanet})\n` +
                   `• Surya Rasi: ${solarSign}\n` +
@@ -602,6 +692,24 @@
                                            class="w-full px-3.5 py-2.5 rounded-xl bg-[#231538] border border-amber-500/30 text-white placeholder-amber-200/40 focus:outline-none focus:border-amber-400 transition-colors">
                                 </div>
 
+                                <!-- GENDER SELECTION (REQUIRED FOR GEMSTONE HAND/FINGER & STREE JATAKA RULES) -->
+                                <div>
+                                    <label class="block font-semibold text-amber-200 mb-1">Gender * <span class="text-amber-400/80 font-normal text-[10px]">(For Right/Left hand Gemstone wearing rules)</span></label>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <button type="button" @click="calcGender = 'male'"
+                                                :class="calcGender === 'male' ? 'bg-gradient-to-r from-amber-400 to-yellow-400 text-stone-950 font-bold shadow-md' : 'bg-[#231538] text-amber-200/80 hover:text-white border border-amber-500/20'"
+                                                class="py-2.5 px-3 rounded-xl text-xs text-center transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                                            <span>♂ Male (പുരുഷൻ / Right Hand)</span>
+                                        </button>
+                                        <button type="button" @click="calcGender = 'female'"
+                                                :class="calcGender === 'female' ? 'bg-gradient-to-r from-amber-400 to-yellow-400 text-stone-950 font-bold shadow-md' : 'bg-[#231538] text-amber-200/80 hover:text-white border border-amber-500/20'"
+                                                class="py-2.5 px-3 rounded-xl text-xs text-center transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                                            <span>♀ Female (സ്ത്രീ / Left Hand)</span>
+                                        </button>
+                                    </div>
+                                    <input type="hidden" name="gender" :value="calcGender">
+                                </div>
+
                                 <!-- INDIAN FORMAT (DD / MM / YYYY) DOB PICKER WITH EASY YEAR SELECTION -->
                                 <div>
                                     <div class="flex items-center justify-between mb-1.5">
@@ -647,7 +755,7 @@
                                             </select>
                                         </div>
 
-                                        <!-- Year Select (YYYY: 2026 down to 1920 - Super Easy Dropdown) -->
+                                        <!-- Year Select (YYYY: 2026 down to 1920) -->
                                         <div>
                                             <label class="block text-[10px] text-amber-200/60 mb-0.5">Year (YYYY)</label>
                                             <select x-model="calcYear" @change="updateDays" required
@@ -667,33 +775,82 @@
                                     </div>
                                 </div>
 
-                                <!-- OPTIONAL TIME & PLACE OF BIRTH (FOR LAGNA & KUNDALI ANALYSIS) -->
-                                <div class="p-3 rounded-2xl bg-[#1d1030] border border-amber-500/25 space-y-2">
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                <!-- BIRTH TIME WITH HH : MM AM/PM & APPROXIMATE TIME CHECKBOX -->
+                                <div class="p-3 rounded-2xl bg-[#1d1030] border border-amber-500/25 space-y-2.5">
+                                    <div class="flex items-center justify-between">
+                                        <label class="block font-semibold text-amber-200 text-xs">
+                                            Birth Time <span class="text-amber-400 font-normal">(Essential for Lagna &amp; Gulika)</span>
+                                        </label>
+                                        <span class="text-[9px] text-amber-300 font-mono bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">Vedic Lagna</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-3 gap-2" :class="isApproximateTime ? 'opacity-40 pointer-events-none' : ''">
                                         <div>
-                                            <div class="flex items-center justify-between mb-1">
-                                                <label class="block font-semibold text-amber-200 text-[11px]">
-                                                    Birth Time <span class="text-amber-400/80 font-normal">(Optional)</span>
-                                                </label>
-                                                <span class="text-[9px] text-amber-300 font-mono">For Lagna Chart</span>
-                                            </div>
-                                            <input type="time" x-model="calcBirthTime" name="birth_time"
-                                                   class="w-full px-2.5 py-2 rounded-xl bg-[#25153c] border border-amber-500/30 text-white font-mono text-xs focus:outline-none focus:border-amber-400 transition-colors">
+                                            <label class="block text-[10px] text-amber-200/60 mb-0.5">Hour (HH)</label>
+                                            <select x-model="calcBirthHour" @change="syncBirthTime" :disabled="isApproximateTime"
+                                                    class="w-full px-2 py-2 rounded-xl bg-[#25153c] border border-amber-500/30 text-white font-mono text-xs focus:outline-none focus:border-amber-400">
+                                                @for($h = 1; $h <= 12; $h++)
+                                                    @php $hh = sprintf('%02d', $h); @endphp
+                                                    <option value="{{ $hh }}">{{ $hh }}</option>
+                                                @endfor
+                                            </select>
                                         </div>
                                         <div>
-                                            <div class="flex items-center justify-between mb-1">
-                                                <label class="block font-semibold text-amber-200 text-[11px]">
-                                                    Birth Place <span class="text-amber-400/80 font-normal">(Optional)</span>
-                                                </label>
-                                                <span class="text-[9px] text-amber-300 font-mono">City / Town</span>
-                                            </div>
-                                            <input type="text" x-model="calcBirthPlace" name="birth_place" placeholder="e.g., Kozhikode, Chennai"
-                                                   class="w-full px-2.5 py-2 rounded-xl bg-[#25153c] border border-amber-500/30 text-white text-xs placeholder-amber-200/40 focus:outline-none focus:border-amber-400 transition-colors">
+                                            <label class="block text-[10px] text-amber-200/60 mb-0.5">Minute (MM)</label>
+                                            <select x-model="calcBirthMinute" @change="syncBirthTime" :disabled="isApproximateTime"
+                                                    class="w-full px-2 py-2 rounded-xl bg-[#25153c] border border-amber-500/30 text-white font-mono text-xs focus:outline-none focus:border-amber-400">
+                                                @for($m = 0; $m < 60; $m += 5)
+                                                    @php $mm = sprintf('%02d', $m); @endphp
+                                                    <option value="{{ $mm }}">{{ $mm }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] text-amber-200/60 mb-0.5">AM / PM</label>
+                                            <select x-model="calcBirthAmpm" @change="syncBirthTime" :disabled="isApproximateTime"
+                                                    class="w-full px-2 py-2 rounded-xl bg-[#25153c] border border-amber-500/30 text-white font-mono text-xs focus:outline-none focus:border-amber-400">
+                                                <option value="AM">AM</option>
+                                                <option value="PM" selected>PM</option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="text-[10px] text-amber-200/70 flex items-center space-x-1">
-                                        <span>💡</span>
-                                        <span>Optional: Providing birth time allows precise calculation of your <strong>Vedic Lagna (Ascendant)</strong> &amp; <strong>Janma Nakshatra</strong>.</span>
+
+                                    <div class="flex items-center space-x-2 pt-1 border-t border-amber-500/15">
+                                        <input type="checkbox" id="approx-time-check" x-model="isApproximateTime" @change="syncBirthTime"
+                                               class="rounded bg-[#25153c] border-amber-500/40 text-amber-500 focus:ring-0 w-3.5 h-3.5 cursor-pointer">
+                                        <label for="approx-time-check" class="text-[11px] text-amber-200/90 cursor-pointer">
+                                            I don't know my exact birth time <span class="text-amber-400/80">(Uses Noon Chandra-Kundali)</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- BIRTH PLACE WITH INSTANT CITY SUGGESTIONS -->
+                                <div class="p-3 rounded-2xl bg-[#1d1030] border border-amber-500/25 space-y-2 relative" x-data="{ cityOpen: false }">
+                                    <div class="flex items-center justify-between">
+                                        <label class="block font-semibold text-amber-200 text-xs">
+                                            Birth Place (City / Town) *
+                                        </label>
+                                        <span class="text-[9px] text-amber-300 font-mono">Geo Coordinates</span>
+                                    </div>
+                                    <div class="relative">
+                                        <input type="text" x-model="citySearch" @focus="cityOpen = true" @input="cityOpen = true"
+                                               name="birth_place" placeholder="Search city (e.g. Ernakulam, Kozhikode, Chennai...)"
+                                               class="w-full px-3 py-2.5 rounded-xl bg-[#25153c] border border-amber-500/30 text-white text-xs placeholder-amber-200/40 focus:outline-none focus:border-amber-400 transition-colors">
+                                        
+                                        <div x-show="cityOpen" @click.away="cityOpen = false" x-cloak
+                                             class="absolute z-30 left-0 right-0 mt-1 max-h-48 overflow-y-auto rounded-xl bg-[#1e1130] border border-amber-500/40 shadow-2xl p-1 text-xs">
+                                            <template x-for="c in filteredCities" :key="c.name">
+                                                <button type="button" @click="selectCity(c); cityOpen = false"
+                                                        class="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-amber-500/20 text-amber-100 flex items-center justify-between transition-colors cursor-pointer">
+                                                    <span class="font-medium" x-text="c.name"></span>
+                                                    <span class="text-[10px] text-amber-400/70 font-mono" x-text="c.lat.toFixed(2) + '°N, ' + c.lng.toFixed(2) + '°E'"></span>
+                                                </button>
+                                            </template>
+                                        </div>
+                                    </div>
+                                    <div class="text-[10px] text-amber-200/70 flex items-center justify-between">
+                                        <span>Selected: <strong class="text-amber-300" x-text="selectedCity?.name || 'Ernakulam / Kochi'"></strong></span>
+                                        <span class="font-mono text-[9px] text-amber-400/80" x-text="(selectedCity?.lat || 9.93) + '°N, ' + (selectedCity?.lng || 76.26) + '°E'"></span>
                                     </div>
                                 </div>
 
@@ -733,7 +890,7 @@
                         </div>
 
                         <!-- RESULT TEASER VIEW WITH 4-LANGUAGE SWITCHER (English, Malayalam, Tamil, Hindi) -->
-                        <div x-show="hasResult" x-cloak id="dob-result-card" class="space-y-4">
+                        <div x-show="hasResult" x-cloak id="dob-result-card" class="space-y-4 free-reading-protected select-none" @contextmenu.prevent>
                             
                             <!-- Header Bar with Name and Indian Formatted DOB -->
                             <div class="bg-gradient-to-r from-amber-950/60 to-purple-950/60 border border-amber-500/30 p-4 rounded-2xl">
@@ -805,7 +962,7 @@
                                     <p class="font-semibold text-white text-xs mt-0.5">
                                         <span class="text-amber-300 font-bold"
                                               x-text="readingLang === 'ta' ? (calcResult?.solar_sign?.name_ta || calcResult?.solar_sign?.name_ml) : (readingLang === 'hi' ? (calcResult?.solar_sign?.name_hi || calcResult?.solar_sign?.name_ml) : (readingLang === 'ml' ? calcResult?.solar_sign?.name_ml : calcResult?.solar_sign?.name_en))"></span>
-                                        <span class="text-amber-200/70 ml-1" x-text="'(' + calcResult?.solar_sign?.name_ml + ')'"></span>
+                                        <span class="text-amber-200/70 ml-1" x-text="calcResult?.solar_sign?.name_ml ? '(' + calcResult.solar_sign.name_ml + ')' : ''"></span>
                                     </p>
                                 </div>
 
@@ -850,6 +1007,154 @@
                                         </div>
                                     </div>
                                 </template>
+                            </div>
+
+                            <!-- SOUTH INDIAN KUNDALI & SIDEREAL ENGINE SECTION -->
+                            <div class="p-3 rounded-2xl bg-[#1c0f2f] border border-amber-500/30 space-y-3" x-data="{ chartTab: 'rasi' }">
+                                <div class="flex items-center justify-between border-b border-amber-500/20 pb-2">
+                                    <h4 class="font-serif font-bold text-amber-300 text-xs sm:text-sm flex items-center gap-1.5">
+                                        <span>☸️</span>
+                                        <span>South Indian Kundali &amp; Chitrapaksha Ayanamsa</span>
+                                    </h4>
+                                    <span class="text-[9px] font-mono text-amber-400 bg-amber-500/15 px-2 py-0.5 rounded border border-amber-500/30"
+                                          x-text="'Ayanamsa: ' + (calcResult?.ayanamsa_deg || '23.85') + '°'"></span>
+                                </div>
+
+                                <div class="grid grid-cols-4 gap-1 p-1 bg-[#130822] rounded-xl border border-amber-500/20 text-[10px]">
+                                    <button type="button" @click="chartTab = 'rasi'"
+                                            :class="chartTab === 'rasi' ? 'bg-amber-400 text-stone-950 font-bold shadow' : 'text-amber-200/70 hover:text-white'"
+                                            class="py-1 px-1 rounded-lg text-center transition-all cursor-pointer">
+                                        Rasi (D1)
+                                    </button>
+                                    <button type="button" @click="chartTab = 'navamsha'"
+                                            :class="chartTab === 'navamsha' ? 'bg-amber-400 text-stone-950 font-bold shadow' : 'text-amber-200/70 hover:text-white'"
+                                            class="py-1 px-1 rounded-lg text-center transition-all cursor-pointer">
+                                        Navamsha (D9)
+                                    </button>
+                                    <button type="button" @click="chartTab = 'dasha'"
+                                            :class="chartTab === 'dasha' ? 'bg-amber-400 text-stone-950 font-bold shadow' : 'text-amber-200/70 hover:text-white'"
+                                            class="py-1 px-1 rounded-lg text-center transition-all cursor-pointer">
+                                        Dasha
+                                    </button>
+                                    <button type="button" @click="chartTab = 'panchanga'"
+                                            :class="chartTab === 'panchanga' ? 'bg-amber-400 text-stone-950 font-bold shadow' : 'text-amber-200/70 hover:text-white'"
+                                            class="py-1 px-1 rounded-lg text-center transition-all cursor-pointer">
+                                        Panchanga
+                                    </button>
+                                </div>
+
+                                <!-- Rasi D1 Chart Grid -->
+                                <div x-show="chartTab === 'rasi'" x-cloak class="pt-1">
+                                    <div class="grid grid-cols-4 grid-rows-4 gap-1 aspect-square max-w-[340px] sm:max-w-[400px] mx-auto bg-stone-950 p-1.5 rounded-lg border border-amber-600/40 text-[9px] sm:text-[10px]">
+                                        <template x-for="(cell, cIdx) in [
+                                            {r:12, name:'മീനം / Pisces'}, {r:1, name:'മേടം / Aries'}, {r:2, name:'ഇടവം / Taurus'}, {r:3, name:'മിഥുനം / Gemini'},
+                                            {r:11, name:'കുംഭം / Aquarius'}, {center:true}, {center_skip:true}, {r:4, name:'കർക്കി / Cancer'},
+                                            {r:10, name:'മകരം / Capricorn'}, {center_bottom:true}, {center_bottom_skip:true}, {r:5, name:'ചിങ്ങം / Leo'},
+                                            {r:9, name:'ധനു / Sagittarius'}, {r:8, name:'വൃശ്ചികം / Scorpio'}, {r:7, name:'തുലാം / Libra'}, {r:6, name:'കന്നി / Virgo'}
+                                        ]" :key="cIdx">
+                                            <template x-if="cell.center">
+                                                <div class="col-span-2 row-span-2 bg-gradient-to-br from-amber-950 to-stone-950 border border-amber-500/40 rounded flex flex-col items-center justify-center p-1 text-center shadow-inner">
+                                                    <span class="text-amber-300 font-serif font-bold text-[11px] sm:text-xs">രാശി ചക്രം (D1)</span>
+                                                    <span class="text-[8px] sm:text-[9px] text-amber-200/70 mt-0.5" x-text="calcResult?.name || 'Vedic Kundali'"></span>
+                                                    <span class="text-[8px] text-amber-400/80 font-mono mt-0.5" x-text="'Lagna: ' + (calcResult?.lagna?.name_ml || calcResult?.lagna?.name_en || '')"></span>
+                                                </div>
+                                            </template>
+                                            <template x-if="!cell.center && !cell.center_skip && !cell.center_bottom && !cell.center_bottom_skip">
+                                                <div class="bg-stone-900 border rounded-sm p-1 flex flex-col justify-between overflow-hidden min-h-[50px] sm:min-h-[70px]"
+                                                     :class="(calcResult?.lagna?.rasi_index === cell.r || calcResult?.lagna?.rasi === cell.r) ? 'border-amber-400 bg-amber-500/10 ring-1 ring-amber-400' : 'border-amber-800/30'">
+                                                    <div class="flex items-center justify-between text-[8px] sm:text-[9px] text-amber-300/80 font-serif border-b border-amber-900/30 pb-0.5">
+                                                        <span class="truncate font-semibold" x-text="cell.name"></span>
+                                                        <span x-show="calcResult?.lagna?.rasi_index === cell.r || calcResult?.lagna?.rasi === cell.r"
+                                                              class="bg-amber-400 text-stone-950 text-[7px] font-bold px-0.5 rounded leading-none">ലഗ്</span>
+                                                    </div>
+                                                    <div class="flex-1 flex flex-wrap content-start items-center gap-0.5 pt-0.5">
+                                                        <template x-for="pl in (calcResult?.chart_grid_d1?.[cell.r] || [])" :key="pl.key">
+                                                            <span class="px-1 py-0.2 rounded text-[7.5px] sm:text-[8.5px] font-mono leading-tight"
+                                                                  :class="pl.key === 'As' ? 'bg-amber-400 text-stone-950 font-bold' : (pl.key === 'Md' ? 'bg-purple-900 text-purple-200' : 'bg-stone-800 text-amber-200 border border-amber-700/40')"
+                                                                  x-text="pl.label + (pl.deg ? ' ' + pl.deg + '°' : '')"></span>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </template>
+                                    </div>
+                                </div>
+
+                                <!-- Navamsha D9 Chart Grid -->
+                                <div x-show="chartTab === 'navamsha'" x-cloak class="pt-1">
+                                    <div class="grid grid-cols-4 grid-rows-4 gap-1 aspect-square max-w-[340px] sm:max-w-[400px] mx-auto bg-stone-950 p-1.5 rounded-lg border border-amber-600/40 text-[9px] sm:text-[10px]">
+                                        <template x-for="(cell, cIdx) in [
+                                            {r:12, name:'മീനം / Pisces'}, {r:1, name:'മേടം / Aries'}, {r:2, name:'ഇടവം / Taurus'}, {r:3, name:'മിഥുനം / Gemini'},
+                                            {r:11, name:'കുംഭം / Aquarius'}, {center:true}, {center_skip:true}, {r:4, name:'കർക്കി / Cancer'},
+                                            {r:10, name:'മകരം / Capricorn'}, {center_bottom:true}, {center_bottom_skip:true}, {r:5, name:'ചിങ്ങം / Leo'},
+                                            {r:9, name:'ധനു / Sagittarius'}, {r:8, name:'വൃശ്ചികം / Scorpio'}, {r:7, name:'തുലാം / Libra'}, {r:6, name:'കന്നി / Virgo'}
+                                        ]" :key="cIdx">
+                                            <template x-if="cell.center">
+                                                <div class="col-span-2 row-span-2 bg-gradient-to-br from-amber-950 to-stone-950 border border-amber-500/40 rounded flex flex-col items-center justify-center p-1 text-center shadow-inner">
+                                                    <span class="text-amber-300 font-serif font-bold text-[11px] sm:text-xs">നവാംശ ചക്രം (D9)</span>
+                                                    <span class="text-[8px] sm:text-[9px] text-amber-200/70 mt-0.5">Shadvarga Division 9</span>
+                                                    <span class="text-[8px] text-amber-400/80 font-mono mt-0.5">Soul &amp; Marital Destiny</span>
+                                                </div>
+                                            </template>
+                                            <template x-if="!cell.center && !cell.center_skip && !cell.center_bottom && !cell.center_bottom_skip">
+                                                <div class="bg-stone-900 border border-amber-800/30 rounded-sm p-1 flex flex-col justify-between overflow-hidden min-h-[50px] sm:min-h-[70px]">
+                                                    <div class="text-[8px] sm:text-[9px] text-amber-300/80 font-serif border-b border-amber-900/30 pb-0.5">
+                                                        <span class="truncate font-semibold" x-text="cell.name"></span>
+                                                    </div>
+                                                    <div class="flex-1 flex flex-wrap content-start items-center gap-0.5 pt-0.5">
+                                                        <template x-for="pl in (calcResult?.chart_grid_d9?.[cell.r] || [])" :key="pl.key">
+                                                            <span class="px-1 py-0.2 rounded text-[7.5px] sm:text-[8.5px] font-mono leading-tight"
+                                                                  :class="pl.key === 'As' ? 'bg-amber-400 text-stone-950 font-bold' : (pl.key === 'Md' ? 'bg-purple-900 text-purple-200' : 'bg-stone-800 text-amber-200 border border-amber-700/40')"
+                                                                  x-text="pl.label"></span>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </template>
+                                    </div>
+                                </div>
+
+                                <!-- Vimshottari Dasha Tab -->
+                                <div x-show="chartTab === 'dasha'" x-cloak class="space-y-2 text-xs">
+                                    <div class="p-2.5 rounded-xl bg-amber-950/40 border border-amber-500/30">
+                                        <span class="text-[10px] uppercase font-bold text-amber-300 block">Birth Balance (Garbhashishta Dasha):</span>
+                                        <p class="text-white text-xs font-semibold mt-0.5"
+                                           x-text="calcResult?.garbhashishta?.[('summary_' + readingLang)] || calcResult?.garbhashishta?.summary_en || calcResult?.garbhashishta?.summary_ml"></p>
+                                    </div>
+                                    <div class="p-2.5 rounded-xl bg-[#231538] border border-amber-500/30">
+                                        <span class="text-[10px] uppercase font-bold text-amber-300 block">Current Active Dasha &amp; Apahara:</span>
+                                        <div class="flex items-center justify-between mt-1">
+                                            <span class="text-amber-200 font-bold text-xs"
+                                                  x-text="calcResult?.active_dasha?.[('summary_' + readingLang)] || calcResult?.active_dasha?.summary_en"></span>
+                                            <span class="text-[10px] text-amber-400 font-mono"
+                                                  x-text="calcResult?.active_dasha?.start_date + ' to ' + calcResult?.active_dasha?.end_date"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Panchanga Tab -->
+                                <div x-show="chartTab === 'panchanga'" x-cloak class="grid grid-cols-2 gap-2 text-xs">
+                                    <div class="p-2 rounded-xl bg-[#231538] border border-amber-500/20">
+                                        <span class="text-[10px] text-amber-300/80 block uppercase">Tithi</span>
+                                        <span class="text-amber-200 font-semibold block text-xs mt-0.5"
+                                              x-text="calcResult?.tithi?.name_ml || calcResult?.tithi?.name_en || 'Shukla Paksha'"></span>
+                                    </div>
+                                    <div class="p-2 rounded-xl bg-[#231538] border border-amber-500/20">
+                                        <span class="text-[10px] text-amber-300/80 block uppercase">Nityayoga</span>
+                                        <span class="text-amber-200 font-semibold block text-xs mt-0.5"
+                                              x-text="calcResult?.nityayoga?.name_ml || calcResult?.nityayoga?.name_en || 'Siddha'"></span>
+                                    </div>
+                                    <div class="p-2 rounded-xl bg-[#231538] border border-amber-500/20">
+                                        <span class="text-[10px] text-amber-300/80 block uppercase">Karana</span>
+                                        <span class="text-amber-200 font-semibold block text-xs mt-0.5"
+                                              x-text="calcResult?.karana?.name_ml || calcResult?.karana?.name_en || 'Bava'"></span>
+                                    </div>
+                                    <div class="p-2 rounded-xl bg-[#231538] border border-amber-500/20">
+                                        <span class="text-[10px] text-amber-300/80 block uppercase">Ashtakavarga SAV</span>
+                                        <span class="text-amber-200 font-semibold block text-xs mt-0.5"
+                                              x-text="(calcResult?.ashtakavarga?.sav_total || 337) + ' Bindus (Total)'"></span>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- 3-TIER VEDIC REPORT UPGRADE MATRIX -->
@@ -1044,7 +1349,7 @@
                                             <span class="font-semibold text-white ml-1"
                                                   x-text="(readingLang === 'ta' ? (calcResult?.gemstone_ta || calcResult?.gemstone_en) : (readingLang === 'hi' ? (calcResult?.gemstone_hi || calcResult?.gemstone_en) : (readingLang === 'ml' ? calcResult?.gemstone_ml : calcResult?.gemstone_en)))"></span>
                                             <p class="text-[10px] text-amber-200/70 mt-0.5"
-                                               x-text="'Wearing Rule: ' + (calcResult?.wearing_rule?.[readingLang] || calcResult?.wearing_rule?.en || calcResult?.wearing_rule)"></p>
+                                               x-text="'Wearing Rule: ' + (calcResult?.wearing_rule?.[readingLang] || calcResult?.wearing_rule?.en || (typeof calcResult?.wearing_rule === 'string' ? calcResult?.wearing_rule : '') || 'Wear on prescribed finger during the planet\'s auspicious morning Hora.')"></p>
                                         </div>
 
                                         <!-- Doctor Remedy Guidance -->
