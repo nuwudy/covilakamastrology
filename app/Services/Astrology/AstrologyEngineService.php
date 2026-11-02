@@ -11,19 +11,22 @@ class AstrologyEngineService
     protected VargaAndBhavaService $vargas;
     protected DashaService $dashas;
     protected AshtakavargaAndDignityService $dignities;
+    protected VedangaPredictionService $predictions;
 
     public function __construct(
         ?ChitrapakshaEphemerisService $ephemeris = null,
         ?PanchangaService $panchanga = null,
         ?VargaAndBhavaService $vargas = null,
         ?DashaService $dashas = null,
-        ?AshtakavargaAndDignityService $dignities = null
+        ?AshtakavargaAndDignityService $dignities = null,
+        ?VedangaPredictionService $predictions = null
     ) {
         $this->ephemeris = $ephemeris ?? new ChitrapakshaEphemerisService();
         $this->panchanga = $panchanga ?? new PanchangaService();
         $this->vargas = $vargas ?? new VargaAndBhavaService();
         $this->dashas = $dashas ?? new DashaService();
         $this->dignities = $dignities ?? new AshtakavargaAndDignityService();
+        $this->predictions = $predictions ?? new VedangaPredictionService($this->ephemeris);
     }
 
     /**
@@ -135,6 +138,17 @@ class AstrologyEngineService
             ];
         }
 
+        // 6. Deep Vedanga Jyothisham Predictions & Transits
+        $vedangaPredictions = $this->predictions->evaluateChart([
+            'gender' => $gender,
+            'lagna' => $lagna,
+            'gulika' => $gulika,
+            'planets' => $planets,
+            'planet_bhavas' => $bhavaData['planet_bhavas'],
+            'dignities' => $planetDignities,
+            'moon_sign' => $panchangaData['chandra_sign'],
+        ], $lang);
+
         // WhatsApp consultation URL pre-filled with client's exact coordinates
         $waMsg = "Namaskaram Dr. E. K. Raja Varma. I have calculated my Vedic Jathakam on Covilakam Astrology:\n"
             . "- Name: {$fullName}\n"
@@ -194,6 +208,7 @@ class AstrologyEngineService
             'dignities' => $planetDignities,
             'ashtakavarga' => $ashtakavarga,
             'yogas' => $yogas,
+            'vedanga_predictions' => $vedangaPredictions,
 
             // Gemstone recommendation
             'gemstone' => $gemstoneData,

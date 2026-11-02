@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\TranslationController as AdminTranslationController;
 use App\Http\Controllers\Admin\VideoController as AdminVideoController;
+use App\Http\Controllers\AstrologyPaymentController;
 use App\Http\Controllers\AstrologyReadingController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ConsultationController;
@@ -31,6 +32,9 @@ Route::get('/videos/{id}', [VideoController::class, 'show'])->name('videos.show'
 
 Route::post('/calculate-dob', [ConsultationController::class, 'calculateDob'])->name('consultations.calculate-dob');
 Route::post('/api/astrology/calculate', [AstrologyReadingController::class, 'calculate'])->name('astrology.calculate');
+Route::get('/astrology/readings/{uuid}/download-pdf', [AstrologyPaymentController::class, 'downloadPdf'])->name('astrology.reading.download-pdf');
+Route::post('/api/astrology/readings/{uuid}/create-order', [AstrologyPaymentController::class, 'createOrder'])->name('astrology.reading.create-order');
+Route::post('/api/astrology/readings/{uuid}/verify-payment', [AstrologyPaymentController::class, 'verifyPayment'])->name('astrology.reading.verify-payment');
 Route::patch('/consultations/{id}/service', [ConsultationController::class, 'updateService'])->name('consultations.update-service');
 Route::get('/prediction/{id}', [ConsultationController::class, 'showPrediction'])->name('consultations.prediction');
 Route::post('/book-consultation', [ConsultationController::class, 'store'])->name('consultations.store');

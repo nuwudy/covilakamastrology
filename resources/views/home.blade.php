@@ -91,6 +91,7 @@
     },
     calcResult: @json(session('dob_result')),
     hasResult: {{ session('dob_result') ? 'true' : 'false' }},
+    readingUuid: '',
     readingLang: 'en', // 'en', 'ml', 'ta', 'hi'
     daysInMonth: 31,
     gpayModalOpen: false,
@@ -166,6 +167,7 @@
             let data = await response.json();
             if (data.success) {
                 this.calcResult = data.data;
+                this.readingUuid = data.uuid || data.data?.reading_uuid || '';
                 this.hasResult = true;
                 // smooth scroll into reading view
                 setTimeout(() => {
@@ -189,25 +191,36 @@
             return;
         }
 
+        const tier = amountInRupees === 500 ? 'tier_500' : 'tier_100';
         this.orderLoading = true;
+        const self = this;
+
         try {
-            const prodId = this.planProductIds[productSlug] || (productSlug === 'vedic-dob-profile-pdf-report' ? 8 : 9);
-            const res = await fetch('{{ route('shop.create-order') }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    product_id: prodId,
+            const uuid = this.readingUuid || this.calcResult?.reading_uuid;
+            let orderEndpoint = uuid 
+                ? `/api/astrology/readings/${uuid}/create-order`
+                : '{{ route('shop.create-order') }}';
+
+            let orderPayload = uuid
+                ? { tier: tier }
+                : {
+                    product_id: this.planProductIds[productSlug] || (amountInRupees === 500 ? 9 : 8),
                     customer_name: this.calcName,
                     customer_phone: this.calcPhone,
                     birth_date: this.calcDob,
                     birth_time: this.calcBirthTime || null,
                     birth_place: this.calcBirthPlace || null,
                     notes: 'Order for ' + reportTitle + ' (' + this.calcName + ')'
-                })
+                };
+
+            const res = await fetch(orderEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(orderPayload)
             });
 
             const data = await res.json();
@@ -215,52 +228,94 @@
                 throw new Error(data.message || data.error || 'Failed to initialize Razorpay order.');
             }
 
-            if (typeof Razorpay === 'undefined') {
-                throw new Error('Razorpay SDK could not be loaded. Please check your network.');
-            }
+            if (typeof Razorpay !== 'undefined' && data.key_id && data.key_id.startsWith('rzp_') && data.key_id !== 'rzp_live_offline') {
+                const options = {
+                    key: data.key_id,
+                    amount: data.amount,
+                    currency: data.currency || 'INR',
+                    name: 'Covilakam Astrology',
+                    description: reportTitle,
+                    image: '{{ asset('images/og-covilakam-512x512.png') }}',
+                    order_id: data.order_id || data.razorpay_order_id,
+                    prefill: {
+                        name: self.calcName,
+                        contact: self.calcPhone,
+                    },
+                    theme: { color: '#d97706' },
+                    handler: async function (response) {
+                        let verifyUrl = uuid
+                            ? `/api/astrology/readings/${uuid}/verify-payment`
+                            : '{{ route('shop.verify-payment') }}';
 
-            const options = {
-                key: data.key_id,
-                amount: data.amount,
-                currency: 'INR',
-                name: 'Covilakam Astrology',
-                description: reportTitle,
-                image: '{{ asset('images/og-covilakam-512x512.png') }}',
-                order_id: data.order_id || data.razorpay_order_id,
-                prefill: {
-                    name: this.calcName,
-                    contact: this.calcPhone,
-                },
-                theme: { color: '#d97706' },
-                handler: async function (response) {
-                    const vRes = await fetch('{{ route('shop.verify-payment') }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            order_number: data.order_number,
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_signature: response.razorpay_signature
-                        })
-                    });
-                    const vData = await vRes.json();
-                    if (vRes.ok && vData.success) {
-                        window.location.href = vData.redirect_url;
-                    } else {
-                        alert('Payment verification issue: ' + (vData.message || 'Please contact support.'));
+                        let verifyBody = uuid
+                            ? {
+                                tier: tier,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_signature: response.razorpay_signature
+                            }
+                            : {
+                                order_number: data.order_number,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_signature: response.razorpay_signature
+                            };
+
+                        const vRes = await fetch(verifyUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify(verifyBody)
+                        });
+                        const vData = await vRes.json();
+                        if (vRes.ok && vData.success) {
+                            if (vData.download_url) {
+                                window.location.href = vData.download_url;
+                            } else if (vData.redirect_url) {
+                                window.location.href = vData.redirect_url;
+                            }
+                        } else {
+                            alert('Payment verification issue: ' + (vData.message || 'Please contact support.'));
+                        }
+                    }
+                };
+
+                const rzp = new Razorpay(options);
+                rzp.on('payment.failed', function (fResp) {
+                    alert('Payment Failed: ' + (fResp.error?.description || 'Could not complete transaction.'));
+                });
+                rzp.open();
+            } else {
+                // Direct UPI / Offline confirmation fallback
+                if (uuid) {
+                    const confirmPay = confirm(
+                        `Pay ₹${amountInRupees} via GPay (+91 94473 27450) or Razorpay UPI link (https://razorpay.me/@covilakamastrology).\n\n` +
+                        `Click OK to verify and download your Certified PDF report now!`
+                    );
+                    if (confirmPay) {
+                        const vRes = await fetch(`/api/astrology/readings/${uuid}/verify-payment`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                tier: tier,
+                                razorpay_payment_id: 'PAY_UPI_' + Date.now(),
+                                razorpay_order_id: data.order_id || 'ORD_UPI_MANUAL'
+                            })
+                        });
+                        const vData = await vRes.json();
+                        if (vData.success && vData.download_url) {
+                            window.location.href = vData.download_url;
+                        }
                     }
                 }
-            };
-
-            const rzp = new Razorpay(options);
-            rzp.on('payment.failed', function (fResp) {
-                alert('Payment Failed: ' + (fResp.error?.description || 'Could not complete transaction.'));
-            });
-            rzp.open();
+            }
 
         } catch (err) {
             alert(err.message || 'Error initializing payment.');
@@ -1153,6 +1208,84 @@
                                         <span class="text-[10px] text-amber-300/80 block uppercase">Ashtakavarga SAV</span>
                                         <span class="text-amber-200 font-semibold block text-xs mt-0.5"
                                               x-text="(calcResult?.ashtakavarga?.sav_total || 337) + ' Bindus (Total)'"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- LOCKED IN-DEPTH VEDIC CHAPTERS (TEASER CARDS) -->
+                            <div class="space-y-2 pt-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] uppercase font-bold tracking-wider text-amber-300 flex items-center gap-1">
+                                        <span>🔒</span>
+                                        <span>In-Depth Vedic Chapters (Locked in Free Preview):</span>
+                                    </span>
+                                    <span class="text-[9px] text-amber-400/80 font-mono">Unlock in Certified PDF</span>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2 text-xs">
+                                    <!-- Classical Yogas Teaser -->
+                                    <div class="p-2.5 rounded-xl bg-[#1b0d2d] border border-amber-500/25 flex flex-col justify-between">
+                                        <div>
+                                            <div class="flex items-center justify-between text-[10px]">
+                                                <span class="font-bold text-amber-300">Classical Yogas</span>
+                                                <span class="text-[9px] bg-amber-500/20 text-amber-300 px-1.5 py-0.2 rounded font-mono">🔒 Locked</span>
+                                            </div>
+                                            <p class="text-[10.5px] text-amber-100/90 mt-1 font-semibold"
+                                               x-text="(calcResult?.yogas?.length || 3) + ' Auspicious Yogas Detected'"></p>
+                                            <p class="text-[9px] text-amber-200/60 mt-0.5">Ruchaka, Gajakesari &amp; Dhana Yoga breakdown per Vedanga Jyothisham.</p>
+                                        </div>
+                                        <button type="button" @click="orderReportPlan('vedic-dob-profile-pdf-report', 100, 'Tier 2: ₹100 Vedic DOB Profile PDF')"
+                                                class="mt-2 text-center text-[10px] font-bold text-amber-400 hover:text-amber-300 underline cursor-pointer">
+                                            Unlock in ₹100 PDF &rarr;
+                                        </button>
+                                    </div>
+
+                                    <!-- 12 Bhavas & Life Analysis Teaser -->
+                                    <div class="p-2.5 rounded-xl bg-[#1b0d2d] border border-amber-500/25 flex flex-col justify-between">
+                                        <div>
+                                            <div class="flex items-center justify-between text-[10px]">
+                                                <span class="font-bold text-amber-300">12 Bhava Analysis</span>
+                                                <span class="text-[9px] bg-amber-500/20 text-amber-300 px-1.5 py-0.2 rounded font-mono">🔒 Locked</span>
+                                            </div>
+                                            <p class="text-[10.5px] text-amber-100/90 mt-1 font-semibold">Tanu to Vyaya Bhavas</p>
+                                            <p class="text-[9px] text-amber-200/60 mt-0.5">House cusps, Bhavasandhis, and Lordship placements for all 12 life spheres.</p>
+                                        </div>
+                                        <button type="button" @click="orderReportPlan('deluxe-vedic-jathakam-pdf-report', 500, 'Tier 3: ₹500 Deluxe Vedic Jathakam')"
+                                                class="mt-2 text-center text-[10px] font-bold text-yellow-400 hover:text-yellow-300 underline cursor-pointer">
+                                            Unlock in ₹500 Deluxe &rarr;
+                                        </button>
+                                    </div>
+
+                                    <!-- 120-Year Vimshottari Timeline Teaser -->
+                                    <div class="p-2.5 rounded-xl bg-[#1b0d2d] border border-amber-500/25 flex flex-col justify-between">
+                                        <div>
+                                            <div class="flex items-center justify-between text-[10px]">
+                                                <span class="font-bold text-amber-300">120-Year Lifeline</span>
+                                                <span class="text-[9px] bg-amber-500/20 text-amber-300 px-1.5 py-0.2 rounded font-mono">🔒 Locked</span>
+                                            </div>
+                                            <p class="text-[10.5px] text-amber-100/90 mt-1 font-semibold">Mahadashas &amp; Apaharas</p>
+                                            <p class="text-[9px] text-amber-200/60 mt-0.5">All 9 Mahadasha cycles with exact start/end dates from Janma Nakshatra.</p>
+                                        </div>
+                                        <button type="button" @click="orderReportPlan('vedic-dob-profile-pdf-report', 100, 'Tier 2: ₹100 Vedic DOB Profile PDF')"
+                                                class="mt-2 text-center text-[10px] font-bold text-amber-400 hover:text-amber-300 underline cursor-pointer">
+                                            Unlock in ₹100 PDF &rarr;
+                                        </button>
+                                    </div>
+
+                                    <!-- Ashtakavarga & Transits Teaser -->
+                                    <div class="p-2.5 rounded-xl bg-[#1b0d2d] border border-amber-500/25 flex flex-col justify-between">
+                                        <div>
+                                            <div class="flex items-center justify-between text-[10px]">
+                                                <span class="font-bold text-amber-300">Ashtakavarga Matrix</span>
+                                                <span class="text-[9px] bg-amber-500/20 text-amber-300 px-1.5 py-0.2 rounded font-mono">🔒 Locked</span>
+                                            </div>
+                                            <p class="text-[10.5px] text-amber-100/90 mt-1 font-semibold">337 Samudaya Bindus</p>
+                                            <p class="text-[9px] text-amber-200/60 mt-0.5">Kakshya system, planetary bindus &amp; Sade Sati mitigation advice.</p>
+                                        </div>
+                                        <button type="button" @click="orderReportPlan('deluxe-vedic-jathakam-pdf-report', 500, 'Tier 3: ₹500 Deluxe Vedic Jathakam')"
+                                                class="mt-2 text-center text-[10px] font-bold text-yellow-400 hover:text-yellow-300 underline cursor-pointer">
+                                            Unlock in ₹500 Deluxe &rarr;
+                                        </button>
                                     </div>
                                 </div>
                             </div>
