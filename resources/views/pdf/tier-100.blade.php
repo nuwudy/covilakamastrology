@@ -19,7 +19,7 @@
             margin-right: 15mm;
         }
         body {
-            font-family: 'dejavusans', sans-serif;
+            font-family: 'nirmala', 'dejavusans', sans-serif;
             font-size: 10pt;
             color: #1a1a1a;
             line-height: 1.5;
@@ -194,15 +194,15 @@
 
     <!-- ================= PAGE 1: COVER & PANCHANGA ================= -->
     <div class="cover-box">
-        <h1 class="gold-title">COVILAKAM ASTROLOGY</h1>
-        <div class="gold-subtitle">CERTIFIED VEDIC BIRTH PROFILE &amp; HOROSCOPE PORTFOLIO</div>
+        <h1 class="gold-title">{{ $targetLang === 'ml' ? 'കോവിലകം ജ്യോതിഷം' : ($targetLang === 'ta' ? 'கோவிலகம் ஜோதிடம்' : ($targetLang === 'hi' ? 'कोविलकम ज्योतिष' : 'COVILAKAM ASTROLOGY')) }}</h1>
+        <div class="gold-subtitle">{{ $targetLang === 'ml' ? 'സാക്ഷ്യപ്പെടുത്തിയ വേദാംഗ ജാതക കുറിപ്പും വിശകലനവും' : ($targetLang === 'ta' ? 'சான்றளிக்கப்பட்ட வேத ஜாதக விவரம்' : ($targetLang === 'hi' ? 'प्रमाणित वैदिक जन्म कुंडली विवरण' : 'CERTIFIED VEDIC BIRTH PROFILE & HOROSCOPE PORTFOLIO')) }}</div>
         <p style="margin-top: 8px; font-size: 9pt; color: #555;">
-            Authored &amp; Certified by <strong>Dr. E. K. Raja Varma</strong> (Vidya Vachaspathi in Vedic Astrology, Gold Medalist &amp; Ph.D.)<br>
+            {{ $targetLang === 'ml' ? 'ആചാര്യ സാക്ഷ്യപത്രം: ' : 'Authored & Certified by ' }}<strong>Dr. E. K. Raja Varma</strong> (Vidya Vachaspathi in Vedic Astrology, Gold Medalist &amp; Ph.D.)<br>
             Lifetime Member #11009, International Vedic Astrology Federation (IVAF)
         </p>
     </div>
 
-    <div class="section-title">1. Jathaka Birth Particulars &amp; Panchanga</div>
+    <div class="section-title">{{ $targetLang === 'ml' ? '1. ജാതക വിവരങ്ങളും പഞ്ചാംഗ തത്ത്വവും' : ($targetLang === 'ta' ? '1. ஜாதக விபரங்கள் மற்றும் பஞ்சாங்கம்' : ($targetLang === 'hi' ? '1. जातक विवरण एवं पंचांग तत्त्व' : '1. Jathaka Birth Particulars & Panchanga')) }}</div>
     <table class="table-data">
         <tr>
             <th style="width: 25%;">Full Name</th>
@@ -264,7 +264,7 @@
     <div class="page-break"></div>
 
     <!-- ================= PAGE 2: SOUTH INDIAN RASI CHAKRA & DASHA ================= -->
-    <div class="section-title">2. South Indian Sidereal Rasi Chakra (D1)</div>
+    <div class="section-title">{{ $targetLang === 'ml' ? '2. രാശി ചക്രം - ദക്ഷിണേന്ത്യൻ രീതി (D1 Rasi Chakra)' : ($targetLang === 'ta' ? '2. ராசி சக்கரம் (D1)' : ($targetLang === 'hi' ? '2. राशि चक्र (D1)' : '2. South Indian Sidereal Rasi Chakra (D1)')) }}</div>
     <p style="font-size: 8.5pt; color: #555; margin-top: 0;">
         Constructed strictly according to the fixed-Rasi South Indian format using Chitrapaksha (Lahiri) Ayanamsa.
     </p>
@@ -368,7 +368,7 @@
         </tr>
     </table>
 
-    <div class="section-title">3. Vimshottari Dasha Balance &amp; Current Timeline</div>
+    <div class="section-title">{{ $targetLang === 'ml' ? '3. വിംശോത്തരി ദശാപഹാര ക്രമവും നിലവിലെ കാലഘട്ടവും' : ($targetLang === 'ta' ? '3. விம்சொத்தரி தசா-புத்தி கால கணிதம்' : ($targetLang === 'hi' ? '3. विंशोत्तरी दशा चक्र एवं वर्तमान काल' : '3. Vimshottari Dasha Balance & Current Timeline')) }}</div>
     <div class="highlight-box">
         <strong>Opening Balance of Dasha at Birth (Garbhashishta Dasha):</strong><br>
         {{ $chartData['garbhashishta']['summary_en'] ?? '' }}<br>
@@ -393,35 +393,57 @@
     <div class="page-break"></div>
 
     <!-- ================= PAGE 3: PERSONALITY & BHAVAS ================= -->
-    <div class="section-title">4. Core Personality &amp; 1st House (Lagna) Analysis</div>
+    <div class="section-title">
+        {{ $targetLang === 'ml' ? '4. വ്യക്തിത്വവും ഒന്നാം ഭാവവും (ലഗ്ന വിചാരം)' : ($targetLang === 'ta' ? '4. லக்ன பலன் மற்றும் ஆளுமை' : ($targetLang === 'hi' ? '4. लग्न विचार एवं व्यक्तित्व' : '4. Core Personality & 1st House (Lagna) Analysis')) }}
+    </div>
     <p>
-        Governed by <strong>{{ $chartData['lagna']['name_en'] ?? '' }}</strong> Ascendant and Janma Nakshatra <strong>{{ $chartData['nakshatra']['name_en'] ?? '' }}</strong>, you possess an innate vitality, noble bearing, and determined will. Your soul purpose is driven by ethical perseverance and independent initiative.
-    </p>
-
-    <div class="section-title">5. 2nd House: Wealth, Speech &amp; Family Heritage</div>
-    <p>
-        The 2nd Bhava signifies accumulated assets, eloquence, and culinary habits.
-        @if(!empty($chartData['vedanga_predictions']['bhava_analysis']['wealth_sources']))
-            <br><strong>Key Sources of Wealth Growth:</strong>
-            <ul>
-                @foreach($chartData['vedanga_predictions']['bhava_analysis']['wealth_sources'] as $ws)
-                    <li>{{ is_array($ws) ? ($ws[$lang ?? 'en'] ?? $ws['en'] ?? reset($ws)) : $ws }}</li>
-                @endforeach
-            </ul>
+        @if($targetLang === 'ml')
+            ലഗ്നമായ <strong>{{ $chartData['lagna']['name_ml'] ?? $chartData['lagna']['name_en'] ?? '' }}</strong> കൊണ്ടും ജന്മനക്ഷത്രമായ <strong>{{ $chartData['nakshatra']['name_ml'] ?? $chartData['nakshatra']['name_en'] ?? '' }}</strong> കൊണ്ടും ഉദാത്തമായ വ്യക്തിത്വവും നിശ്ചയദാർഢ്യവും ആത്മവിശ്വാസവുമുള്ള പ്രകൃതമാണ്. ധാർമ്മികമായ കർമ്മങ്ങളിലൂടെയും സ്വന്തം പരിശ്രമത്തിലൂടെയും ജീവിതത്തിൽ ഉയർന്ന വിജയം കൈവരിക്കും.
+        @elseif($targetLang === 'ta')
+            லக்னம் <strong>{{ $chartData['lagna']['name_ta'] ?? $chartData['lagna']['name_en'] ?? '' }}</strong> மற்றும் ஜென்ம நட்சத்திரம் <strong>{{ $chartData['nakshatra']['name_ta'] ?? $chartData['nakshatra']['name_en'] ?? '' }}</strong> அமைப்பால் உறுதியான மனோதிடமும் நற்பண்புகளும் கொண்டவர். விடாமுயற்சியால் வாழ்வில் வெற்றி பெறுவீர்கள்.
+        @elseif($targetLang === 'hi')
+            लग्न <strong>{{ $chartData['lagna']['name_hi'] ?? $chartData['lagna']['name_en'] ?? '' }}</strong> एवं जन्म नक्षत्र <strong>{{ $chartData['nakshatra']['name_hi'] ?? $chartData['nakshatra']['name_en'] ?? '' }}</strong> के प्रभाव से आपका व्यक्तित्व ओजस्वी, दृढ़संकल्प एवं स्वाभिमानी है। नैतिक आचरण एवं सतत परिश्रम से जीवन में सफलता प्राप्त होगी।
         @else
-            Your financial path thrives through disciplined investment, professional self-reliance, and diplomatic communication.
+            Governed by <strong>{{ $chartData['lagna']['name_en'] ?? '' }}</strong> Ascendant and Janma Nakshatra <strong>{{ $chartData['nakshatra']['name_en'] ?? '' }}</strong>, you possess an innate vitality, noble bearing, and determined will. Your soul purpose is driven by ethical perseverance and independent initiative.
         @endif
     </p>
 
-    <div class="section-title">6. 10th House: Karma &amp; Professional Prominence</div>
+    <div class="section-title">
+        {{ $targetLang === 'ml' ? '5. ധന ഭാവം: സാമ്പത്തിക വളർച്ച, വാക്ക് & കുടുംബം' : ($targetLang === 'ta' ? '5. இரண்டாம் பாவம்: தனம், வாக்கு, குடும்பம்' : ($targetLang === 'hi' ? '5. द्वितीय भाव: धन, वाणी एवं पारिवारिक सुख' : '5. 2nd House: Wealth, Speech & Family Heritage')) }}
+    </div>
     <p>
-        The 10th house governs public reputation, career authority, and executive leadership. Your professional horizon favors leadership responsibilities where independent planning and visionary execution are recognized.
+        @if($targetLang === 'ml')
+            രണ്ടാം ഭാവം സമ്പത്ത്, വാക്ചാതുര്യം, കുടുംബ പാരമ്പര്യം എന്നിവയെ സൂചിപ്പിക്കുന്നു. ചിട്ടയായ സാമ്പത്തിക ആസൂത്രണത്തിലൂടെയും സത്യസന്ധവും വിവേകപൂർണ്ണവുമായ വാക്കുകളിലൂടെയും ധനാഭിവൃദ്ധിയും കുടുംബസമാധാനവും കൈവരിക്കാൻ സാധിക്കും.
+        @else
+            The 2nd Bhava signifies accumulated assets, eloquence, and culinary habits.
+            @if(!empty($chartData['vedanga_predictions']['bhava_analysis']['wealth_sources']))
+                <br><strong>Key Sources of Wealth Growth:</strong>
+                <ul>
+                    @foreach($chartData['vedanga_predictions']['bhava_analysis']['wealth_sources'] as $ws)
+                        <li>{{ is_array($ws) ? ($ws[$targetLang] ?? $ws['en'] ?? reset($ws)) : $ws }}</li>
+                    @endforeach
+                </ul>
+            @else
+                Your financial path thrives through disciplined investment, professional self-reliance, and diplomatic communication.
+            @endif
+        @endif
+    </p>
+
+    <div class="section-title">
+        {{ $targetLang === 'ml' ? '6. കർമ്മ ഭാവം: തൊഴിൽ, ഔദ്യോഗിക പദവി & നേതൃത്വം' : ($targetLang === 'ta' ? '6. பத்தாம் பாவம்: தொழில் மற்றும் தலைமை யோகம்' : ($targetLang === 'hi' ? '6. दशम भाव: आजीविका, पद प्रतिष्ठा एवं नेतृत्व' : '6. 10th House: Karma & Professional Prominence')) }}
+    </div>
+    <p>
+        @if($targetLang === 'ml')
+            പത്താം ഭാവം സാമൂഹിക പ്രശസ്തി, ഉദ്യോഗ നേതൃത്വം, കർമ്മവിജയം എന്നിവയെ പ്രതിനിധാനം ചെയ്യുന്നു. ഭരണപരമായ മേൽനോട്ടം, സ്വന്തം തീരുമാനങ്ങളെടുക്കാനുള്ള സ്വാതന്ത്ര്യം, ഉത്തരവാദിത്തമുള്ള സ്ഥാനങ്ങൾ എന്നിവയിൽ പ്രാഗത്ഭ്യം തെളിയിക്കും.
+        @else
+            The 10th house governs public reputation, career authority, and executive leadership. Your professional horizon favors leadership responsibilities where independent planning and visionary execution are recognized.
+        @endif
     </p>
 
     <div class="page-break"></div>
 
     <!-- ================= PAGE 4: TRANSITS (GOCHARA) ================= -->
-    <div class="section-title">7. Current Planetary Transits (Gocharaphala)</div>
+    <div class="section-title">{{ $targetLang === 'ml' ? '7. നിലവിലെ ഗോചര ഫലങ്ങളും ശനി ചിന്തയും' : ($targetLang === 'ta' ? '7. நடப்பு கோசார பலன்கள் மற்றும் சனி ஆய்வு' : ($targetLang === 'hi' ? '7. वर्तमान गोचर फलादेश एवं शनि शांति' : '7. Current Planetary Transits (Gocharaphala)')) }}</div>
     <p style="font-size: 8.5pt; color: #555;">
         Calculated from natal Chandra Rasi ({{ $chartData['moon_sign']['name_en'] ?? '' }}) per Chapter 14 of *Vedanga Jyothisham*.
     </p>
@@ -454,7 +476,7 @@
     <div class="page-break"></div>
 
     <!-- ================= PAGE 5: GEMSTONE & REMEDIES ================= -->
-    <div class="section-title">8. Scientific Gemstone Prescription &amp; Wearing Rules</div>
+    <div class="section-title">{{ $targetLang === 'ml' ? '8. ശാസ്ത്രീയ ഭാഗ്യരത്ന നിർണ്ണയവും ധാരണ വിധിയും' : ($targetLang === 'ta' ? '8. அதிர்ஷ்ட ரத்தினம் மற்றும் அணியும் முறை' : ($targetLang === 'hi' ? '8. वैज्ञानिक भाग्य रत्न चयन एवं धारण विधि' : '8. Scientific Gemstone Prescription & Wearing Rules')) }}</div>
     <p>
         Prescribed according to Trine Lordship (Houses 1, 5, 9) and Gender rules from Chapter 16 of *Vedanga Jyothisham*:
     </p>
@@ -487,12 +509,14 @@
     </table>
 
     <div class="cta-box">
-        <h3 style="color: #065f46; margin: 0; font-size: 13pt;">Direct Consultation with Dr. E. K. Raja Varma</h3>
+        <h3 style="color: #065f46; margin: 0; font-size: 13pt;">
+            {{ $targetLang === 'ml' ? 'ഡോ. ഇ. കെ. രാജവർമ്മയുമായി നേരിട്ടുള്ള കൂടിയാലോചന' : ($targetLang === 'ta' ? 'டாக்டர் ஈ. கே. ராஜ வர்மாவுடன் நேரடி ஆலோசனை' : ($targetLang === 'hi' ? 'डॉ. ई. के. राजा वर्मा से प्रत्यक्ष परामर्श' : 'Direct Consultation with Dr. E. K. Raja Varma')) }}
+        </h3>
         <p style="font-size: 9pt; color: #047857; margin: 4px 0 10px 0;">
-            Vidya Vachaspathi in Vedic Astrology &bull; Gold Medalist &bull; Ph.D. (Online Astro Counselling)
+            {{ $targetLang === 'ml' ? 'വേദ ജ്യോതിഷത്തിൽ വിദ്യാവാചസ്പതി • ഗോൾഡ് മെഡലിസ്റ്റ് • പി.എച്ച്.ഡി (ഓൺലൈൻ ആസ്ട്രോ കൗൺസിലിംഗ്)' : 'Vidya Vachaspathi in Vedic Astrology • Gold Medalist • Ph.D. (Online Astro Counselling)' }}
         </p>
         <p style="font-size: 9.5pt; color: #1f2937;">
-            For in-depth horoscope analysis, marital matchmaking, life pariharams, and customized gem guidance:
+            {{ $targetLang === 'ml' ? 'സമ്പൂർണ്ണ ജാതക നിരൂപണം, വിവാഹപ്പൊരുത്തം, ദോഷപരിഹാരങ്ങൾ, രത്നധാരണ നിർദ്ദേശങ്ങൾ എന്നിവയ്ക്കായി ബന്ധപ്പെടുക:' : 'For in-depth horoscope analysis, marital matchmaking, life pariharams, and customized gem guidance:' }}
         </p>
         <div style="font-size: 12pt; font-weight: bold; color: #065f46; margin-top: 6px;">
             WhatsApp: +91 7907052160 &bull; Phone / GPay: +91 94473 27450

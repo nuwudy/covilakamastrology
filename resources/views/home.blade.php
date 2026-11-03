@@ -268,7 +268,9 @@
                         });
                         const vData = await vRes.json();
                         if (vRes.ok && vData.success) {
-                            if (vData.download_url) {
+                            if (vData.view_url) {
+                                window.location.href = vData.view_url;
+                            } else if (vData.download_url) {
                                 window.location.href = vData.download_url;
                             } else if (vData.redirect_url) {
                                 window.location.href = vData.redirect_url;
@@ -306,8 +308,12 @@
                             })
                         });
                         const vData = await vRes.json();
-                        if (vData.success && vData.download_url) {
-                            window.location.href = vData.download_url;
+                        if (vData.success) {
+                            if (vData.view_url) {
+                                window.location.href = vData.view_url;
+                            } else if (vData.download_url) {
+                                window.location.href = vData.download_url;
+                            }
                         }
                     }
                 }

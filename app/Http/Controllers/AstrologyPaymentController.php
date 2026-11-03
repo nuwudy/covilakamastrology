@@ -148,7 +148,17 @@ class AstrologyPaymentController extends Controller
         $reading->razorpay_order_id = $orderId ?: ('ORD_' . strtoupper(Str::random(12)));
         $reading->save();
 
-        $downloadUrl = route('astrology.reading.download-pdf', ['uuid' => $reading->uuid]);
+        $userLang = $reading->language ?: 'ml';
+        $downloadUrl = route('astrology.reading.download-pdf', [
+            'uuid' => $reading->uuid,
+            'lang' => $userLang,
+            'tier' => $reading->paid_tier,
+        ]);
+        $viewUrl = route('astrology.reading.view', [
+            'uuid' => $reading->uuid,
+            'lang' => $userLang,
+            'tier' => $reading->paid_tier,
+        ]);
 
         return response()->json([
             'success' => true,
@@ -156,6 +166,7 @@ class AstrologyPaymentController extends Controller
             'tier' => $reading->paid_tier,
             'uuid' => $reading->uuid,
             'download_url' => $downloadUrl,
+            'view_url' => $viewUrl,
         ]);
     }
 
