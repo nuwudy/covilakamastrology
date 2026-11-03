@@ -176,27 +176,38 @@
                                 }
                             @endphp
                             <div class="flex items-center justify-end flex-wrap gap-1.5">
-                                <a href="{{ route('consultations.prediction', $lead->id) }}"
+                                @php
+                                    $leadLang = $lead->language ?? $lead->calculated_summary['language'] ?? 'ml';
+                                @endphp
+                                @if($readingUuid)
+                                <a href="{{ route('astrology.reading.view', ['uuid' => $readingUuid, 'lang' => $leadLang, 'admin' => 1]) }}"
                                    target="_blank"
-                                   title="View Full Dedicated Web Prediction Report"
+                                   title="View Full Dedicated Web Jathakam Report"
                                    class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/40 text-purple-200 font-bold text-[10px] transition-all">
                                     <span>👁️</span>
                                     <span>Web Report</span>
                                 </a>
-                                @if($readingUuid)
-                                <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_100', 'admin' => 1]) }}"
+                                <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_100', 'lang' => $leadLang, 'admin' => 1]) }}"
                                    target="_blank"
                                    title="Download Certified Profile PDF (Free Admin Access)"
                                    class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-bold text-[10px] transition-all">
                                     <span>📄</span>
                                     <span>₹100 PDF</span>
                                 </a>
-                                <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_500', 'admin' => 1]) }}"
+                                <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_500', 'lang' => $leadLang, 'admin' => 1]) }}"
                                    target="_blank"
                                    title="Download 25+ Page Deluxe Vedic Jathakam (Free Admin Access)"
                                    class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-stone-950 font-black text-[10px] shadow transition-all">
                                     <span>👑</span>
                                     <span>₹500 Deluxe</span>
+                                </a>
+                                @else
+                                <a href="{{ route('consultations.prediction', $lead->id) }}"
+                                   target="_blank"
+                                   title="View Prediction Report"
+                                   class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/40 text-purple-200 font-bold text-[10px] transition-all">
+                                    <span>👁️</span>
+                                    <span>Web Report</span>
                                 </a>
                                 @endif
 

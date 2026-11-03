@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+@php
+    $targetLang = $lang ?? $reading->language ?? 'en';
+    if (!in_array($targetLang, ['en', 'ml', 'ta', 'hi'], true)) {
+        $targetLang = 'en';
+    }
+@endphp
     <meta charset="utf-8">
     <title>Covilakam Astrology - Certified DOB Profile</title>
     <style>
@@ -133,9 +139,28 @@
         .page-break {
             page-break-after: always;
         }
-    </style>
+    @media print { .web-view-toolbar { display: none !important; } }
+</style>
 </head>
 <body>
+@if(!empty($isWebView))
+<div class="web-view-toolbar" style="position: sticky; top: 0; left: 0; right: 0; background: #1c0d2e; color: #fff; padding: 10px 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; z-index: 9999; border-bottom: 2px solid #b45309; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+    <div style="font-weight: bold; color: #fbbf24; font-size: 13px; display: flex; align-items: center; gap: 6px;">
+        <span>📄</span>
+        <span>Covilakam Astrology &bull; {{ $reading->full_name }}</span>
+        <span style="font-size: 10px; background: rgba(245, 158, 11, 0.2); color: #fef08a; padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(245, 158, 11, 0.4);">Certified Profile</span>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
+        <span style="font-size: 11px; color: #d8b4fe; font-weight: bold; margin-right: 4px;">Language:</span>
+        <a href="?lang=en{{ request('admin') ? '&admin=1' : '' }}{{ request('tier') ? '&tier=' . request('tier') : '' }}" style="color: {{ $targetLang === 'en' ? '#000' : '#fef08a' }}; background: {{ $targetLang === 'en' ? '#f59e0b' : '#372054' }}; padding: 4px 8px; border-radius: 6px; text-decoration: none; font-size: 11px; font-weight: bold;">English</a>
+        <a href="?lang=ml{{ request('admin') ? '&admin=1' : '' }}{{ request('tier') ? '&tier=' . request('tier') : '' }}" style="color: {{ $targetLang === 'ml' ? '#000' : '#fef08a' }}; background: {{ $targetLang === 'ml' ? '#f59e0b' : '#372054' }}; padding: 4px 8px; border-radius: 6px; text-decoration: none; font-size: 11px; font-weight: bold;">മലയാളം</a>
+        <a href="?lang=ta{{ request('admin') ? '&admin=1' : '' }}{{ request('tier') ? '&tier=' . request('tier') : '' }}" style="color: {{ $targetLang === 'ta' ? '#000' : '#fef08a' }}; background: {{ $targetLang === 'ta' ? '#f59e0b' : '#372054' }}; padding: 4px 8px; border-radius: 6px; text-decoration: none; font-size: 11px; font-weight: bold;">தமிழ்</a>
+        <a href="?lang=hi{{ request('admin') ? '&admin=1' : '' }}{{ request('tier') ? '&tier=' . request('tier') : '' }}" style="color: {{ $targetLang === 'hi' ? '#000' : '#fef08a' }}; background: {{ $targetLang === 'hi' ? '#f59e0b' : '#372054' }}; padding: 4px 8px; border-radius: 6px; text-decoration: none; font-size: 11px; font-weight: bold;">हिन्दी</a>
+        <button onclick="window.print()" style="background: #10b981; color: #000; border: none; padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 11px; cursor: pointer;">🖨️ Print / Save</button>
+        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $reading->uuid, 'lang' => $targetLang, 'tier' => request('tier', $reading->paid_tier), 'admin' => request('admin'), 'download' => 1]) }}" style="background: linear-gradient(to right, #f59e0b, #eab308); color: #000; padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 11px; text-decoration: none;">📥 Download PDF</a>
+    </div>
+</div>
+@endif
 
     <!-- REUSABLE HEADER -->
     <htmlpageheader name="page-header">

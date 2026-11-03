@@ -141,22 +141,45 @@ class VedangaPredictionService
                 $conjKey = "gulika_conj_{$pk}";
                 $cRule = VedangaRule::where('category', 'gulika_conjunction')->where('rule_key', $conjKey)->first();
                 $cText = $cRule ? ($cRule->$contentField ?? $cRule->content_en) : "Gulika conjunct {$pk}.";
+                $phEn = $cRule->content_en ?? "Gulika conjunct {$pk}.";
+                $phMl = $cRule->content_ml ?? $phEn;
+                $phTa = $cRule->content_ta ?? $phEn;
+                $phHi = $cRule->content_hi ?? $phEn;
+
                 $conjunctions[] = [
                     'planet' => $pk,
                     'name_en' => $pData['name_en'] ?? $pk,
                     'name_ml' => $pData['name_ml'] ?? $pk,
+                    'title' => 'Gulika conjunct ' . ($pData['name_en'] ?? $pk),
+                    'title_en' => 'Gulika conjunct ' . ($pData['name_en'] ?? $pk),
+                    'title_ml' => 'ഗുളികൻ ' . ($pData['name_ml'] ?? $pk) . ' സംയോഗം',
                     'angular_distance' => round($pDiff, 2),
                     'phala' => $cText,
+                    'phalam_en' => $phEn,
+                    'phalam_ml' => $phMl,
+                    'phalam_ta' => $phTa,
+                    'phalam_hi' => $phHi,
+                    'phala_translations' => [
+                        'en' => $phEn,
+                        'ml' => $phMl,
+                        'ta' => $phTa,
+                        'hi' => $phHi,
+                    ],
                 ];
             }
         }
 
         return [
             'bhava' => $gulikaBhava,
+            'house' => $gulikaBhava,
             'rasi' => $gulikaRasi,
             'is_solitary_in_lagna' => $isSolitaryInLagna,
             'phala' => $phalaText,
             'phala_translations' => $phalaTranslations,
+            'house_result_en' => $phalaTranslations['en'] ?? '',
+            'house_result_ml' => $phalaTranslations['ml'] ?? '',
+            'house_result_ta' => $phalaTranslations['ta'] ?? '',
+            'house_result_hi' => $phalaTranslations['hi'] ?? '',
             'conjunctions' => $conjunctions,
         ];
     }
@@ -557,6 +580,14 @@ class VedangaPredictionService
                 'lord_placed_in_bhava' => $lordBhava,
                 'lord_phala' => $lordText,
                 'lord_phala_translations' => $lordTranslations,
+                'analysis_en' => VargaAndBhavaService::BHAVA_METADATA[$h]['significance_en'] ?? '',
+                'analysis_ml' => VargaAndBhavaService::BHAVA_METADATA[$h]['significance_ml'] ?? '',
+                'analysis_ta' => VargaAndBhavaService::BHAVA_METADATA[$h]['significance_ta'] ?? '',
+                'analysis_hi' => VargaAndBhavaService::BHAVA_METADATA[$h]['significance_hi'] ?? '',
+                'lord_placement_en' => $lordTranslations['en'] ?? '',
+                'lord_placement_ml' => $lordTranslations['ml'] ?? '',
+                'lord_placement_ta' => $lordTranslations['ta'] ?? '',
+                'lord_placement_hi' => $lordTranslations['hi'] ?? '',
                 'occupants' => $occupantsPhala,
                 'karaka_exception' => $karakaWarning,
             ];

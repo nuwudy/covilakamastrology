@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+@php
+    $targetLang = $lang ?? $reading->language ?? 'en';
+    if (!in_array($targetLang, ['en', 'ml', 'ta', 'hi'], true)) {
+        $targetLang = 'en';
+    }
+@endphp
     <meta charset="utf-8">
     <title>Covilakam Astrology - Deluxe Vedic Jathakam Portfolio</title>
     <style>
@@ -156,9 +162,28 @@
             margin-bottom: 12px;
             font-size: 9pt;
         }
-    </style>
+    @media print { .web-view-toolbar { display: none !important; } }
+</style>
 </head>
 <body>
+@if(!empty($isWebView))
+<div class="web-view-toolbar" style="position: sticky; top: 0; left: 0; right: 0; background: #1c0d2e; color: #fff; padding: 10px 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; z-index: 9999; border-bottom: 2px solid #b45309; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+    <div style="font-weight: bold; color: #fbbf24; font-size: 13px; display: flex; align-items: center; gap: 6px;">
+        <span>👑</span>
+        <span>Covilakam Astrology &bull; {{ $reading->full_name }}</span>
+        <span style="font-size: 10px; background: rgba(245, 158, 11, 0.2); color: #fef08a; padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(245, 158, 11, 0.4);">Deluxe Jathakam</span>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
+        <span style="font-size: 11px; color: #d8b4fe; font-weight: bold; margin-right: 4px;">Language:</span>
+        <a href="?lang=en{{ request('admin') ? '&admin=1' : '' }}{{ request('tier') ? '&tier=' . request('tier') : '' }}" style="color: {{ $targetLang === 'en' ? '#000' : '#fef08a' }}; background: {{ $targetLang === 'en' ? '#f59e0b' : '#372054' }}; padding: 4px 8px; border-radius: 6px; text-decoration: none; font-size: 11px; font-weight: bold;">English</a>
+        <a href="?lang=ml{{ request('admin') ? '&admin=1' : '' }}{{ request('tier') ? '&tier=' . request('tier') : '' }}" style="color: {{ $targetLang === 'ml' ? '#000' : '#fef08a' }}; background: {{ $targetLang === 'ml' ? '#f59e0b' : '#372054' }}; padding: 4px 8px; border-radius: 6px; text-decoration: none; font-size: 11px; font-weight: bold;">മലയാളം</a>
+        <a href="?lang=ta{{ request('admin') ? '&admin=1' : '' }}{{ request('tier') ? '&tier=' . request('tier') : '' }}" style="color: {{ $targetLang === 'ta' ? '#000' : '#fef08a' }}; background: {{ $targetLang === 'ta' ? '#f59e0b' : '#372054' }}; padding: 4px 8px; border-radius: 6px; text-decoration: none; font-size: 11px; font-weight: bold;">தமிழ்</a>
+        <a href="?lang=hi{{ request('admin') ? '&admin=1' : '' }}{{ request('tier') ? '&tier=' . request('tier') : '' }}" style="color: {{ $targetLang === 'hi' ? '#000' : '#fef08a' }}; background: {{ $targetLang === 'hi' ? '#f59e0b' : '#372054' }}; padding: 4px 8px; border-radius: 6px; text-decoration: none; font-size: 11px; font-weight: bold;">हिन्दी</a>
+        <button onclick="window.print()" style="background: #10b981; color: #000; border: none; padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 11px; cursor: pointer;">🖨️ Print / Save</button>
+        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $reading->uuid, 'lang' => $targetLang, 'tier' => request('tier', $reading->paid_tier), 'admin' => request('admin'), 'download' => 1]) }}" style="background: linear-gradient(to right, #f59e0b, #eab308); color: #000; padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 11px; text-decoration: none;">📥 Download PDF</a>
+    </div>
+</div>
+@endif
 
     <!-- REUSABLE HEADER -->
     <htmlpageheader name="page-header">
@@ -940,17 +965,23 @@
         Synthesized strictly per <em>Vedanga Jyothisham</em> rules with Ubhaya/Sthira lagna qualifications and conjunction exceptions.
     </p>
 
-    @foreach($chartData['vedanga_predictions']['yogas'] ?? [] as $y)
+    @foreach($chartData['vedanga_predictions']['yogas'] ?? $chartData['yogas'] ?? [] as $y)
         <div style="border: 1px solid #d97706; background-color: #fffbeb; padding: 8px 10px; margin-bottom: 8px; border-radius: 4px;">
             <div style="font-weight: bold; color: #78350f; font-size: 10pt;">
-                ★ {{ $y['title_en'] ?? 'Classical Yoga' }} ({{ $y['title_ml'] ?? '' }})
+                ★ {{ $y['title_en'] ?? $y['name_en'] ?? 'Classical Yoga' }} ({{ $y['title_ml'] ?? $y['name_ml'] ?? '' }})
             </div>
             <div style="font-size: 8.5pt; color: #1f2937; margin-top: 3px;">
-                {{ $y['content_en'] ?? '' }}
+                {{ $y['result_translations'][$targetLang] ?? $y['content_' . $targetLang] ?? $y['result_' . $targetLang] ?? $y['content_en'] ?? $y['result_en'] ?? $y['result'] ?? $y['description_en'] ?? '' }}
             </div>
+            @if(!empty($y['content_ml']) && $targetLang !== 'ml')
             <div style="font-size: 8pt; color: #92400e; margin-top: 3px;">
-                {{ $y['content_ml'] ?? '' }}
+                {{ $y['content_ml'] }}
             </div>
+            @elseif(!empty($y['result_ml']) && $targetLang !== 'ml')
+            <div style="font-size: 8pt; color: #92400e; margin-top: 3px;">
+                {{ $y['result_ml'] }}
+            </div>
+            @endif
         </div>
     @endforeach
 
@@ -964,18 +995,25 @@
 
     <div class="highlight-box">
         <strong>Gulika Sphuta &amp; House Placement:</strong><br>
-        &bull; <strong>Occupying House:</strong> House {{ $chartData['vedanga_predictions']['gulika']['house'] ?? 1 }}<br>
+        &bull; <strong>Occupying House:</strong> House {{ $chartData['vedanga_predictions']['gulika']['bhava'] ?? $chartData['vedanga_predictions']['gulika']['house'] ?? 1 }}<br>
         &bull; <strong>Sign &amp; Sphuta:</strong> {{ round($chartData['gulika']['longitude'] ?? 0, 2) }}°<br>
-        &bull; <strong>Key Phalam:</strong> {{ $chartData['vedanga_predictions']['gulika']['house_result_en'] ?? '' }}<br>
-        <span style="font-size: 8pt; color: #92400e;">{{ $chartData['vedanga_predictions']['gulika']['house_result_ml'] ?? '' }}</span>
+        &bull; <strong>Key Phalam:</strong> {{ $chartData['vedanga_predictions']['gulika']['phala_translations'][$targetLang] ?? $chartData['vedanga_predictions']['gulika']['house_result_' . $targetLang] ?? $chartData['vedanga_predictions']['gulika']['phala'] ?? $chartData['vedanga_predictions']['gulika']['house_result_en'] ?? '' }}<br>
+        @if(!empty($chartData['vedanga_predictions']['gulika']['house_result_ml']) && $targetLang !== 'ml')
+            <span style="font-size: 8pt; color: #92400e;">{{ $chartData['vedanga_predictions']['gulika']['house_result_ml'] }}</span>
+        @elseif(!empty($chartData['vedanga_predictions']['gulika']['phala_translations']['ml']) && $targetLang !== 'ml')
+            <span style="font-size: 8pt; color: #92400e;">{{ $chartData['vedanga_predictions']['gulika']['phala_translations']['ml'] }}</span>
+        @endif
     </div>
 
     @if(!empty($chartData['vedanga_predictions']['gulika']['conjunctions']))
         <div class="subsection-title">Gulika Conjunction Alerts</div>
         @foreach($chartData['vedanga_predictions']['gulika']['conjunctions'] as $conj)
             <div class="highlight-box" style="border-left-color: #d97706;">
-                <strong>{{ $conj['title'] }}:</strong> {{ $conj['phalam_en'] }}<br>
-                <span style="font-size: 8pt; color: #92400e;">{{ $conj['phalam_ml'] }}</span>
+                <strong>{{ $conj['title'] ?? $conj['title_en'] ?? ('Gulika conjunct ' . ($conj['name_en'] ?? $conj['planet'] ?? '')) }}:</strong>
+                {{ $conj['phalam_' . $targetLang] ?? $conj['phalam_en'] ?? $conj['phala'] ?? '' }}<br>
+                @if(!empty($conj['phalam_ml']) && $targetLang !== 'ml')
+                    <span style="font-size: 8pt; color: #92400e;">{{ $conj['phalam_ml'] }}</span>
+                @endif
             </div>
         @endforeach
     @endif

@@ -45,10 +45,10 @@ class AstrologyPdfService
     /**
      * Generate Tier 2: ₹100 Certified Vedic DOB Profile PDF (6–8 Pages).
      */
-    public function generateTier100Pdf(AstrologyReading $reading): string
+    public function generateTier100Pdf(AstrologyReading $reading, ?string $lang = null): string
     {
         $chartData = is_array($reading->chart_data) ? $reading->chart_data : json_decode($reading->chart_data, true);
-        $lang = $reading->language ?: 'en';
+        $lang = $lang ?: ($reading->language ?: 'en');
 
         $mpdf = $this->createMpdfInstance("Covilakam Certified DOB Profile - {$reading->full_name}");
 
@@ -70,10 +70,10 @@ class AstrologyPdfService
     /**
      * Generate Tier 3: ₹500 Deluxe Vedic Jathakam PDF (20–25+ Pages).
      */
-    public function generateTier500Pdf(AstrologyReading $reading): string
+    public function generateTier500Pdf(AstrologyReading $reading, ?string $lang = null): string
     {
         $chartData = is_array($reading->chart_data) ? $reading->chart_data : json_decode($reading->chart_data, true);
-        $lang = $reading->language ?: 'en';
+        $lang = $lang ?: ($reading->language ?: 'en');
 
         $mpdf = $this->createMpdfInstance("Covilakam Deluxe Vedic Jathakam - {$reading->full_name}");
 

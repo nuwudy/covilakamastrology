@@ -187,16 +187,21 @@ class AstrologyPaymentController extends Controller
             $effectiveTier = $reading->paid_tier === 'tier_500' ? 'tier_500' : 'tier_100';
         }
 
-        // Generate appropriate PDF based on effective tier
+        $lang = $request->query('lang', $reading->language ?: 'en');
+        if (!in_array($lang, ['en', 'ml', 'ta', 'hi'], true)) {
+            $lang = 'en';
+        }
+
+        // Generate appropriate PDF based on effective tier and language
         if ($effectiveTier === 'tier_500') {
-            $pdfContent = $this->pdfService->generateTier500Pdf($reading);
+            $pdfContent = $this->pdfService->generateTier500Pdf($reading, $lang);
             $cleanName = Str::slug($reading->full_name, '_');
-            $fileName = "Covilakam_Deluxe_Jathakam_{$cleanName}_{$reading->uuid}.pdf";
+            $fileName = "Covilakam_Deluxe_Jathakam_{$cleanName}_{$lang}_{$reading->uuid}.pdf";
         } else {
             // tier_100 or preview fallback
-            $pdfContent = $this->pdfService->generateTier100Pdf($reading);
+            $pdfContent = $this->pdfService->generateTier100Pdf($reading, $lang);
             $cleanName = Str::slug($reading->full_name, '_');
-            $fileName = "Covilakam_Certified_Profile_{$cleanName}_{$reading->uuid}.pdf";
+            $fileName = "Covilakam_Certified_Profile_{$cleanName}_{$lang}_{$reading->uuid}.pdf";
         }
 
         $disposition = $request->has('download') ? 'attachment' : 'inline';
@@ -208,5 +213,39 @@ class AstrologyPaymentController extends Controller
             'Expires' => '0',
         ]);
     }
-}
 
+    /**
+     * View full Jathakam report in interactive responsive HTML format in browser.
+     * Route: GET /astrology/readings/{uuid}/view
+     */
+    public function viewReport(Request $request, string $uuid)
+    {
+        $reading = AstrologyReading::where('uuid', $uuid)->firstOrFail();
+
+        $isAdmin = auth()->check() || auth('web')->check() || $request->has('admin');
+        $requestedTier = $request->query('tier', $reading->paid_tier);
+        $lang = $request->query('lang', $reading->language ?: 'en');
+        if (!in_array($lang, ['en', 'ml', 'ta', 'hi'], true)) {
+            $lang = 'en';
+        }
+
+        // If tier is free and not admin and no force preview is requested, redirect to home
+        if (!$isAdmin && $reading->paid_tier === 'free' && !$request->has('preview')) {
+            return redirect()->route('home')->with('error', 'Please upgrade to view the Full Certified Report.');
+        }
+
+        $effectiveTier = ($isAdmin)
+            ? (in_array($requestedTier, ['tier_100', 'tier_500'], true) ? $requestedTier : 'tier_500')
+            : ($reading->paid_tier === 'tier_500' ? 'tier_500' : 'tier_100');
+
+        $chartData = is_array($reading->chart_data) ? $reading->chart_data : json_decode($reading->chart_data, true);
+        $viewName = ($effectiveTier === 'tier_500') ? 'pdf.tier-500' : 'pdf.tier-100';
+
+        return view($viewName, [
+            'reading' => $reading,
+            'chartData' => $chartData,
+            'lang' => $lang,
+            'isWebView' => true,
+        ]);
+    }
+}
