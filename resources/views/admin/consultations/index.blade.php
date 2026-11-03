@@ -167,9 +167,32 @@
                             </form>
                         </td>
 
-                        <!-- WhatsApp Reply 1-Click Action -->
+                        <!-- Actions: WhatsApp + Free Admin PDF Downloads -->
                         <td class="py-4 px-4 text-right">
-                            <div class="flex items-center justify-end space-x-2">
+                            @php
+                                $readingUuid = $lead->calculated_summary['reading_uuid'] ?? null;
+                                if (!$readingUuid && $lead->birth_date) {
+                                    $readingUuid = \App\Models\AstrologyReading::where('full_name', $lead->name)->where('dob', $lead->birth_date)->latest()->value('uuid');
+                                }
+                            @endphp
+                            <div class="flex items-center justify-end flex-wrap gap-1.5">
+                                @if($readingUuid)
+                                <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_100', 'admin' => 1]) }}"
+                                   target="_blank"
+                                   title="Download Certified Profile PDF (Free Admin Access)"
+                                   class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-bold text-[10px] transition-all">
+                                    <span>📄</span>
+                                    <span>₹100 PDF</span>
+                                </a>
+                                <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_500', 'admin' => 1]) }}"
+                                   target="_blank"
+                                   title="Download 25+ Page Deluxe Vedic Jathakam (Free Admin Access)"
+                                   class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-stone-950 font-black text-[10px] shadow transition-all">
+                                    <span>👑</span>
+                                    <span>₹500 Deluxe</span>
+                                </a>
+                                @endif
+
                                 @if($targetPhone)
                                 @php
                                     if ($mulank) {

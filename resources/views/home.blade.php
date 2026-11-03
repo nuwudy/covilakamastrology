@@ -1318,9 +1318,11 @@
                                             </ul>
                                         </div>
                                         <div class="mt-2.5 pt-2 border-t border-amber-500/10">
-                                            <span class="block text-center text-[10px] font-bold text-amber-300/80 bg-amber-500/10 py-1 rounded-lg">
-                                                Viewing Below ↓
-                                            </span>
+                                            <button type="button"
+                                                    @click="document.getElementById('full-prediction-accordion')?.scrollIntoView({ behavior: 'smooth', block: 'start' })"
+                                                    class="w-full text-center text-[10px] font-bold text-amber-300 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 py-1.5 rounded-lg transition-all cursor-pointer flex items-center justify-center gap-1">
+                                                <span>📜 Read Free Insights Below ↓</span>
+                                            </button>
                                         </div>
                                     </div>
 
@@ -1399,51 +1401,168 @@
                             </div>
 
                             <!-- FULL ON-SITE PREDICTION READER ACCORDION/TABS -->
-                            <div class="mt-4 pt-4 border-t border-amber-500/30 text-xs"
-                                 x-data="{ readTab: 'life' }">
+                            <div id="full-prediction-accordion" class="mt-4 pt-4 border-t border-amber-500/30 text-xs scroll-mt-20"
+                                 x-data="{ readTab: 'yogas' }">
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="font-bold text-amber-300 text-xs flex items-center space-x-1">
-                                        <span>📜 Read Your Full Vedic Prediction on Site:</span>
+                                    <span class="font-bold text-amber-300 text-xs flex items-center space-x-1.5">
+                                        <span>📜</span>
+                                        <span>Dr. Raja Varma's Vedic Life Reading:</span>
                                     </span>
-                                    <span class="text-[10px] text-amber-400/80 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">Free Reading</span>
+                                    <span class="text-[10px] text-amber-300 font-bold bg-amber-500/20 px-2 py-0.5 rounded-full border border-amber-500/30">Free Vedanga Insights</span>
                                 </div>
 
-                                <!-- Tabs for on-site prediction reading -->
-                                <div class="grid grid-cols-4 gap-1 p-1 bg-[#190d28] rounded-xl border border-amber-500/20 mb-3">
+                                <!-- 6 Multi-Perspective Tabs for in-depth engagement -->
+                                <div class="grid grid-cols-3 sm:grid-cols-6 gap-1 p-1 bg-[#190d28] rounded-xl border border-amber-500/20 mb-3 text-[10px]">
+                                    <button type="button" @click="readTab = 'yogas'"
+                                            :class="readTab === 'yogas' ? 'bg-amber-400 text-stone-950 font-bold shadow' : 'text-amber-200/70 hover:text-white'"
+                                            class="py-1 px-1 rounded-lg text-center transition-all cursor-pointer">
+                                        👑 Yogas
+                                    </button>
+                                    <button type="button" @click="readTab = 'transits'"
+                                            :class="readTab === 'transits' ? 'bg-amber-400 text-stone-950 font-bold shadow' : 'text-amber-200/70 hover:text-white'"
+                                            class="py-1 px-1 rounded-lg text-center transition-all cursor-pointer">
+                                        🪐 Transits
+                                    </button>
                                     <button type="button" @click="readTab = 'life'"
-                                            :class="readTab === 'life' ? 'bg-amber-400 text-black font-bold' : 'text-amber-200/70 hover:text-white'"
-                                            class="py-1 px-1 text-[10px] rounded-lg text-center transition-all">
+                                            :class="readTab === 'life' ? 'bg-amber-400 text-stone-950 font-bold shadow' : 'text-amber-200/70 hover:text-white'"
+                                            class="py-1 px-1 rounded-lg text-center transition-all cursor-pointer">
                                         🌟 Life Path
                                     </button>
                                     <button type="button" @click="readTab = 'career'"
-                                            :class="readTab === 'career' ? 'bg-amber-400 text-black font-bold' : 'text-amber-200/70 hover:text-white'"
-                                            class="py-1 px-1 text-[10px] rounded-lg text-center transition-all">
+                                            :class="readTab === 'career' ? 'bg-amber-400 text-stone-950 font-bold shadow' : 'text-amber-200/70 hover:text-white'"
+                                            class="py-1 px-1 rounded-lg text-center transition-all cursor-pointer">
                                         💼 Career
                                     </button>
                                     <button type="button" @click="readTab = 'love'"
-                                            :class="readTab === 'love' ? 'bg-amber-400 text-black font-bold' : 'text-amber-200/70 hover:text-white'"
-                                            class="py-1 px-1 text-[10px] rounded-lg text-center transition-all">
-                                        💖 Love
+                                            :class="readTab === 'love' ? 'bg-amber-400 text-stone-950 font-bold shadow' : 'text-amber-200/70 hover:text-white'"
+                                            class="py-1 px-1 rounded-lg text-center transition-all cursor-pointer">
+                                        💖 Marriage
                                     </button>
                                     <button type="button" @click="readTab = 'mantra'"
-                                            :class="readTab === 'mantra' ? 'bg-amber-400 text-black font-bold' : 'text-amber-200/70 hover:text-white'"
-                                            class="py-1 px-1 text-[10px] rounded-lg text-center transition-all">
+                                            :class="readTab === 'mantra' ? 'bg-amber-400 text-stone-950 font-bold shadow' : 'text-amber-200/70 hover:text-white'"
+                                            class="py-1 px-1 rounded-lg text-center transition-all cursor-pointer">
                                         💎 Remedies
                                     </button>
                                 </div>
 
                                 <!-- Tab Content Card (Display in selected language) -->
-                                <div class="p-3.5 rounded-xl bg-[#231538] border border-amber-500/25 text-[11px] leading-relaxed max-h-56 overflow-y-auto space-y-2 text-amber-100/90">
-                                    <!-- Life Path Tab -->
-                                    <div x-show="readTab === 'life'">
+                                <div class="p-3.5 rounded-xl bg-[#231538] border border-amber-500/25 text-[11px] leading-relaxed max-h-72 sm:max-h-80 overflow-y-auto space-y-3 text-amber-100/90">
+                                    <!-- TAB 1: CLASSICAL YOGAS & GULIKA PHALAM -->
+                                    <div x-show="readTab === 'yogas'" class="space-y-2.5">
+                                        <div class="flex items-center justify-between border-b border-amber-500/20 pb-1">
+                                            <span class="font-bold text-amber-300">
+                                                <span x-show="readingLang === 'en'">Classical Planetary Yogas Detected:</span>
+                                                <span x-show="readingLang === 'ml'">ജാതകത്തിൽ തെളിഞ്ഞ ക്ലാസിക്കൽ യോഗങ്ങൾ:</span>
+                                                <span x-show="readingLang === 'ta'">கண்டறியப்பட்ட யோகங்கள்:</span>
+                                                <span x-show="readingLang === 'hi'">जन्मपत्रिका में उपस्थित शास्त्रीय योग:</span>
+                                            </span>
+                                            <span class="text-[9px] text-amber-400 font-mono" x-text="(calcResult?.yogas?.length || 0) + ' Yogas Active'"></span>
+                                        </div>
+
+                                        <!-- Loop through all detected yogas -->
+                                        <template x-if="calcResult?.yogas && calcResult?.yogas.length > 0">
+                                            <div class="space-y-2">
+                                                <template x-for="y in calcResult.yogas" :key="y.title_en || y.name_en">
+                                                    <div class="p-2.5 rounded-lg bg-amber-950/40 border border-amber-500/30">
+                                                        <div class="flex items-center justify-between text-xs">
+                                                            <strong class="text-amber-300 font-bold"
+                                                                    x-text="'★ ' + (readingLang === 'ml' ? (y.name_ml || y.title_ml || y.name_en) : (y.name_en || y.title_en))"></strong>
+                                                            <span class="text-[9px] bg-amber-500/20 text-amber-300 px-1.5 py-0.2 rounded font-mono">Vedic Yoga</span>
+                                                        </div>
+                                                        <p class="text-[10.5px] text-amber-100/90 mt-1 leading-relaxed"
+                                                           x-text="readingLang === 'ml' ? (y.description_ml || y.content_ml || y.description_en) : (y.description_en || y.content_en)"></p>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+
+                                        <!-- Gulika / Maandhi Diagnostic -->
+                                        <template x-if="calcResult?.vedanga_predictions?.gulika?.phala">
+                                            <div class="p-2.5 rounded-lg bg-[#1a0f2b] border border-purple-500/30">
+                                                <div class="flex items-center justify-between text-xs">
+                                                    <strong class="text-purple-300 font-bold flex items-center gap-1">
+                                                        <span>🪐</span>
+                                                        <span>Gulika (Maandhi) Phalam — Kerala System:</span>
+                                                    </strong>
+                                                    <span class="text-[9px] text-purple-300 font-mono"
+                                                          x-text="'Bhava ' + (calcResult?.vedanga_predictions?.gulika?.bhava || 1)"></span>
+                                                </div>
+                                                <p class="text-[10.5px] text-amber-100/90 mt-1 leading-relaxed"
+                                                   x-text="calcResult?.vedanga_predictions?.gulika?.phala"></p>
+                                            </div>
+                                        </template>
+                                    </div>
+
+                                    <!-- TAB 2: CURRENT TRANSITS & SHANI GOCHARA -->
+                                    <div x-show="readTab === 'transits'" x-cloak class="space-y-2.5">
+                                        <div class="flex items-center justify-between border-b border-amber-500/20 pb-1">
+                                            <span class="font-bold text-amber-300">
+                                                <span x-show="readingLang === 'en'">Current Planetary Transits (Gochara from Janma Rasi):</span>
+                                                <span x-show="readingLang === 'ml'">നിലവിലെ ഗ്രഹപ്പകർച്ച (ജന്മരാശിയിൽ നിന്നുള്ള ഗോചരഫലം):</span>
+                                                <span x-show="readingLang === 'ta'">தற்போதைய கோச்சார பலன்:</span>
+                                                <span x-show="readingLang === 'hi'">वर्तमान गोचर फल (जन्म राशि से):</span>
+                                            </span>
+                                            <span class="text-[9px] text-amber-400 font-mono" x-text="calcResult?.moon_sign?.name_en || 'Janma Rasi'"></span>
+                                        </div>
+
+                                        <!-- Live Saturn Transit Status -->
+                                        <template x-if="calcResult?.vedanga_predictions?.gocharaphala?.saturn_special">
+                                            <div class="p-3 rounded-xl border"
+                                                 :class="calcResult?.vedanga_predictions?.gocharaphala?.saturn_special?.is_ezhara_shani ? 'bg-amber-950/60 border-amber-500/50' : 'bg-[#180e28] border-amber-500/20'">
+                                                <div class="flex items-center justify-between text-xs mb-1">
+                                                    <span class="font-bold text-amber-300 flex items-center gap-1">
+                                                        <span>⚠️</span>
+                                                        <span>Shani Gochara (ശനി ഗോചര വിചാരം):</span>
+                                                    </span>
+                                                    <span class="text-[9px] px-2 py-0.5 rounded font-bold uppercase font-mono"
+                                                          :class="calcResult?.vedanga_predictions?.gocharaphala?.saturn_special?.is_ezhara_shani ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' : 'bg-emerald-500/20 text-emerald-300'">
+                                                        <span x-text="calcResult?.vedanga_predictions?.gocharaphala?.saturn_special?.is_ezhara_shani ? ('7½ Shani: ' + calcResult?.vedanga_predictions?.gocharaphala?.saturn_special?.phase) : 'Shani Favorable'"></span>
+                                                    </span>
+                                                </div>
+                                                <p class="text-[11px] text-amber-100/95 leading-relaxed mt-1"
+                                                   x-text="readingLang === 'ml' ? (calcResult?.vedanga_predictions?.gocharaphala?.saturn_special?.remedy_ml || calcResult?.vedanga_predictions?.gocharaphala?.saturn_special?.remedy_en) : calcResult?.vedanga_predictions?.gocharaphala?.saturn_special?.remedy_en"></p>
+                                            </div>
+                                        </template>
+
+                                        <!-- Planetary Transits from Moon -->
+                                        <template x-if="calcResult?.vedanga_predictions?.gocharaphala?.planets">
+                                            <div class="space-y-1.5 pt-1">
+                                                <span class="text-[10px] uppercase font-bold text-amber-300 block">7 Planetary Influences from Moon:</span>
+                                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                                                    <template x-for="gp in calcResult.vedanga_predictions.gocharaphala.planets" :key="gp.name_en">
+                                                        <div class="p-2 rounded bg-[#1c0f2f] border border-amber-500/15 flex items-center justify-between text-[10px]">
+                                                            <div>
+                                                                <strong class="text-amber-200" x-text="readingLang === 'ml' ? gp.name_ml : gp.name_en"></strong>
+                                                                <span class="text-amber-400/80 font-mono" x-text="' (' + gp.house_from_moon + 'th)'"></span>
+                                                            </div>
+                                                            <span class="font-bold font-mono text-[9px] px-1.5 py-0.2 rounded"
+                                                                  :class="gp.effective_favorable ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'"
+                                                                  x-text="gp.status_text"></span>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+
+                                    <!-- TAB 3: LIFE PATH & TANU BHAVA -->
+                                    <div x-show="readTab === 'life'" x-cloak class="space-y-2">
                                         <p class="font-bold text-amber-300 mb-1"
                                            x-text="calcResult?.archetype?.[readingLang] || calcResult?.archetype?.en || calcResult?.archetype"></p>
                                         <p class="leading-relaxed"
                                            x-text="calcResult?.personality_prediction?.[readingLang] || calcResult?.personality_prediction?.en || calcResult?.traits?.[readingLang] || calcResult?.traits"></p>
+
+                                        <template x-if="calcResult?.vedanga_predictions?.bhavas?.[1]">
+                                            <div class="p-2.5 rounded-lg bg-amber-950/30 border border-amber-500/20 mt-2">
+                                                <strong class="text-amber-300 text-[10px] uppercase block">1st Bhava (Tanu / Physical Vitality):</strong>
+                                                <p class="text-[10.5px] text-amber-100/90 mt-0.5 leading-relaxed"
+                                                   x-text="calcResult?.vedanga_predictions?.bhavas[1]?.analysis_en || calcResult?.vedanga_predictions?.bhavas[1]?.lord_placement_en || 'Ascendant indicates good health, endurance, and decisive initiative.'"></p>
+                                            </div>
+                                        </template>
                                     </div>
 
-                                    <!-- Career Tab -->
-                                    <div x-show="readTab === 'career'" x-cloak>
+                                    <!-- TAB 4: CAREER & WEALTH -->
+                                    <div x-show="readTab === 'career'" x-cloak class="space-y-2">
                                         <p class="font-bold text-amber-300 mb-1">
                                             <span x-show="readingLang === 'en'">Career &amp; Wealth Horizon:</span>
                                             <span x-show="readingLang === 'ml'">തൊഴിൽ &amp; സാമ്പത്തിക ഭാവിലക്ഷണങ്ങൾ:</span>
@@ -1452,10 +1571,19 @@
                                         </p>
                                         <p class="leading-relaxed"
                                            x-text="calcResult?.career_prediction?.[readingLang] || calcResult?.career_prediction?.en || calcResult?.career_prediction"></p>
+
+                                        <template x-if="calcResult?.vedanga_predictions?.wealth_sources && calcResult.vedanga_predictions.wealth_sources.length > 0">
+                                            <div class="p-2.5 rounded-lg bg-amber-950/30 border border-amber-500/20 mt-2">
+                                                <strong class="text-amber-300 text-[10px] uppercase block">Vedanga Wealth Sources (Page 103):</strong>
+                                                <template x-for="(w, wIdx) in calcResult.vedanga_predictions.wealth_sources" :key="wIdx">
+                                                    <p class="text-[10.5px] text-amber-100/90 mt-0.5" x-text="'• ' + w"></p>
+                                                </template>
+                                            </div>
+                                        </template>
                                     </div>
 
-                                    <!-- Love Tab -->
-                                    <div x-show="readTab === 'love'" x-cloak>
+                                    <!-- TAB 5: MARRIAGE & HARMONY -->
+                                    <div x-show="readTab === 'love'" x-cloak class="space-y-2">
                                         <p class="font-bold text-amber-300 mb-1">
                                             <span x-show="readingLang === 'en'">Relationship &amp; Family Harmony:</span>
                                             <span x-show="readingLang === 'ml'">ദാമ്പത്യം &amp; കുടുംബസമാധാനം:</span>
@@ -1464,9 +1592,17 @@
                                         </p>
                                         <p class="leading-relaxed"
                                            x-text="calcResult?.relationship_prediction?.[readingLang] || calcResult?.relationship_prediction?.en || calcResult?.relationship_prediction"></p>
+
+                                        <template x-if="calcResult?.vedanga_predictions?.bhavas?.[7]">
+                                            <div class="p-2.5 rounded-lg bg-amber-950/30 border border-amber-500/20 mt-2">
+                                                <strong class="text-amber-300 text-[10px] uppercase block">7th Bhava (Kalathra / Spousal Concord):</strong>
+                                                <p class="text-[10.5px] text-amber-100/90 mt-0.5 leading-relaxed"
+                                                   x-text="calcResult?.vedanga_predictions?.bhavas[7]?.analysis_en || '7th house promotes mutual fidelity, shared spiritual ideals, and enduring domestic tranquility.'"></p>
+                                            </div>
+                                        </template>
                                     </div>
 
-                                    <!-- Remedies Tab -->
+                                    <!-- TAB 6: REMEDIES & MANTRAS -->
                                     <div x-show="readTab === 'mantra'" x-cloak class="space-y-2.5">
                                         <div>
                                             <span class="font-bold text-amber-300">
