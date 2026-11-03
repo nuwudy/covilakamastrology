@@ -25,10 +25,16 @@ class AstrologyPdfService
         $extraDirs = [];
         if (is_dir($customFontDir) && file_exists($customFontDir . '/Nirmala.ttf')) {
             $extraDirs[] = $customFontDir;
-            $extraFonts['nirmala'] = [
+            $nirmalaDef = [
                 'R' => 'Nirmala.ttf',
                 'B' => 'NirmalaB.ttf',
+                'I' => 'Nirmala.ttf',
+                'BI' => 'NirmalaB.ttf',
             ];
+            $extraFonts['nirmala'] = $nirmalaDef;
+            // Also override freeserif so any internal mPDF auto-mapping uses Nirmala
+            $fontData['freeserif'] = $nirmalaDef;
+            $fontData['freesans'] = $nirmalaDef;
         }
 
         $mpdf = new Mpdf([
@@ -43,8 +49,8 @@ class AstrologyPdfService
             'fontDir' => array_merge($fontDirs, $extraDirs),
             'fontdata' => $fontData + $extraFonts,
             'default_font' => !empty($extraFonts) ? 'nirmala' : 'dejavusans',
-            'autoScriptToLang' => true,
-            'autoLangToFont' => true,
+            'autoScriptToLang' => false,
+            'autoLangToFont' => false,
             'tempDir' => storage_path('app/temp-mpdf'),
         ]);
 
