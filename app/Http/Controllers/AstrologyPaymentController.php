@@ -199,9 +199,10 @@ class AstrologyPaymentController extends Controller
             $fileName = "Covilakam_Certified_Profile_{$cleanName}_{$reading->uuid}.pdf";
         }
 
+        $disposition = $request->has('download') ? 'attachment' : 'inline';
         return response($pdfContent, 200, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => "attachment; filename=\"{$fileName}\"",
+            'Content-Disposition' => "{$disposition}; filename=\"{$fileName}\"",
             'Cache-Control' => 'no-cache, no-store, must-revalidate',
             'Pragma' => 'no-cache',
             'Expires' => '0',

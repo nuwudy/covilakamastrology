@@ -380,7 +380,7 @@
             <br><strong>Key Sources of Wealth Growth:</strong>
             <ul>
                 @foreach($chartData['vedanga_predictions']['bhava_analysis']['wealth_sources'] as $ws)
-                    <li>{{ $ws }}</li>
+                    <li>{{ is_array($ws) ? ($ws[$lang ?? 'en'] ?? $ws['en'] ?? reset($ws)) : $ws }}</li>
                 @endforeach
             </ul>
         @else

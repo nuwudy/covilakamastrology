@@ -162,6 +162,15 @@ class AstrologyEngineService
 
         $whatsappUrl = 'https://wa.me/917907052160?text=' . rawurlencode($waMsg);
 
+        // 7. Numerology & Multilingual Planet Profiles
+        $mulank = (int)($panchangaData['mulank'] ?? 1);
+        $bhagyank = (int)($panchangaData['bhagyank'] ?? 1);
+        $rulingProfile = \App\Services\VedicDobCalculator::getPlanetProfile($mulank);
+        $destinyProfile = \App\Services\VedicDobCalculator::getPlanetProfile($bhagyank);
+
+        // Combined Classical + Vedanga Yogas
+        $combinedYogas = array_merge($yogas, $vedangaPredictions['yogas'] ?? []);
+
         // Consolidate response
         return [
             'status' => 'success',
@@ -187,9 +196,24 @@ class AstrologyEngineService
             'karana' => $panchangaData['karana'],
             'nityayoga' => $panchangaData['nityayoga'],
 
-            // Numerology
+            // Numerology & Multilingual Predictions
             'mulank' => $panchangaData['mulank'],
             'bhagyank' => $panchangaData['bhagyank'],
+            'ruling_planet' => $rulingProfile,
+            'destiny_planet' => $destinyProfile,
+            'archetype' => $rulingProfile['archetype'] ?? [],
+            'traits' => $rulingProfile['traits'] ?? [],
+            'personality_prediction' => $rulingProfile['personality_prediction'] ?? [],
+            'career_prediction' => $rulingProfile['career_prediction'] ?? [],
+            'relationship_prediction' => $rulingProfile['relationship_prediction'] ?? [],
+            'health_prediction' => $rulingProfile['health_prediction'] ?? [],
+            'doctor_remedy' => $rulingProfile['doctor_remedy'] ?? [],
+            'lucky_color' => $rulingProfile['lucky_color'] ?? [],
+            'lucky_day' => $rulingProfile['lucky_day'] ?? [],
+            'lucky_numbers' => $rulingProfile['lucky_numbers'] ?? [],
+            'favorable_direction' => $rulingProfile['favorable_direction'] ?? [],
+            'mantra_sanskrit' => $rulingProfile['mantra_sanskrit'] ?? '',
+            'mantra_translit' => $rulingProfile['mantra_translit'] ?? '',
 
             // Charts & Vargas
             'planets' => $planets,
@@ -207,7 +231,7 @@ class AstrologyEngineService
             // Dignity, Ashtakavarga, Yogas
             'dignities' => $planetDignities,
             'ashtakavarga' => $ashtakavarga,
-            'yogas' => $yogas,
+            'yogas' => $combinedYogas,
             'vedanga_predictions' => $vedangaPredictions,
 
             // Gemstone recommendation

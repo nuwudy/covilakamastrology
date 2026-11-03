@@ -988,6 +988,16 @@ class VedicDobCalculator
         return $bhavas;
     }
 
+    public static function getPlanetProfile(int $number): ?array
+    {
+        return static::$planets[$number] ?? null;
+    }
+
+    public static function getAllPlanetProfiles(): array
+    {
+        return static::$planets;
+    }
+
     public function calculate(
         string $birthDateStr,
         ?string $name = null,

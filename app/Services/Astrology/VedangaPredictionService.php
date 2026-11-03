@@ -115,15 +115,22 @@ class VedangaPredictionService
         $contentField = 'content_' . $lang;
         $phalaText = $rule ? ($rule->$contentField ?? $rule->content_en) : "Gulika occupies Bhava {$gulikaBhava}.";
 
+        $extra = [
+            'en' => ' (Chapter 17, Page 100 Special Rule: Solitary Gulika in Lagna confers Rajayoga, vehicle ownership, and worldly authority).',
+            'ml' => ' (അധ്യായം 17, പേജ് 100 വിശേഷാൽ വിധി: ലഗ്നത്തിൽ ഗുളികൻ തനിച്ചു നിന്നാൽ രാജയോഗവും വാഹനാദി സൗഭാഗ്യങ്ങളും മാന്യതയും നൽകുന്നു).',
+            'ta' => ' (குளிகன் லக்னத்தில் தனித்து நின்றால் ராஜயோகம் மற்றும் வாகன பாக்கியம் தரும்).',
+            'hi' => ' (लग्न में अकेला गुलिक राजयोग, वाहन सुख एवं प्रतिष्ठा प्रदान करता है)।',
+        ];
         if ($isSolitaryInLagna) {
-            $extra = [
-                'en' => ' (Chapter 17, Page 100 Special Rule: Solitary Gulika in Lagna confers Rajayoga, vehicle ownership, and worldly authority).',
-                'ml' => ' (അധ്യായം 17, പേജ് 100 വിശേഷാൽ വിധി: ലഗ്നത്തിൽ ഗുളികൻ തനിച്ചു നിന്നാൽ രാജയോഗവും വാഹനാദി സൗഭാഗ്യങ്ങളും മാന്യതയും നൽകുന്നു).',
-                'ta' => ' (குளிகன் லக்னத்தில் தனித்து நின்றால் ராஜயோகம் மற்றும் வாகன பாக்கியம் தரும்).',
-                'hi' => ' (लग्न में अकेला गुलिक राजयोग, वाहन सुख एवं प्रतिष्ठा प्रदान करता है)।',
-            ];
             $phalaText .= $extra[$lang] ?? $extra['en'];
         }
+
+        $phalaTranslations = [
+            'en' => ($rule ? ($rule->content_en ?? "Gulika occupies Bhava {$gulikaBhava}.") : "Gulika occupies Bhava {$gulikaBhava}.") . ($isSolitaryInLagna ? $extra['en'] : ''),
+            'ml' => ($rule ? ($rule->content_ml ?? $rule->content_en ?? "Gulika occupies Bhava {$gulikaBhava}.") : "Gulika occupies Bhava {$gulikaBhava}.") . ($isSolitaryInLagna ? $extra['ml'] : ''),
+            'ta' => ($rule ? ($rule->content_ta ?? $rule->content_en ?? "Gulika occupies Bhava {$gulikaBhava}.") : "Gulika occupies Bhava {$gulikaBhava}.") . ($isSolitaryInLagna ? $extra['ta'] : ''),
+            'hi' => ($rule ? ($rule->content_hi ?? $rule->content_en ?? "Gulika occupies Bhava {$gulikaBhava}.") : "Gulika occupies Bhava {$gulikaBhava}.") . ($isSolitaryInLagna ? $extra['hi'] : ''),
+        ];
 
         // Conjunctions with planets in same sign (within ±12°)
         $conjunctions = [];
@@ -149,6 +156,7 @@ class VedangaPredictionService
             'rasi' => $gulikaRasi,
             'is_solitary_in_lagna' => $isSolitaryInLagna,
             'phala' => $phalaText,
+            'phala_translations' => $phalaTranslations,
             'conjunctions' => $conjunctions,
         ];
     }
@@ -500,6 +508,12 @@ class VedangaPredictionService
             $lordRuleKey = "L{$h}_H{$lordBhava}";
             $lRule = VedangaRule::where('category', 'lord_in_house')->where('rule_key', $lordRuleKey)->first();
             $lordText = $lRule ? ($lRule->$contentField ?? $lRule->content_en) : "Lord of House {$h} in House {$lordBhava}.";
+            $lordTranslations = [
+                'en' => $lRule ? ($lRule->content_en ?? "Lord of House {$h} in House {$lordBhava}.") : "Lord of House {$h} in House {$lordBhava}.",
+                'ml' => $lRule ? ($lRule->content_ml ?? $lRule->content_en ?? "{$h}-ാം ഭാവാധിപൻ {$lordBhava}-ാം ഭാവത്തിൽ.") : "{$h}-ാം ഭാവാധിപൻ {$lordBhava}-ാം ഭാവത്തിൽ.",
+                'ta' => $lRule ? ($lRule->content_ta ?? $lRule->content_en ?? "House {$h} Lord in {$lordBhava}.") : "House {$h} Lord in {$lordBhava}.",
+                'hi' => $lRule ? ($lRule->content_hi ?? $lRule->content_en ?? "भाव {$h} के स्वामी भाव {$lordBhava} में।") : "भाव {$h} के स्वामी भाव {$lordBhava} में।",
+            ];
 
             // Occupants
             $occupantsPhala = [];
@@ -542,6 +556,7 @@ class VedangaPredictionService
                 'bhava_lord' => $bhavaLord,
                 'lord_placed_in_bhava' => $lordBhava,
                 'lord_phala' => $lordText,
+                'lord_phala_translations' => $lordTranslations,
                 'occupants' => $occupantsPhala,
                 'karaka_exception' => $karakaWarning,
             ];
@@ -554,7 +569,12 @@ class VedangaPredictionService
             if (in_array($pb, [2, 10], true)) {
                 $wRule = VedangaRule::where('category', 'wealth_source')->where('rule_key', "wealth_{$pk}")->first();
                 if ($wRule) {
-                    $wealthSources[] = $wRule->$contentField ?? $wRule->content_en;
+                    $wealthSources[] = [
+                        'en' => $wRule->content_en,
+                        'ml' => $wRule->content_ml ?? $wRule->content_en,
+                        'ta' => $wRule->content_ta ?? $wRule->content_en,
+                        'hi' => $wRule->content_hi ?? $wRule->content_en,
+                    ];
                 }
             }
         }

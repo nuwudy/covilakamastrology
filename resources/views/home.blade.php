@@ -1488,7 +1488,7 @@
                                                           x-text="'Bhava ' + (calcResult?.vedanga_predictions?.gulika?.bhava || 1)"></span>
                                                 </div>
                                                 <p class="text-[10.5px] text-amber-100/90 mt-1 leading-relaxed"
-                                                   x-text="calcResult?.vedanga_predictions?.gulika?.phala"></p>
+                                                   x-text="calcResult?.vedanga_predictions?.gulika?.phala_translations?.[readingLang] || calcResult?.vedanga_predictions?.gulika?.phala"></p>
                                             </div>
                                         </template>
                                     </div>
@@ -1554,9 +1554,14 @@
 
                                         <template x-if="calcResult?.vedanga_predictions?.bhavas?.[1]">
                                             <div class="p-2.5 rounded-lg bg-amber-950/30 border border-amber-500/20 mt-2">
-                                                <strong class="text-amber-300 text-[10px] uppercase block">1st Bhava (Tanu / Physical Vitality):</strong>
+                                                <strong class="text-amber-300 text-[10px] uppercase block">
+                                                    <span x-show="readingLang === 'en'">1st Bhava (Tanu / Physical Vitality):</span>
+                                                    <span x-show="readingLang === 'ml'">1-ാം ഭാവം (തനു ഭാവം / ദേഹബലവും വ്യക്തിത്വവും):</span>
+                                                    <span x-show="readingLang === 'ta'">1-ஆம் பாவம் (தனு பாவம் / தேக பலம்):</span>
+                                                    <span x-show="readingLang === 'hi'">प्रथम भाव (तनु भाव / शारीरिक स्वास्थ्य):</span>
+                                                </strong>
                                                 <p class="text-[10.5px] text-amber-100/90 mt-0.5 leading-relaxed"
-                                                   x-text="calcResult?.vedanga_predictions?.bhavas[1]?.analysis_en || calcResult?.vedanga_predictions?.bhavas[1]?.lord_placement_en || 'Ascendant indicates good health, endurance, and decisive initiative.'"></p>
+                                                   x-text="calcResult?.vedanga_predictions?.bhavas[1]?.lord_phala_translations?.[readingLang] || calcResult?.vedanga_predictions?.bhavas[1]?.lord_phala || calcResult?.vedanga_predictions?.bhavas[1]?.meta?.['significance_' + readingLang] || 'Ascendant indicates good health, endurance, and decisive initiative.'"></p>
                                             </div>
                                         </template>
                                     </div>
@@ -1572,11 +1577,29 @@
                                         <p class="leading-relaxed"
                                            x-text="calcResult?.career_prediction?.[readingLang] || calcResult?.career_prediction?.en || calcResult?.career_prediction"></p>
 
+                                        <template x-if="calcResult?.vedanga_predictions?.bhavas?.[10]">
+                                            <div class="p-2.5 rounded-lg bg-amber-950/30 border border-amber-500/20 mt-2">
+                                                <strong class="text-amber-300 text-[10px] uppercase block">
+                                                    <span x-show="readingLang === 'en'">10th Bhava (Karma / Profession):</span>
+                                                    <span x-show="readingLang === 'ml'">10-ാം ഭാവം (കർമ്മ ഭാവം / തൊഴിലും ഉന്നതിയും):</span>
+                                                    <span x-show="readingLang === 'ta'">10-ஆம் பாவம் (கர்ம பாவம் / தொழில் மற்றும் கீர்த்தி):</span>
+                                                    <span x-show="readingLang === 'hi'">दशम भाव (कर्म भाव / आजीविका एवं प्रतिष्ठा):</span>
+                                                </strong>
+                                                <p class="text-[10.5px] text-amber-100/90 mt-0.5 leading-relaxed"
+                                                   x-text="calcResult?.vedanga_predictions?.bhavas[10]?.lord_phala_translations?.[readingLang] || calcResult?.vedanga_predictions?.bhavas[10]?.lord_phala || calcResult?.vedanga_predictions?.bhavas[10]?.meta?.['significance_' + readingLang] || ''"></p>
+                                            </div>
+                                        </template>
+
                                         <template x-if="calcResult?.vedanga_predictions?.wealth_sources && calcResult.vedanga_predictions.wealth_sources.length > 0">
                                             <div class="p-2.5 rounded-lg bg-amber-950/30 border border-amber-500/20 mt-2">
-                                                <strong class="text-amber-300 text-[10px] uppercase block">Vedanga Wealth Sources (Page 103):</strong>
+                                                <strong class="text-amber-300 text-[10px] uppercase block">
+                                                    <span x-show="readingLang === 'en'">Vedanga Wealth Sources (Page 103):</span>
+                                                    <span x-show="readingLang === 'ml'">ധനാഗമ മാർഗ്ഗങ്ങൾ (വേദാംഗ ജ്യോതിഷം പേജ് 103):</span>
+                                                    <span x-show="readingLang === 'ta'">வேதாங்க செல்வ வழிகள் (பக்கம் 103):</span>
+                                                    <span x-show="readingLang === 'hi'">वेदांग धनागम साधन (पृष्ठ 103):</span>
+                                                </strong>
                                                 <template x-for="(w, wIdx) in calcResult.vedanga_predictions.wealth_sources" :key="wIdx">
-                                                    <p class="text-[10.5px] text-amber-100/90 mt-0.5" x-text="'• ' + w"></p>
+                                                    <p class="text-[10.5px] text-amber-100/90 mt-0.5" x-text="'• ' + (typeof w === 'object' ? (w[readingLang] || w.en || Object.values(w)[0]) : w)"></p>
                                                 </template>
                                             </div>
                                         </template>
@@ -1595,9 +1618,14 @@
 
                                         <template x-if="calcResult?.vedanga_predictions?.bhavas?.[7]">
                                             <div class="p-2.5 rounded-lg bg-amber-950/30 border border-amber-500/20 mt-2">
-                                                <strong class="text-amber-300 text-[10px] uppercase block">7th Bhava (Kalathra / Spousal Concord):</strong>
+                                                <strong class="text-amber-300 text-[10px] uppercase block">
+                                                    <span x-show="readingLang === 'en'">7th Bhava (Kalathra / Spousal Concord):</span>
+                                                    <span x-show="readingLang === 'ml'">7-ാം ഭാവം (കളത്ര ഭാവം / ദാമ്പത്യ സൗഖ്യം):</span>
+                                                    <span x-show="readingLang === 'ta'">7-ஆம் பாவம் (களத்திர பாவம் / திருமண வாழ்வு):</span>
+                                                    <span x-show="readingLang === 'hi'">सप्तम भाव (कलत्र भाव / दांपत्य सुख):</span>
+                                                </strong>
                                                 <p class="text-[10.5px] text-amber-100/90 mt-0.5 leading-relaxed"
-                                                   x-text="calcResult?.vedanga_predictions?.bhavas[7]?.analysis_en || '7th house promotes mutual fidelity, shared spiritual ideals, and enduring domestic tranquility.'"></p>
+                                                   x-text="calcResult?.vedanga_predictions?.bhavas[7]?.lord_phala_translations?.[readingLang] || calcResult?.vedanga_predictions?.bhavas[7]?.lord_phala || calcResult?.vedanga_predictions?.bhavas[7]?.meta?.['significance_' + readingLang] || '7th house promotes mutual fidelity, shared spiritual ideals, and enduring domestic tranquility.'"></p>
                                             </div>
                                         </template>
                                     </div>

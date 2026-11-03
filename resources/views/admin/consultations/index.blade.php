@@ -176,6 +176,13 @@
                                 }
                             @endphp
                             <div class="flex items-center justify-end flex-wrap gap-1.5">
+                                <a href="{{ route('consultations.prediction', $lead->id) }}"
+                                   target="_blank"
+                                   title="View Full Dedicated Web Prediction Report"
+                                   class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/40 text-purple-200 font-bold text-[10px] transition-all">
+                                    <span>👁️</span>
+                                    <span>Web Report</span>
+                                </a>
                                 @if($readingUuid)
                                 <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_100', 'admin' => 1]) }}"
                                    target="_blank"
