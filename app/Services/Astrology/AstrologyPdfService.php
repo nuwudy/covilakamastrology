@@ -12,7 +12,7 @@ class AstrologyPdfService
     /**
      * Create and configure an mPDF instance with Indic font support.
      */
-    protected function createMpdfInstance(string $title = 'Covilakam Vedic Astrology Jathakam'): Mpdf
+    protected function createMpdfInstance(string $title = 'Covilakam Vedic Astrology Jathakam', string $lang = 'en'): Mpdf
     {
         $defaultConfig = (new ConfigVariables())->getDefaults();
         $fontDirs = $defaultConfig['fontDir'];
@@ -23,18 +23,39 @@ class AstrologyPdfService
         $customFontDir = resource_path('fonts');
         $extraFonts = [];
         $extraDirs = [];
-        if (is_dir($customFontDir) && file_exists($customFontDir . '/Nirmala.ttf')) {
+        if (is_dir($customFontDir)) {
             $extraDirs[] = $customFontDir;
-            $nirmalaDef = [
-                'R' => 'Nirmala.ttf',
-                'B' => 'NirmalaB.ttf',
-                'I' => 'Nirmala.ttf',
-                'BI' => 'NirmalaB.ttf',
-            ];
-            $extraFonts['nirmala'] = $nirmalaDef;
-            // Also override freeserif so any internal mPDF auto-mapping uses Nirmala
-            $fontData['freeserif'] = $nirmalaDef;
-            $fontData['freesans'] = $nirmalaDef;
+
+            // Kartika font with OpenType Layout (useOTL = 0xFF) for flawless, smooth Malayalam conjuncts
+            if (file_exists($customFontDir . '/kartika.ttf')) {
+                $kartikaDef = [
+                    'R' => 'kartika.ttf',
+                    'B' => 'kartikab.ttf',
+                    'I' => 'kartika.ttf',
+                    'BI' => 'kartikab.ttf',
+                    'useOTL' => 0xFF,
+                ];
+                $extraFonts['kartika'] = $kartikaDef;
+            }
+
+            if (file_exists($customFontDir . '/Nirmala.ttf')) {
+                $nirmalaDef = [
+                    'R' => 'Nirmala.ttf',
+                    'B' => 'NirmalaB.ttf',
+                    'I' => 'Nirmala.ttf',
+                    'BI' => 'NirmalaB.ttf',
+                ];
+                $extraFonts['nirmala'] = $nirmalaDef;
+                $fontData['freeserif'] = $nirmalaDef;
+                $fontData['freesans'] = $nirmalaDef;
+            }
+        }
+
+        $defaultFont = 'dejavusans';
+        if ($lang === 'ml' && isset($extraFonts['kartika'])) {
+            $defaultFont = 'kartika';
+        } elseif (isset($extraFonts['nirmala'])) {
+            $defaultFont = 'nirmala';
         }
 
         $mpdf = new Mpdf([
@@ -48,7 +69,7 @@ class AstrologyPdfService
             'margin_footer' => 8,
             'fontDir' => array_merge($fontDirs, $extraDirs),
             'fontdata' => $fontData + $extraFonts,
-            'default_font' => !empty($extraFonts) ? 'nirmala' : 'dejavusans',
+            'default_font' => $defaultFont,
             'autoScriptToLang' => false,
             'autoLangToFont' => false,
             'tempDir' => storage_path('app/temp-mpdf'),
@@ -69,7 +90,7 @@ class AstrologyPdfService
         $chartData = is_array($reading->chart_data) ? $reading->chart_data : json_decode($reading->chart_data, true);
         $lang = $lang ?: ($reading->language ?: 'en');
 
-        $mpdf = $this->createMpdfInstance("Covilakam Certified DOB Profile - {$reading->full_name}");
+        $mpdf = $this->createMpdfInstance("Covilakam Certified DOB Profile - {$reading->full_name}", $lang);
 
         $html = view('pdf.tier-100', [
             'reading' => $reading,
@@ -94,7 +115,7 @@ class AstrologyPdfService
         $chartData = is_array($reading->chart_data) ? $reading->chart_data : json_decode($reading->chart_data, true);
         $lang = $lang ?: ($reading->language ?: 'en');
 
-        $mpdf = $this->createMpdfInstance("Covilakam Deluxe Vedic Jathakam - {$reading->full_name}");
+        $mpdf = $this->createMpdfInstance("Covilakam Deluxe Vedic Jathakam - {$reading->full_name}", $lang);
 
         $html = view('pdf.tier-500', [
             'reading' => $reading,

@@ -19,7 +19,7 @@
             margin-right: 15mm;
         }
         body {
-            font-family: 'nirmala', 'dejavusans', sans-serif;
+            font-family: 'kartika', 'nirmala', 'dejavusans', sans-serif;
             font-size: 10pt;
             color: #1a1a1a;
             line-height: 1.5;
