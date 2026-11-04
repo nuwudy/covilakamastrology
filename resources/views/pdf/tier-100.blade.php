@@ -6,6 +6,33 @@
     if (!in_array($targetLang, ['en', 'ml', 'ta', 'hi'], true)) {
         $targetLang = 'en';
     }
+
+    $lagnaLong = (float)($chartData['lagna']['longitude'] ?? 0.0);
+    $lagnaRasiIdx = (int)($chartData['lagna']['rasi_index'] ?? floor(fmod($lagnaLong + 360.0, 360.0) / 30.0) + 1);
+    $lagnaRasiData = \App\Services\Astrology\PanchangaService::RASIS[$lagnaRasiIdx] ?? \App\Services\Astrology\PanchangaService::RASIS[1];
+    $lagnaNameEn = $chartData['lagna']['name_en'] ?? $lagnaRasiData['name_en'];
+    $lagnaNameMl = $chartData['lagna']['name_ml'] ?? $lagnaRasiData['name_ml'];
+    $lagnaNameTa = $chartData['lagna']['name_ta'] ?? $lagnaRasiData['name_ta'];
+    $lagnaNameHi = $chartData['lagna']['name_hi'] ?? $lagnaRasiData['name_hi'];
+    $lagnaLocalized = match($targetLang) {
+        'ml' => $lagnaNameMl,
+        'ta' => $lagnaNameTa,
+        'hi' => $lagnaNameHi,
+        default => $lagnaNameEn,
+    };
+
+    $formatRasiHeader = function($idx) use ($targetLang) {
+        $data = \App\Services\Astrology\PanchangaService::RASIS[$idx] ?? [];
+        if ($targetLang === 'ml') {
+            return $data['name_ml'] ?? $data['name_en'] ?? '';
+        } elseif ($targetLang === 'ta') {
+            return $data['name_ta'] ?? $data['name_en'] ?? '';
+        } elseif ($targetLang === 'hi') {
+            return $data['name_hi'] ?? $data['name_en'] ?? '';
+        } else {
+            return $data['name_en'] ?? '';
+        }
+    };
 @endphp
     <meta charset="utf-8">
     <title>Covilakam Astrology - Certified DOB Profile</title>
@@ -194,6 +221,17 @@
 
     <!-- ================= PAGE 1: COVER & PANCHANGA ================= -->
     <div class="cover-box">
+        <div style="font-size: 8.5pt; color: #b45309; font-weight: bold; margin-bottom: 4px;">
+            @if($targetLang === 'ml')
+                ।। ശ്രീ ഗുരുഭ്യോ നമഃ ।। ഓം നമഃ ശിവായ ।।
+            @elseif($targetLang === 'ta')
+                ।। ஸ்ரீ குருப்யோ நமஹ ।। ஓம் நம சிவாய ।।
+            @elseif($targetLang === 'hi')
+                ।। श्री गुरुभ्यो नमः ।। ॐ नमः शिवाय ।।
+            @else
+                ।। Om Sri Gurubhyo Namah ।। Om Namah Shivaya ।।
+            @endif
+        </div>
         <h1 class="gold-title">{{ $targetLang === 'ml' ? 'കോവിലകം ജ്യോതിഷം' : ($targetLang === 'ta' ? 'கோவிலகம் ஜோதிடம்' : ($targetLang === 'hi' ? 'कोविलकम ज्योतिष' : 'COVILAKAM ASTROLOGY')) }}</h1>
         <div class="gold-subtitle">{{ $targetLang === 'ml' ? 'സാക്ഷ്യപ്പെടുത്തിയ വേദാംഗ ജാതക കുറിപ്പും വിശകലനവും' : ($targetLang === 'ta' ? 'சான்றளிக்கப்பட்ட வேத ஜாதக விவரம்' : ($targetLang === 'hi' ? 'प्रमाणित वैदिक जन्म कुंडली विवरण' : 'CERTIFIED VEDIC BIRTH PROFILE & HOROSCOPE PORTFOLIO')) }}</div>
         <p style="margin-top: 8px; font-size: 9pt; color: #555;">
@@ -226,19 +264,26 @@
             <th>Chitrapaksha Ayanamsa</th>
             <td><strong>{{ $chartData['ayanamsa_deg'] ?? '23.85' }}°</strong></td>
             <th>Vedic Weekday (Vara)</th>
-            <td>{{ $chartData['vara']['name_en'] ?? 'Auspicious' }}</td>
+            <td>{{ $chartData['vara']['name_' . $targetLang] ?? $chartData['vara']['name_en'] ?? 'Auspicious' }}</td>
         </tr>
         <tr>
-            <th>Lagna (Ascendant)</th>
-            <td><strong>{{ $chartData['lagna']['name_en'] ?? '' }}</strong> ({{ $chartData['lagna']['name_ml'] ?? '' }})</td>
+            <th>{{ $targetLang === 'ml' ? 'ലഗ്നം (Lagna)' : ($targetLang === 'ta' ? 'லக்னம் (Lagna)' : ($targetLang === 'hi' ? 'लग्न (Lagna)' : 'Lagna (Ascendant)')) }}</th>
+            <td>
+                <strong>{{ $lagnaLocalized }}</strong>
+                @if($targetLang !== 'en')
+                    <span style="font-size: 8pt; color: #78350f;">({{ $lagnaNameEn }})</span>
+                @else
+                    <span style="font-size: 8pt; color: #78350f;">({{ $lagnaNameMl }})</span>
+                @endif
+            </td>
             <th>Janma Rasi (Moon)</th>
-            <td><strong>{{ $chartData['moon_sign']['name_en'] ?? '' }}</strong> ({{ $chartData['moon_sign']['name_ml'] ?? '' }})</td>
+            <td><strong>{{ $chartData['moon_sign']['name_' . $targetLang] ?? $chartData['moon_sign']['name_en'] ?? '' }}</strong> ({{ $chartData['moon_sign']['name_ml'] ?? '' }})</td>
         </tr>
         <tr>
             <th>Janma Nakshatra</th>
-            <td><strong>{{ $chartData['nakshatra']['name_en'] ?? '' }}</strong> (Pada {{ $chartData['nakshatra']['pada'] ?? '1' }})</td>
+            <td><strong>{{ $chartData['nakshatra']['name_' . $targetLang] ?? $chartData['nakshatra']['name_en'] ?? '' }}</strong> (Pada {{ $chartData['nakshatra']['pada'] ?? '1' }})</td>
             <th>Surya Rasi (Sun)</th>
-            <td><strong>{{ $chartData['solar_sign']['name_en'] ?? '' }}</strong> ({{ $chartData['solar_sign']['name_ml'] ?? '' }})</td>
+            <td><strong>{{ $chartData['solar_sign']['name_' . $targetLang] ?? $chartData['solar_sign']['name_en'] ?? '' }}</strong> ({{ $chartData['solar_sign']['name_ml'] ?? '' }})</td>
         </tr>
         <tr>
             <th>Birth Tithi</th>
@@ -269,38 +314,28 @@
         Constructed strictly according to the fixed-Rasi South Indian format using Chitrapaksha (Lahiri) Ayanamsa.
     </p>
 
-    @php
-        $rasiNames = [
-            12 => 'Pisces / മീനം', 1 => 'Aries / മേടം', 2 => 'Taurus / ഇടവം', 3 => 'Gemini / മിഥുനം',
-            11 => 'Aquarius / കുംഭം', 4 => 'Cancer / കർക്കി',
-            10 => 'Capricorn / മകരം', 5 => 'Leo / ചിങ്ങം',
-            9 => 'Sagittarius / ധനു', 8 => 'Scorpio / വൃശ്ചികം', 7 => 'Libra / തുലാം', 6 => 'Virgo / കന്നി'
-        ];
-        $lagnaRasiIdx = (int)($chartData['lagna']['rasi_index'] ?? 1);
-    @endphp
-
     <table class="chart-grid">
         <tr>
             <td class="chart-cell {{ $lagnaRasiIdx === 12 ? 'lagna-cell' : '' }}">
-                <strong>{{ $rasiNames[12] }}</strong><br>
+                <strong>{{ $formatRasiHeader(12) }}</strong><br>
                 @foreach($chartData['chart_grid_d1'][12] ?? [] as $pl)
                     <span style="color:#b45309; font-weight:bold;">{{ $pl['label'] }}</span><br>
                 @endforeach
             </td>
             <td class="chart-cell {{ $lagnaRasiIdx === 1 ? 'lagna-cell' : '' }}">
-                <strong>{{ $rasiNames[1] }}</strong><br>
+                <strong>{{ $formatRasiHeader(1) }}</strong><br>
                 @foreach($chartData['chart_grid_d1'][1] ?? [] as $pl)
                     <span style="color:#b45309; font-weight:bold;">{{ $pl['label'] }}</span><br>
                 @endforeach
             </td>
             <td class="chart-cell {{ $lagnaRasiIdx === 2 ? 'lagna-cell' : '' }}">
-                <strong>{{ $rasiNames[2] }}</strong><br>
+                <strong>{{ $formatRasiHeader(2) }}</strong><br>
                 @foreach($chartData['chart_grid_d1'][2] ?? [] as $pl)
                     <span style="color:#b45309; font-weight:bold;">{{ $pl['label'] }}</span><br>
                 @endforeach
             </td>
             <td class="chart-cell {{ $lagnaRasiIdx === 3 ? 'lagna-cell' : '' }}">
-                <strong>{{ $rasiNames[3] }}</strong><br>
+                <strong>{{ $formatRasiHeader(3) }}</strong><br>
                 @foreach($chartData['chart_grid_d1'][3] ?? [] as $pl)
                     <span style="color:#b45309; font-weight:bold;">{{ $pl['label'] }}</span><br>
                 @endforeach
@@ -308,19 +343,23 @@
         </tr>
         <tr>
             <td class="chart-cell {{ $lagnaRasiIdx === 11 ? 'lagna-cell' : '' }}">
-                <strong>{{ $rasiNames[11] }}</strong><br>
+                <strong>{{ $formatRasiHeader(11) }}</strong><br>
                 @foreach($chartData['chart_grid_d1'][11] ?? [] as $pl)
                     <span style="color:#b45309; font-weight:bold;">{{ $pl['label'] }}</span><br>
                 @endforeach
             </td>
             <td class="chart-cell chart-center" colspan="2" rowspan="2">
-                <span style="font-size: 13pt; color: #78350f;">രാശി ചക്രം (D1)</span><br>
+                <span style="font-size: 13pt; color: #78350f;">
+                    @if($targetLang === 'ml') രാശി ചക്രം (D1) @elseif($targetLang === 'ta') ராசி சக்கரம் (D1) @elseif($targetLang === 'hi') राशि चक्र (D1) @else RASI CHAKRA (D1) @endif
+                </span><br>
                 <span style="font-size: 9pt; color: #92400e;">RASI KUNDALI</span><br>
                 <span style="font-size: 8pt; color: #555;">{{ $reading->full_name }}</span><br>
-                <span style="font-size: 8pt; color: #b45309;">Lagna: {{ $chartData['lagna']['name_en'] ?? '' }}</span>
+                <span style="font-size: 8pt; color: #b45309;">
+                    <strong>{{ $targetLang === 'ml' ? 'ലഗ്നം' : ($targetLang === 'ta' ? 'லக்னம்' : ($targetLang === 'hi' ? 'लग्न' : 'Lagna')) }}:</strong> {{ $lagnaLocalized }}
+                </span>
             </td>
             <td class="chart-cell {{ $lagnaRasiIdx === 4 ? 'lagna-cell' : '' }}">
-                <strong>{{ $rasiNames[4] }}</strong><br>
+                <strong>{{ $formatRasiHeader(4) }}</strong><br>
                 @foreach($chartData['chart_grid_d1'][4] ?? [] as $pl)
                     <span style="color:#b45309; font-weight:bold;">{{ $pl['label'] }}</span><br>
                 @endforeach
@@ -328,13 +367,13 @@
         </tr>
         <tr>
             <td class="chart-cell {{ $lagnaRasiIdx === 10 ? 'lagna-cell' : '' }}">
-                <strong>{{ $rasiNames[10] }}</strong><br>
+                <strong>{{ $formatRasiHeader(10) }}</strong><br>
                 @foreach($chartData['chart_grid_d1'][10] ?? [] as $pl)
                     <span style="color:#b45309; font-weight:bold;">{{ $pl['label'] }}</span><br>
                 @endforeach
             </td>
             <td class="chart-cell {{ $lagnaRasiIdx === 5 ? 'lagna-cell' : '' }}">
-                <strong>{{ $rasiNames[5] }}</strong><br>
+                <strong>{{ $formatRasiHeader(5) }}</strong><br>
                 @foreach($chartData['chart_grid_d1'][5] ?? [] as $pl)
                     <span style="color:#b45309; font-weight:bold;">{{ $pl['label'] }}</span><br>
                 @endforeach
@@ -342,25 +381,25 @@
         </tr>
         <tr>
             <td class="chart-cell {{ $lagnaRasiIdx === 9 ? 'lagna-cell' : '' }}">
-                <strong>{{ $rasiNames[9] }}</strong><br>
+                <strong>{{ $formatRasiHeader(9) }}</strong><br>
                 @foreach($chartData['chart_grid_d1'][9] ?? [] as $pl)
                     <span style="color:#b45309; font-weight:bold;">{{ $pl['label'] }}</span><br>
                 @endforeach
             </td>
             <td class="chart-cell {{ $lagnaRasiIdx === 8 ? 'lagna-cell' : '' }}">
-                <strong>{{ $rasiNames[8] }}</strong><br>
+                <strong>{{ $formatRasiHeader(8) }}</strong><br>
                 @foreach($chartData['chart_grid_d1'][8] ?? [] as $pl)
                     <span style="color:#b45309; font-weight:bold;">{{ $pl['label'] }}</span><br>
                 @endforeach
             </td>
             <td class="chart-cell {{ $lagnaRasiIdx === 7 ? 'lagna-cell' : '' }}">
-                <strong>{{ $rasiNames[7] }}</strong><br>
+                <strong>{{ $formatRasiHeader(7) }}</strong><br>
                 @foreach($chartData['chart_grid_d1'][7] ?? [] as $pl)
                     <span style="color:#b45309; font-weight:bold;">{{ $pl['label'] }}</span><br>
                 @endforeach
             </td>
             <td class="chart-cell {{ $lagnaRasiIdx === 6 ? 'lagna-cell' : '' }}">
-                <strong>{{ $rasiNames[6] }}</strong><br>
+                <strong>{{ $formatRasiHeader(6) }}</strong><br>
                 @foreach($chartData['chart_grid_d1'][6] ?? [] as $pl)
                     <span style="color:#b45309; font-weight:bold;">{{ $pl['label'] }}</span><br>
                 @endforeach
@@ -370,22 +409,29 @@
 
     <div class="section-title">{{ $targetLang === 'ml' ? '3. വിംശോത്തരി ദശാപഹാര ക്രമവും നിലവിലെ കാലഘട്ടവും' : ($targetLang === 'ta' ? '3. விம்சொத்தரி தசா-புத்தி கால கணிதம்' : ($targetLang === 'hi' ? '3. विंशोत्तरी दशा चक्र एवं वर्तमान काल' : '3. Vimshottari Dasha Balance & Current Timeline')) }}</div>
     <div class="highlight-box">
-        <strong>Opening Balance of Dasha at Birth (Garbhashishta Dasha):</strong><br>
-        {{ $chartData['garbhashishta']['summary_en'] ?? '' }}<br>
-        <em style="color:#78350f;">{{ $chartData['garbhashishta']['summary_ml'] ?? '' }}</em>
+        <strong>{{ $targetLang === 'ml' ? 'ജനന സമയത്തെ ദശാശിഷ്ടം (ഗർഭശിഷ്ട ദശ):' : ($targetLang === 'ta' ? 'கர்ப்பசிஷ்ட தசா இருப்பு:' : ($targetLang === 'hi' ? 'जन्म कालीन दशा शेष (गर्भशिष्ट दशा):' : 'Opening Balance of Dasha at Birth (Garbhashishta Dasha):')) }}</strong><br>
+        @if($targetLang === 'ml')
+            {{ $chartData['garbhashishta']['summary_ml'] ?? $chartData['garbhashishta']['summary_en'] ?? '' }}
+        @elseif($targetLang === 'ta')
+            {{ $chartData['garbhashishta']['summary_ta'] ?? $chartData['garbhashishta']['summary_en'] ?? '' }}
+        @elseif($targetLang === 'hi')
+            {{ $chartData['garbhashishta']['summary_hi'] ?? $chartData['garbhashishta']['summary_en'] ?? '' }}
+        @else
+            {{ $chartData['garbhashishta']['summary_en'] ?? '' }}
+        @endif
     </div>
 
     <table class="table-data">
         <tr>
-            <th style="width: 35%;">Active Mahadasha</th>
-            <td><strong>{{ $chartData['active_dasha']['mahadasha'] ?? '' }}</strong> ({{ $chartData['active_dasha']['mahadasha_ml'] ?? '' }})</td>
+            <th style="width: 35%;">{{ $targetLang === 'ml' ? 'നിലവിലെ മഹാദശ' : 'Active Mahadasha' }}</th>
+            <td><strong>{{ $chartData['active_dasha']['mahadasha_' . $targetLang] ?? $chartData['active_dasha']['mahadasha'] ?? '' }}</strong> @if($targetLang !== 'en' && !empty($chartData['active_dasha']['mahadasha'])) ({{ $chartData['active_dasha']['mahadasha'] }}) @endif</td>
         </tr>
         <tr>
-            <th>Active Apahara (Antardasha)</th>
-            <td><strong>{{ $chartData['active_dasha']['apahara'] ?? '' }}</strong> ({{ $chartData['active_dasha']['apahara_ml'] ?? '' }})</td>
+            <th>{{ $targetLang === 'ml' ? 'നിലവിലെ അപഹാരം (അന്തർദശ)' : 'Active Apahara (Antardasha)' }}</th>
+            <td><strong>{{ $chartData['active_dasha']['apahara_' . $targetLang] ?? $chartData['active_dasha']['apahara'] ?? '' }}</strong> @if($targetLang !== 'en' && !empty($chartData['active_dasha']['apahara'])) ({{ $chartData['active_dasha']['apahara'] }}) @endif</td>
         </tr>
         <tr>
-            <th>Active Period Range</th>
+            <th>{{ $targetLang === 'ml' ? 'കാലഘട്ടം' : 'Active Period Range' }}</th>
             <td>{{ $chartData['active_dasha']['start_date'] ?? '' }} to {{ $chartData['active_dasha']['end_date'] ?? '' }}</td>
         </tr>
     </table>
@@ -398,13 +444,13 @@
     </div>
     <p>
         @if($targetLang === 'ml')
-            ലഗ്നമായ <strong>{{ $chartData['lagna']['name_ml'] ?? $chartData['lagna']['name_en'] ?? '' }}</strong> കൊണ്ടും ജന്മനക്ഷത്രമായ <strong>{{ $chartData['nakshatra']['name_ml'] ?? $chartData['nakshatra']['name_en'] ?? '' }}</strong> കൊണ്ടും ഉദാത്തമായ വ്യക്തിത്വവും നിശ്ചയദാർഢ്യവും ആത്മവിശ്വാസവുമുള്ള പ്രകൃതമാണ്. ധാർമ്മികമായ കർമ്മങ്ങളിലൂടെയും സ്വന്തം പരിശ്രമത്തിലൂടെയും ജീവിതത്തിൽ ഉയർന്ന വിജയം കൈവരിക്കും.
+            ലഗ്നമായ <strong>{{ $lagnaLocalized }}</strong> കൊണ്ടും ജന്മനക്ഷത്രമായ <strong>{{ $chartData['nakshatra']['name_ml'] ?? $chartData['nakshatra']['name_en'] ?? '' }}</strong> കൊണ്ടും ഉദാത്തമായ വ്യക്തിത്വവും നിശ്ചയദാർഢ്യവും ആത്മവിശ്വാസവുമുള്ള പ്രകൃതമാണ്. ധാർമ്മികമായ കർമ്മങ്ങളിലൂടെയും സ്വന്തം പരിശ്രമത്തിലൂടെയും ജീവിതത്തിൽ ഉയർന്ന വിജയം കൈവരിക്കും.
         @elseif($targetLang === 'ta')
-            லக்னம் <strong>{{ $chartData['lagna']['name_ta'] ?? $chartData['lagna']['name_en'] ?? '' }}</strong> மற்றும் ஜென்ம நட்சத்திரம் <strong>{{ $chartData['nakshatra']['name_ta'] ?? $chartData['nakshatra']['name_en'] ?? '' }}</strong> அமைப்பால் உறுதியான மனோதிடமும் நற்பண்புகளும் கொண்டவர். விடாமுயற்சியால் வாழ்வில் வெற்றி பெறுவீர்கள்.
+            லக்னம் <strong>{{ $lagnaLocalized }}</strong> மற்றும் ஜென்ம நட்சத்திரம் <strong>{{ $chartData['nakshatra']['name_ta'] ?? $chartData['nakshatra']['name_en'] ?? '' }}</strong> அமைப்பால் உறுதியான மனோதிடமும் நற்பண்புகளும் கொண்டவர். விடாமுயற்சியால் வாழ்வில் வெற்றி பெறுவீர்கள்.
         @elseif($targetLang === 'hi')
-            लग्न <strong>{{ $chartData['lagna']['name_hi'] ?? $chartData['lagna']['name_en'] ?? '' }}</strong> एवं जन्म नक्षत्र <strong>{{ $chartData['nakshatra']['name_hi'] ?? $chartData['nakshatra']['name_en'] ?? '' }}</strong> के प्रभाव से आपका व्यक्तित्व ओजस्वी, दृढ़संकल्प एवं स्वाभिमानी है। नैतिक आचरण एवं सतत परिश्रम से जीवन में सफलता प्राप्त होगी।
+            लग्न <strong>{{ $lagnaLocalized }}</strong> एवं जन्म नक्षत्र <strong>{{ $chartData['nakshatra']['name_hi'] ?? $chartData['nakshatra']['name_en'] ?? '' }}</strong> के प्रभाव से आपका व्यक्तित्व ओजस्वी, दृढ़संकल्प एवं स्वाभिमानी है। नैतिक आचरण एवं सतत परिश्रम से जीवन में सफलता प्राप्त होगी।
         @else
-            Governed by <strong>{{ $chartData['lagna']['name_en'] ?? '' }}</strong> Ascendant and Janma Nakshatra <strong>{{ $chartData['nakshatra']['name_en'] ?? '' }}</strong>, you possess an innate vitality, noble bearing, and determined will. Your soul purpose is driven by ethical perseverance and independent initiative.
+            Governed by <strong>{{ $lagnaLocalized }}</strong> Ascendant and Janma Nakshatra <strong>{{ $chartData['nakshatra']['name_en'] ?? '' }}</strong>, you possess an innate vitality, noble bearing, and determined will. Your soul purpose is driven by ethical perseverance and independent initiative.
         @endif
     </p>
 

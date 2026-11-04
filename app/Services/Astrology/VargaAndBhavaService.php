@@ -353,8 +353,27 @@ class VargaAndBhavaService
         $vargas = [];
         foreach ($allBodies as $key => $body) {
             $long = (float)($body['longitude'] ?? 0.0);
+            $rIdx = (int)floor(fmod($long + 360.0, 360.0) / 30.0) + 1;
+            $rData = PanchangaService::RASIS[$rIdx] ?? PanchangaService::RASIS[1];
+            $nakSpan = 360.0 / 27.0;
+            $nakIdx = (int)floor(fmod($long + 360.0, 360.0) / $nakSpan) + 1;
+            $nakData = PanchangaService::NAKSHATRAS[$nakIdx] ?? PanchangaService::NAKSHATRAS[1];
+            $nakPada = (int)floor(fmod($long, $nakSpan) / ($nakSpan / 4.0)) + 1;
+
             $vargas[$key] = array_merge(
-                ['key' => $key, 'name' => $body['name_en'] ?? $key],
+                [
+                    'key' => $key,
+                    'name' => $body['name_en'] ?? $key,
+                    'rasi_name_en' => $rData['name_en'],
+                    'rasi_name_ml' => $rData['name_ml'],
+                    'rasi_name_ta' => $rData['name_ta'],
+                    'rasi_name_hi' => $rData['name_hi'],
+                    'nakshatra_name_en' => $nakData['name_en'],
+                    'nakshatra_name_ml' => $nakData['name_ml'],
+                    'nakshatra_name_ta' => $nakData['name_ta'],
+                    'nakshatra_name_hi' => $nakData['name_hi'],
+                    'nakshatra_pada' => max(1, min(4, $nakPada)),
+                ],
                 $this->computeShadvargaForDegree($long)
             );
         }

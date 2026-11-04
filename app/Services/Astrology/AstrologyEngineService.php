@@ -71,6 +71,48 @@ class AstrologyEngineService
         $sunLong = (float)($planets['Su']['longitude'] ?? 0.0);
         $lagnaLong = (float)($lagna['longitude'] ?? 0.0);
 
+        // Enrich Lagna with Rasi and Nakshatra metadata
+        $lagnaRasiIdx = (int)($lagna['rasi_index'] ?? floor(fmod($lagnaLong + 360.0, 360.0) / 30.0) + 1);
+        $lagnaRasiData = PanchangaService::RASIS[$lagnaRasiIdx] ?? PanchangaService::RASIS[1];
+        $lagnaNakIdx = (int)($lagna['nakshatra_index'] ?? 1);
+        $lagnaNakData = PanchangaService::NAKSHATRAS[$lagnaNakIdx] ?? PanchangaService::NAKSHATRAS[1];
+
+        $lagna = array_merge($lagna, [
+            'name_en' => $lagnaRasiData['name_en'],
+            'name_ml' => $lagnaRasiData['name_ml'],
+            'name_ta' => $lagnaRasiData['name_ta'],
+            'name_hi' => $lagnaRasiData['name_hi'],
+            'lord' => $lagnaRasiData['lord'],
+            'element' => $lagnaRasiData['element'] ?? '',
+            'quality' => $lagnaRasiData['quality'] ?? '',
+            'nakshatra_name_en' => $lagnaNakData['name_en'],
+            'nakshatra_name_ml' => $lagnaNakData['name_ml'],
+            'nakshatra_name_ta' => $lagnaNakData['name_ta'],
+            'nakshatra_name_hi' => $lagnaNakData['name_hi'],
+            'nakshatra_ruler' => $lagnaNakData['ruler'] ?? '',
+        ]);
+
+        // Enrich Gulika with Rasi and Nakshatra metadata
+        $gulikaLong = (float)($gulika['longitude'] ?? 0.0);
+        $gulikaRasiIdx = (int)floor(fmod($gulikaLong + 360.0, 360.0) / 30.0) + 1;
+        $gulikaRasiData = PanchangaService::RASIS[$gulikaRasiIdx] ?? PanchangaService::RASIS[1];
+        $nakSpan = 360.0 / 27.0;
+        $gulikaNakIdx = (int)floor(fmod($gulikaLong + 360.0, 360.0) / $nakSpan) + 1;
+        $gulikaNakData = PanchangaService::NAKSHATRAS[$gulikaNakIdx] ?? PanchangaService::NAKSHATRAS[1];
+        $gulikaPada = (int)floor(fmod($gulikaLong, $nakSpan) / ($nakSpan / 4.0)) + 1;
+        $gulika = array_merge($gulika, [
+            'name_en' => $gulikaRasiData['name_en'],
+            'name_ml' => $gulikaRasiData['name_ml'],
+            'name_ta' => $gulikaRasiData['name_ta'],
+            'name_hi' => $gulikaRasiData['name_hi'],
+            'lord' => $gulikaRasiData['lord'],
+            'nakshatra_name_en' => $gulikaNakData['name_en'],
+            'nakshatra_name_ml' => $gulikaNakData['name_ml'],
+            'nakshatra_name_ta' => $gulikaNakData['name_ta'],
+            'nakshatra_name_hi' => $gulikaNakData['name_hi'],
+            'nakshatra_pada' => $gulikaPada,
+        ]);
+
         // 2. Compute Panchanga, Rasis, Nakshatra, and Numerology
         $panchangaData = $this->panchanga->calculatePanchanga(
             $sunLong,
@@ -84,12 +126,30 @@ class AstrologyEngineService
                 'key' => 'As',
                 'name_en' => 'Lagna (Ascendant)',
                 'name_ml' => 'ലഗ്നം (Lagna)',
+                'rasi_name_en' => $lagnaRasiData['name_en'],
+                'rasi_name_ml' => $lagnaRasiData['name_ml'],
+                'rasi_name_ta' => $lagnaRasiData['name_ta'],
+                'rasi_name_hi' => $lagnaRasiData['name_hi'],
+                'nakshatra_name_en' => $lagnaNakData['name_en'],
+                'nakshatra_name_ml' => $lagnaNakData['name_ml'],
+                'nakshatra_name_ta' => $lagnaNakData['name_ta'],
+                'nakshatra_name_hi' => $lagnaNakData['name_hi'],
+                'nakshatra_pada' => $lagna['pada'] ?? 1,
                 'longitude' => $lagnaLong,
             ],
             'Md' => [
                 'key' => 'Md',
                 'name_en' => 'Gulika (Maandhi)',
                 'name_ml' => 'ഗുളികൻ (Maandhi)',
+                'rasi_name_en' => $gulikaRasiData['name_en'],
+                'rasi_name_ml' => $gulikaRasiData['name_ml'],
+                'rasi_name_ta' => $gulikaRasiData['name_ta'],
+                'rasi_name_hi' => $gulikaRasiData['name_hi'],
+                'nakshatra_name_en' => $gulikaNakData['name_en'],
+                'nakshatra_name_ml' => $gulikaNakData['name_ml'],
+                'nakshatra_name_ta' => $gulikaNakData['name_ta'],
+                'nakshatra_name_hi' => $gulikaNakData['name_hi'],
+                'nakshatra_pada' => $gulikaPada,
                 'longitude' => (float)($gulika['longitude'] ?? 0.0),
             ],
         ]);

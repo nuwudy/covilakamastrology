@@ -547,7 +547,17 @@ class VedangaPredictionService
                     $occupantsPhala[] = [
                         'planet' => $pk,
                         'name' => $pInfo['name_ml'] ?? $pk,
+                        'name_en' => $pInfo['name_en'] ?? $pk,
+                        'name_ml' => $pInfo['name_ml'] ?? $pk,
+                        'name_ta' => $pInfo['name_ta'] ?? $pk,
+                        'name_hi' => $pInfo['name_hi'] ?? $pk,
                         'phala' => $pRule ? ($pRule->$contentField ?? $pRule->content_en) : "{$pk} in Bhava {$h}.",
+                        'phala_translations' => [
+                            'en' => $pRule ? ($pRule->content_en ?? "{$pk} in Bhava {$h}.") : "{$pk} in Bhava {$h}.",
+                            'ml' => $pRule ? ($pRule->content_ml ?? $pRule->content_en ?? "{$pk} {$h}-ാം ഭാവത്തിൽ.") : "{$pk} {$h}-ാം ഭാവത്തിൽ.",
+                            'ta' => $pRule ? ($pRule->content_ta ?? $pRule->content_en ?? "{$pk} in Bhava {$h}.") : "{$pk} in Bhava {$h}.",
+                            'hi' => $pRule ? ($pRule->content_hi ?? $pRule->content_en ?? "{$pk} भाव {$h} में।") : "{$pk} भाव {$h} में।",
+                        ],
                     ];
                 }
             }

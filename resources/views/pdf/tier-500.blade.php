@@ -6,6 +6,33 @@
     if (!in_array($targetLang, ['en', 'ml', 'ta', 'hi'], true)) {
         $targetLang = 'en';
     }
+
+    $lagnaLong = (float)($chartData['lagna']['longitude'] ?? 0.0);
+    $lagnaRasiIdx = (int)($chartData['lagna']['rasi_index'] ?? floor(fmod($lagnaLong + 360.0, 360.0) / 30.0) + 1);
+    $lagnaRasiData = \App\Services\Astrology\PanchangaService::RASIS[$lagnaRasiIdx] ?? \App\Services\Astrology\PanchangaService::RASIS[1];
+    $lagnaNameEn = $chartData['lagna']['name_en'] ?? $lagnaRasiData['name_en'];
+    $lagnaNameMl = $chartData['lagna']['name_ml'] ?? $lagnaRasiData['name_ml'];
+    $lagnaNameTa = $chartData['lagna']['name_ta'] ?? $lagnaRasiData['name_ta'];
+    $lagnaNameHi = $chartData['lagna']['name_hi'] ?? $lagnaRasiData['name_hi'];
+    $lagnaLocalized = match($targetLang) {
+        'ml' => $lagnaNameMl,
+        'ta' => $lagnaNameTa,
+        'hi' => $lagnaNameHi,
+        default => $lagnaNameEn,
+    };
+
+    $formatRasiHeader = function($idx) use ($targetLang) {
+        $data = \App\Services\Astrology\PanchangaService::RASIS[$idx] ?? [];
+        if ($targetLang === 'ml') {
+            return $data['name_ml'] ?? $data['name_en'] ?? '';
+        } elseif ($targetLang === 'ta') {
+            return $data['name_ta'] ?? $data['name_en'] ?? '';
+        } elseif ($targetLang === 'hi') {
+            return $data['name_hi'] ?? $data['name_en'] ?? '';
+        } else {
+            return $data['name_en'] ?? '';
+        }
+    };
 @endphp
     <meta charset="utf-8">
     <title>Covilakam Astrology - Deluxe Vedic Jathakam Portfolio</title>
@@ -217,20 +244,44 @@
 
     <!-- ================= PAGE 1: DELUXE ROYAL COVER PAGE ================= -->
     <div class="cover-box">
-        <div style="font-size: 9pt; color: #b45309; font-weight: bold; margin-bottom: 4px;">।। श्री गुरुഭ്യോ നമഃ ।। ॐ नमः शिवाय ।।</div>
-        <h1 class="gold-title">COVILAKAM ASTROLOGY</h1>
-        <div class="gold-subtitle">SAMPOORNA VEDIC JATHAKAM &amp; LIFE HOROSCOPE PORTFOLIO</div>
+        <div style="font-size: 9pt; color: #b45309; font-weight: bold; margin-bottom: 4px;">
+            @if($targetLang === 'ml')
+                ।। ശ്രീ ഗുരുഭ്യോ നമഃ ।। ഓം നമഃ ശിവായ ।।
+            @elseif($targetLang === 'ta')
+                ।। ஸ்ரீ குருப்யோ நமஹ ।। ஓம் நம சிவாய ।।
+            @elseif($targetLang === 'hi')
+                ।। श्री गुरुभ्यो नमः ।। ॐ नमः शिवाय ।।
+            @else
+                ।। Om Sri Gurubhyo Namah ।। Om Namah Shivaya ।।
+            @endif
+        </div>
+        <h1 class="gold-title">{{ $targetLang === 'ml' ? 'കോവിലകം ജ്യോതിഷം' : ($targetLang === 'ta' ? 'கோவிலகம் ஜோதிடம்' : ($targetLang === 'hi' ? 'कोविलकम ज्योतिष' : 'COVILAKAM ASTROLOGY')) }}</h1>
+        <div class="gold-subtitle">{{ $targetLang === 'ml' ? 'സമ്പൂർണ്ണ വേദാംഗ ജാതകവും ആയുഷ്കാല ഫലവിചാരവും' : ($targetLang === 'ta' ? 'சம்பூர்ண வேத ஜாதகம் மற்றும் ஆயுட்கால பலன்கள்' : ($targetLang === 'hi' ? 'सम्पूर्ण वैदिक जातकम् एवं जीवन फलादेश' : 'SAMPOORNA VEDIC JATHAKAM & LIFE HOROSCOPE PORTFOLIO')) }}</div>
         <p style="margin-top: 8px; font-size: 8.5pt; color: #555;">
-            Authored &amp; Certified by <strong>Dr. E. K. Raja Varma</strong><br>
+            {{ $targetLang === 'ml' ? 'ആചാര്യ സാക്ഷ്യപത്രം: ' : 'Authored & Certified by ' }}<strong>Dr. E. K. Raja Varma</strong><br>
             Vidya Vachaspathi in Vedic Astrology &bull; Gold Medalist &bull; Ph.D. (Online Astro Counselling)<br>
             Lifetime Member #11009, International Vedic Astrology Federation (IVAF)
         </p>
     </div>
 
     <div class="shloka-box">
-        "ഗുരുർബ്രഹ്മാ ഗുരുർവിഷ്ണുഃ ഗുരുർദേവോ മഹേശ്വരഃ |<br>
-        ഗുരുഃ സാക്ഷാത് പരബ്രഹ്മ തസ്മൈ ശ്രീഗുരവേ നമഃ ||"<br>
-        <em>"May the divine cosmic light illuminate our path of righteous action, health, prosperity, and peace."</em>
+        @if($targetLang === 'ml')
+            "ഗുരുർബ്രഹ്മാ ഗുരുർവിഷ്ണുഃ ഗുരുർദേവോ മഹേശ്വരഃ |<br>
+            ഗുരുഃ സാക്ഷാത് പരബ്രഹ്മ തസ്മൈ ശ്രീഗുരവേ നമഃ ||"<br>
+            <em>"ദിവ്യജ്യോതിസ്സ് നമ്മുടെ ധർമ്മമാർഗ്ഗത്തെയും ആരോഗ്യത്തെയും ഐശ്വര്യത്തെയും സമാധാനത്തെയും പ്രകാശിപ്പിക്കട്ടെ."</em>
+        @elseif($targetLang === 'ta')
+            "குருர்ப்ரம்மா குருர்விஷ்ணு குருர்தேவோ மஹேஸ்வரஹ |<br>
+            குரு சாக்ஷாத் பரப்ரம்ம தஸ்மை ஸ்ரீ குரவே நமஹ ||"<br>
+            <em>"தெய்வீக ஒளி நம்முடைய நல்வழி, ஆரோக்கியம், வளம் மற்றும் அமைதியை ஒளிரச் செய்யட்டும்."</em>
+        @elseif($targetLang === 'hi')
+            "गुरुर्ब्रह्मा गुरुर्विष्णुः गुरुर्देवो महेश्वरः ।<br>
+            गुरुः साक्षात् परब्रह्म तस्मै श्रीगुरवे नमः ॥"<br>
+            <em>"ईश्वरीय दिव्य प्रकाश हमारे धर्म, स्वास्थ्य, समृद्धि और शांति के मार्ग को आलोकित करे।"</em>
+        @else
+            "Gurur Brahma Gurur Vishnuh Gurur Devo Maheshwarah |<br>
+            Guruh Sakshat Parabrahma Tasmai Shri Gurave Namah ||"<br>
+            <em>"May the divine cosmic light illuminate our path of righteous action, health, prosperity, and peace."</em>
+        @endif
     </div>
 
     <div class="section-title">{{ $targetLang === 'ml' ? 'ജാതക വിവരങ്ങൾ (Jathaka Particulars)' : ($targetLang === 'ta' ? 'ஜாதக விபரங்கள்' : ($targetLang === 'hi' ? 'जातक जन्म विवरण' : 'Jathaka Registered Particulars')) }}</div>
@@ -260,16 +311,23 @@
             <td><strong>{{ $chartData['ayanamsa_deg'] ?? '23.85' }}°</strong></td>
         </tr>
         <tr>
-            <th>Lagna (Ascendant)</th>
-            <td><strong>{{ $chartData['lagna']['name_en'] ?? '' }}</strong> ({{ $chartData['lagna']['name_ml'] ?? '' }})</td>
+            <th>{{ $targetLang === 'ml' ? 'ലഗ്നം (Lagna)' : ($targetLang === 'ta' ? 'லக்னம் (Lagna)' : ($targetLang === 'hi' ? 'लग्न (Lagna)' : 'Lagna (Ascendant)')) }}</th>
+            <td>
+                <strong>{{ $lagnaLocalized }}</strong>
+                @if($targetLang !== 'en')
+                    <span style="font-size: 8pt; color: #78350f;">({{ $lagnaNameEn }})</span>
+                @else
+                    <span style="font-size: 8pt; color: #78350f;">({{ $lagnaNameMl }})</span>
+                @endif
+            </td>
             <th>Janma Rasi (Moon)</th>
-            <td><strong>{{ $chartData['moon_sign']['name_en'] ?? '' }}</strong> ({{ $chartData['moon_sign']['name_ml'] ?? '' }})</td>
+            <td><strong>{{ $chartData['moon_sign']['name_' . $targetLang] ?? $chartData['moon_sign']['name_en'] ?? '' }}</strong> ({{ $chartData['moon_sign']['name_ml'] ?? '' }})</td>
         </tr>
         <tr>
             <th>Janma Nakshatra</th>
-            <td><strong>{{ $chartData['nakshatra']['name_en'] ?? '' }}</strong> (Pada {{ $chartData['nakshatra']['pada'] ?? '1' }})</td>
+            <td><strong>{{ $chartData['nakshatra']['name_' . $targetLang] ?? $chartData['nakshatra']['name_en'] ?? '' }}</strong> (Pada {{ $chartData['nakshatra']['pada'] ?? '1' }})</td>
             <th>Surya Rasi (Sun)</th>
-            <td><strong>{{ $chartData['solar_sign']['name_en'] ?? '' }}</strong> ({{ $chartData['solar_sign']['name_ml'] ?? '' }})</td>
+            <td><strong>{{ $chartData['solar_sign']['name_' . $targetLang] ?? $chartData['solar_sign']['name_en'] ?? '' }}</strong> ({{ $chartData['solar_sign']['name_ml'] ?? '' }})</td>
         </tr>
         <tr>
             <th>Document Reference</th>
@@ -395,11 +453,24 @@
             @foreach($bodiesList as $code => $info)
                 @php
                     $deg = (float)$info['long'];
-                    $rasiIdx = (int)floor($deg / 30.0) + 1;
-                    $degInRasi = fmod($deg, 30.0);
+                    $rasiIdx = (int)floor(fmod($deg + 360.0, 360.0) / 30.0) + 1;
+                    $degInRasi = fmod(fmod($deg, 30.0) + 30.0, 30.0);
                     $d = (int)floor($degInRasi);
                     $m = (int)floor(($degInRasi - $d) * 60);
                     $s = (int)round((($degInRasi - $d) * 60 - $m) * 60);
+
+                    $rMeta = \App\Services\Astrology\PanchangaService::RASIS[$rasiIdx] ?? \App\Services\Astrology\PanchangaService::RASIS[1];
+                    $nakSpan = 360.0 / 27.0;
+                    $nakIdx = (int)floor(fmod($deg + 360.0, 360.0) / $nakSpan) + 1;
+                    $nakIdx = max(1, min(27, $nakIdx));
+                    $nakMeta = \App\Services\Astrology\PanchangaService::NAKSHATRAS[$nakIdx] ?? \App\Services\Astrology\PanchangaService::NAKSHATRAS[1];
+                    $padaCalc = (int)floor(fmod(fmod($deg, $nakSpan) + $nakSpan, $nakSpan) / ($nakSpan / 4.0)) + 1;
+                    $padaCalc = max(1, min(4, $padaCalc));
+
+                    $bodyRasiName = $chartData['shadvarga'][$code]['rasi_name_' . $targetLang] ?? $rMeta['name_' . $targetLang] ?? $rMeta['name_en'];
+                    $bodyNakName = $chartData['shadvarga'][$code]['nakshatra_name_' . $targetLang] ?? $nakMeta['name_' . $targetLang] ?? $nakMeta['name_en'];
+                    $bodyNakPada = $chartData['shadvarga'][$code]['nakshatra_pada'] ?? $padaCalc;
+
                     $pData = $chartData['planets'][$code] ?? null;
                     $isRetro = !empty($pData['is_retrograde']);
                     $dignity = $chartData['dignities'][$code]['status'] ?? ($code === 'As' ? 'Lagna Kendra' : ($code === 'Md' ? 'Upagraha' : 'Neutral'));
@@ -408,8 +479,13 @@
                 <tr>
                     <td><strong>{{ $info['name_en'] }}</strong><br><span style="font-size: 7.5pt; color: #78350f;">{{ $info['name_ml'] }}</span></td>
                     <td><strong>{{ sprintf("%02d° %02d' %02d\"", $d, $m, $s) }}</strong></td>
-                    <td>{{ $chartData['shadvarga'][$code]['rasi_name_en'] ?? '' }}</td>
-                    <td>{{ $chartData['shadvarga'][$code]['nakshatra_name_en'] ?? '' }} (P{{ $chartData['shadvarga'][$code]['nakshatra_pada'] ?? '1' }})</td>
+                    <td>
+                        <strong>{{ $bodyRasiName }}</strong>
+                        @if($targetLang !== 'en')
+                            <span style="font-size: 7.5pt; color: #78350f;">({{ $rMeta['name_en'] }})</span>
+                        @endif
+                    </td>
+                    <td><strong>{{ $bodyNakName }}</strong> (P{{ $bodyNakPada }})</td>
                     <td style="color: {{ $isRetro ? '#b91c1c' : '#15803d' }}; font-weight: bold;">
                         {{ $isRetro ? 'Retrograde (R)' : 'Direct' }}
                     </td>
@@ -448,28 +524,28 @@
         <tr>
             <!-- Pisces (12) -->
             <td class="chart-cell {{ $lagnaRasiIdx === 12 ? 'lagna-cell' : '' }}">
-                <div style="font-weight: bold; color: #78350f;">Pisces / മീനം</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(12) }}</div>
                 @foreach($chartData['chart_grid_d1'][12] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong> <span style="font-size: 7pt; color: #555;">{{ $pl['deg'] }}°</span></div>
                 @endforeach
             </td>
             <!-- Aries (1) -->
             <td class="chart-cell {{ $lagnaRasiIdx === 1 ? 'lagna-cell' : '' }}">
-                <div style="font-weight: bold; color: #78350f;">Aries / മേടം</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(1) }}</div>
                 @foreach($chartData['chart_grid_d1'][1] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong> <span style="font-size: 7pt; color: #555;">{{ $pl['deg'] }}°</span></div>
                 @endforeach
             </td>
             <!-- Taurus (2) -->
             <td class="chart-cell {{ $lagnaRasiIdx === 2 ? 'lagna-cell' : '' }}">
-                <div style="font-weight: bold; color: #78350f;">Taurus / ഇടവം</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(2) }}</div>
                 @foreach($chartData['chart_grid_d1'][2] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong> <span style="font-size: 7pt; color: #555;">{{ $pl['deg'] }}°</span></div>
                 @endforeach
             </td>
             <!-- Gemini (3) -->
             <td class="chart-cell {{ $lagnaRasiIdx === 3 ? 'lagna-cell' : '' }}">
-                <div style="font-weight: bold; color: #78350f;">Gemini / മിഥുനം</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(3) }}</div>
                 @foreach($chartData['chart_grid_d1'][3] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong> <span style="font-size: 7pt; color: #555;">{{ $pl['deg'] }}°</span></div>
                 @endforeach
@@ -478,22 +554,24 @@
         <tr>
             <!-- Aquarius (11) -->
             <td class="chart-cell {{ $lagnaRasiIdx === 11 ? 'lagna-cell' : '' }}">
-                <div style="font-weight: bold; color: #78350f;">Aquarius / കുംഭം</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(11) }}</div>
                 @foreach($chartData['chart_grid_d1'][11] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong> <span style="font-size: 7pt; color: #555;">{{ $pl['deg'] }}°</span></div>
                 @endforeach
             </td>
             <td colspan="2" rowspan="2" class="chart-center">
-                <div style="font-size: 13pt; color: #78350f;">RASI CHAKRA</div>
-                <div style="font-size: 9pt; color: #b45309; margin-top: 4px;">(രാശി ചക്രം - D1)</div>
+                <div style="font-size: 13pt; color: #78350f;">
+                    @if($targetLang === 'ml') രാശി ചക്രം (D1) @elseif($targetLang === 'ta') ராசி சக்கரம் (D1) @elseif($targetLang === 'hi') राशि चक्र (D1) @else RASI CHAKRA (D1) @endif
+                </div>
+                <div style="font-size: 9pt; color: #b45309; margin-top: 4px;">{{ $reading->full_name }}</div>
                 <div style="font-size: 8pt; color: #555; margin-top: 6px;">
-                    Lagna: {{ $chartData['lagna']['name_en'] ?? '' }}<br>
-                    Chandra: {{ $chartData['moon_sign']['name_en'] ?? '' }}
+                    <strong>{{ $targetLang === 'ml' ? 'ലഗ്നം' : ($targetLang === 'ta' ? 'லக்னம்' : ($targetLang === 'hi' ? 'लग्न' : 'Lagna')) }}:</strong> {{ $lagnaLocalized }}<br>
+                    <strong>{{ $targetLang === 'ml' ? 'ചന്ദ്രൻ' : ($targetLang === 'ta' ? 'சந்திரன்' : ($targetLang === 'hi' ? 'चन्द्र' : 'Chandra')) }}:</strong> {{ $chartData['moon_sign']['name_' . $targetLang] ?? $chartData['moon_sign']['name_en'] ?? '' }}
                 </div>
             </td>
             <!-- Cancer (4) -->
             <td class="chart-cell {{ $lagnaRasiIdx === 4 ? 'lagna-cell' : '' }}">
-                <div style="font-weight: bold; color: #78350f;">Cancer / കർക്കി</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(4) }}</div>
                 @foreach($chartData['chart_grid_d1'][4] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong> <span style="font-size: 7pt; color: #555;">{{ $pl['deg'] }}°</span></div>
                 @endforeach
@@ -502,14 +580,14 @@
         <tr>
             <!-- Capricorn (10) -->
             <td class="chart-cell {{ $lagnaRasiIdx === 10 ? 'lagna-cell' : '' }}">
-                <div style="font-weight: bold; color: #78350f;">Capricorn / മകരം</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(10) }}</div>
                 @foreach($chartData['chart_grid_d1'][10] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong> <span style="font-size: 7pt; color: #555;">{{ $pl['deg'] }}°</span></div>
                 @endforeach
             </td>
             <!-- Leo (5) -->
             <td class="chart-cell {{ $lagnaRasiIdx === 5 ? 'lagna-cell' : '' }}">
-                <div style="font-weight: bold; color: #78350f;">Leo / ചിങ്ങം</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(5) }}</div>
                 @foreach($chartData['chart_grid_d1'][5] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong> <span style="font-size: 7pt; color: #555;">{{ $pl['deg'] }}°</span></div>
                 @endforeach
@@ -518,28 +596,28 @@
         <tr>
             <!-- Sagittarius (9) -->
             <td class="chart-cell {{ $lagnaRasiIdx === 9 ? 'lagna-cell' : '' }}">
-                <div style="font-weight: bold; color: #78350f;">Sagittarius / ധനു</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(9) }}</div>
                 @foreach($chartData['chart_grid_d1'][9] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong> <span style="font-size: 7pt; color: #555;">{{ $pl['deg'] }}°</span></div>
                 @endforeach
             </td>
             <!-- Scorpio (8) -->
             <td class="chart-cell {{ $lagnaRasiIdx === 8 ? 'lagna-cell' : '' }}">
-                <div style="font-weight: bold; color: #78350f;">Scorpio / വൃശ്ചി</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(8) }}</div>
                 @foreach($chartData['chart_grid_d1'][8] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong> <span style="font-size: 7pt; color: #555;">{{ $pl['deg'] }}°</span></div>
                 @endforeach
             </td>
             <!-- Libra (7) -->
             <td class="chart-cell {{ $lagnaRasiIdx === 7 ? 'lagna-cell' : '' }}">
-                <div style="font-weight: bold; color: #78350f;">Libra / തുലാം</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(7) }}</div>
                 @foreach($chartData['chart_grid_d1'][7] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong> <span style="font-size: 7pt; color: #555;">{{ $pl['deg'] }}°</span></div>
                 @endforeach
             </td>
             <!-- Virgo (6) -->
             <td class="chart-cell {{ $lagnaRasiIdx === 6 ? 'lagna-cell' : '' }}">
-                <div style="font-weight: bold; color: #78350f;">Virgo / കന്നി</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(6) }}</div>
                 @foreach($chartData['chart_grid_d1'][6] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong> <span style="font-size: 7pt; color: #555;">{{ $pl['deg'] }}°</span></div>
                 @endforeach
@@ -613,28 +691,28 @@
         <tr>
             <!-- Pisces (12) -->
             <td class="chart-cell">
-                <div style="font-weight: bold; color: #78350f;">Pisces / മീനം</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(12) }}</div>
                 @foreach($chartData['chart_grid_d9'][12] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong></div>
                 @endforeach
             </td>
             <!-- Aries (1) -->
             <td class="chart-cell">
-                <div style="font-weight: bold; color: #78350f;">Aries / മേടം</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(1) }}</div>
                 @foreach($chartData['chart_grid_d9'][1] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong></div>
                 @endforeach
             </td>
             <!-- Taurus (2) -->
             <td class="chart-cell">
-                <div style="font-weight: bold; color: #78350f;">Taurus / ഇടവം</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(2) }}</div>
                 @foreach($chartData['chart_grid_d9'][2] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong></div>
                 @endforeach
             </td>
             <!-- Gemini (3) -->
             <td class="chart-cell">
-                <div style="font-weight: bold; color: #78350f;">Gemini / മിഥുനം</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(3) }}</div>
                 @foreach($chartData['chart_grid_d9'][3] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong></div>
                 @endforeach
@@ -643,22 +721,24 @@
         <tr>
             <!-- Aquarius (11) -->
             <td class="chart-cell">
-                <div style="font-weight: bold; color: #78350f;">Aquarius / കുംഭം</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(11) }}</div>
                 @foreach($chartData['chart_grid_d9'][11] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong></div>
                 @endforeach
             </td>
             <td colspan="2" rowspan="2" class="chart-center">
-                <div style="font-size: 13pt; color: #78350f;">NAVAMSHA (D9)</div>
-                <div style="font-size: 9pt; color: #b45309; margin-top: 4px;">(നവാംശകം - D9)</div>
+                <div style="font-size: 13pt; color: #78350f;">
+                    @if($targetLang === 'ml') നവാംശകം (D9) @elseif($targetLang === 'ta') நவாம்சம் (D9) @elseif($targetLang === 'hi') नवांश (D9) @else NAVAMSHA (D9) @endif
+                </div>
+                <div style="font-size: 9pt; color: #b45309; margin-top: 4px;">{{ $reading->full_name }}</div>
                 <div style="font-size: 8pt; color: #555; margin-top: 6px;">
-                    Dharmamsha &amp; Kalathramsha<br>
-                    Includes Gulika &amp; Nodes
+                    {{ $targetLang === 'ml' ? 'ധർമ്മാംശകവും കളത്രാംശകവും' : ($targetLang === 'ta' ? 'தர்ம அம்சம் மற்றும் களத்திர அம்சம்' : ($targetLang === 'hi' ? 'धर्मांश एवं कलत्रांश' : 'Dharmamsha & Kalathramsha')) }}<br>
+                    {{ $targetLang === 'ml' ? 'ഗുളികനും ഛായാഗ്രഹങ്ങളും ഉൾപ്പെടെ' : ($targetLang === 'ta' ? 'குளிகன் மற்றும் நிழல் கிரகங்கள்' : ($targetLang === 'hi' ? 'गुलिक एवं छायाग्रह सहित' : 'Includes Gulika & Nodes')) }}
                 </div>
             </td>
             <!-- Cancer (4) -->
             <td class="chart-cell">
-                <div style="font-weight: bold; color: #78350f;">Cancer / കർക്കി</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(4) }}</div>
                 @foreach($chartData['chart_grid_d9'][4] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong></div>
                 @endforeach
@@ -667,14 +747,14 @@
         <tr>
             <!-- Capricorn (10) -->
             <td class="chart-cell">
-                <div style="font-weight: bold; color: #78350f;">Capricorn / മകരം</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(10) }}</div>
                 @foreach($chartData['chart_grid_d9'][10] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong></div>
                 @endforeach
             </td>
             <!-- Leo (5) -->
             <td class="chart-cell">
-                <div style="font-weight: bold; color: #78350f;">Leo / ചിങ്ങം</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(5) }}</div>
                 @foreach($chartData['chart_grid_d9'][5] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong></div>
                 @endforeach
@@ -683,28 +763,28 @@
         <tr>
             <!-- Sagittarius (9) -->
             <td class="chart-cell">
-                <div style="font-weight: bold; color: #78350f;">Sagittarius / ധനു</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(9) }}</div>
                 @foreach($chartData['chart_grid_d9'][9] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong></div>
                 @endforeach
             </td>
             <!-- Scorpio (8) -->
             <td class="chart-cell">
-                <div style="font-weight: bold; color: #78350f;">Scorpio / വൃശ്ചി</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(8) }}</div>
                 @foreach($chartData['chart_grid_d9'][8] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong></div>
                 @endforeach
             </td>
             <!-- Libra (7) -->
             <td class="chart-cell">
-                <div style="font-weight: bold; color: #78350f;">Libra / തുലാം</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(7) }}</div>
                 @foreach($chartData['chart_grid_d9'][7] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong></div>
                 @endforeach
             </td>
             <!-- Virgo (6) -->
             <td class="chart-cell">
-                <div style="font-weight: bold; color: #78350f;">Virgo / കന്നി</div>
+                <div style="font-weight: bold; color: #78350f;">{{ $formatRasiHeader(6) }}</div>
                 @foreach($chartData['chart_grid_d9'][6] ?? [] as $pl)
                     <div><strong>{{ $pl['label'] }}</strong></div>
                 @endforeach
@@ -1040,12 +1120,65 @@
             $bMeta = $bData['meta'] ?? \App\Services\Astrology\VargaAndBhavaService::BHAVA_METADATA[$h] ?? [];
             $title = $bMeta['name_' . $targetLang] ?? $bMeta['name_en'] ?? "Bhava {$h}";
             $desc = $bMeta['significance_' . $targetLang] ?? $bData['analysis_' . $targetLang] ?? $bMeta['significance_en'] ?? $bData['analysis_en'] ?? '';
-            $lordPhala = $bData['lord_phala_translations'][$targetLang] ?? $bData['lord_phala'] ?? $bData['lord_placement_' . $targetLang] ?? $bData['lord_placement_en'] ?? '';
+            $lordPhala = $bData['lord_phala_translations'][$targetLang] ?? $bData['lord_placement_' . $targetLang] ?? null;
             $lord = $bData['bhava_lord'] ?? '';
             $lordHouse = $bData['lord_placed_in_bhava'] ?? '';
+
+            if (!$lordPhala && $lordHouse) {
+                $cachedLordRule = \App\Models\VedangaRule::where('category', 'lord_in_house')->where('rule_key', "L{$h}_H{$lordHouse}")->first();
+                if ($cachedLordRule) {
+                    $lordPhala = $cachedLordRule->{'content_' . $targetLang} ?? $cachedLordRule->content_en;
+                }
+            }
+            if (!$lordPhala) {
+                $lordPhala = $bData['lord_phala'] ?? ($lord ? "Lord {$lord} in House {$lordHouse}." : '');
+            }
+
+            $planetNames = [
+                'Su' => ['en' => 'Sun', 'ml' => 'സൂര്യൻ', 'ta' => 'சூரியன்', 'hi' => 'सूर्य'],
+                'Mo' => ['en' => 'Moon', 'ml' => 'ചന്ദ്രൻ', 'ta' => 'சந்திரன்', 'hi' => 'चन्द्र'],
+                'Ma' => ['en' => 'Mars', 'ml' => 'ചൊവ്വ', 'ta' => 'செவ்வாய்', 'hi' => 'मंगल'],
+                'Me' => ['en' => 'Mercury', 'ml' => 'ബുധൻ', 'ta' => 'புதன்', 'hi' => 'बुध'],
+                'Ju' => ['en' => 'Jupiter', 'ml' => 'വ്യാഴം', 'ta' => 'குரு', 'hi' => 'गुरु'],
+                'Ve' => ['en' => 'Venus', 'ml' => 'ശുക്രൻ', 'ta' => 'சுக்கிரன்', 'hi' => 'शुक्र'],
+                'Sa' => ['en' => 'Saturn', 'ml' => 'ശനി', 'ta' => 'சனி', 'hi' => 'शनि'],
+                'Ra' => ['en' => 'Rahu', 'ml' => 'രാഹു', 'ta' => 'ராகு', 'hi' => 'राहु'],
+                'Ke' => ['en' => 'Ketu', 'ml' => 'കേതു', 'ta' => 'கேது', 'hi' => 'केतु'],
+                'Md' => ['en' => 'Gulika', 'ml' => 'ഗുളികൻ', 'ta' => 'குளிகன்', 'hi' => 'गुलिक'],
+                'As' => ['en' => 'Lagna', 'ml' => 'ലഗ്നം', 'ta' => 'லக்னம்', 'hi' => 'लग्न'],
+            ];
+
             $occupants = $bData['occupants'] ?? [];
+            $localizedOccupants = [];
+            foreach ($occupants as $occ) {
+                $pk = $occ['planet'] ?? '';
+                $pName = $planetNames[$pk][$targetLang] ?? $occ['name_' . $targetLang] ?? $planetNames[$pk]['en'] ?? $occ['name_en'] ?? $pk;
+                $pPhala = $occ['phala_translations'][$targetLang] ?? null;
+                if (!$pPhala && $targetLang !== 'en' && $pk && $pk !== 'As' && $pk !== 'Md') {
+                    $pRule = \App\Models\VedangaRule::where('category', 'planet_in_house')->where('rule_key', "{$pk}_H{$h}")->first();
+                    if ($pRule) {
+                        $pPhala = $pRule->{'content_' . $targetLang} ?? $pRule->content_en;
+                    }
+                }
+                if (!$pPhala) {
+                    $pPhala = $occ['phala'] ?? "{$pName} in Bhava {$h}.";
+                }
+                $localizedOccupants[] = [
+                    'name' => $pName,
+                    'phala' => $pPhala,
+                ];
+            }
+
             $karakaExp = $bData['karaka_exception'] ?? null;
-            return compact('title', 'desc', 'lordPhala', 'lord', 'lordHouse', 'occupants', 'karakaExp');
+            return [
+                'title' => $title,
+                'desc' => $desc,
+                'lordPhala' => $lordPhala,
+                'lord' => $lord,
+                'lordHouse' => $lordHouse,
+                'occupants' => $localizedOccupants,
+                'karakaExp' => $karakaExp,
+            ];
         };
     @endphp
 
