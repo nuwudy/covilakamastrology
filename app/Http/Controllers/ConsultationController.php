@@ -100,6 +100,12 @@ class ConsultationController extends Controller
         $calculation['consultation_id'] = $consultation->id;
         $calculation['report_url'] = route('consultations.prediction', $consultation->id);
 
+        try {
+            $consultation->update(['calculated_summary' => $calculation]);
+        } catch (\Throwable $e) {
+            // Ignore if update fails
+        }
+
         if ($request->wantsJson() || $request->ajax()) {
             return response()->json([
                 'success' => true,

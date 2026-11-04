@@ -58,6 +58,17 @@ class AstrologyPdfService
             $defaultFont = 'nirmala';
         }
 
+        $tempDir = storage_path('app/temp-mpdf');
+        if (!file_exists($tempDir)) {
+            @mkdir($tempDir, 0777, true);
+        }
+        if (!is_writable($tempDir)) {
+            $tempDir = sys_get_temp_dir() . '/covilakam_mpdf';
+            if (!file_exists($tempDir)) {
+                @mkdir($tempDir, 0777, true);
+            }
+        }
+
         $mpdf = new Mpdf([
             'mode' => 'utf-8',
             'format' => 'A4',
@@ -72,7 +83,7 @@ class AstrologyPdfService
             'default_font' => $defaultFont,
             'autoScriptToLang' => false,
             'autoLangToFont' => false,
-            'tempDir' => storage_path('app/temp-mpdf'),
+            'tempDir' => $tempDir,
         ]);
 
         $mpdf->SetTitle($title);

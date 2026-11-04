@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AstrologyReading;
+use App\Models\Consultation;
 use App\Services\Astrology\AstrologyPdfService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -171,23 +172,130 @@ class AstrologyPaymentController extends Controller
     }
 
     /**
+     * Resolve reading by UUID, Consultation ID, or Consultation lead metadata.
+     * Reconstructs on-the-fly if needed so valid consultation records never 404.
+     */
+    protected function resolveReading(Request $request, string $uuid): ?AstrologyReading
+    {
+        $reading = AstrologyReading::where('uuid', $uuid)->first();
+        if ($reading) {
+            return $reading;
+        }
+
+        // Try looking up Consultation by ID, reading_uuid, or full name
+        $lead = null;
+        if (is_numeric($uuid)) {
+            $lead = Consultation::find((int)$uuid);
+        }
+        if (!$lead) {
+            $lead = Consultation::where('calculated_summary->reading_uuid', $uuid)->first();
+        }
+        if (!$lead) {
+            $lead = Consultation::where('name', $uuid)->latest()->first();
+        }
+
+        if ($lead) {
+            // Check if a reading already exists for this lead
+            $existing = AstrologyReading::where('full_name', $lead->name)
+                ->where('dob', $lead->birth_date)
+                ->latest()
+                ->first();
+            if ($existing) {
+                return $existing;
+            }
+
+            // Reconstruct reading on-the-fly
+            $chartData = is_array($lead->calculated_summary) ? $lead->calculated_summary : [];
+            $lang = $request->query('lang', $chartData['language'] ?? 'ml');
+
+            if (empty($chartData['planets'])) {
+                try {
+                    $engine = app(\App\Services\Astrology\AstrologyEngineService::class);
+                    $calcInput = [
+                        'name' => $lead->name,
+                        'gender' => $chartData['gender'] ?? 'male',
+                        'dob' => $lead->birth_date,
+                        'birth_time' => $chartData['birth_time'] ?? '12:00:00',
+                        'is_approximate_time' => empty($chartData['birth_time']),
+                        'birth_place' => $chartData['birth_place'] ?? 'Ernakulam / Kochi, Kerala, India',
+                        'latitude' => 9.9312,
+                        'longitude' => 76.2673,
+                        'timezone' => 'Asia/Kolkata',
+                        'language' => $lang,
+                    ];
+                    $chartData = $engine->calculate($calcInput);
+                } catch (\Throwable $e) {
+                    Log::warning('Engine calculation fallback in resolveReading: ' . $e->getMessage());
+                }
+            }
+
+            try {
+                $newUuid = is_numeric($uuid) ? (string) Str::uuid() : $uuid;
+                $reading = AstrologyReading::create([
+                    'uuid' => $newUuid,
+                    'full_name' => $lead->name,
+                    'gender' => $chartData['gender'] ?? 'male',
+                    'whatsapp_number' => $lead->whatsapp_number ?? $lead->phone,
+                    'language' => $lang,
+                    'dob' => $lead->birth_date,
+                    'birth_time' => $chartData['birth_time'] ?? '12:00:00',
+                    'is_approximate_time' => !empty($chartData['is_approximate_time']),
+                    'birth_place' => $chartData['birth_place'] ?? 'Ernakulam / Kochi, Kerala, India',
+                    'latitude' => 9.9312,
+                    'longitude' => 76.2673,
+                    'timezone' => 'Asia/Kolkata',
+                    'chart_data' => $chartData,
+                    'paid_tier' => 'tier_500',
+                ]);
+                return $reading;
+            } catch (\Throwable $e) {
+                Log::warning('Reading create failed in resolveReading: ' . $e->getMessage());
+                return new AstrologyReading([
+                    'uuid' => $uuid,
+                    'full_name' => $lead->name,
+                    'gender' => $chartData['gender'] ?? 'male',
+                    'whatsapp_number' => $lead->whatsapp_number,
+                    'language' => $lang,
+                    'dob' => $lead->birth_date,
+                    'birth_time' => '12:00:00',
+                    'chart_data' => $chartData,
+                    'paid_tier' => 'tier_500',
+                ]);
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Download multi-page certified Astrology PDF for unlocked readings.
      * Endpoint: GET /astrology/readings/{uuid}/download-pdf
      */
     public function downloadPdf(Request $request, string $uuid): mixed
     {
-        $reading = AstrologyReading::where('uuid', $uuid)->firstOrFail();
+        $reading = $this->resolveReading($request, $uuid);
+        if (!$reading) {
+            abort(404, 'Horoscope reading record not found.');
+        }
 
         $isAdmin = auth()->check() || auth('web')->check() || $request->has('admin');
         $requestedTier = $request->query('tier', $reading->paid_tier);
+        $lang = $request->query('lang', $reading->language ?: 'en');
+        if (!in_array($lang, ['en', 'ml', 'ta', 'hi'], true)) {
+            $lang = 'en';
+        }
 
         // If tier is free and not admin and no force preview is requested, reject
         if (!$isAdmin && $reading->paid_tier === 'free' && !$request->has('preview')) {
-            return response()->json([
-                'success' => false,
-                'message' => 'This reading is currently on Tier 1 (Free). Please upgrade to Tier 2 (₹100) or Tier 3 (₹500) to download the Certified PDF.',
-                'uuid' => $reading->uuid,
-            ], 403);
+            if ($request->wantsJson() || $request->is('api/*')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This reading is currently on Tier 1 (Free). Please upgrade to Tier 2 (₹100) or Tier 3 (₹500) to download the Certified PDF.',
+                    'uuid' => $reading->uuid,
+                ], 403);
+            }
+            return redirect()->route('astrology.reading.view', ['uuid' => $reading->uuid, 'lang' => $lang])
+                ->with('error', 'Please upgrade to Tier 2 (₹100) or Tier 3 (₹500) to download the Certified PDF.');
         }
 
         // Determine which tier to generate:
@@ -198,11 +306,6 @@ class AstrologyPaymentController extends Controller
             $effectiveTier = $reading->paid_tier === 'tier_500' ? 'tier_500' : 'tier_100';
         }
 
-        $lang = $request->query('lang', $reading->language ?: 'en');
-        if (!in_array($lang, ['en', 'ml', 'ta', 'hi'], true)) {
-            $lang = 'en';
-        }
-
         $langNames = [
             'ml' => 'Malayalam',
             'en' => 'English',
@@ -210,8 +313,8 @@ class AstrologyPaymentController extends Controller
             'hi' => 'Hindi',
         ];
         $langLabel = $langNames[$lang] ?? 'Vedic';
-        $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', trim($reading->full_name)) ?: 'Client';
-        $cleanName = preg_replace('/_+/', '_', $cleanName);
+        $cleanName = trim(preg_replace('/[^A-Za-z0-9_\-]/', '_', trim($reading->full_name)), '_');
+        $cleanName = preg_replace('/_+/', '_', $cleanName) ?: 'Client';
 
         // Generate appropriate PDF based on effective tier and language
         if ($effectiveTier === 'tier_500') {
@@ -245,7 +348,10 @@ class AstrologyPaymentController extends Controller
      */
     public function viewReport(Request $request, string $uuid)
     {
-        $reading = AstrologyReading::where('uuid', $uuid)->firstOrFail();
+        $reading = $this->resolveReading($request, $uuid);
+        if (!$reading) {
+            abort(404, 'Horoscope reading record not found.');
+        }
 
         $isAdmin = auth()->check() || auth('web')->check() || $request->has('admin');
         $requestedTier = $request->query('tier', $reading->paid_tier);
