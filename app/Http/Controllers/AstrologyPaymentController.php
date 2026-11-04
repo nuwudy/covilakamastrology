@@ -203,25 +203,37 @@ class AstrologyPaymentController extends Controller
             $lang = 'en';
         }
 
+        $langNames = [
+            'ml' => 'Malayalam',
+            'en' => 'English',
+            'ta' => 'Tamil',
+            'hi' => 'Hindi',
+        ];
+        $langLabel = $langNames[$lang] ?? 'Vedic';
+        $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', trim($reading->full_name)) ?: 'Client';
+
         // Generate appropriate PDF based on effective tier and language
         if ($effectiveTier === 'tier_500') {
             $pdfContent = $this->pdfService->generateTier500Pdf($reading, $lang);
-            $cleanName = Str::slug($reading->full_name, '_');
-            $fileName = "Covilakam_Deluxe_Jathakam_{$cleanName}_{$lang}_{$reading->uuid}.pdf";
+            $fileName = "Covilakam_Deluxe_Jathakam_{$cleanName}_{$langLabel}.pdf";
         } else {
             // tier_100 or preview fallback
             $pdfContent = $this->pdfService->generateTier100Pdf($reading, $lang);
-            $cleanName = Str::slug($reading->full_name, '_');
-            $fileName = "Covilakam_Certified_Profile_{$cleanName}_{$lang}_{$reading->uuid}.pdf";
+            $fileName = "Covilakam_Certified_Profile_{$cleanName}_{$langLabel}.pdf";
         }
 
         $disposition = $request->has('download') ? 'attachment' : 'inline';
+        $contentLength = strlen($pdfContent);
+
         return response($pdfContent, 200, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => "{$disposition}; filename=\"{$fileName}\"",
-            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            'Content-Disposition' => "{$disposition}; filename=\"{$fileName}\"; filename*=UTF-8''" . rawurlencode($fileName),
+            'Content-Length' => (string) $contentLength,
+            'Accept-Ranges' => 'bytes',
+            'Cache-Control' => 'private, no-transform, no-store, must-revalidate',
             'Pragma' => 'no-cache',
             'Expires' => '0',
+            'Connection' => 'close',
         ]);
     }
 
