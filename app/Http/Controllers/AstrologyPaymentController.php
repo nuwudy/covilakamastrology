@@ -174,7 +174,7 @@ class AstrologyPaymentController extends Controller
      * Download multi-page certified Astrology PDF for unlocked readings.
      * Endpoint: GET /astrology/readings/{uuid}/download-pdf
      */
-    public function downloadPdf(Request $request, string $uuid): Response|JsonResponse
+    public function downloadPdf(Request $request, string $uuid): mixed
     {
         $reading = AstrologyReading::where('uuid', $uuid)->firstOrFail();
 
@@ -211,6 +211,7 @@ class AstrologyPaymentController extends Controller
         ];
         $langLabel = $langNames[$lang] ?? 'Vedic';
         $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', trim($reading->full_name)) ?: 'Client';
+        $cleanName = preg_replace('/_+/', '_', $cleanName);
 
         // Generate appropriate PDF based on effective tier and language
         if ($effectiveTier === 'tier_500') {
@@ -222,18 +223,19 @@ class AstrologyPaymentController extends Controller
             $fileName = "Covilakam_Certified_Profile_{$cleanName}_{$langLabel}.pdf";
         }
 
-        $disposition = $request->has('download') ? 'attachment' : 'inline';
-        $contentLength = strlen($pdfContent);
+        if ($request->has('download')) {
+            return response()->streamDownload(function () use ($pdfContent) {
+                echo $pdfContent;
+            }, $fileName, [
+                'Content-Type' => 'application/pdf',
+                'Cache-Control' => 'private, no-transform, no-store, must-revalidate',
+            ]);
+        }
 
         return response($pdfContent, 200, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => "{$disposition}; filename=\"{$fileName}\"; filename*=UTF-8''" . rawurlencode($fileName),
-            'Content-Length' => (string) $contentLength,
-            'Accept-Ranges' => 'bytes',
+            'Content-Disposition' => "inline; filename=\"{$fileName}\"",
             'Cache-Control' => 'private, no-transform, no-store, must-revalidate',
-            'Pragma' => 'no-cache',
-            'Expires' => '0',
-            'Connection' => 'close',
         ]);
     }
 
