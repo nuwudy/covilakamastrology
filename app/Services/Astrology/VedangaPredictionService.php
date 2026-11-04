@@ -4,14 +4,40 @@ namespace App\Services\Astrology;
 
 use App\Models\VedangaRule;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Schema;
 
 class VedangaPredictionService
 {
     protected ChitrapakshaEphemerisService $ephemeris;
+    protected static ?bool $hasVedangaRulesTable = null;
 
     public function __construct(?ChitrapakshaEphemerisService $ephemeris = null)
     {
         $this->ephemeris = $ephemeris ?? new ChitrapakshaEphemerisService();
+    }
+
+    /**
+     * Safely query VedangaRule from DB; falls back gracefully if table does not exist.
+     */
+    protected function findVedangaRule(string $category, string $ruleKey): ?VedangaRule
+    {
+        if (self::$hasVedangaRulesTable === null) {
+            try {
+                self::$hasVedangaRulesTable = Schema::hasTable('vedanga_rules');
+            } catch (\Throwable $e) {
+                self::$hasVedangaRulesTable = false;
+            }
+        }
+
+        if (!self::$hasVedangaRulesTable) {
+            return null;
+        }
+
+        try {
+            return VedangaRule::where('category', $category)->where('rule_key', $ruleKey)->first();
+        } catch (\Throwable $e) {
+            return null;
+        }
     }
 
     /**
@@ -110,7 +136,7 @@ class VedangaPredictionService
 
         // Fetch Rule from database or fallback
         $ruleKey = "gulika_H{$gulikaBhava}";
-        $rule = VedangaRule::where('category', 'gulika_house')->where('rule_key', $ruleKey)->first();
+        $rule = $this->findVedangaRule('gulika_house', $ruleKey);
 
         $contentField = 'content_' . $lang;
         $phalaText = $rule ? ($rule->$contentField ?? $rule->content_en) : "Gulika occupies Bhava {$gulikaBhava}.";
@@ -139,7 +165,7 @@ class VedangaPredictionService
             $pDiff = abs($this->ephemeris->signedAngleDiff($pLong, $gulikaLong));
             if ($pDiff <= 12.0) {
                 $conjKey = "gulika_conj_{$pk}";
-                $cRule = VedangaRule::where('category', 'gulika_conjunction')->where('rule_key', $conjKey)->first();
+                $cRule = $this->findVedangaRule('gulika_conjunction', $conjKey);
                 $cText = $cRule ? ($cRule->$contentField ?? $cRule->content_en) : "Gulika conjunct {$pk}.";
                 $phEn = $cRule->content_en ?? "Gulika conjunct {$pk}.";
                 $phMl = $cRule->content_ml ?? $phEn;
@@ -209,7 +235,7 @@ class VedangaPredictionService
         };
 
         $getRuleText = function (string $key) use ($contentField) {
-            $rule = VedangaRule::where('category', 'yoga')->where('rule_key', $key)->first();
+            $rule = $this->findVedangaRule('yoga', $key);
             return $rule ? ($rule->$contentField ?? $rule->content_en) : '';
         };
 
@@ -529,7 +555,7 @@ class VedangaPredictionService
 
             // Query Lord in House rule
             $lordRuleKey = "L{$h}_H{$lordBhava}";
-            $lRule = VedangaRule::where('category', 'lord_in_house')->where('rule_key', $lordRuleKey)->first();
+            $lRule = $this->findVedangaRule('lord_in_house', $lordRuleKey);
             $lordText = $lRule ? ($lRule->$contentField ?? $lRule->content_en) : "Lord of House {$h} in House {$lordBhava}.";
             $lordTranslations = [
                 'en' => $lRule ? ($lRule->content_en ?? "Lord of House {$h} in House {$lordBhava}.") : "Lord of House {$h} in House {$lordBhava}.",
@@ -543,7 +569,7 @@ class VedangaPredictionService
             foreach ($chartData['planet_bhavas'] ?? [] as $pk => $pInfo) {
                 if (($pInfo['bhava'] ?? 0) === $h) {
                     $pRuleKey = "{$pk}_H{$h}";
-                    $pRule = VedangaRule::where('category', 'planet_in_house')->where('rule_key', $pRuleKey)->first();
+                    $pRule = $this->findVedangaRule('planet_in_house', $pRuleKey);
                     $occupantsPhala[] = [
                         'planet' => $pk,
                         'name' => $pInfo['name_ml'] ?? $pk,
@@ -608,7 +634,7 @@ class VedangaPredictionService
         foreach (['Su', 'Mo', 'Ma', 'Me', 'Ju', 'Ve', 'Sa'] as $pk) {
             $pb = $chartData['planet_bhavas'][$pk]['bhava'] ?? 0;
             if (in_array($pb, [2, 10], true)) {
-                $wRule = VedangaRule::where('category', 'wealth_source')->where('rule_key', "wealth_{$pk}")->first();
+                $wRule = $this->findVedangaRule('wealth_source', "wealth_{$pk}");
                 if ($wRule) {
                     $wealthSources[] = [
                         'en' => $wRule->content_en,
@@ -624,7 +650,7 @@ class VedangaPredictionService
         foreach (['Su', 'Mo', 'Ma', 'Me', 'Ju', 'Ve', 'Sa'] as $pk) {
             $pb = $chartData['planet_bhavas'][$pk]['bhava'] ?? 0;
             if (in_array($pb, [6, 8, 12], true)) {
-                $hRule = VedangaRule::where('category', 'health_care')->where('rule_key', "health_{$pk}")->first();
+                $hRule = $this->findVedangaRule('health_care', "health_{$pk}");
                 if ($hRule) {
                     $healthCareAdvice[] = $hRule->$contentField ?? $hRule->content_en;
                 }

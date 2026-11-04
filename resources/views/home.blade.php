@@ -160,8 +160,13 @@
                     service_requested: this.calcService
                 })
             });
-            let data = await response.json();
-            if (data.success) {
+            let data = {};
+            try {
+                data = await response.json();
+            } catch (jsonErr) {
+                data = { success: false, message: 'Server error (' + response.status + '). Please try again.' };
+            }
+            if (response.ok && data.success) {
                 this.calcResult = data.data;
                 this.readingUuid = data.uuid || data.data?.reading_uuid || '';
                 this.hasResult = true;
@@ -170,7 +175,14 @@
                     document.getElementById('dob-result-card')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 100);
             } else {
-                alert('Calculation error. Please verify your inputs.');
+                let errorMsg = data.message || 'Calculation error. Please verify your inputs.';
+                if (data.errors) {
+                    let firstErr = Object.values(data.errors)[0];
+                    if (Array.isArray(firstErr) && firstErr.length > 0) {
+                        errorMsg = firstErr[0];
+                    }
+                }
+                alert(errorMsg);
             }
         } catch (e) {
             console.error(e);
