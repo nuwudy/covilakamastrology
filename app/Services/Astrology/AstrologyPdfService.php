@@ -14,6 +14,10 @@ class AstrologyPdfService
      */
     protected function createMpdfInstance(string $title = 'Covilakam Vedic Astrology Jathakam', string $lang = 'en'): Mpdf
     {
+        if (!class_exists(Mpdf::class) || !class_exists(ConfigVariables::class)) {
+            throw new \RuntimeException('mPDF package is not installed in vendor. Please run "composer install --no-dev" in your server project directory.');
+        }
+
         $defaultConfig = (new ConfigVariables())->getDefaults();
         $fontDirs = $defaultConfig['fontDir'];
 

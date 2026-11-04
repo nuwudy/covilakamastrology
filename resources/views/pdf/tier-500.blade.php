@@ -1600,5 +1600,13 @@
         </p>
     </div>
 
+@if(request('print'))
+<script>
+    window.addEventListener('load', function() {
+        setTimeout(function() { window.print(); }, 400);
+    });
+</script>
+@endif
+
 </body>
 </html>

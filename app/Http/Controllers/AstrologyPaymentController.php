@@ -307,6 +307,18 @@ class AstrologyPaymentController extends Controller
                 $effectiveTier = $reading->paid_tier === 'tier_500' ? 'tier_500' : 'tier_100';
             }
 
+            // If mPDF is not yet installed in vendor on the server, gracefully fallback to Web View with Print/Save
+            if (!class_exists(\Mpdf\Mpdf::class)) {
+                Log::warning('mPDF library not installed in vendor. Redirecting to Web View.');
+                return redirect()->route('astrology.reading.view', [
+                    'uuid' => $reading->uuid,
+                    'lang' => $lang,
+                    'tier' => $effectiveTier,
+                    'admin' => $isAdmin ? 1 : null,
+                    'print' => 1,
+                ]);
+            }
+
             $langNames = [
                 'ml' => 'Malayalam',
                 'en' => 'English',
