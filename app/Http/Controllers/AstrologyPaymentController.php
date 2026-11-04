@@ -273,73 +273,86 @@ class AstrologyPaymentController extends Controller
      */
     public function downloadPdf(Request $request, string $uuid): mixed
     {
-        $reading = $this->resolveReading($request, $uuid);
-        if (!$reading) {
-            abort(404, 'Horoscope reading record not found.');
-        }
-
-        $isAdmin = auth()->check() || auth('web')->check() || $request->has('admin');
-        $requestedTier = $request->query('tier', $reading->paid_tier);
-        $lang = $request->query('lang', $reading->language ?: 'en');
-        if (!in_array($lang, ['en', 'ml', 'ta', 'hi'], true)) {
-            $lang = 'en';
-        }
-
-        // If tier is free and not admin and no force preview is requested, reject
-        if (!$isAdmin && $reading->paid_tier === 'free' && !$request->has('preview')) {
-            if ($request->wantsJson() || $request->is('api/*')) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'This reading is currently on Tier 1 (Free). Please upgrade to Tier 2 (₹100) or Tier 3 (₹500) to download the Certified PDF.',
-                    'uuid' => $reading->uuid,
-                ], 403);
+        try {
+            $reading = $this->resolveReading($request, $uuid);
+            if (!$reading) {
+                return response('Horoscope reading record not found for: ' . htmlspecialchars($uuid), 404, ['Content-Type' => 'text/plain']);
             }
-            return redirect()->route('astrology.reading.view', ['uuid' => $reading->uuid, 'lang' => $lang])
-                ->with('error', 'Please upgrade to Tier 2 (₹100) or Tier 3 (₹500) to download the Certified PDF.');
-        }
 
-        // Determine which tier to generate:
-        // Admin can request ?tier=tier_100 or defaults to tier_500 for full deluxe reading!
-        if ($isAdmin) {
-            $effectiveTier = in_array($requestedTier, ['tier_100', 'tier_500'], true) ? $requestedTier : 'tier_500';
-        } else {
-            $effectiveTier = $reading->paid_tier === 'tier_500' ? 'tier_500' : 'tier_100';
-        }
+            $isAdmin = auth()->check() || auth('web')->check() || $request->has('admin');
+            $requestedTier = $request->query('tier', $reading->paid_tier);
+            $lang = $request->query('lang', $reading->language ?: 'en');
+            if (!in_array($lang, ['en', 'ml', 'ta', 'hi'], true)) {
+                $lang = 'en';
+            }
 
-        $langNames = [
-            'ml' => 'Malayalam',
-            'en' => 'English',
-            'ta' => 'Tamil',
-            'hi' => 'Hindi',
-        ];
-        $langLabel = $langNames[$lang] ?? 'Vedic';
-        $cleanName = trim(preg_replace('/[^A-Za-z0-9_\-]/', '_', trim($reading->full_name)), '_');
-        $cleanName = preg_replace('/_+/', '_', $cleanName) ?: 'Client';
+            // If tier is free and not admin and no force preview is requested, reject
+            if (!$isAdmin && $reading->paid_tier === 'free' && !$request->has('preview')) {
+                if ($request->wantsJson() || $request->is('api/*')) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'This reading is currently on Tier 1 (Free). Please upgrade to Tier 2 (₹100) or Tier 3 (₹500) to download the Certified PDF.',
+                        'uuid' => $reading->uuid,
+                    ], 403);
+                }
+                return redirect()->route('astrology.reading.view', ['uuid' => $reading->uuid, 'lang' => $lang])
+                    ->with('error', 'Please upgrade to Tier 2 (₹100) or Tier 3 (₹500) to download the Certified PDF.');
+            }
 
-        // Generate appropriate PDF based on effective tier and language
-        if ($effectiveTier === 'tier_500') {
-            $pdfContent = $this->pdfService->generateTier500Pdf($reading, $lang);
-            $fileName = "Covilakam_Deluxe_Jathakam_{$cleanName}_{$langLabel}.pdf";
-        } else {
-            // tier_100 or preview fallback
-            $pdfContent = $this->pdfService->generateTier100Pdf($reading, $lang);
-            $fileName = "Covilakam_Certified_Profile_{$cleanName}_{$langLabel}.pdf";
-        }
+            // Determine which tier to generate:
+            // Admin can request ?tier=tier_100 or defaults to tier_500 for full deluxe reading!
+            if ($isAdmin) {
+                $effectiveTier = in_array($requestedTier, ['tier_100', 'tier_500'], true) ? $requestedTier : 'tier_500';
+            } else {
+                $effectiveTier = $reading->paid_tier === 'tier_500' ? 'tier_500' : 'tier_100';
+            }
 
-        if ($request->has('download')) {
-            return response()->streamDownload(function () use ($pdfContent) {
-                echo $pdfContent;
-            }, $fileName, [
+            $langNames = [
+                'ml' => 'Malayalam',
+                'en' => 'English',
+                'ta' => 'Tamil',
+                'hi' => 'Hindi',
+            ];
+            $langLabel = $langNames[$lang] ?? 'Vedic';
+            $cleanName = trim(preg_replace('/[^A-Za-z0-9_\-]/', '_', trim($reading->full_name)), '_');
+            $cleanName = preg_replace('/_+/', '_', $cleanName) ?: 'Client';
+
+            // Generate appropriate PDF based on effective tier and language
+            if ($effectiveTier === 'tier_500') {
+                $pdfContent = $this->pdfService->generateTier500Pdf($reading, $lang);
+                $fileName = "Covilakam_Deluxe_Jathakam_{$cleanName}_{$langLabel}.pdf";
+            } else {
+                // tier_100 or preview fallback
+                $pdfContent = $this->pdfService->generateTier100Pdf($reading, $lang);
+                $fileName = "Covilakam_Certified_Profile_{$cleanName}_{$langLabel}.pdf";
+            }
+
+            if ($request->has('download')) {
+                return response()->streamDownload(function () use ($pdfContent) {
+                    echo $pdfContent;
+                }, $fileName, [
+                    'Content-Type' => 'application/pdf',
+                    'Cache-Control' => 'private, no-transform, no-store, must-revalidate',
+                ]);
+            }
+
+            return response($pdfContent, 200, [
                 'Content-Type' => 'application/pdf',
+                'Content-Disposition' => "inline; filename=\"{$fileName}\"",
                 'Cache-Control' => 'private, no-transform, no-store, must-revalidate',
             ]);
-        }
+        } catch (\Throwable $e) {
+            Log::error('PDF download error: ' . $e->getMessage(), [
+                'uuid' => $uuid,
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
+            ]);
 
-        return response($pdfContent, 200, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => "inline; filename=\"{$fileName}\"",
-            'Cache-Control' => 'private, no-transform, no-store, must-revalidate',
-        ]);
+            return response("PDF Generation Error:\n" . $e->getMessage() . "\n\nFile: " . $e->getFile() . ":" . $e->getLine() . "\n\n" . $e->getTraceAsString(), 500, [
+                'Content-Type' => 'text/plain; charset=utf-8',
+            ]);
+        }
     }
 
     /**
@@ -348,35 +361,48 @@ class AstrologyPaymentController extends Controller
      */
     public function viewReport(Request $request, string $uuid)
     {
-        $reading = $this->resolveReading($request, $uuid);
-        if (!$reading) {
-            abort(404, 'Horoscope reading record not found.');
+        try {
+            $reading = $this->resolveReading($request, $uuid);
+            if (!$reading) {
+                return response('Horoscope reading record not found for: ' . htmlspecialchars($uuid), 404, ['Content-Type' => 'text/plain']);
+            }
+
+            $isAdmin = auth()->check() || auth('web')->check() || $request->has('admin');
+            $requestedTier = $request->query('tier', $reading->paid_tier);
+            $lang = $request->query('lang', $reading->language ?: 'en');
+            if (!in_array($lang, ['en', 'ml', 'ta', 'hi'], true)) {
+                $lang = 'en';
+            }
+
+            // If tier is free and not admin and no force preview is requested, redirect to home
+            if (!$isAdmin && $reading->paid_tier === 'free' && !$request->has('preview')) {
+                return redirect()->route('home')->with('error', 'Please upgrade to view the Full Certified Report.');
+            }
+
+            $effectiveTier = ($isAdmin)
+                ? (in_array($requestedTier, ['tier_100', 'tier_500'], true) ? $requestedTier : 'tier_500')
+                : ($reading->paid_tier === 'tier_500' ? 'tier_500' : 'tier_100');
+
+            $chartData = is_array($reading->chart_data) ? $reading->chart_data : json_decode($reading->chart_data, true);
+            $viewName = ($effectiveTier === 'tier_500') ? 'pdf.tier-500' : 'pdf.tier-100';
+
+            return view($viewName, [
+                'reading' => $reading,
+                'chartData' => $chartData,
+                'lang' => $lang,
+                'isWebView' => true,
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Report view error: ' . $e->getMessage(), [
+                'uuid' => $uuid,
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return response("Report View Error:\n" . $e->getMessage() . "\n\nFile: " . $e->getFile() . ":" . $e->getLine() . "\n\n" . $e->getTraceAsString(), 500, [
+                'Content-Type' => 'text/plain; charset=utf-8',
+            ]);
         }
-
-        $isAdmin = auth()->check() || auth('web')->check() || $request->has('admin');
-        $requestedTier = $request->query('tier', $reading->paid_tier);
-        $lang = $request->query('lang', $reading->language ?: 'en');
-        if (!in_array($lang, ['en', 'ml', 'ta', 'hi'], true)) {
-            $lang = 'en';
-        }
-
-        // If tier is free and not admin and no force preview is requested, redirect to home
-        if (!$isAdmin && $reading->paid_tier === 'free' && !$request->has('preview')) {
-            return redirect()->route('home')->with('error', 'Please upgrade to view the Full Certified Report.');
-        }
-
-        $effectiveTier = ($isAdmin)
-            ? (in_array($requestedTier, ['tier_100', 'tier_500'], true) ? $requestedTier : 'tier_500')
-            : ($reading->paid_tier === 'tier_500' ? 'tier_500' : 'tier_100');
-
-        $chartData = is_array($reading->chart_data) ? $reading->chart_data : json_decode($reading->chart_data, true);
-        $viewName = ($effectiveTier === 'tier_500') ? 'pdf.tier-500' : 'pdf.tier-100';
-
-        return view($viewName, [
-            'reading' => $reading,
-            'chartData' => $chartData,
-            'lang' => $lang,
-            'isWebView' => true,
-        ]);
     }
 }
