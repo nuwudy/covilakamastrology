@@ -183,6 +183,33 @@ class ConsultationController extends Controller
             $consultation->update(['calculated_summary' => $reading]);
         }
 
+        // Ensure rich Dasha hierarchy (Mahadashas, Antardashas, Pratyantardashas) is present
+        if (empty($reading['dasha']) || empty($reading['dasha']['mahadashas']) || empty($reading['dasha']['mahadashas'][0]['apaharas'][0]['pratyantardashas'])) {
+            try {
+                $engine = app(\App\Services\Astrology\AstrologyEngineService::class);
+                $birthDate = $consultation->birth_date ? $consultation->birth_date->format('Y-m-d') : '1992-04-18';
+                $birthTime = $consultation->birth_time ?: ($reading['birth_time'] ?? '12:00:00');
+                $calcInput = [
+                    'name' => $consultation->name,
+                    'gender' => $reading['gender'] ?? 'male',
+                    'dob' => $birthDate,
+                    'birth_time' => $birthTime,
+                    'is_approximate_time' => empty($consultation->birth_time),
+                    'birth_place' => $consultation->birth_place ?: 'Ernakulam / Kochi, Kerala',
+                    'latitude' => (float)($reading['latitude'] ?? 9.9312),
+                    'longitude' => (float)($reading['longitude'] ?? 76.2673),
+                    'timezone' => $reading['timezone'] ?? 'Asia/Kolkata',
+                    'phone' => $consultation->phone,
+                    'language' => request('lang', 'en'),
+                ];
+                $fullData = $engine->calculate($calcInput);
+                $reading = array_merge($reading ?? [], $fullData);
+                $consultation->update(['calculated_summary' => $reading]);
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning('showPrediction full calculation failed: ' . $e->getMessage());
+            }
+        }
+
         return view('consultations.prediction', compact('consultation', 'reading'));
     }
 

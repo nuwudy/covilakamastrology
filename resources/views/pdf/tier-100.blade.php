@@ -434,6 +434,12 @@
             <th>{{ $targetLang === 'ml' ? 'നിലവിലെ അപഹാരം (അന്തർദശ)' : 'Active Apahara (Antardasha)' }}</th>
             <td><strong>{{ $chartData['active_dasha']['apahara_' . $targetLang] ?? $chartData['active_dasha']['apahara'] ?? '' }}</strong> @if($targetLang !== 'en' && !empty($chartData['active_dasha']['apahara'])) ({{ $chartData['active_dasha']['apahara'] }}) @endif</td>
         </tr>
+        @if(!empty($chartData['active_dasha']['active_pratyantardasha']))
+        <tr>
+            <th>{{ $targetLang === 'ml' ? 'നിലവിലെ പ്രത്യന്തർദശ' : 'Active Pratyantardasha' }}</th>
+            <td><strong>{{ $chartData['active_dasha']['active_pratyantardasha']['name_' . $targetLang] ?? $chartData['active_dasha']['active_pratyantardasha']['name_en'] ?? '' }}</strong></td>
+        </tr>
+        @endif
         <tr>
             <th>{{ $targetLang === 'ml' ? 'കാലഘട്ടം' : 'Active Period Range' }}</th>
             <td>{{ $chartData['active_dasha']['start_date'] ?? '' }} to {{ $chartData['active_dasha']['end_date'] ?? '' }}</td>

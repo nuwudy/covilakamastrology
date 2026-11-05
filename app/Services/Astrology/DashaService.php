@@ -170,6 +170,8 @@ class DashaService
 
         $activeMahadasha = null;
         $activeApahara = null;
+        $activePratyantardasha = null;
+        $activeSukshma = null;
 
         for ($i = 0; $i < 9; $i++) {
             $currIndex = ($dashaOrderIndex + $i) % 9;
@@ -230,6 +232,96 @@ class DashaService
                 $apaharaCursor = clone $apEnd;
                 $isApActive = $now->between($apStart, $apEnd);
 
+                // Compute Level 3: 9 Pratyantardashas (Sub-sub-periods) for this Apahara
+                $apTotalDays = max(1, $apStart->diffInDays($apEnd));
+                $pratyantardashas = [];
+                $pratyCursor = clone $apStart;
+
+                for ($k = 0; $k < 9; $k++) {
+                    $pratyIndex = ($subIndex + $k) % 9;
+                    $pratyLord = self::DASHA_ORDER[$pratyIndex];
+                    $pratyDays = (int) round($apTotalDays * ($pratyLord['years'] / 120.0));
+                    if ($pratyDays < 1) {
+                        $pratyDays = 1;
+                    }
+
+                    $pStart = clone $pratyCursor;
+                    if ($k === 8) {
+                        $pEnd = clone $apEnd;
+                    } else {
+                        $pEnd = (clone $pStart)->addDays($pratyDays);
+                        if ($pEnd->gt($apEnd)) {
+                            $pEnd = clone $apEnd;
+                        }
+                    }
+                    $pratyCursor = clone $pEnd;
+                    $isPratyActive = $now->between($pStart, $pEnd);
+
+                    // Compute Level 4: 9 Sukshma Dashas (Micro-periods) for active/selected Pratyantardashas
+                    $sukshmas = [];
+                    if ($isPratyActive || ($isApActive && $k < 9)) {
+                        $pTotalDays = max(1, $pStart->diffInDays($pEnd));
+                        $sukshmaCursor = clone $pStart;
+                        for ($l = 0; $l < 9; $l++) {
+                            $sukshmaIndex = ($pratyIndex + $l) % 9;
+                            $sukshmaLord = self::DASHA_ORDER[$sukshmaIndex];
+                            $sukshmaDays = (int) round($pTotalDays * ($sukshmaLord['years'] / 120.0));
+                            if ($sukshmaDays < 1) {
+                                $sukshmaDays = 1;
+                            }
+
+                            $sStart = clone $sukshmaCursor;
+                            if ($l === 8) {
+                                $sEnd = clone $pEnd;
+                            } else {
+                                $sEnd = (clone $sStart)->addDays($sukshmaDays);
+                                if ($sEnd->gt($pEnd)) {
+                                    $sEnd = clone $pEnd;
+                                }
+                            }
+                            $sukshmaCursor = clone $sEnd;
+                            $isSukshmaActive = $now->between($sStart, $sEnd);
+
+                            $sukshmaEntry = [
+                                'lord_key' => $sukshmaLord['key'],
+                                'name_en' => $sukshmaLord['name_en'],
+                                'name_ml' => $sukshmaLord['name_ml'],
+                                'name_ta' => $sukshmaLord['name_ta'],
+                                'name_hi' => $sukshmaLord['name_hi'],
+                                'start_date' => $sStart->format('Y-m-d'),
+                                'end_date' => $sEnd->format('Y-m-d'),
+                                'duration_days' => max(1, $sStart->diffInDays($sEnd)),
+                                'is_active' => $isSukshmaActive,
+                            ];
+                            $sukshmas[] = $sukshmaEntry;
+
+                            if ($isSukshmaActive && !$activeSukshma) {
+                                $activeSukshma = $sukshmaEntry;
+                            }
+                        }
+                    }
+
+                    $pratyEntry = [
+                        'sub_sub_lord_key' => $pratyLord['key'],
+                        'lord_key' => $pratyLord['key'],
+                        'name_en' => $pratyLord['name_en'],
+                        'name_ml' => $pratyLord['name_ml'],
+                        'name_ta' => $pratyLord['name_ta'],
+                        'name_hi' => $pratyLord['name_hi'],
+                        'start_date' => $pStart->format('Y-m-d'),
+                        'end_date' => $pEnd->format('Y-m-d'),
+                        'duration_days' => max(1, $pStart->diffInDays($pEnd)),
+                        'is_active' => $isPratyActive,
+                        'sukshma_dashas' => $sukshmas,
+                        'sukshmas' => $sukshmas,
+                    ];
+                    $pratyantardashas[] = $pratyEntry;
+
+                    if ($isPratyActive && !$activePratyantardasha) {
+                        $activePratyantardasha = $pratyEntry;
+                    }
+                }
+
                 $apaharaEntry = [
                     'sub_lord_key' => $subLord['key'],
                     'sub_lord_en' => $subLord['name_en'],
@@ -239,10 +331,16 @@ class DashaService
                     // Aliases for template compatibility
                     'name_en' => $subLord['name_en'],
                     'name_ml' => $subLord['name_ml'],
+                    'lord_en' => $subLord['name_en'],
+                    'lord_ml' => $subLord['name_ml'],
+                    'lord_ta' => $subLord['name_ta'],
+                    'lord_hi' => $subLord['name_hi'],
                     'start_date' => $apStart->format('Y-m-d'),
                     'end_date' => $apEnd->format('Y-m-d'),
                     'duration_days' => $apStart->diffInDays($apEnd),
                     'is_active' => $isApActive,
+                    'pratyantardashas' => $pratyantardashas,
+                    'pratyantar_dashas' => $pratyantardashas,
                 ];
 
                 $apaharas[] = $apaharaEntry;
@@ -286,6 +384,14 @@ class DashaService
         if (!$activeMahadasha && !empty($mahadashas)) {
             $activeMahadasha = $mahadashas[0];
             $activeApahara = $mahadashas[0]['apaharas'][0] ?? null;
+        }
+
+        if ($activeApahara && !$activePratyantardasha && !empty($activeApahara['pratyantardashas'])) {
+            $activePratyantardasha = $activeApahara['pratyantardashas'][0];
+        }
+
+        if ($activePratyantardasha && !$activeSukshma && !empty($activePratyantardasha['sukshma_dashas'])) {
+            $activeSukshma = $activePratyantardasha['sukshma_dashas'][0];
         }
 
         // Identify next upcoming Apahara
@@ -333,6 +439,10 @@ class DashaService
                 'end_date' => $activeApahara['end_date'] ?? '',
                 'all_antardashas' => $activeMahadasha['apaharas'] ?? [],
                 'apaharas' => $activeMahadasha['apaharas'] ?? [],
+                'active_pratyantardasha' => $activePratyantardasha,
+                'active_sukshma' => $activeSukshma,
+                'all_pratyantardashas' => $activeApahara['pratyantardashas'] ?? [],
+                'all_sukshmas' => $activePratyantardasha['sukshma_dashas'] ?? [],
                 'next_apahara' => $nextApahara,
                 'prediction_en' => $activePredictions['en'],
                 'prediction_ml' => $activePredictions['ml'],

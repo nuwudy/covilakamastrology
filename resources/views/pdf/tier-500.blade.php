@@ -952,10 +952,16 @@
         <strong style="color: #065f46; font-size: 10pt;">Active Planetary Cycle:</strong><br>
         <strong>Mahadasha:</strong> {{ $chartData['active_dasha']['mahadasha_en'] ?? $chartData['active_dasha']['mahadasha'] ?? '' }} ({{ $chartData['active_dasha']['mahadasha_ml'] ?? '' }})<br>
         <strong>Antardasha (Apahara):</strong> {{ $chartData['active_dasha']['antardasha_en'] ?? $chartData['active_dasha']['antardasha'] ?? '' }} ({{ $chartData['active_dasha']['antardasha_ml'] ?? '' }})<br>
+        @if(!empty($chartData['active_dasha']['active_pratyantardasha']))
+        <strong>Pratyantardasha (Sub-Sub Period):</strong> {{ $chartData['active_dasha']['active_pratyantardasha']['name_en'] ?? '' }} ({{ $chartData['active_dasha']['active_pratyantardasha']['name_ml'] ?? '' }})<br>
+        @endif
+        @if(!empty($chartData['active_dasha']['active_sukshma']))
+        <strong>Sukshma Dasha (Micro Period):</strong> {{ $chartData['active_dasha']['active_sukshma']['name_en'] ?? '' }} ({{ $chartData['active_dasha']['active_sukshma']['name_ml'] ?? '' }})<br>
+        @endif
         <strong>Operating Span:</strong> {{ !empty($chartData['active_dasha']['start_date']) ? \Carbon\Carbon::parse($chartData['active_dasha']['start_date'])->format('d-m-Y') : '-' }} to {{ !empty($chartData['active_dasha']['end_date']) ? \Carbon\Carbon::parse($chartData['active_dasha']['end_date'])->format('d-m-Y') : '-' }}
     </div>
 
-    <div class="subsection-title">Sub-Periods (Apaharas) of Current Mahadasha</div>
+    <div class="subsection-title">{{ $targetLang === 'ml' ? 'നിലവിലെ മഹാദശയിലെ 9 അപഹാരങ്ങൾ (Antardashas)' : 'Sub-Periods (Apaharas / Antardashas) of Current Mahadasha' }}</div>
     <table class="table-data table-compact">
         <thead>
             <tr>
@@ -974,13 +980,47 @@
                     $adTendency = $ad['prediction_' . $targetLang] ?? $ad['tendency'] ?? $ad['prediction'] ?? 'Karmic progression according to house placements and benefic aspects.';
                 @endphp
                 <tr style="{{ !empty($ad['is_active']) ? 'background-color: #fef9c3; font-weight: bold;' : '' }}">
-                    <td><strong>{{ $adLord }}</strong> @if(!empty($adLordMl))({{ $adLordMl }})@endif</td>
+                    <td><strong>{{ $adLord }}</strong> @if(!empty($adLordMl))({{ $adLordMl }})@endif @if(!empty($ad['is_active'])) <span style="color:#b45309; font-size:7pt;">★ ACTIVE</span> @endif</td>
                     <td>{{ $adStart }} &mdash; {{ $adEnd }}</td>
                     <td>{{ $adTendency }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+
+    @if(!empty($chartData['active_dasha']['all_pratyantardashas']))
+    <div class="subsection-title" style="margin-top: 10px;">{{ $targetLang === 'ml' ? 'നിലവിലെ അപഹാരത്തിലെ 9 പ്രത്യന്തർദശകൾ (Pratyantardashas)' : 'Sub-Sub Periods (Pratyantardashas) of Current Apahara' }}</div>
+    <table class="table-data table-compact">
+        <thead>
+            <tr>
+                <th>Pratyantar Lord</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Duration (Days)</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($chartData['active_dasha']['all_pratyantardashas'] as $pd)
+                @php
+                    $pdLord = $pd['name_' . $targetLang] ?? $pd['name_en'] ?? $pd['lord_en'] ?? 'Pratyantar Lord';
+                    $pdStart = !empty($pd['start_date']) ? \Carbon\Carbon::parse($pd['start_date'])->format('d-m-Y') : '-';
+                    $pdEnd = !empty($pd['end_date']) ? \Carbon\Carbon::parse($pd['end_date'])->format('d-m-Y') : '-';
+                    $isPdActive = !empty($pd['is_active']);
+                @endphp
+                <tr style="{{ $isPdActive ? 'background-color: #fef9c3; font-weight: bold;' : '' }}">
+                    <td><strong>{{ $pdLord }}</strong></td>
+                    <td>{{ $pdStart }}</td>
+                    <td>{{ $pdEnd }}</td>
+                    <td>{{ $pd['duration_days'] ?? '-' }} days</td>
+                    <td style="color: {{ $isPdActive ? '#b45309' : '#555' }};">
+                        {{ $isPdActive ? '★ RUNNING NOW' : '-' }}
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+    @endif
 
     <div class="highlight-box">
         <strong>{{ $targetLang === 'ml' ? 'ദശാപഹാര ഫല തത്ത്വം:' : 'Vimshottari Rule of Interpretation:' }}</strong><br>

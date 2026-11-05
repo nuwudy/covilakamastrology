@@ -21,6 +21,9 @@
     // Free DOB Calculator Alpine State
     calcLoading: false,
     calcHoneypot: '',
+    expandedMaha: null,
+    expandedAntar: null,
+    expandedPraty: null,
     calcName: '{{ old('name', '') }}',
     calcDay: '{{ old('dob_day', '') }}',
     calcMonth: '{{ old('dob_month', '') }}',
@@ -241,6 +244,94 @@
         } finally {
             this.calcLoading = false;
         }
+    },
+
+    toggleMaha(idx) {
+        this.expandedMaha = (this.expandedMaha === idx ? null : idx);
+    },
+    toggleAntar(key) {
+        this.expandedAntar = (this.expandedAntar === key ? null : key);
+    },
+    togglePraty(key) {
+        this.expandedPraty = (this.expandedPraty === key ? null : key);
+    },
+    dashaOrderList: [
+        { key: 'Ke', name_en: 'Ketu', name_ml: 'കേതു (Ketu)', name_ta: 'கேது', name_hi: 'केतु', y: 7 },
+        { key: 'Ve', name_en: 'Venus (Shukra)', name_ml: 'ശുക്രൻ (Shukra)', name_ta: 'சுக்கிரன்', name_hi: 'शुक्र', y: 20 },
+        { key: 'Su', name_en: 'Sun (Surya)', name_ml: 'സൂര്യൻ (Surya)', name_ta: 'சூரியன்', name_hi: 'सूर्य', y: 6 },
+        { key: 'Mo', name_en: 'Moon (Chandra)', name_ml: 'ചന്ദ്രൻ (Chandra)', name_ta: 'சந்திரன்', name_hi: 'चन्द्र', y: 10 },
+        { key: 'Ma', name_en: 'Mars (Kuja)', name_ml: 'ചൊവ്വ (Kuja)', name_ta: 'செவ்வாய்', name_hi: 'मंगल', y: 7 },
+        { key: 'Ra', name_en: 'Rahu', name_ml: 'രാഹു (Rahu)', name_ta: 'ராகு', name_hi: 'राहु', y: 18 },
+        { key: 'Ju', name_en: 'Jupiter (Guru)', name_ml: 'വ്യാഴം (Guru)', name_ta: 'குரு', name_hi: 'गुरु', y: 16 },
+        { key: 'Sa', name_en: 'Saturn (Shani)', name_ml: 'ശനി (Shani)', name_ta: 'சனி', name_hi: 'शनि', y: 19 },
+        { key: 'Me', name_en: 'Mercury (Budha)', name_ml: 'ബുധൻ (Budha)', name_ta: 'புதன்', name_hi: 'बुध', y: 17 }
+    ],
+    getPratyantardashas(antar) {
+        if (antar.pratyantardashas && antar.pratyantardashas.length === 9) {
+            return antar.pratyantardashas;
+        }
+        let startIdx = this.dashaOrderList.findIndex(p => p.key === antar.sub_lord_key || p.name_en === (antar.name_en || antar.lord_en));
+        if (startIdx < 0) startIdx = 0;
+        const aStart = new Date(antar.start_date);
+        const aEnd = new Date(antar.end_date);
+        const totalMs = Math.max(1000, aEnd.getTime() - aStart.getTime());
+        let cursor = new Date(aStart.getTime());
+        const now = new Date();
+        const result = [];
+        for (let k = 0; k < 9; k++) {
+            const lord = this.dashaOrderList[(startIdx + k) % 9];
+            const spanMs = Math.round(totalMs * (lord.y / 120.0));
+            const pStart = new Date(cursor.getTime());
+            const pEnd = (k === 8) ? new Date(aEnd.getTime()) : new Date(pStart.getTime() + spanMs);
+            cursor = new Date(pEnd.getTime());
+            result.push({
+                lord_key: lord.key,
+                sub_sub_lord_key: lord.key,
+                name_en: lord.name_en,
+                name_ml: lord.name_ml,
+                name_ta: lord.name_ta,
+                name_hi: lord.name_hi,
+                start_date: pStart.toISOString().split('T')[0],
+                end_date: pEnd.toISOString().split('T')[0],
+                duration_days: Math.max(1, Math.round((pEnd.getTime() - pStart.getTime()) / (1000 * 3600 * 24))),
+                is_active: (now >= pStart && now <= pEnd)
+            });
+        }
+        antar.pratyantardashas = result;
+        return result;
+    },
+    getSukshmas(praty) {
+        if (praty.sukshma_dashas && praty.sukshma_dashas.length === 9) {
+            return praty.sukshma_dashas;
+        }
+        let startIdx = this.dashaOrderList.findIndex(p => p.key === praty.sub_sub_lord_key || p.key === praty.lord_key || p.name_en === praty.name_en);
+        if (startIdx < 0) startIdx = 0;
+        const pStart = new Date(praty.start_date);
+        const pEnd = new Date(praty.end_date);
+        const totalMs = Math.max(1000, pEnd.getTime() - pStart.getTime());
+        let cursor = new Date(pStart.getTime());
+        const now = new Date();
+        const result = [];
+        for (let l = 0; l < 9; l++) {
+            const lord = this.dashaOrderList[(startIdx + l) % 9];
+            const spanMs = Math.round(totalMs * (lord.y / 120.0));
+            const sStart = new Date(cursor.getTime());
+            const sEnd = (l === 8) ? new Date(pEnd.getTime()) : new Date(sStart.getTime() + spanMs);
+            cursor = new Date(sEnd.getTime());
+            result.push({
+                lord_key: lord.key,
+                name_en: lord.name_en,
+                name_ml: lord.name_ml,
+                name_ta: lord.name_ta,
+                name_hi: lord.name_hi,
+                start_date: sStart.toISOString().split('T')[0],
+                end_date: sEnd.toISOString().split('T')[0],
+                duration_days: Math.max(1, Math.round((sEnd.getTime() - sStart.getTime()) / (1000 * 3600 * 24))),
+                is_active: (now >= sStart && now <= sEnd)
+            });
+        }
+        praty.sukshma_dashas = result;
+        return result;
     },
 
     async orderReportPlan(productSlug, amountInRupees, reportTitle) {
@@ -1309,20 +1400,170 @@
                                     </div>
                                 </div>
 
-                                <!-- Vimshottari Dasha Tab -->
-                                <div x-show="chartTab === 'dasha'" x-cloak class="space-y-2 text-xs">
+                                <!-- Vimshottari Dasha Tab (Multi-Level Drilldown) -->
+                                <div x-show="chartTab === 'dasha'" x-cloak class="space-y-2.5 text-xs">
+                                    <!-- Birth Balance -->
                                     <div class="p-2.5 rounded-xl bg-amber-950/40 border border-amber-500/30">
                                         <span class="text-[10px] uppercase font-bold text-amber-300 block">Birth Balance (Garbhashishta Dasha):</span>
                                         <p class="text-white text-xs font-semibold mt-0.5"
                                            x-text="calcResult?.garbhashishta?.[('summary_' + readingLang)] || calcResult?.garbhashishta?.summary_en || calcResult?.garbhashishta?.summary_ml"></p>
                                     </div>
-                                    <div class="p-2.5 rounded-xl bg-[#231538] border border-amber-500/30">
-                                        <span class="text-[10px] uppercase font-bold text-amber-300 block">Current Active Dasha &amp; Apahara:</span>
-                                        <div class="flex items-center justify-between mt-1">
-                                            <span class="text-amber-200 font-bold text-xs"
-                                                  x-text="calcResult?.active_dasha?.[('summary_' + readingLang)] || calcResult?.active_dasha?.summary_en"></span>
-                                            <span class="text-[10px] text-amber-400 font-mono"
-                                                  x-text="calcResult?.active_dasha?.start_date + ' to ' + calcResult?.active_dasha?.end_date"></span>
+
+                                    <!-- Item 8: Current Live Dasha & Apahara -->
+                                    <div class="p-3 rounded-xl bg-gradient-to-r from-[#17261d] to-[#121922] border border-emerald-500/40 space-y-1.5 shadow-md">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-[10px] uppercase font-bold text-emerald-300 flex items-center gap-1">
+                                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                                <span>8. Current Active Cycle:</span>
+                                            </span>
+                                            <span class="text-[9.5px] font-mono text-emerald-300"
+                                                  x-text="(calcResult?.active_dasha?.start_date || '') + ' to ' + (calcResult?.active_dasha?.end_date || '')"></span>
+                                        </div>
+
+                                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-[10px]">
+                                            <div class="p-1.5 rounded bg-black/40 border border-emerald-500/30">
+                                                <span class="text-[8.5px] text-emerald-300/80 block uppercase">Mahadasha</span>
+                                                <strong class="text-white block truncate"
+                                                        x-text="calcResult?.active_dasha?.[('mahadasha_' + readingLang)] || calcResult?.active_dasha?.mahadasha_en || calcResult?.active_dasha?.mahadasha"></strong>
+                                            </div>
+                                            <div class="p-1.5 rounded bg-black/40 border border-emerald-500/30">
+                                                <span class="text-[8.5px] text-emerald-300/80 block uppercase">Apahara</span>
+                                                <strong class="text-amber-300 block truncate"
+                                                        x-text="calcResult?.active_dasha?.[('antardasha_' + readingLang)] || calcResult?.active_dasha?.antardasha_en || calcResult?.active_dasha?.apahara"></strong>
+                                            </div>
+                                            <div class="p-1.5 rounded bg-black/40 border border-emerald-500/30">
+                                                <span class="text-[8.5px] text-emerald-300/80 block uppercase">Pratyantar</span>
+                                                <strong class="text-teal-300 block truncate"
+                                                        x-text="calcResult?.active_dasha?.active_pratyantardasha?.[('name_' + readingLang)] || calcResult?.active_dasha?.active_pratyantardasha?.name_en || 'Pratyantar'"></strong>
+                                            </div>
+                                            <div class="p-1.5 rounded bg-black/40 border border-emerald-500/30">
+                                                <span class="text-[8.5px] text-emerald-300/80 block uppercase">Sukshma</span>
+                                                <strong class="text-sky-300 block truncate"
+                                                        x-text="calcResult?.active_dasha?.active_sukshma?.[('name_' + readingLang)] || calcResult?.active_dasha?.active_sukshma?.name_en || 'Sukshma'"></strong>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Item 7: 120-Year Vimshottari Mahadasha Timeline & Clickable Hierarchy -->
+                                    <div class="space-y-1.5 pt-1">
+                                        <div class="flex items-center justify-between text-[10px] text-amber-300 font-bold uppercase tracking-wider pb-0.5">
+                                            <span>7. 120-Year Vimshottari Lifeline</span>
+                                            <span class="text-[9px] text-amber-400/70 font-normal lowercase">Click Dasa &rarr; Antardasa &rarr; Sukshma</span>
+                                        </div>
+
+                                        <div class="space-y-1.5 max-h-[380px] overflow-y-auto pr-1">
+                                            <template x-for="(maha, mIdx) in (calcResult?.dasha?.timeline || calcResult?.dasha?.mahadashas || [])" :key="mIdx">
+                                                <div class="rounded-xl border transition-all overflow-hidden text-xs"
+                                                     :class="maha.is_active ? 'bg-[#201235] border-amber-400/60 shadow-md' : 'bg-[#150a24] border-amber-500/20'">
+                                                    
+                                                    <!-- Level 1: Mahadasha Header (Clickable) -->
+                                                    <button type="button" @click="toggleMaha(mIdx)"
+                                                            class="w-full p-2.5 text-left flex items-center justify-between gap-2 hover:bg-amber-500/5 transition-colors cursor-pointer">
+                                                        <div class="flex items-center space-x-2">
+                                                            <span class="w-5 h-5 rounded-lg flex items-center justify-center font-bold text-[10px]"
+                                                                  :class="maha.is_active ? 'bg-amber-400 text-stone-950 font-black' : 'bg-[#25153c] text-amber-300 border border-amber-500/30'"
+                                                                  x-text="maha.lord_key || (mIdx + 1)"></span>
+                                                            <div>
+                                                                <div class="flex items-center gap-1.5">
+                                                                    <span class="font-bold text-white text-xs"
+                                                                          x-text="maha[('lord_' + readingLang)] || maha.lord_en || maha.lord_name_en"></span>
+                                                                    <span class="text-[10px] text-amber-300/70 font-mono"
+                                                                          x-text="'(' + (maha.duration_years || maha.years) + 'Y)'"></span>
+                                                                    <template x-if="maha.is_active">
+                                                                        <span class="px-1.5 py-0.2 rounded text-[7.5px] font-bold uppercase bg-amber-400 text-stone-950 animate-pulse">
+                                                                            ★ Active
+                                                                        </span>
+                                                                    </template>
+                                                                </div>
+                                                                <p class="text-[9.5px] text-amber-200/60 font-mono">
+                                                                    <span x-text="maha.start_date"></span> &rarr; <span x-text="maha.end_date"></span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="flex items-center space-x-1 text-[10px] text-amber-300">
+                                                            <span class="underline" x-text="expandedMaha === mIdx ? '▲' : '▼'"></span>
+                                                        </div>
+                                                    </button>
+
+                                                    <!-- Level 2: Antardashas (Apaharas) -->
+                                                    <div x-show="expandedMaha === mIdx" x-collapse class="border-t border-amber-500/20 bg-[#0e0618] p-2 space-y-1">
+                                                        <span class="text-[9px] font-bold uppercase tracking-wider text-amber-300 block pb-0.5">
+                                                            Apaharas of this Dasa (Click for Pratyantardasa):
+                                                        </span>
+
+                                                        <template x-for="(antar, aIdx) in (maha.apaharas || maha.antardashas || [])" :key="aIdx">
+                                                            <div class="rounded-lg border overflow-hidden"
+                                                                 :class="antar.is_active ? 'bg-[#1e1333] border-amber-400/40' : 'bg-[#130922] border-amber-500/15'">
+                                                                
+                                                                <!-- Level 2 Row (Clickable) -->
+                                                                <button type="button" @click="toggleAntar(mIdx + '-' + aIdx)"
+                                                                        class="w-full p-2 text-left flex items-center justify-between gap-1 hover:bg-amber-500/5 transition-colors cursor-pointer text-[11px]">
+                                                                    <div class="flex items-center space-x-1.5">
+                                                                        <span class="text-[9px] font-bold text-amber-400" x-text="(aIdx + 1) + '.'"></span>
+                                                                        <span class="font-medium text-white"
+                                                                              x-text="antar[('sub_lord_' + readingLang)] || antar[('name_' + readingLang)] || antar.name_en"></span>
+                                                                        <template x-if="antar.is_active">
+                                                                            <span class="px-1 py-0.2 rounded text-[7px] font-bold uppercase bg-emerald-500/20 text-emerald-300">
+                                                                                ● Live
+                                                                            </span>
+                                                                        </template>
+                                                                    </div>
+                                                                    <div class="flex items-center space-x-1.5 text-[9.5px] font-mono text-amber-200/70">
+                                                                        <span><span x-text="antar.start_date"></span> &rarr; <span x-text="antar.end_date"></span></span>
+                                                                        <span class="text-amber-400 font-bold" x-text="expandedAntar === (mIdx + '-' + aIdx) ? '▲' : '▶'"></span>
+                                                                    </div>
+                                                                </button>
+
+                                                                <!-- Level 3: Pratyantardashas (Sub-sub periods) -->
+                                                                <div x-show="expandedAntar === (mIdx + '-' + aIdx)" x-collapse class="border-t border-amber-500/15 bg-black/60 p-1.5 space-y-1">
+                                                                    <span class="text-[8.5px] font-bold uppercase tracking-wider text-teal-300 block pb-0.5">
+                                                                        9 Pratyantardasas (Click for Sukshma):
+                                                                    </span>
+
+                                                                    <template x-for="(praty, pIdx) in getPratyantardashas(antar)" :key="pIdx">
+                                                                        <div class="rounded border p-1 text-[10px]"
+                                                                             :class="praty.is_active ? 'bg-teal-950/40 border-teal-400/50 text-teal-100' : 'bg-[#10071d] border-amber-500/10 text-amber-200/80'">
+                                                                            
+                                                                            <!-- Level 3 Row (Clickable) -->
+                                                                            <button type="button" @click="togglePraty(mIdx + '-' + aIdx + '-' + pIdx)"
+                                                                                    class="w-full text-left flex items-center justify-between gap-1 cursor-pointer">
+                                                                                <div class="flex items-center space-x-1">
+                                                                                    <span class="text-[8px] text-teal-400" x-text="(pIdx + 1) + '.'"></span>
+                                                                                    <span class="font-medium" x-text="praty[('name_' + readingLang)] || praty.name_en"></span>
+                                                                                    <template x-if="praty.is_active">
+                                                                                        <span class="text-[7px] text-teal-300 font-bold uppercase">★ Active</span>
+                                                                                    </template>
+                                                                                </div>
+                                                                                <div class="flex items-center space-x-1 text-[9px] font-mono text-amber-300/80">
+                                                                                    <span x-text="praty.start_date + ' → ' + praty.end_date"></span>
+                                                                                    <span class="text-teal-300" x-text="expandedPraty === (mIdx + '-' + aIdx + '-' + pIdx) ? '▲' : '▶'"></span>
+                                                                                </div>
+                                                                            </button>
+
+                                                                            <!-- Level 4: Sukshma Dashas (Micro-periods down to days) -->
+                                                                            <div x-show="expandedPraty === (mIdx + '-' + aIdx + '-' + pIdx)" x-collapse class="border-t border-teal-500/20 bg-stone-950/90 p-1.5 mt-1 space-y-0.5">
+                                                                                <span class="text-[8px] uppercase font-bold text-sky-300 block">
+                                                                                    9 Sukshma Dashas (Short Periods):
+                                                                                </span>
+                                                                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-0.5 pt-0.5">
+                                                                                    <template x-for="(sukshma, sIdx) in getSukshmas(praty)" :key="sIdx">
+                                                                                        <div class="p-1 rounded bg-[#171228] border text-[8.5px]"
+                                                                                             :class="sukshma.is_active ? 'border-sky-400 text-sky-200 font-bold' : 'border-amber-500/10 text-amber-200/60'">
+                                                                                            <span x-text="sukshma[('name_' + readingLang)] || sukshma.name_en"></span>:
+                                                                                            <span class="font-mono" x-text="sukshma.start_date"></span>
+                                                                                        </div>
+                                                                                    </template>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </template>
+                                                                </div>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </template>
                                         </div>
                                     </div>
                                 </div>
