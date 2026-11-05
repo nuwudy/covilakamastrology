@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AstrologyReading;
 use App\Models\Consultation;
+use App\Services\AntiSpamService;
 use App\Services\VedicDobCalculator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -28,6 +29,32 @@ class ConsultationController extends Controller
         $selectedLang = $validated['language'] ?? 'en';
         $birthTime = $validated['birth_time'] ?? null;
         $birthPlace = $validated['birth_place'] ?? null;
+
+        // Anti-spam silent handling: prevent bot entries from polluting leads
+        if (AntiSpamService::isSpam($request)) {
+            $calculation = $calculator->calculate(
+                $validated['birth_date'],
+                $validated['name'],
+                $validated['service_requested'] ?? 'Accurate Predictions',
+                $birthTime,
+                $birthPlace
+            );
+            $calculation['selected_language'] = $selectedLang;
+            $calculation['reading_uuid'] = (string) Str::uuid();
+            $calculation['consultation_id'] = 0;
+            $calculation['report_url'] = url('/#dob-calculator');
+
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'data' => $calculation,
+                ]);
+            }
+
+            return redirect()->to(url()->previous() . '#dob-calculator')
+                ->with('dob_result', $calculation)
+                ->with('success', 'Your Vedic DOB Reading has been generated successfully!');
+        }
 
         $calculation = $calculator->calculate(
             $validated['birth_date'],
@@ -175,6 +202,18 @@ class ConsultationController extends Controller
             'birth_place' => 'nullable|string|max:150',
             'message' => 'nullable|string|max:1000',
         ]);
+
+        // Anti-spam silent handling for booking inquiries
+        if (AntiSpamService::isSpam($request)) {
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Consultation inquiry received! Redirecting to WhatsApp...',
+                    'whatsapp_url' => 'https://wa.me/917907052160',
+                ]);
+            }
+            return redirect()->away('https://wa.me/917907052160');
+        }
 
         $consultation = Consultation::create([
             'name' => $validated['name'],

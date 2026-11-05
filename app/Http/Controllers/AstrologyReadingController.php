@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AstrologyReading;
 use App\Models\Consultation;
+use App\Services\AntiSpamService;
 use App\Services\Astrology\AstrologyEngineService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -223,6 +224,17 @@ class AstrologyReadingController extends Controller
 
             $phone = !empty($validated['phone']) ? trim($validated['phone']) : null;
             $uuid = (string) Str::uuid();
+
+            // Anti-spam check: If detected as bot spam, return calculation without polluting DB
+            if (AntiSpamService::isSpam($request)) {
+                $chartResult['reading_uuid'] = $uuid;
+                $chartResult['consultation_id'] = 0;
+                return response()->json([
+                    'success' => true,
+                    'uuid' => $chartResult['reading_uuid'],
+                    'data' => $chartResult,
+                ]);
+            }
 
             // Persist to astrology_readings table (with fallback if migration is pending)
             try {

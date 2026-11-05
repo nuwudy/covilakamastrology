@@ -21,6 +21,23 @@
             <span class="px-3 py-1.5 rounded-xl bg-[#1e1333] border border-amber-500/30 text-xs font-mono text-amber-300">
                 Total Leads: <strong>{{ $stats['all'] }}</strong> ({{ $stats['pending'] }} Pending)
             </span>
+
+            @if(($stats['spam'] ?? 0) > 0)
+            <form action="{{ route('admin.consultations.purge-spam') }}" method="POST" onsubmit="return confirm('⚠️ Are you sure you want to permanently delete all {{ $stats['spam'] }} detected spam bot leads? This cannot be undone.');" class="inline">
+                @csrf
+                <button type="submit" class="px-3.5 py-1.5 rounded-xl bg-red-950/80 hover:bg-red-900 border border-red-500/50 text-red-200 text-xs font-semibold flex items-center space-x-1.5 transition-all shadow-lg hover:shadow-red-900/40">
+                    <span>🧹 Clean Spam Leads</span>
+                    <span class="px-1.5 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-bold">{{ $stats['spam'] }}</span>
+                </button>
+            </form>
+            @else
+            <form action="{{ route('admin.consultations.purge-spam') }}" method="POST" onsubmit="return confirm('Scan and purge any spam bot leads?');" class="inline">
+                @csrf
+                <button type="submit" class="px-3.5 py-1.5 rounded-xl bg-[#1e1333] hover:bg-red-950/50 border border-amber-500/30 hover:border-red-500/40 text-amber-300 hover:text-red-300 text-xs font-semibold flex items-center space-x-1.5 transition-all">
+                    <span>🧹 Clean Spam</span>
+                </button>
+            </form>
+            @endif
         </div>
     </div>
 
@@ -77,11 +94,23 @@
                         $bhagyank = $lead->calculated_summary['bhagyank'] ?? null;
                         $selectedLang = $lead->calculated_summary['selected_language'] ?? null;
                         $gemstone = $lead->calculated_summary['gemstone_en'] ?? null;
+                        $isSuspect = preg_match('/^(1win|mostbet|pinco|chicken[_-]?road|GeorgeHex)/i', $lead->name)
+                            || str_contains($lead->message ?? '', '[url=')
+                            || str_contains($lead->message ?? '', '.shop')
+                            || str_contains($lead->message ?? '', 'скачать')
+                            || str_contains($lead->message ?? '', 'stumbled upon your blog');
                     @endphp
-                    <tr class="hover:bg-amber-500/5 transition-colors">
+                    <tr class="hover:bg-amber-500/5 transition-colors {{ $isSuspect ? 'bg-red-950/20' : '' }}">
                         <!-- Client Name & Contact -->
                         <td class="py-4 px-4 space-y-1">
-                            <h4 class="font-bold text-sm text-white">{{ $lead->name }}</h4>
+                            <div class="flex items-center gap-1.5">
+                                <h4 class="font-bold text-sm text-white">{{ $lead->name }}</h4>
+                                @if($isSuspect)
+                                <span class="inline-block px-1.5 py-0.5 rounded text-[9px] font-bold uppercase bg-red-500/20 text-red-300 border border-red-500/40">
+                                    🤖 Spam
+                                </span>
+                                @endif
+                            </div>
                             @if($lead->whatsapp_number || $lead->phone)
                             <p class="font-mono text-emerald-300 font-semibold text-[11px] select-all flex items-center space-x-1">
                                 <span>🟢 WA:</span>

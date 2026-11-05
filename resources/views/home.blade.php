@@ -20,6 +20,7 @@
 <div x-data="{
     // Free DOB Calculator Alpine State
     calcLoading: false,
+    calcHoneypot: '',
     calcName: '{{ old('name', '') }}',
     calcDay: '{{ old('dob_day', '') }}',
     calcMonth: '{{ old('dob_month', '') }}',
@@ -205,7 +206,8 @@
                     timezone: this.selectedCity?.tz || 'Asia/Kolkata',
                     phone: this.calcPhone || null,
                     language: this.readingLang,
-                    service_requested: this.calcService
+                    service_requested: this.calcService,
+                    website_url: this.calcHoneypot || ''
                 })
             });
             let data = {};
@@ -827,6 +829,12 @@
                                 @csrf
                                 <input type="hidden" name="birth_date" :value="calcDob">
                                 <input type="hidden" name="language" :value="readingLang">
+
+                                {{-- Anti-Spam Honeypot Fields (Hidden to humans, filled by bots) --}}
+                                <div style="display:none !important; position:absolute; left:-9999px;" aria-hidden="true">
+                                    <input type="text" name="website_url" x-model="calcHoneypot" tabindex="-1" autocomplete="off">
+                                    <input type="text" name="lead_fax_code" tabindex="-1" autocomplete="off">
+                                </div>
 
                                 <div>
                                     <label class="block font-semibold text-amber-200 mb-1">Your Full Name *</label>

@@ -381,6 +381,13 @@
                 <!-- STEP 2: CONSULTATION WINDOW (Form & Birth Details) -->
                 <form x-show="bookingStep === 2" action="{{ route('consultations.store') }}" method="POST" class="space-y-3.5 text-xs">
                     @csrf
+
+                    {{-- Anti-Spam Honeypot Fields (Hidden to humans, filled by bots) --}}
+                    <div style="display:none !important; position:absolute; left:-9999px;" aria-hidden="true">
+                        <input type="text" name="website_url" tabindex="-1" autocomplete="off">
+                        <input type="text" name="lead_fax_code" tabindex="-1" autocomplete="off">
+                    </div>
+
                     <div class="flex items-center justify-between px-3.5 py-2 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-emerald-200">
                         <span class="font-semibold">✓ Step 1 Payment Option Selected (<span x-text="paymentMethodUsed"></span>)</span>
                         <button type="button" @click="bookingStep = 1" class="text-amber-300 underline hover:text-amber-200 font-bold">← Back to Payment</button>

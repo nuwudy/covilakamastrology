@@ -145,6 +145,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/consultations', [AdminConsultationController::class, 'index'])->name('consultations.index');
     Route::post('/consultations/{consultation}/status', [AdminConsultationController::class, 'updateStatus'])->name('consultations.status');
     Route::delete('/consultations/{consultation}', [AdminConsultationController::class, 'destroy'])->name('consultations.destroy');
+    Route::post('/consultations/purge-spam', [AdminConsultationController::class, 'purgeSpam'])->name('consultations.purge-spam');
 
     // 6. 4-Language Astrology Content
     Route::get('/translations', [AdminTranslationController::class, 'index'])->name('translations.index');

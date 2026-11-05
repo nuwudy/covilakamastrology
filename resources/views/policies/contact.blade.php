@@ -145,6 +145,13 @@
 
                     <form action="{{ route('consultations.store') }}" method="POST" class="space-y-4">
                         @csrf
+
+                        {{-- Anti-Spam Honeypot Fields (Hidden to humans, filled by bots) --}}
+                        <div style="display:none !important; position:absolute; left:-9999px;" aria-hidden="true">
+                            <input type="text" name="website_url" tabindex="-1" autocomplete="off">
+                            <input type="text" name="lead_fax_code" tabindex="-1" autocomplete="off">
+                        </div>
+
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-amber-300 uppercase mb-1">Your Name *</label>
