@@ -268,6 +268,51 @@ class AstrologyPaymentController extends Controller
     }
 
     /**
+     * Ensure chart_data is fully populated with latest astronomical & dasha structures.
+     */
+    protected function ensureFreshChartData(AstrologyReading $reading, string $lang): AstrologyReading
+    {
+        $chartData = is_array($reading->chart_data) ? $reading->chart_data : json_decode($reading->chart_data, true);
+
+        // Check if chart_data is missing essential new keys from our latest engine
+        $needsRefresh = empty($chartData)
+            || empty($chartData['kollavarsham'])
+            || empty($chartData['active_dasha']['all_antardashas'])
+            || empty($chartData['dasha']['timeline'])
+            || empty($chartData['shadvarga'])
+            || empty($chartData['ashtakavarga']['bav']);
+
+        if ($needsRefresh && !empty($reading->dob)) {
+            try {
+                $engine = app(\App\Services\Astrology\AstrologyEngineService::class);
+                $calcInput = [
+                    'name' => $reading->full_name,
+                    'gender' => $reading->gender ?: 'male',
+                    'dob' => $reading->dob,
+                    'birth_time' => $reading->birth_time ?: '12:00:00',
+                    'is_approximate_time' => (bool)$reading->is_approximate_time,
+                    'birth_place' => $reading->birth_place ?: 'Ernakulam / Kochi, Kerala, India',
+                    'latitude' => (float)($reading->latitude ?: 9.9312),
+                    'longitude' => (float)($reading->longitude ?: 76.2673),
+                    'timezone' => $reading->timezone ?: 'Asia/Kolkata',
+                    'language' => $lang,
+                ];
+                $freshData = $engine->calculate($calcInput);
+                $reading->chart_data = $freshData;
+                try {
+                    $reading->save();
+                } catch (\Throwable $se) {
+                    // ignore if read-only
+                }
+            } catch (\Throwable $recErr) {
+                Log::warning("Could not refresh outdated chart_data for {$reading->uuid}: " . $recErr->getMessage());
+            }
+        }
+
+        return $reading;
+    }
+
+    /**
      * Download multi-page certified Astrology PDF for unlocked readings.
      * Endpoint: GET /astrology/readings/{uuid}/download-pdf
      */
@@ -288,6 +333,9 @@ class AstrologyPaymentController extends Controller
             if (!in_array($lang, ['en', 'ml', 'ta', 'hi'], true)) {
                 $lang = 'en';
             }
+
+            // Ensure reading has latest calibrated chart structures
+            $reading = $this->ensureFreshChartData($reading, $lang);
 
             // If tier is free and not admin and no force preview is requested, reject
             if (!$isAdmin && $reading->paid_tier === 'free' && !$request->has('preview')) {
@@ -387,6 +435,9 @@ class AstrologyPaymentController extends Controller
             if (!in_array($lang, ['en', 'ml', 'ta', 'hi'], true)) {
                 $lang = 'en';
             }
+
+            // Ensure reading has latest calibrated chart structures
+            $reading = $this->ensureFreshChartData($reading, $lang);
 
             // If tier is free and not admin and no force preview is requested, redirect to home
             if (!$isAdmin && $reading->paid_tier === 'free' && !$request->has('preview')) {

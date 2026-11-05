@@ -918,15 +918,22 @@
             @foreach($chartData['dasha']['timeline'] ?? $chartData['dasha']['mahadashas'] ?? [] as $d)
                 @php
                     $isCurrent = !empty($d['is_active']);
+                    $dLord = $d['lord_' . $targetLang] ?? $d['lord_en'] ?? $d['lord'] ?? $d['lord_key'] ?? 'Dasha';
+                    $dLordMl = $d['lord_ml'] ?? '';
+                    $dLordKey = $d['lord_key'] ?? $d['lord_code'] ?? $d['planet'] ?? '';
+                    $dDuration = $d['duration_years'] ?? $d['years'] ?? 0;
+                    $dStart = !empty($d['start_date']) ? \Carbon\Carbon::parse($d['start_date'])->format('d-m-Y') : '-';
+                    $dEnd = !empty($d['end_date']) ? \Carbon\Carbon::parse($d['end_date'])->format('d-m-Y') : '-';
+                    $dIsPast = !empty($d['end_date']) && \Carbon\Carbon::parse($d['end_date'])->isPast();
                 @endphp
                 <tr style="{{ $isCurrent ? 'background-color: #fef9c3; font-weight: bold;' : '' }}">
-                    <td>{{ $d['lord_' . $targetLang] ?? $d['lord_en'] }} ({{ $d['lord_ml'] ?? '' }})</td>
-                    <td>{{ $d['lord_key'] ?? $d['lord_code'] ?? '' }}</td>
-                    <td>{{ $d['duration_years'] }} Years</td>
-                    <td>{{ \Carbon\Carbon::parse($d['start_date'])->format('d-m-Y') }}</td>
-                    <td>{{ \Carbon\Carbon::parse($d['end_date'])->format('d-m-Y') }}</td>
+                    <td>{{ $dLord }} @if(!empty($dLordMl))({{ $dLordMl }})@endif</td>
+                    <td>{{ $dLordKey }}</td>
+                    <td>{{ $dDuration }} Years</td>
+                    <td>{{ $dStart }}</td>
+                    <td>{{ $dEnd }}</td>
                     <td style="color: {{ $isCurrent ? '#b45309' : '#555' }}; font-weight: bold;">
-                        {{ $isCurrent ? '★ CURRENTLY RUNNING' : (\Carbon\Carbon::parse($d['end_date'])->isPast() ? 'Completed' : 'Upcoming') }}
+                        {{ $isCurrent ? '★ CURRENTLY RUNNING' : ($dIsPast ? 'Completed' : 'Upcoming') }}
                     </td>
                 </tr>
             @endforeach
@@ -943,9 +950,9 @@
 
     <div class="highlight-box" style="border-left-color: #059669; background-color: #ecfdf5;">
         <strong style="color: #065f46; font-size: 10pt;">Active Planetary Cycle:</strong><br>
-        <strong>Mahadasha:</strong> {{ $chartData['active_dasha']['mahadasha_en'] ?? '' }} ({{ $chartData['active_dasha']['mahadasha_ml'] ?? '' }})<br>
-        <strong>Antardasha (Apahara):</strong> {{ $chartData['active_dasha']['antardasha_en'] ?? '' }} ({{ $chartData['active_dasha']['antardasha_ml'] ?? '' }})<br>
-        <strong>Operating Span:</strong> {{ \Carbon\Carbon::parse($chartData['active_dasha']['start_date'] ?? now())->format('d-m-Y') }} to {{ \Carbon\Carbon::parse($chartData['active_dasha']['end_date'] ?? now())->format('d-m-Y') }}
+        <strong>Mahadasha:</strong> {{ $chartData['active_dasha']['mahadasha_en'] ?? $chartData['active_dasha']['mahadasha'] ?? '' }} ({{ $chartData['active_dasha']['mahadasha_ml'] ?? '' }})<br>
+        <strong>Antardasha (Apahara):</strong> {{ $chartData['active_dasha']['antardasha_en'] ?? $chartData['active_dasha']['antardasha'] ?? '' }} ({{ $chartData['active_dasha']['antardasha_ml'] ?? '' }})<br>
+        <strong>Operating Span:</strong> {{ !empty($chartData['active_dasha']['start_date']) ? \Carbon\Carbon::parse($chartData['active_dasha']['start_date'])->format('d-m-Y') : '-' }} to {{ !empty($chartData['active_dasha']['end_date']) ? \Carbon\Carbon::parse($chartData['active_dasha']['end_date'])->format('d-m-Y') : '-' }}
     </div>
 
     <div class="subsection-title">Sub-Periods (Apaharas) of Current Mahadasha</div>
@@ -959,10 +966,17 @@
         </thead>
         <tbody>
             @foreach($chartData['active_dasha']['all_antardashas'] ?? $chartData['active_dasha']['apaharas'] ?? [] as $ad)
+                @php
+                    $adLord = $ad['lord_' . $targetLang] ?? $ad['lord_en'] ?? $ad['lord'] ?? $ad['name'] ?? $ad['sub_lord'] ?? 'Sub-Lord';
+                    $adLordMl = $ad['lord_ml'] ?? $ad['name_ml'] ?? '';
+                    $adStart = !empty($ad['start_date']) ? \Carbon\Carbon::parse($ad['start_date'])->format('d-m-Y') : '-';
+                    $adEnd = !empty($ad['end_date']) ? \Carbon\Carbon::parse($ad['end_date'])->format('d-m-Y') : '-';
+                    $adTendency = $ad['prediction_' . $targetLang] ?? $ad['tendency'] ?? $ad['prediction'] ?? 'Karmic progression according to house placements and benefic aspects.';
+                @endphp
                 <tr style="{{ !empty($ad['is_active']) ? 'background-color: #fef9c3; font-weight: bold;' : '' }}">
-                    <td><strong>{{ $ad['lord_en'] }}</strong> ({{ $ad['lord_ml'] }})</td>
-                    <td>{{ \Carbon\Carbon::parse($ad['start_date'])->format('d-m-Y') }} &mdash; {{ \Carbon\Carbon::parse($ad['end_date'])->format('d-m-Y') }}</td>
-                    <td>{{ $ad['prediction_' . $targetLang] ?? $ad['tendency'] ?? 'Karmic progression according to house placements and benefic aspects.' }}</td>
+                    <td><strong>{{ $adLord }}</strong> @if(!empty($adLordMl))({{ $adLordMl }})@endif</td>
+                    <td>{{ $adStart }} &mdash; {{ $adEnd }}</td>
+                    <td>{{ $adTendency }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -1561,10 +1575,10 @@
         <tbody>
             @foreach($chartData['vedanga_predictions']['gocharaphala']['planets'] ?? [] as $gp)
                 <tr>
-                    <td><strong>{{ $gp['name_en'] }}</strong> ({{ $gp['name_ml'] }})</td>
-                    <td>{{ $gp['house_from_moon'] }}th House</td>
-                    <td style="color: {{ $gp['effective_favorable'] ? '#15803d' : '#b45309' }}; font-weight: bold;">
-                        {{ $gp['status_text'] }}
+                    <td><strong>{{ $gp['name_' . $targetLang] ?? $gp['name_en'] ?? $gp['name'] ?? '' }}</strong> @if($targetLang !== 'ml' && !empty($gp['name_ml']))({{ $gp['name_ml'] }})@endif</td>
+                    <td>{{ $gp['house_from_moon'] ?? 1 }}th House</td>
+                    <td style="color: {{ !empty($gp['effective_favorable']) ? '#15803d' : '#b45309' }}; font-weight: bold;">
+                        {{ $gp['status_text'] ?? ($targetLang === 'ml' ? 'സമതുലിത ഫലം' : 'Moderate') }}
                     </td>
                 </tr>
             @endforeach

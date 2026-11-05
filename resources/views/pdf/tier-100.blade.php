@@ -506,10 +506,10 @@
         </tr>
         @foreach($chartData['vedanga_predictions']['gocharaphala']['planets'] ?? [] as $gP)
             <tr>
-                <td><strong>{{ $gP['name_en'] }}</strong> ({{ $gP['name_ml'] }})</td>
-                <td>{{ $gP['house_from_moon'] }}th House</td>
-                <td style="color: {{ $gP['effective_favorable'] ? '#059669' : '#d97706' }}; font-weight: bold;">
-                    {{ $gP['status_text'] }}
+                <td><strong>{{ $gP['name_' . $targetLang] ?? $gP['name_en'] ?? $gP['name'] ?? '' }}</strong> @if($targetLang !== 'ml' && !empty($gP['name_ml']))({{ $gP['name_ml'] }})@endif</td>
+                <td>{{ $gP['house_from_moon'] ?? 1 }}th House</td>
+                <td style="color: {{ !empty($gP['effective_favorable']) ? '#059669' : '#d97706' }}; font-weight: bold;">
+                    {{ $gP['status_text'] ?? ($targetLang === 'ml' ? 'സമതുലിത ഫലം' : 'Moderate') }}
                 </td>
             </tr>
         @endforeach
