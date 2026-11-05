@@ -120,6 +120,91 @@ class AstrologyEngineService
             Carbon::parse($dob)
         );
 
+        // 2b. Compute Authentic Kerala Panchanga Limbs: Vara, Kollavarsham, Sunrise/Sunset, Dinamana
+        $dobCarbon = Carbon::parse($dob);
+        $dow = $dobCarbon->dayOfWeek; // 0: Sun, 1: Mon, ..., 6: Sat
+        $varaDataMap = [
+            0 => ['en' => 'Sunday (Ravivara)', 'ml' => 'ഞായറാഴ്ച (രവിവാരം)', 'ta' => 'ஞாயிற்றுக்கிழமை', 'hi' => 'रविवार', 'lord' => 'Surya / Sun', 'lord_code' => 'Su'],
+            1 => ['en' => 'Monday (Somavara)', 'ml' => 'തിങ്കളാഴ്ച (സോമവാരം)', 'ta' => 'திங்கட்கிழமை', 'hi' => 'सोमवार', 'lord' => 'Chandra / Moon', 'lord_code' => 'Mo'],
+            2 => ['en' => 'Tuesday (Mangalavara)', 'ml' => 'ചൊവ്വാഴ്ച (മംഗളവാരം)', 'ta' => 'செவ்வாய்க்கிழமை', 'hi' => 'मंगलवार', 'lord' => 'Kuja / Mars', 'lord_code' => 'Ma'],
+            3 => ['en' => 'Wednesday (Budhavara)', 'ml' => 'ബുധനാഴ്ച (ബുധവാരം)', 'ta' => 'புதன்கிழமை', 'hi' => 'बुधवार', 'lord' => 'Budha / Mercury', 'lord_code' => 'Me'],
+            4 => ['en' => 'Thursday (Guruvara)', 'ml' => 'വ്യാഴാഴ്ച (ഗുരുവാരം)', 'ta' => 'வியாழக்கிழமை', 'hi' => 'गुरुवार', 'lord' => 'Guru / Jupiter', 'lord_code' => 'Ju'],
+            5 => ['en' => 'Friday (Shukravara)', 'ml' => 'വെള്ളിയാഴ്ച (ശുക്രവാരം)', 'ta' => 'வெள்ளிக்கிழமை', 'hi' => 'शुक्रवार', 'lord' => 'Shukra / Venus', 'lord_code' => 'Ve'],
+            6 => ['en' => 'Saturday (Shanivara)', 'ml' => 'ശനിയാഴ്ച (ശനിവാരം)', 'ta' => 'சனிக்கிழமை', 'hi' => 'शनिवार', 'lord' => 'Shani / Saturn', 'lord_code' => 'Sa'],
+        ];
+        $varaInfo = $varaDataMap[$dow] ?? $varaDataMap[0];
+        $varaData = [
+            'day_index' => $dow,
+            'name_en' => $varaInfo['en'],
+            'name_ml' => $varaInfo['ml'],
+            'name_ta' => $varaInfo['ta'],
+            'name_hi' => $varaInfo['hi'],
+            'lord' => $varaInfo['lord'],
+            'lord_code' => $varaInfo['lord_code'],
+        ];
+
+        // Kollavarsham calculation
+        $sunRasiIdx = (int) floor($sunLong / 30.0) + 1;
+        $kollamMonthMap = [
+            1 => ['ml' => 'മേടം', 'en' => 'Medam'],
+            2 => ['ml' => 'ഇടവം', 'en' => 'Edavam'],
+            3 => ['ml' => 'മിഥുനം', 'en' => 'Mithunam'],
+            4 => ['ml' => 'കർക്കിടകം', 'en' => 'Karkidakam'],
+            5 => ['ml' => 'ചിങ്ങം', 'en' => 'Chingam'],
+            6 => ['ml' => 'കന്നി', 'en' => 'Kanni'],
+            7 => ['ml' => 'തുലാം', 'en' => 'Thulam'],
+            8 => ['ml' => 'വൃശ്ചികം', 'en' => 'Vrischikam'],
+            9 => ['ml' => 'ധനു', 'en' => 'Dhanu'],
+            10 => ['ml' => 'മകരം', 'en' => 'Makaram'],
+            11 => ['ml' => 'കുംഭം', 'en' => 'Kumbham'],
+            12 => ['ml' => 'മീനം', 'en' => 'Meenam'],
+        ];
+        $kollamDay = (int) floor(fmod($sunLong, 30.0)) + 1;
+        $kollamYear = ($sunRasiIdx >= 5) ? ($dobCarbon->year - 824) : ($dobCarbon->year - 825);
+        $kollamMonthMl = $kollamMonthMap[$sunRasiIdx]['ml'] ?? 'കർക്കിടകം';
+        $kollamMonthEn = $kollamMonthMap[$sunRasiIdx]['en'] ?? 'Karkidakam';
+        $kollavarshamData = [
+            'year' => $kollamYear,
+            'month_index' => $sunRasiIdx,
+            'month_ml' => $kollamMonthMl,
+            'month_en' => $kollamMonthEn,
+            'day' => $kollamDay,
+            'formatted_ml' => "{$kollamYear} {$kollamMonthMl} {$kollamDay}",
+            'formatted_en' => "{$kollamYear} {$kollamMonthEn} {$kollamDay}",
+        ];
+
+        // Astronomical Solar Times: Sunrise, Sunset, Dinamana, Nazhika/Vinazhika
+        $dayOfYear = $dobCarbon->dayOfYear;
+        $declination = 23.45 * sin(deg2rad((360.0 / 365.25) * ($dayOfYear - 81)));
+        $latRad = deg2rad($latitude);
+        $decRad = deg2rad($declination);
+        $cosHourAngle = -tan($latRad) * tan($decRad);
+        $cosHourAngle = max(-1.0, min(1.0, $cosHourAngle));
+        $halfDayHours = rad2deg(acos($cosHourAngle)) / 15.0;
+
+        $b = deg2rad((360.0 / 365.25) * ($dayOfYear - 81));
+        $eotMinutes = 9.87 * sin(2 * $b) - 7.53 * cos($b) - 1.5 * sin($b);
+        $solarNoonUtc = 12.0 - ($longitude / 15.0) - ($eotMinutes / 60.0);
+        $solarNoonIst = $solarNoonUtc + 5.5; // IST standard meridian 82.5° E
+
+        $sunriseHours = fmod($solarNoonIst - $halfDayHours + 24.0, 24.0);
+        $sunsetHours = fmod($solarNoonIst + $halfDayHours + 24.0, 24.0);
+
+        $toTimeStr = function(float $h): string {
+            $hrs = (int)floor($h);
+            $mins = (int)floor(($h - $hrs) * 60.0);
+            $secs = (int)round((($h - $hrs) * 60.0 - $mins) * 60.0);
+            return Carbon::createFromTime($hrs, $mins, $secs)->format('h:i A');
+        };
+
+        $sunriseStr = $toTimeStr($sunriseHours);
+        $sunsetStr = $toTimeStr($sunsetHours);
+        $dinamanaTotalHours = 2.0 * $halfDayHours;
+        $dinamanaNazhikaFloat = $dinamanaTotalHours * 2.5; // 1 hour = 2.5 Nazhika
+        $dNaz = (int)floor($dinamanaNazhikaFloat);
+        $dVinaz = (int)round(($dinamanaNazhikaFloat - $dNaz) * 60.0);
+        $dinamanaFormatted = sprintf("%dh %02dm (%d നാഴിക %d വിനാഴിക)", (int)floor($dinamanaTotalHours), (int)round(fmod($dinamanaTotalHours, 1.0) * 60.0), $dNaz, $dVinaz);
+
         // 3. Compute 12 Bhavas and Shadvargas
         $allBodies = array_merge($planets, [
             'As' => [
@@ -231,6 +316,15 @@ class AstrologyEngineService
         // Combined Classical + Vedanga Yogas
         $combinedYogas = array_merge($yogas, $vedangaPredictions['yogas'] ?? []);
 
+        // Normalize Nityayoga keys so templates can use name_en / name_ml consistently
+        $rawNitya = $panchangaData['nityayoga'] ?? [];
+        $panchangaData['nityayoga'] = array_merge($rawNitya, [
+            'name_en' => $rawNitya['name_en'] ?? $rawNitya['en'] ?? '',
+            'name_ml' => $rawNitya['name_ml'] ?? $rawNitya['ml'] ?? '',
+            'name_ta' => $rawNitya['name_ta'] ?? $rawNitya['ta'] ?? '',
+            'name_hi' => $rawNitya['name_hi'] ?? $rawNitya['hi'] ?? '',
+        ]);
+
         // Consolidate response
         return [
             'status' => 'success',
@@ -255,6 +349,12 @@ class AstrologyEngineService
             'tithi' => $panchangaData['tithi'],
             'karana' => $panchangaData['karana'],
             'nityayoga' => $panchangaData['nityayoga'],
+            'vara' => $varaData,
+            'kollavarsham' => $kollavarshamData,
+            'sunrise' => $sunriseStr,
+            'sunset' => $sunsetStr,
+            'dinamana' => $dinamanaFormatted,
+            'dinamana_nazhika' => "{$dNaz} നാഴിക {$dVinaz} വിനാഴിക",
 
             // Numerology & Multilingual Predictions
             'mulank' => $panchangaData['mulank'],

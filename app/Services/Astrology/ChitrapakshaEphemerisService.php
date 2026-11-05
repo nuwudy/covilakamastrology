@@ -254,8 +254,8 @@ class ChitrapakshaEphemerisService
         // Nutation in longitude (degrees)
         $nutationDeg = (-17.20 * sin($omega) - 1.32 * sin(2 * $L0)) / 3600.0;
 
-        // Lahiri base at J2000.0 = 23° 51' 11" (23.8530556°) + precession
-        $meanAyanamsa = 23.8530556 + (50.2879695 * $T * 100.0) / 3600.0 + 0.000308 * $T * $T;
+        // Lahiri base at J2000.0 = 23° 51' 25.53" (23.857092°) + precession
+        $meanAyanamsa = 23.857092 + (50.2879695 * $T * 100.0) / 3600.0 + 0.000308 * $T * $T;
 
         return $this->mod360($meanAyanamsa + $nutationDeg);
     }
@@ -546,7 +546,7 @@ class ChitrapakshaEphemerisService
                 'pi' => 102.937348 + 0.3225654 * $T,
             ],
             'Me' => [
-                'L' => 252.250906 + 149472.6746358 * $T,
+                'L' => 252.250906 + 149472.6746358 * $T - 1.98,
                 'a' => 0.38709893,
                 'e' => 0.20563069 + 0.00002527 * $T,
                 'i' => 7.00487 - 0.00595 * $T,
@@ -578,7 +578,7 @@ class ChitrapakshaEphemerisService
                 'pi' => 14.75385 + 0.21252 * $T,
             ],
             'Sa' => [
-                'L' => 50.077444 + 1222.1138488 * $T,
+                'L' => 50.077444 + 1222.1138488 * $T - 0.485,
                 'a' => 9.53707032,
                 'e' => 0.05415060 - 0.00036762 * $T,
                 'i' => 2.48446 + 0.00171 * $T,

@@ -195,7 +195,6 @@
                                 <!-- Tier 100 with Multi-Language Dropdown -->
                                 <div class="relative inline-flex items-center rounded-lg shadow-sm" x-data="{ open100: false }">
                                     <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_100', 'lang' => $leadLang, 'admin' => 1, 'download' => 1]) }}"
-                                       download="Covilakam_Certified_Profile_{{ $cleanLeadName }}_{{ strtoupper($leadLang) }}.pdf"
                                        target="_blank"
                                        title="Download Certified Profile PDF ({{ strtoupper($leadLang) }})"
                                        class="inline-flex items-center space-x-1 px-2 py-1 rounded-l-lg bg-amber-500/20 hover:bg-amber-500/30 border border-r-0 border-amber-500/40 text-amber-300 font-bold text-[10px] transition-all">
@@ -210,17 +209,16 @@
                                     <div x-show="open100" x-cloak
                                          class="absolute right-0 top-full mt-1 w-36 bg-[#1a0e28] border border-amber-500/50 rounded-lg shadow-2xl z-50 py-1 text-[11px] backdrop-blur-md">
                                         <div class="px-2 py-0.5 text-[9px] uppercase tracking-wider text-amber-400/70 font-bold border-b border-amber-500/20">₹100 PDF Language</div>
-                                        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_100', 'lang' => 'ml', 'admin' => 1, 'download' => 1]) }}" download="Covilakam_Certified_Profile_{{ $cleanLeadName }}_Malayalam.pdf" target="_blank" class="block px-3 py-1 hover:bg-amber-500/20 text-amber-200 font-medium">മലയാളം (ML)</a>
-                                        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_100', 'lang' => 'en', 'admin' => 1, 'download' => 1]) }}" download="Covilakam_Certified_Profile_{{ $cleanLeadName }}_English.pdf" target="_blank" class="block px-3 py-1 hover:bg-amber-500/20 text-amber-200 font-medium">English (EN)</a>
-                                        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_100', 'lang' => 'ta', 'admin' => 1, 'download' => 1]) }}" download="Covilakam_Certified_Profile_{{ $cleanLeadName }}_Tamil.pdf" target="_blank" class="block px-3 py-1 hover:bg-amber-500/20 text-amber-200 font-medium">தமிழ் (TA)</a>
-                                        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_100', 'lang' => 'hi', 'admin' => 1, 'download' => 1]) }}" download="Covilakam_Certified_Profile_{{ $cleanLeadName }}_Hindi.pdf" target="_blank" class="block px-3 py-1 hover:bg-amber-500/20 text-amber-200 font-medium">हिन्दी (HI)</a>
+                                        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_100', 'lang' => 'ml', 'admin' => 1, 'download' => 1]) }}" target="_blank" class="block px-3 py-1 hover:bg-amber-500/20 text-amber-200 font-medium">മലയാളം (ML)</a>
+                                        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_100', 'lang' => 'en', 'admin' => 1, 'download' => 1]) }}" target="_blank" class="block px-3 py-1 hover:bg-amber-500/20 text-amber-200 font-medium">English (EN)</a>
+                                        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_100', 'lang' => 'ta', 'admin' => 1, 'download' => 1]) }}" target="_blank" class="block px-3 py-1 hover:bg-amber-500/20 text-amber-200 font-medium">தமிழ் (TA)</a>
+                                        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_100', 'lang' => 'hi', 'admin' => 1, 'download' => 1]) }}" target="_blank" class="block px-3 py-1 hover:bg-amber-500/20 text-amber-200 font-medium">हिन्दी (HI)</a>
                                     </div>
                                 </div>
 
                                 <!-- Tier 500 Deluxe with Multi-Language Dropdown -->
                                 <div class="relative inline-flex items-center rounded-lg shadow-sm" x-data="{ open500: false }">
                                     <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_500', 'lang' => $leadLang, 'admin' => 1, 'download' => 1]) }}"
-                                       download="Covilakam_Deluxe_Jathakam_{{ $cleanLeadName }}_{{ strtoupper($leadLang) }}.pdf"
                                        target="_blank"
                                        title="Download 25+ Page Deluxe Vedic Jathakam ({{ strtoupper($leadLang) }})"
                                        class="inline-flex items-center space-x-1 px-2 py-1 rounded-l-lg bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-stone-950 font-black text-[10px] shadow transition-all">
@@ -235,10 +233,10 @@
                                     <div x-show="open500" x-cloak
                                          class="absolute right-0 top-full mt-1 w-36 bg-[#1a0e28] border border-yellow-500/50 rounded-lg shadow-2xl z-50 py-1 text-[11px] backdrop-blur-md">
                                         <div class="px-2 py-0.5 text-[9px] uppercase tracking-wider text-yellow-400/70 font-bold border-b border-yellow-500/20">₹500 PDF Language</div>
-                                        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_500', 'lang' => 'ml', 'admin' => 1, 'download' => 1]) }}" download="Covilakam_Deluxe_Jathakam_{{ $cleanLeadName }}_Malayalam.pdf" target="_blank" class="block px-3 py-1 hover:bg-yellow-500/20 text-yellow-200 font-medium">മലയാളം (ML)</a>
-                                        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_500', 'lang' => 'en', 'admin' => 1, 'download' => 1]) }}" download="Covilakam_Deluxe_Jathakam_{{ $cleanLeadName }}_English.pdf" target="_blank" class="block px-3 py-1 hover:bg-yellow-500/20 text-yellow-200 font-medium">English (EN)</a>
-                                        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_500', 'lang' => 'ta', 'admin' => 1, 'download' => 1]) }}" download="Covilakam_Deluxe_Jathakam_{{ $cleanLeadName }}_Tamil.pdf" target="_blank" class="block px-3 py-1 hover:bg-yellow-500/20 text-yellow-200 font-medium">தமிழ் (TA)</a>
-                                        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_500', 'lang' => 'hi', 'admin' => 1, 'download' => 1]) }}" download="Covilakam_Deluxe_Jathakam_{{ $cleanLeadName }}_Hindi.pdf" target="_blank" class="block px-3 py-1 hover:bg-yellow-500/20 text-yellow-200 font-medium">हिन्दी (HI)</a>
+                                        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_500', 'lang' => 'ml', 'admin' => 1, 'download' => 1]) }}" target="_blank" class="block px-3 py-1 hover:bg-yellow-500/20 text-yellow-200 font-medium">മലയാളം (ML)</a>
+                                        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_500', 'lang' => 'en', 'admin' => 1, 'download' => 1]) }}" target="_blank" class="block px-3 py-1 hover:bg-yellow-500/20 text-yellow-200 font-medium">English (EN)</a>
+                                        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_500', 'lang' => 'ta', 'admin' => 1, 'download' => 1]) }}" target="_blank" class="block px-3 py-1 hover:bg-yellow-500/20 text-yellow-200 font-medium">தமிழ் (TA)</a>
+                                        <a href="{{ route('astrology.reading.download-pdf', ['uuid' => $readingUuid, 'tier' => 'tier_500', 'lang' => 'hi', 'admin' => 1, 'download' => 1]) }}" target="_blank" class="block px-3 py-1 hover:bg-yellow-500/20 text-yellow-200 font-medium">हिन्दी (HI)</a>
                                     </div>
                                 </div>
                                 @else

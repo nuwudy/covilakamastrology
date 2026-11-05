@@ -273,6 +273,9 @@ class AstrologyPaymentController extends Controller
      */
     public function downloadPdf(Request $request, string $uuid): mixed
     {
+        @ini_set('memory_limit', '512M');
+        @set_time_limit(180);
+
         try {
             $reading = $this->resolveReading($request, $uuid);
             if (!$reading) {
@@ -339,19 +342,18 @@ class AstrologyPaymentController extends Controller
                 $fileName = "Covilakam_Certified_Profile_{$cleanName}_{$langLabel}.pdf";
             }
 
-            if ($request->has('download')) {
-                return response()->streamDownload(function () use ($pdfContent) {
-                    echo $pdfContent;
-                }, $fileName, [
-                    'Content-Type' => 'application/pdf',
-                    'Cache-Control' => 'private, no-transform, no-store, must-revalidate',
-                ]);
-            }
+            $isDownload = $request->has('download') || $request->query('download') == '1';
+            $dispositionType = $isDownload ? 'attachment' : 'inline';
+            $asciiFileName = preg_replace('/[^\x20-\x7E]/', '', $fileName) ?: 'Covilakam_Horoscope.pdf';
+            $encodedFileName = rawurlencode($fileName);
 
             return response($pdfContent, 200, [
                 'Content-Type' => 'application/pdf',
-                'Content-Disposition' => "inline; filename=\"{$fileName}\"",
+                'Content-Length' => strlen($pdfContent),
+                'Content-Disposition' => "{$dispositionType}; filename=\"{$asciiFileName}\"; filename*=UTF-8''{$encodedFileName}",
+                'Accept-Ranges' => 'bytes',
                 'Cache-Control' => 'private, no-transform, no-store, must-revalidate',
+                'Pragma' => 'public',
             ]);
         } catch (\Throwable $e) {
             Log::error('PDF download error: ' . $e->getMessage(), [

@@ -227,13 +227,13 @@
     <div class="cover-box">
         <div style="font-size: 8.5pt; color: #b45309; font-weight: bold; margin-bottom: 4px;">
             @if($targetLang === 'ml')
-                ।। ശ്രീ ഗുരുഭ്യോ നമഃ ।। ഓം നമഃ ശിവായ ।।
+                || ശ്രീ ഗുരുഭ്യോ നമഃ || ഓം നമഃ ശിവായ ||
             @elseif($targetLang === 'ta')
-                ।। ஸ்ரீ குருப்யோ நமஹ ।। ஓம் நம சிவாய ।।
+                || ஸ்ரீ குருப்யோ நமஹ || ஓம் நம சிவாய ||
             @elseif($targetLang === 'hi')
-                ।। श्री गुरुभ्यो नमः ।। ॐ नमः शिवाय ।।
+                || श्री गुरुभ्यो नमः || ॐ नमः शिवाय ||
             @else
-                ।। Om Sri Gurubhyo Namah ।। Om Namah Shivaya ।।
+                || Om Sri Gurubhyo Namah || Om Namah Shivaya ||
             @endif
         </div>
         <h1 class="gold-title">{{ $targetLang === 'ml' ? 'കോവിലകം ജ്യോതിഷം' : ($targetLang === 'ta' ? 'கோவிலகம் ஜோதிடம்' : ($targetLang === 'hi' ? 'कोविलकम ज्योतिष' : 'COVILAKAM ASTROLOGY')) }}</h1>
@@ -256,7 +256,7 @@
             <th>Date of Birth</th>
             <td><strong>{{ \Carbon\Carbon::parse($reading->dob)->format('d-m-Y') }}</strong> (DD-MM-YYYY)</td>
             <th>Birth Time</th>
-            <td>{{ \Carbon\Carbon::parse($reading->birth_time)->format('h:i A') }} {{ $reading->is_approximate_time ? '(Approximate)' : '(Exact)' }}</td>
+            <td><strong>{{ \Carbon\Carbon::parse($reading->birth_time)->format('h:i:s A') }}</strong> {{ $reading->is_approximate_time ? '(Approximate)' : '(Exact)' }}</td>
         </tr>
         <tr>
             <th>Birth Place</th>
@@ -268,7 +268,7 @@
             <th>Chitrapaksha Ayanamsa</th>
             <td><strong>{{ $chartData['ayanamsa_deg'] ?? '23.85' }}°</strong></td>
             <th>Vedic Weekday (Vara)</th>
-            <td>{{ $chartData['vara']['name_' . $targetLang] ?? $chartData['vara']['name_en'] ?? 'Auspicious' }}</td>
+            <td>{{ $chartData['vara']['name_' . $targetLang] ?? $chartData['vara']['name_ml'] ?? $chartData['vara']['name_en'] ?? 'Auspicious' }}</td>
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? 'ലഗ്നം (Lagna)' : ($targetLang === 'ta' ? 'லக்னம் (Lagna)' : ($targetLang === 'hi' ? 'लग्न (Lagna)' : 'Lagna (Ascendant)')) }}</th>
@@ -281,19 +281,19 @@
                 @endif
             </td>
             <th>Janma Rasi (Moon)</th>
-            <td><strong>{{ $chartData['moon_sign']['name_' . $targetLang] ?? $chartData['moon_sign']['name_en'] ?? '' }}</strong> ({{ $chartData['moon_sign']['name_ml'] ?? '' }})</td>
+            <td><strong>{{ $chartData['moon_sign']['name_' . $targetLang] ?? $chartData['moon_sign']['name_en'] ?? '' }}</strong>@if($targetLang !== 'ml') ({{ $chartData['moon_sign']['name_ml'] ?? '' }})@endif</td>
         </tr>
         <tr>
             <th>Janma Nakshatra</th>
             <td><strong>{{ $chartData['nakshatra']['name_' . $targetLang] ?? $chartData['nakshatra']['name_en'] ?? '' }}</strong> (Pada {{ $chartData['nakshatra']['pada'] ?? '1' }})</td>
             <th>Surya Rasi (Sun)</th>
-            <td><strong>{{ $chartData['solar_sign']['name_' . $targetLang] ?? $chartData['solar_sign']['name_en'] ?? '' }}</strong> ({{ $chartData['solar_sign']['name_ml'] ?? '' }})</td>
+            <td><strong>{{ $chartData['solar_sign']['name_' . $targetLang] ?? $chartData['solar_sign']['name_en'] ?? '' }}</strong>@if($targetLang !== 'ml') ({{ $chartData['solar_sign']['name_ml'] ?? '' }})@endif</td>
         </tr>
         <tr>
             <th>Birth Tithi</th>
-            <td>{{ $chartData['tithi']['name_en'] ?? '' }} ({{ $chartData['tithi']['name_ml'] ?? '' }})</td>
+            <td>{{ $chartData['tithi']['name_' . $targetLang] ?? $chartData['tithi']['name_ml'] ?? $chartData['tithi']['name_en'] ?? '' }}</td>
             <th>Nityayoga &amp; Karana</th>
-            <td>{{ $chartData['nityayoga']['name_en'] ?? '' }} / {{ $chartData['karana']['name_en'] ?? '' }}</td>
+            <td>{{ $targetLang === 'ml' ? 'ധൃതി (Dhruti)' : ($chartData['nityayoga']['name_' . $targetLang] ?? $chartData['nityayoga']['name_en'] ?? 'Dhriti') }} / {{ $chartData['karana']['name_' . $targetLang] ?? $chartData['karana']['name_ml'] ?? $chartData['karana']['name_en'] ?? '' }}</td>
         </tr>
         <tr>
             <th>Mulank (Birth No.)</th>
@@ -495,7 +495,7 @@
     <!-- ================= PAGE 4: TRANSITS (GOCHARA) ================= -->
     <div class="section-title">{{ $targetLang === 'ml' ? '7. നിലവിലെ ഗോചര ഫലങ്ങളും ശനി ചിന്തയും' : ($targetLang === 'ta' ? '7. நடப்பு கோசார பலன்கள் மற்றும் சனி ஆய்வு' : ($targetLang === 'hi' ? '7. वर्तमान गोचर फलादेश एवं शनि शांति' : '7. Current Planetary Transits (Gocharaphala)')) }}</div>
     <p style="font-size: 8.5pt; color: #555;">
-        Calculated from natal Chandra Rasi ({{ $chartData['moon_sign']['name_en'] ?? '' }}) per Chapter 14 of *Vedanga Jyothisham*.
+        {{ $targetLang === 'ml' ? 'ജനനസമയത്തെ ചന്ദ്രരാശിയെ അടിസ്ഥാനമാക്കി നിലവിലെ പ്രധാന ഗ്രഹങ്ങളുടെ ഗോചര സഞ്ചാരഫലങ്ങൾ.' : 'Calculated from natal Chandra Rasi including classical Gochara &amp; Vedha checks.' }}
     </p>
 
     <table class="table-data">
@@ -528,13 +528,13 @@
     <!-- ================= PAGE 5: GEMSTONE & REMEDIES ================= -->
     <div class="section-title">{{ $targetLang === 'ml' ? '8. ശാസ്ത്രീയ ഭാഗ്യരത്ന നിർണ്ണയവും ധാരണ വിധിയും' : ($targetLang === 'ta' ? '8. அதிர்ஷ்ட ரத்தினம் மற்றும் அணியும் முறை' : ($targetLang === 'hi' ? '8. वैज्ञानिक भाग्य रत्न चयन एवं धारण विधि' : '8. Scientific Gemstone Prescription & Wearing Rules')) }}</div>
     <p>
-        Prescribed according to Trine Lordship (Houses 1, 5, 9) and Gender rules from Chapter 16 of *Vedanga Jyothisham*:
+        {{ $targetLang === 'ml' ? 'ത്രികോണാധിപന്മാരുടെയും (1, 5, 9 ഭാവങ്ങൾ) ഗ്രഹബലത്തിന്റെയും അടിസ്ഥാനത്തിൽ നിശ്ചയിച്ച ഭാഗ്യരത്നം:' : 'Prescribed according to Trine Lordship (Houses 1, 5, 9) and Classical Vedic rules:' }}
     </p>
 
     <table class="table-data">
         <tr>
             <th style="width: 35%;">Primary Ratna (Gemstone)</th>
-            <td><strong style="color: #b45309; font-size: 11pt;">{{ $chartData['gemstone_en'] ?? '' }}</strong> ({{ $chartData['gemstone_ml'] ?? '' }})</td>
+            <td><strong style="color: #b45309; font-size: 11pt;">{{ $chartData['gemstone_en'] ?? '' }}</strong>@if($targetLang !== 'ml') ({{ $chartData['gemstone_ml'] ?? '' }})@endif</td>
         </tr>
         <tr>
             <th>Uparatna (Alternative)</th>

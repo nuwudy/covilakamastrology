@@ -168,7 +168,9 @@ class VargaAndBhavaService
             ];
         }
 
-        // Determine which Bhava each planet occupies
+        $lagnaRasi = (int)floor(fmod($lagnaDeg + 360.0, 360.0) / 30.0) + 1;
+
+        // Determine which Bhava each planet occupies (Whole Sign Rasi-Bhava System per traditional Kerala Jyothisham)
         $planetPositions = [];
         foreach ($planets as $planetKey => $pData) {
             $pDeg = (float)($pData['longitude'] ?? 0.0);
@@ -177,10 +179,8 @@ class VargaAndBhavaService
                 $pDeg += 360.0;
             }
 
-            // Bhava offset from Bhava 1 start cusp
-            $bhava1Start = fmod($lagnaDeg - 15.0 + 360.0, 360.0);
-            $offset = fmod($pDeg - $bhava1Start + 360.0, 360.0);
-            $bhavaNum = (int)floor($offset / 30.0) + 1;
+            $pRasi = (int)floor($pDeg / 30.0) + 1;
+            $bhavaNum = (($pRasi - $lagnaRasi + 12) % 12) + 1;
             if ($bhavaNum > 12) {
                 $bhavaNum = 12;
             }
@@ -188,10 +188,9 @@ class VargaAndBhavaService
                 $bhavaNum = 1;
             }
 
-            // Check if planet is within ±1° of any cusp (Bhavasandhi)
-            $distToStart = fmod($offset, 30.0);
-            $distToEnd = 30.0 - $distToStart;
-            $isSandhi = ($distToStart <= 1.0 || $distToEnd <= 1.0);
+            // Check if planet is within ±1° of sign boundary (Rasi Sandhi)
+            $degInRasi = fmod($pDeg, 30.0);
+            $isSandhi = ($degInRasi <= 1.0 || (30.0 - $degInRasi) <= 1.0);
 
             $occupantInfo = [
                 'key' => $planetKey,

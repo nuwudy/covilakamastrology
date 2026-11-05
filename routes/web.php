@@ -31,6 +31,8 @@ Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
 Route::get('/videos/{id}', [VideoController::class, 'show'])->name('videos.show');
 
 Route::post('/calculate-dob', [ConsultationController::class, 'calculateDob'])->name('consultations.calculate-dob');
+Route::get('/api/astrology/geocode', [AstrologyReadingController::class, 'geocode'])->name('astrology.geocode');
+Route::get('/astrology/geocode', [AstrologyReadingController::class, 'geocode']);
 Route::post('/api/astrology/calculate', [AstrologyReadingController::class, 'calculate'])->name('astrology.calculate');
 Route::get('/astrology/readings/{uuid}/download-pdf', [AstrologyPaymentController::class, 'downloadPdf'])->name('astrology.reading.download-pdf');
 Route::get('/astrology/readings/{uuid}/view', [AstrologyPaymentController::class, 'viewReport'])->name('astrology.reading.view');

@@ -21,7 +21,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('/create-order', [RazorpayController::class, 'createOrder'])->name('api.razorpay.create-order');
 Route::post('/verify-payment', [RazorpayController::class, 'verifyPayment'])->name('api.razorpay.verify-payment');
 
+Route::get('/astrology/geocode', [AstrologyReadingController::class, 'geocode'])->name('api.astrology.geocode');
 Route::post('/astrology/calculate', [AstrologyReadingController::class, 'calculate'])->name('api.astrology.calculate');
 Route::post('/astrology/readings/{uuid}/create-order', [AstrologyPaymentController::class, 'createOrder'])->name('api.astrology.create-order');
 Route::post('/astrology/readings/{uuid}/verify-payment', [AstrologyPaymentController::class, 'verifyPayment'])->name('api.astrology.verify-payment');
+
 

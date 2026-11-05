@@ -32,15 +32,27 @@
     calcGender: 'male',
     calcBirthHour: '12',
     calcBirthMinute: '00',
+    calcBirthSecond: '00',
     calcBirthAmpm: 'PM',
+    calcLatitude: 9.9312,
+    calcLongitude: 76.2673,
+    geoLoading: false,
+    livePlaces: [],
+    searchTimeout: null,
     isApproximateTime: false,
     citySearch: '',
     cityDropdownOpen: false,
     cities: [
+        { name: 'Mankada, Malappuram, Kerala', lat: 11.1000, lng: 76.2000, tz: 'Asia/Kolkata' },
         { name: 'Ernakulam / Kochi, Kerala', lat: 9.9312, lng: 76.2673, tz: 'Asia/Kolkata' },
         { name: 'Thiruvananthapuram, Kerala', lat: 8.5241, lng: 76.9366, tz: 'Asia/Kolkata' },
         { name: 'Kozhikode (Calicut), Kerala', lat: 11.2588, lng: 75.7804, tz: 'Asia/Kolkata' },
         { name: 'Thrissur, Kerala', lat: 10.5276, lng: 76.2144, tz: 'Asia/Kolkata' },
+        { name: 'Aluva, Ernakulam, Kerala', lat: 10.1076, lng: 76.3516, tz: 'Asia/Kolkata' },
+        { name: 'Thripunithura, Kochi, Kerala', lat: 9.9507, lng: 76.3496, tz: 'Asia/Kolkata' },
+        { name: 'Muppathadam, Ernakulam, Kerala', lat: 10.0890, lng: 76.3190, tz: 'Asia/Kolkata' },
+        { name: 'Perumbavoor, Ernakulam, Kerala', lat: 10.1118, lng: 76.4784, tz: 'Asia/Kolkata' },
+        { name: 'Guruvayur, Thrissur, Kerala', lat: 10.5946, lng: 76.0416, tz: 'Asia/Kolkata' },
         { name: 'Kollam, Kerala', lat: 8.8932, lng: 76.6141, tz: 'Asia/Kolkata' },
         { name: 'Kannur, Kerala', lat: 11.8745, lng: 75.3704, tz: 'Asia/Kolkata' },
         { name: 'Alappuzha, Kerala', lat: 9.4981, lng: 76.3388, tz: 'Asia/Kolkata' },
@@ -74,7 +86,42 @@
         this.selectedCity = city;
         this.calcBirthPlace = city.name;
         this.citySearch = city.name;
+        this.calcLatitude = city.lat;
+        this.calcLongitude = city.lng;
         this.cityDropdownOpen = false;
+    },
+
+    selectPlace(p) {
+        this.selectedCity = p;
+        this.calcBirthPlace = p.name;
+        this.citySearch = p.name;
+        this.calcLatitude = p.lat;
+        this.calcLongitude = p.lng;
+        this.cityDropdownOpen = false;
+    },
+
+    handleCityInput() {
+        this.cityDropdownOpen = true;
+        if (this.searchTimeout) clearTimeout(this.searchTimeout);
+        let q = (this.citySearch || '').trim();
+        if (q.length < 2) {
+            this.livePlaces = [];
+            return;
+        }
+        this.searchTimeout = setTimeout(async () => {
+            this.geoLoading = true;
+            try {
+                let res = await fetch('/api/astrology/geocode?q=' + encodeURIComponent(q));
+                let json = await res.json();
+                if (json.success && Array.isArray(json.places)) {
+                    this.livePlaces = json.places;
+                }
+            } catch (e) {
+                console.warn('Geocoding live lookup error:', e);
+            } finally {
+                this.geoLoading = false;
+            }
+        }, 300);
     },
 
     syncBirthTime() {
@@ -84,10 +131,11 @@
         }
         let h = parseInt(this.calcBirthHour || '12', 10);
         let m = String(this.calcBirthMinute || '00').padStart(2, '0');
+        let s = String(this.calcBirthSecond || '00').padStart(2, '0');
         let ampm = this.calcBirthAmpm || 'PM';
         if (ampm === 'PM' && h < 12) h += 12;
         if (ampm === 'AM' && h === 12) h = 0;
-        this.calcBirthTime = String(h).padStart(2, '0') + ':' + m + ':00';
+        this.calcBirthTime = String(h).padStart(2, '0') + ':' + m + ':' + s;
     },
     calcResult: @json(session('dob_result')),
     hasResult: {{ session('dob_result') ? 'true' : 'false' }},
@@ -151,10 +199,10 @@
                     birth_date: this.calcDob,
                     birth_time: this.calcBirthTime,
                     is_approximate_time: this.isApproximateTime,
-                    birth_place: this.selectedCity ? this.selectedCity.name : this.calcBirthPlace,
-                    latitude: this.selectedCity ? this.selectedCity.lat : 9.9312,
-                    longitude: this.selectedCity ? this.selectedCity.lng : 76.2673,
-                    timezone: this.selectedCity ? this.selectedCity.tz : 'Asia/Kolkata',
+                    birth_place: this.selectedCity ? this.selectedCity.name : (this.calcBirthPlace || 'Ernakulam / Kochi, Kerala'),
+                    latitude: this.calcLatitude || (this.selectedCity ? this.selectedCity.lat : 9.9312),
+                    longitude: this.calcLongitude || (this.selectedCity ? this.selectedCity.lng : 76.2673),
+                    timezone: this.selectedCity?.tz || 'Asia/Kolkata',
                     phone: this.calcPhone || null,
                     language: this.readingLang,
                     service_requested: this.calcService
@@ -662,6 +710,31 @@
                                     </div>
                                 </div>
 
+                                <!-- 1-Click Direct Mobile UPI Deep-Links -->
+                                <div class="pt-1.5 border-t border-amber-500/20">
+                                    <p class="text-[10px] text-amber-300/90 font-bold uppercase tracking-wider mb-1.5 flex items-center justify-center sm:justify-start gap-1">
+                                        <span>⚡ 1-Click Mobile UPI Apps:</span>
+                                    </p>
+                                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                                        <a href="tez://upi/pay?pa=ekrvarma-1@oksbi&pn=Dr.%20E.%20K.%20Raja%20Varma&cu=INR&tn=Covilakam%20Astrology%20Dakshina"
+                                           class="px-2 py-1.5 rounded-lg bg-[#1a0e2a] hover:bg-[#281542] border border-emerald-500/40 text-emerald-300 font-bold text-[10px] flex items-center justify-center gap-1 transition-all shadow-sm">
+                                            <span>🟢 GPay</span>
+                                        </a>
+                                        <a href="phonepe://pay?pa=ekrvarma-1@oksbi&pn=Dr.%20E.%20K.%20Raja%20Varma&cu=INR&tn=Covilakam%20Astrology%20Dakshina"
+                                           class="px-2 py-1.5 rounded-lg bg-[#1a0e2a] hover:bg-[#281542] border border-purple-500/40 text-purple-300 font-bold text-[10px] flex items-center justify-center gap-1 transition-all shadow-sm">
+                                            <span>🟣 PhonePe</span>
+                                        </a>
+                                        <a href="paytmmp://pay?pa=ekrvarma-1@oksbi&pn=Dr.%20E.%20K.%20Raja%20Varma&cu=INR&tn=Covilakam%20Astrology%20Dakshina"
+                                           class="px-2 py-1.5 rounded-lg bg-[#1a0e2a] hover:bg-[#281542] border border-sky-500/40 text-sky-300 font-bold text-[10px] flex items-center justify-center gap-1 transition-all shadow-sm">
+                                            <span>🔵 Paytm</span>
+                                        </a>
+                                        <a href="upi://pay?pa=ekrvarma-1@oksbi&pn=Dr.%20E.%20K.%20Raja%20Varma&cu=INR&tn=Covilakam%20Astrology%20Dakshina"
+                                           class="px-2 py-1.5 rounded-lg bg-[#1a0e2a] hover:bg-[#281542] border border-amber-500/40 text-amber-300 font-bold text-[10px] flex items-center justify-center gap-1 transition-all shadow-sm">
+                                            <span>🟡 Any UPI</span>
+                                        </a>
+                                    </div>
+                                </div>
+
                                 <!-- Quick Buttons -->
                                 <div class="pt-1 flex flex-wrap gap-2">
                                     <a href="https://razorpay.me/@covilakamastrology"
@@ -853,7 +926,7 @@
                                         <span class="text-[9px] text-amber-300 font-mono bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">Vedic Lagna</span>
                                     </div>
 
-                                    <div class="grid grid-cols-3 gap-2" :class="isApproximateTime ? 'opacity-40 pointer-events-none' : ''">
+                                    <div class="grid grid-cols-4 gap-2" :class="isApproximateTime ? 'opacity-40 pointer-events-none' : ''">
                                         <div>
                                             <label class="block text-[10px] text-amber-200/60 mb-0.5">Hour (HH)</label>
                                             <select x-model="calcBirthHour" @change="syncBirthTime" :disabled="isApproximateTime"
@@ -868,9 +941,19 @@
                                             <label class="block text-[10px] text-amber-200/60 mb-0.5">Minute (MM)</label>
                                             <select x-model="calcBirthMinute" @change="syncBirthTime" :disabled="isApproximateTime"
                                                     class="w-full px-2 py-2 rounded-xl bg-[#25153c] border border-amber-500/30 text-white font-mono text-xs focus:outline-none focus:border-amber-400">
-                                                @for($m = 0; $m < 60; $m += 5)
+                                                @for($m = 0; $m < 60; $m++)
                                                     @php $mm = sprintf('%02d', $m); @endphp
                                                     <option value="{{ $mm }}">{{ $mm }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] text-amber-200/60 mb-0.5">Second (SS)</label>
+                                            <select x-model="calcBirthSecond" @change="syncBirthTime" :disabled="isApproximateTime"
+                                                    class="w-full px-2 py-2 rounded-xl bg-[#25153c] border border-amber-500/30 text-white font-mono text-xs focus:outline-none focus:border-amber-400">
+                                                @for($s = 0; $s < 60; $s++)
+                                                    @php $ss = sprintf('%02d', $s); @endphp
+                                                    <option value="{{ $ss }}">{{ $ss }}</option>
                                                 @endfor
                                             </select>
                                         </div>
@@ -893,33 +976,68 @@
                                     </div>
                                 </div>
 
-                                <!-- BIRTH PLACE WITH INSTANT CITY SUGGESTIONS -->
+                                <!-- BIRTH PLACE WITH LIVE MAP & VILLAGE GEOCODING SEARCH -->
                                 <div class="p-3 rounded-2xl bg-[#1d1030] border border-amber-500/25 space-y-2 relative" x-data="{ cityOpen: false }">
                                     <div class="flex items-center justify-between">
                                         <label class="block font-semibold text-amber-200 text-xs">
-                                            Birth Place (City / Town) *
+                                            Birth Place (City / Town / Village) *
                                         </label>
-                                        <span class="text-[9px] text-amber-300 font-mono">Geo Coordinates</span>
+                                        <span class="text-[9px] text-amber-300 font-mono flex items-center gap-1">
+                                            <span x-show="geoLoading" class="animate-spin text-amber-400">⏳</span>
+                                            <span>Universal Map Search</span>
+                                        </span>
                                     </div>
                                     <div class="relative">
-                                        <input type="text" x-model="citySearch" @focus="cityOpen = true" @input="cityOpen = true"
-                                               name="birth_place" placeholder="Search city (e.g. Ernakulam, Kozhikode, Chennai...)"
+                                        <input type="text" x-model="citySearch" @focus="cityOpen = true" @input="cityOpen = true; handleCityInput()"
+                                               name="birth_place" placeholder="Search any village/town (e.g. Mankada, Aluva, Thripunithura...)"
                                                class="w-full px-3 py-2.5 rounded-xl bg-[#25153c] border border-amber-500/30 text-white text-xs placeholder-amber-200/40 focus:outline-none focus:border-amber-400 transition-colors">
                                         
                                         <div x-show="cityOpen" @click.away="cityOpen = false" x-cloak
-                                             class="absolute z-30 left-0 right-0 mt-1 max-h-48 overflow-y-auto rounded-xl bg-[#1e1130] border border-amber-500/40 shadow-2xl p-1 text-xs">
+                                             class="absolute z-30 left-0 right-0 mt-1 max-h-56 overflow-y-auto rounded-xl bg-[#1e1130] border border-amber-500/40 shadow-2xl p-1 text-xs">
+                                            
+                                            <div x-show="geoLoading" class="p-2 text-center text-amber-300/70 text-[11px]">
+                                                🔍 Searching map coordinates...
+                                            </div>
+
+                                            <!-- Live geocoded places -->
+                                            <template x-for="p in livePlaces" :key="p.name + p.lat">
+                                                <button type="button" @click="selectPlace(p); cityOpen = false"
+                                                        class="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-amber-500/20 text-emerald-200 flex items-center justify-between transition-colors cursor-pointer border-b border-amber-500/10">
+                                                    <span class="font-medium" x-text="'📍 ' + p.name"></span>
+                                                    <span class="text-[10px] text-emerald-400 font-mono" x-text="p.lat.toFixed(4) + '°N, ' + p.lng.toFixed(4) + '°E'"></span>
+                                                </button>
+                                            </template>
+
+                                            <!-- Preset common cities -->
+                                            <div class="px-2 py-1 text-[9px] uppercase tracking-wider text-amber-400/60 font-bold border-b border-amber-500/20">Common Kerala &amp; Indian Locations</div>
                                             <template x-for="c in filteredCities" :key="c.name">
                                                 <button type="button" @click="selectCity(c); cityOpen = false"
                                                         class="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-amber-500/20 text-amber-100 flex items-center justify-between transition-colors cursor-pointer">
                                                     <span class="font-medium" x-text="c.name"></span>
-                                                    <span class="text-[10px] text-amber-400/70 font-mono" x-text="c.lat.toFixed(2) + '°N, ' + c.lng.toFixed(2) + '°E'"></span>
+                                                    <span class="text-[10px] text-amber-400/70 font-mono" x-text="c.lat.toFixed(4) + '°N, ' + c.lng.toFixed(4) + '°E'"></span>
                                                 </button>
                                             </template>
                                         </div>
                                     </div>
-                                    <div class="text-[10px] text-amber-200/70 flex items-center justify-between">
-                                        <span>Selected: <strong class="text-amber-300" x-text="selectedCity?.name || 'Ernakulam / Kochi'"></strong></span>
-                                        <span class="font-mono text-[9px] text-amber-400/80" x-text="(selectedCity?.lat || 9.93) + '°N, ' + (selectedCity?.lng || 76.26) + '°E'"></span>
+
+                                    <!-- Editable Coordinates Row for Astrologer Fine-Tuning -->
+                                    <div class="p-2 rounded-xl bg-[#25153c]/80 border border-amber-500/20 text-[11px] text-amber-200/90 flex flex-wrap items-center justify-between gap-2">
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="text-amber-400 font-semibold">📍 Coordinates:</span>
+                                            <label class="flex items-center gap-1">
+                                                <span class="text-[10px] text-amber-300/70">Lat:</span>
+                                                <input type="number" step="0.0001" x-model.number="calcLatitude"
+                                                       class="w-20 px-1.5 py-0.5 rounded bg-[#1d1030] border border-amber-500/40 text-white font-mono text-[10px] focus:outline-none focus:border-amber-400">
+                                                <span class="text-[10px] text-amber-300/70">°N</span>
+                                            </label>
+                                            <label class="flex items-center gap-1">
+                                                <span class="text-[10px] text-amber-300/70">Lng:</span>
+                                                <input type="number" step="0.0001" x-model.number="calcLongitude"
+                                                       class="w-20 px-1.5 py-0.5 rounded bg-[#1d1030] border border-amber-500/40 text-white font-mono text-[10px] focus:outline-none focus:border-amber-400">
+                                                <span class="text-[10px] text-amber-300/70">°E</span>
+                                            </label>
+                                        </div>
+                                        <span class="text-[10px] text-amber-400/60 font-mono italic">Editable Coordinates</span>
                                     </div>
                                 </div>
 
@@ -3656,8 +3774,33 @@
                 </div>
             </div>
 
+            <!-- 1-Click Direct Mobile App Intent Launchers -->
+            <div class="p-2 rounded-2xl bg-[#1a0c28] border border-amber-500/30 space-y-1.5">
+                <p class="text-[10px] text-amber-300 font-bold uppercase tracking-wider">
+                    ⚡ Tap to Open Your Installed UPI App:
+                </p>
+                <div class="grid grid-cols-2 gap-2">
+                    <a href="tez://upi/pay?pa=ekrvarma-1@oksbi&pn=Dr.%20E.%20K.%20Raja%20Varma&cu=INR&tn=Covilakam%20Astrology%20Dakshina"
+                       class="py-2 px-3 rounded-xl bg-gradient-to-r from-emerald-600/30 to-teal-600/30 hover:from-emerald-600/50 hover:to-teal-600/50 border border-emerald-400/50 text-emerald-200 font-bold text-xs flex items-center justify-center space-x-1.5 shadow transition-all">
+                        <span>🟢 Google Pay (GPay)</span>
+                    </a>
+                    <a href="phonepe://pay?pa=ekrvarma-1@oksbi&pn=Dr.%20E.%20K.%20Raja%20Varma&cu=INR&tn=Covilakam%20Astrology%20Dakshina"
+                       class="py-2 px-3 rounded-xl bg-gradient-to-r from-purple-600/30 to-indigo-600/30 hover:from-purple-600/50 hover:to-indigo-600/50 border border-purple-400/50 text-purple-200 font-bold text-xs flex items-center justify-center space-x-1.5 shadow transition-all">
+                        <span>🟣 PhonePe</span>
+                    </a>
+                    <a href="paytmmp://pay?pa=ekrvarma-1@oksbi&pn=Dr.%20E.%20K.%20Raja%20Varma&cu=INR&tn=Covilakam%20Astrology%20Dakshina"
+                       class="py-2 px-3 rounded-xl bg-gradient-to-r from-sky-600/30 to-blue-600/30 hover:from-sky-600/50 hover:to-blue-600/50 border border-sky-400/50 text-sky-200 font-bold text-xs flex items-center justify-center space-x-1.5 shadow transition-all">
+                        <span>🔵 Paytm</span>
+                    </a>
+                    <a href="upi://pay?pa=ekrvarma-1@oksbi&pn=Dr.%20E.%20K.%20Raja%20Varma&cu=INR&tn=Covilakam%20Astrology%20Dakshina"
+                       class="py-2 px-3 rounded-xl bg-gradient-to-r from-amber-600/30 to-yellow-600/30 hover:from-amber-600/50 hover:to-yellow-600/50 border border-amber-400/50 text-amber-200 font-bold text-xs flex items-center justify-center space-x-1.5 shadow transition-all">
+                        <span>🟡 BHIM / Any UPI</span>
+                    </a>
+                </div>
+            </div>
+
             <p class="text-[11px] text-amber-200/70 leading-relaxed">
-                Scan with Google Pay or any UPI app to complete dakshina, then share screenshot via WhatsApp at <strong>+91 7907052160</strong>.
+                Tap an app button above on mobile, or scan QR with Google Pay / any UPI app to complete dakshina. Share screenshot via WhatsApp at <strong>+91 7907052160</strong>.
             </p>
 
             <!-- Actions -->

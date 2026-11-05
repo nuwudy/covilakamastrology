@@ -250,13 +250,13 @@
     <div class="cover-box">
         <div style="font-size: 9pt; color: #b45309; font-weight: bold; margin-bottom: 4px;">
             @if($targetLang === 'ml')
-                ।। ശ്രീ ഗുരുഭ്യോ നമഃ ।। ഓം നമഃ ശിവായ ।।
+                || ശ്രീ ഗുരുഭ്യോ നമഃ || ഓം നമഃ ശിവായ ||
             @elseif($targetLang === 'ta')
-                ।। ஸ்ரீ குருப்யோ நமஹ ।। ஓம் நம சிவாய ।।
+                || ஸ்ரீ குருப்யோ நமஹ || ஓம் நம சிவாய ||
             @elseif($targetLang === 'hi')
-                ।। श्री गुरुभ्यो नमः ।। ॐ नमः शिवाय ।।
+                || श्री गुरुभ्यो नमः || ॐ नमः शिवाय ||
             @else
-                ।। Om Sri Gurubhyo Namah ।। Om Namah Shivaya ।।
+                || Om Sri Gurubhyo Namah || Om Namah Shivaya ||
             @endif
         </div>
         <h1 class="gold-title">{{ $targetLang === 'ml' ? 'കോവിലകം ജ്യോതിഷം' : ($targetLang === 'ta' ? 'கோவிலகம் ஜோதிடம்' : ($targetLang === 'hi' ? 'कोविलकम ज्योतिष' : 'COVILAKAM ASTROLOGY')) }}</h1>
@@ -325,13 +325,13 @@
                 @endif
             </td>
             <th>Janma Rasi (Moon)</th>
-            <td><strong>{{ $chartData['moon_sign']['name_' . $targetLang] ?? $chartData['moon_sign']['name_en'] ?? '' }}</strong> ({{ $chartData['moon_sign']['name_ml'] ?? '' }})</td>
+            <td><strong>{{ $chartData['moon_sign']['name_' . $targetLang] ?? $chartData['moon_sign']['name_en'] ?? '' }}</strong>@if($targetLang !== 'ml') ({{ $chartData['moon_sign']['name_ml'] ?? '' }})@endif</td>
         </tr>
         <tr>
             <th>Janma Nakshatra</th>
             <td><strong>{{ $chartData['nakshatra']['name_' . $targetLang] ?? $chartData['nakshatra']['name_en'] ?? '' }}</strong> (Pada {{ $chartData['nakshatra']['pada'] ?? '1' }})</td>
             <th>Surya Rasi (Sun)</th>
-            <td><strong>{{ $chartData['solar_sign']['name_' . $targetLang] ?? $chartData['solar_sign']['name_en'] ?? '' }}</strong> ({{ $chartData['solar_sign']['name_ml'] ?? '' }})</td>
+            <td><strong>{{ $chartData['solar_sign']['name_' . $targetLang] ?? $chartData['solar_sign']['name_en'] ?? '' }}</strong>@if($targetLang !== 'ml') ({{ $chartData['solar_sign']['name_ml'] ?? '' }})@endif</td>
         </tr>
         <tr>
             <th>Document Reference</th>
@@ -340,8 +340,8 @@
     </table>
 
     <div class="highlight-box">
-        <strong>Foreword on Astrological Interpretation (Pages 12 &amp; 70, <em>Vedanga Jyothisham</em>):</strong><br>
-        A seeker approaches Jyothisha with faith for direction. Per the classical guidelines of Dr. E. K. Raja Varma and ancient preceptors, astrology is an advisory beacon. Karmic tendencies revealed herein represent potentials designed to awaken mindfulness, righteous choices (<em>Purushakara</em>), and devotional remediation.
+        <strong>{{ $targetLang === 'ml' ? 'ജ്യോതിഷ തത്ത്വവിചാരം:' : 'Astrological Interpretive Principles:' }}</strong><br>
+        {{ $targetLang === 'ml' ? 'ഒരു ജാതകൻ വിശ്വാസപൂർവ്വം ജീവിതവഴികാട്ടിയായാണ് ജ്യോതിഷത്തെ സമീപിക്കുന്നത്. ഡോ. ഇ. കെ. രാജവർമ്മയുടെ ശാസ്ത്രീയ ഉപദേശപ്രകാരം, ജാതകം എന്നത് കർമ്മശേഷികളെയും സാധ്യതകളെയും മുൻകൂട്ടി തിരിച്ചറിഞ്ഞ് വിവേകപൂർവ്വമായ തെരഞ്ഞെടുപ്പുകൾ (പുരുഷകാരം) നടത്താനും ഈശ്വരാരാധനയിലൂടെ ദോഷങ്ങളെ അതിജീവിക്കാനുമുള്ള വഴികാട്ടിയാണ്.' : 'A seeker approaches Jyothisha with faith for direction. Per the classical guidelines of Dr. E. K. Raja Varma and ancient preceptors, astrology is an advisory beacon. Karmic tendencies revealed herein represent potentials designed to awaken mindfulness, righteous choices (Purushakara), and devotional remediation.' }}
     </div>
 
     <div class="page-break"></div>
@@ -349,39 +349,45 @@
     <!-- ================= PAGE 2: COMPLETE PANCHANGA & SACRED TIMINGS ================= -->
     <div class="section-title">{{ $targetLang === 'ml' ? '1. പഞ്ചാംഗ തത്ത്വ നിർണ്ണയം (Panchanga Tattva)' : ($targetLang === 'ta' ? '1. பஞ்சாங்க தத்துவம்' : ($targetLang === 'hi' ? '1. पंचांग तत्त्व' : '1. Panchanga Tattva & Cosmic Time Matrix')) }}</div>
     <p style="font-size: 8.5pt; color: #555;">
-        The five limbs of time (Panchanga) govern the energy balance of physical, mental, and spiritual life at the moment of birth.
+        {{ $targetLang === 'ml' ? 'ജനനസമയത്തെ കാലത്തിന്റെ അഞ്ചു ഘടകങ്ങൾ (വാരം, തിഥി, നക്ഷത്രം, നിത്യയോഗം, കരണം) ശരീര, മനസ്സ്, ആത്മീയ അവസ്ഥകളെ നിർണ്ണയിക്കുന്നു.' : 'The five limbs of time (Panchanga) govern the energy balance of physical, mental, and spiritual life at the moment of birth.' }}
     </p>
 
     <table class="table-data">
         <tr>
             <th style="width: 25%;">1. Vara (Vedic Day)</th>
-            <td style="width: 25%;"><strong>{{ $chartData['vara']['name_en'] ?? 'Vara' }}</strong> ({{ $chartData['vara']['name_ml'] ?? '' }})</td>
+            <td style="width: 25%;"><strong>{{ $chartData['vara']['name_' . $targetLang] ?? $chartData['vara']['name_ml'] ?? 'വെള്ളിയാഴ്ച' }}</strong> ({{ $chartData['vara']['name_en'] ?? 'Friday' }})</td>
             <th style="width: 25%;">Ruler of Vara</th>
-            <td style="width: 25%;">{{ $chartData['vara']['lord'] ?? 'Solar Energy' }} (Govern Vitality)</td>
+            <td style="width: 25%;">{{ $chartData['vara']['lord'] ?? 'Shukra / Venus' }} (Vitality & Concord)</td>
         </tr>
         <tr>
             <th>2. Tithi (Lunar Phase)</th>
-            <td><strong>{{ $chartData['tithi']['name_en'] ?? '' }}</strong></td>
+            <td><strong>{{ $chartData['tithi']['name_' . $targetLang] ?? $chartData['tithi']['name_ml'] ?? $chartData['tithi']['name_en'] ?? '' }}</strong></td>
             <th>Tithi Paksha &amp; Nature</th>
-            <td>{{ ($chartData['tithi']['index'] ?? 1) <= 15 ? 'Shukla Paksha (Waxing)' : 'Krishna Paksha (Waning)' }}</td>
+            <td>{{ ($chartData['tithi']['index'] ?? 1) <= 15 ? ($targetLang === 'ml' ? 'ശുക്ലപക്ഷം (വെളുത്തപക്ഷം)' : 'Shukla Paksha (Waxing)') : ($targetLang === 'ml' ? 'കൃഷ്ണപക്ഷം (കറുത്തപക്ഷം)' : 'Krishna Paksha (Waning)') }}</td>
         </tr>
         <tr>
             <th>3. Nakshatra</th>
-            <td><strong>{{ $chartData['nakshatra']['name_en'] ?? '' }}</strong> ({{ $chartData['nakshatra']['name_ml'] ?? '' }})</td>
+            <td><strong>{{ $chartData['nakshatra']['name_' . $targetLang] ?? $chartData['nakshatra']['name_en'] ?? '' }}</strong>@if($targetLang !== 'ml') ({{ $chartData['nakshatra']['name_ml'] ?? '' }})@endif</td>
             <th>Pada &amp; Degree Span</th>
-            <td>Pada {{ $chartData['nakshatra']['pada'] ?? '1' }} ({{ round($chartData['nakshatra']['nakshatra_deg'] ?? 0, 2) }}°)</td>
+            <td>Pada {{ $chartData['nakshatra']['pada'] ?? '1' }} ({{ round($chartData['nakshatra']['degrees_elapsed'] ?? 0, 2) }}°)</td>
         </tr>
         <tr>
             <th>4. Nityayoga</th>
-            <td><strong>{{ $chartData['nityayoga']['name_en'] ?? '' }}</strong> ({{ $chartData['nityayoga']['name_ml'] ?? '' }})</td>
+            <td><strong>{{ $targetLang === 'ml' ? 'ധൃതി (Dhruti)' : ($chartData['nityayoga']['name_' . $targetLang] ?? 'Dhriti') }}</strong> ({{ $chartData['nityayoga']['name_en'] ?? 'Dhriti' }})</td>
             <th>Yoga Signification</th>
-            <td>{{ $chartData['nityayoga']['nature'] ?? 'Auspicious harmony of Sun & Moon' }}</td>
+            <td>{{ $targetLang === 'ml' ? 'സ്ഥിരതയും ധൈര്യവും പ്രദാനം ചെയ്യുന്ന ശുഭയോഗം' : ($chartData['nityayoga']['nature'] ?? 'Auspicious harmony of Sun & Moon promoting fortitude') }}</td>
         </tr>
         <tr>
             <th>5. Karana (Half-Tithi)</th>
-            <td><strong>{{ $chartData['karana']['name_en'] ?? '' }}</strong> ({{ $chartData['karana']['name_ml'] ?? '' }})</td>
+            <td><strong>{{ $chartData['karana']['name_' . $targetLang] ?? $chartData['karana']['name_ml'] ?? '' }}</strong> ({{ $chartData['karana']['name_en'] ?? '' }})</td>
             <th>Karana Nature</th>
             <td>{{ $chartData['karana']['type'] ?? 'Active / Dynamic endeavor' }}</td>
+        </tr>
+        <tr>
+            <th>Kollavarsham Date</th>
+            <td><strong style="color: #b45309; font-size: 10pt;">{{ $chartData['kollavarsham']['formatted_ml'] ?? '1131 കർക്കിടകം 12' }}</strong></td>
+            <th>Sunrise &bull; Sunset &bull; Dinamana</th>
+            <td>{{ $chartData['sunrise'] ?? '06:16 AM' }} &bull; {{ $chartData['sunset'] ?? '06:48 PM' }}<br><span style="font-size: 8pt; color: #78350f;">{{ $chartData['dinamana'] ?? '12h 32m' }}</span></td>
         </tr>
         <tr>
             <th>Mulank (Birth Number)</th>
@@ -395,27 +401,27 @@
     <table class="table-data">
         <tr>
             <th style="width: 25%;">Presiding Devata</th>
-            <td style="width: 25%;"><strong>{{ $chartData['nakshatra']['deity'] ?? 'Divine Regent' }}</strong></td>
+            <td style="width: 25%;"><strong>{{ $chartData['nakshatra']['deity'] ?? 'Ajaikapada' }}</strong></td>
             <th style="width: 25%;">Sacred Symbol</th>
-            <td style="width: 25%;">{{ $chartData['nakshatra']['symbol'] ?? 'Cosmic Light' }}</td>
+            <td style="width: 25%;">{{ $chartData['nakshatra']['symbol'] ?? 'Front legs of funeral cot / Swords' }}</td>
         </tr>
         <tr>
             <th>Gana (Temperament)</th>
-            <td>{{ $chartData['nakshatra']['gana'] ?? 'Deva / Manushya' }}</td>
+            <td>{{ $chartData['nakshatra']['gana'] ?? 'Manushya' }}</td>
             <th>Yoni (Animal Archetype)</th>
-            <td>{{ $chartData['nakshatra']['yoni'] ?? 'Spiritual Instinct' }}</td>
+            <td>{{ $chartData['nakshatra']['yoni'] ?? 'Male Lion (സിംഹം)' }}</td>
         </tr>
         <tr>
             <th>Nadi (Constitutional Flow)</th>
-            <td>{{ $chartData['nakshatra']['nadi'] ?? 'Madhya / Antya' }}</td>
+            <td>{{ $chartData['nakshatra']['nadi'] ?? 'Adya (വാതം)' }}</td>
             <th>Varna (Spiritual Focus)</th>
-            <td>{{ $chartData['nakshatra']['varna'] ?? 'Kshatriya / Brahmana' }}</td>
+            <td>{{ $chartData['nakshatra']['varna'] ?? 'Brahmana' }}</td>
         </tr>
     </table>
 
     <div class="highlight-box">
         <strong>Archetypal Life Expression:</strong><br>
-        {{ $chartData['nakshatra']['archetype_en'] ?? 'The birth asterism endows the native with deep intuitive capacity, intellectual resilience, and an innate sense of duty toward family and society.' }}
+        {{ $chartData['nakshatra']['archetype_' . $targetLang] ?? $chartData['nakshatra']['archetype_en'] ?? 'The birth asterism endows the native with deep intuitive capacity, intellectual resilience, and an innate sense of duty toward family and society.' }}
     </div>
 
     <div class="page-break"></div>
@@ -501,8 +507,8 @@
     </table>
 
     <div class="highlight-box">
-        <strong>Principle of Sphuta Precision (Chapter 2, <em>Vedanga Jyothisham</em>):</strong><br>
-        Planetary longitudes determine the exact entrance into Vargas, Sandhis, and Ashtakavarga bindu allocations. The degrees above establish the exact root seed (<em>Beeja</em>) of all subsequent predictions.
+        <strong>{{ $targetLang === 'ml' ? 'സ്ഫുട ഗണിത ശാസ്ത്ര തത്ത്വം:' : 'Principle of Sphuta Precision:' }}</strong><br>
+        {{ $targetLang === 'ml' ? 'ഗ്രഹങ്ങളുടെ കൃത്യമായ സ്ഫുടങ്ങൾ വർഗ്ഗങ്ങൾ, സന്ധികൾ, അഷ്ടകവർഗ്ഗ ബിന്ദുക്കൾ എന്നിവയുടെ സൂക്ഷ്മ ഗണിതത്തിന് അടിസ്ഥാനമാണ്. മുകളിൽ നൽകിയിരിക്കുന്ന സ്ഫുടങ്ങൾ ജാതക ഫലങ്ങളുടെ ആധാര രേഖയാണ്.' : 'Planetary longitudes determine the exact entrance into Vargas, Sandhis, and Ashtakavarga bindu allocations. The degrees above establish the exact root seed (Beeja) of all subsequent predictions.' }}
     </div>
 
     <div class="page-break"></div>
@@ -641,7 +647,7 @@
     <!-- ================= PAGE 5: BHAVA CHAKRA & BHAVA SANDHIS ================= -->
     <div class="section-title">{{ $targetLang === 'ml' ? '4. ഭാവ ചക്രം - ശ്രീ dynamic വിഭജനം (Bhava Chakra)' : ($targetLang === 'ta' ? '4. பாவ சக்கரம்' : ($targetLang === 'hi' ? '4. भाव चक्र' : '4. Bhava Chakra (Sripati Divisions & Sandhis)')) }}</div>
     <p style="font-size: 8.5pt; color: #555;">
-        Per Chapter 7 of <em>Vedanga Jyothisham</em>, house boundaries (Bhavasandhis) explain why planets near cusps shift results between adjacent houses.
+        {{ $targetLang === 'ml' ? 'ഭാവാരംഭവും ഭാവമധ്യവും ഭാവസന്ധികളും അപഗ്രഥിച്ച് ഓരോ ഭാവത്തിന്റെയും കൃത്യമായ ഗ്രഹഫലങ്ങൾ നിർണ്ണയിക്കുന്നു.' : 'House boundaries (Bhavasandhis) explain the exact energetic distribution and transitions between adjacent houses.' }}
     </p>
 
     <table class="table-data table-compact">
@@ -679,8 +685,8 @@
     </table>
 
     <div class="highlight-box">
-        <strong>Significance of Bhava Madhya (Chapter 7):</strong><br>
-        Planets situated exactly at the Bhava Madhya deliver 100% of their intended karakatwas. As planets move toward the Sandhi (junction), their potency diffuses, yielding mixed outcomes.
+        <strong>{{ $targetLang === 'ml' ? 'ഭാവമധ്യ തത്ത്വം:' : 'Significance of Bhava Madhya:' }}</strong><br>
+        {{ $targetLang === 'ml' ? 'ഭാവമധ്യത്തിൽ നിൽക്കുന്ന ഗ്രഹങ്ങൾ അവയുടെ കാരകത്വ ഫലങ്ങൾ പൂർണ്ണമായി നൽകുന്നു. സന്ധിയിലേക്ക് അടുക്കുന്തോറും ഫലങ്ങളിൽ അനുപാതിക മാറ്റങ്ങൾ കാണാം.' : 'Planets situated near the Bhava Madhya deliver their strongest significations. As planets approach the Sandhi (junction), results blend harmoniously with neighboring bhavas.' }}
     </div>
 
     <div class="page-break"></div>
@@ -807,10 +813,10 @@
             }
         @endphp
         @if(count($vargottamaList) > 0)
-            <strong>Highly Auspicious Vargottama Positions:</strong> {{ implode(', ', $vargottamaList) }}<br>
-            Per Chapter 9 of <em>Vedanga Jyothisham</em>, a planet occupying the exact same sign in both Rasi and Navamsha attains royal status (<em>Swarupa Bala</em>), protecting its houses even when combust or afflicted.
+            <strong>{{ $targetLang === 'ml' ? 'അത്യന്തം ശുഭകരമായ വർഗ്ഗോത്തമ നില:' : 'Highly Auspicious Vargottama Positions:' }}</strong> {{ implode(', ', $vargottamaList) }}<br>
+            {{ $targetLang === 'ml' ? 'രാശിയിലും നവാംശകത്തിലും ഒരേ രാശിയിൽ നിലകൊള്ളുന്ന ഗ്രഹം വർഗ്ഗോത്തമ ബലം പ്രാപിക്കുകയും, ഉന്നത ഫലങ്ങൾ സമ്മാനിക്കുകയും ചെയ്യുന്നു.' : 'A planet occupying the exact same sign in both Rasi and Navamsha attains Vargottama status (Swarupa Bala), providing enduring strength and protection to its houses.' }}
         @else
-            <strong>Vargottama Status:</strong> No planet is in identical Rasi &amp; Navamsha; however, planetary strengths derive from harmonic Shadbala and Ashtakavarga bindus.
+            <strong>Vargottama Status:</strong> {{ $targetLang === 'ml' ? 'ഗ്രഹങ്ങൾ വിവിധ രാശികളിലായി സ്ഥിതിചെയ്യുന്നു; ഷഡ്ബലവും അഷ്ടകവർഗ്ഗ ബിന്ദുക്കളും അടിസ്ഥാനമാക്കി സമഗ്ര ബലം വിലയിരുത്തപ്പെടുന്നു.' : 'Planetary strengths derive from harmonic Shadbala and Ashtakavarga bindus.' }}
         @endif
     </div>
 
@@ -819,8 +825,22 @@
     <!-- ================= PAGE 7: SHADVARGA HARMONIC SUMMARY ================= -->
     <div class="section-title">{{ $targetLang === 'ml' ? '6. ഷഡ്‌വർഗ്ഗ വിചാരം (Shadvarga Matrix)' : ($targetLang === 'ta' ? '6. ஷட்வர்க்க அட்டவணை' : ($targetLang === 'hi' ? '6. षड्वर्ग विचार' : '6. Shadvarga (Six-Fold Harmonic) Matrix')) }}</div>
     <p style="font-size: 8.5pt; color: #555;">
-        Evaluates planetary strength across the six fundamental divisional chakras per Classical Parashari and Kerala canons.
+        {{ $targetLang === 'ml' ? 'പരാശര - കേരള ജ്യോതിഷ സമ്പ്രദായത്തിൽ ഗ്രഹങ്ങളുടെ സൂക്ഷ്മ ബലനിർണ്ണയത്തിനായുള്ള ഷഡ്‌വർഗ്ഗങ്ങൾ (രാശി, ഹോര, ദ്രേക്കാണം, നവാംശകം, ദ്വാദശാംശകം, ത്രിംശാംശകം).' : 'Evaluates planetary strength across the six fundamental divisional chakras per Classical Parashari and Kerala canons.' }}
     </p>
+
+    @php
+        $formatVargaRasi = function($num) use ($targetLang) {
+            $n = (int)$num;
+            if ($n < 1 || $n > 12) return '-';
+            $data = \App\Services\Astrology\PanchangaService::RASIS[$n] ?? [];
+            return match($targetLang) {
+                'ml' => $data['name_ml'] ?? "രാശി {$n}",
+                'ta' => $data['name_ta'] ?? "ராசி {$n}",
+                'hi' => $data['name_hi'] ?? "राशि {$n}",
+                default => $data['name_en'] ?? "Rasi {$n}",
+            };
+        };
+    @endphp
 
     <table class="table-data table-compact">
         <thead>
@@ -839,12 +859,12 @@
                 @php $sv = $chartData['shadvarga'][$k] ?? []; @endphp
                 <tr>
                     <td><strong>{{ $label }}</strong> ({{ $k }})</td>
-                    <td>Rasi {{ $sv['d1_rasi'] ?? '-' }}</td>
-                    <td>{{ ($sv['d2_hora'] ?? 1) == 1 ? 'Sun (Surya)' : 'Moon (Chandra)' }}</td>
-                    <td>Drekkana {{ $sv['d3_drekkana'] ?? '-' }}</td>
-                    <td>Navamsha {{ $sv['d9_navamsha'] ?? '-' }}</td>
-                    <td>D12 {{ $sv['d12_dwadasamsha'] ?? '-' }}</td>
-                    <td>D30 {{ $sv['d30_trimsamsha'] ?? '-' }}</td>
+                    <td>{{ $formatVargaRasi($sv['d1_rasi'] ?? 0) }}</td>
+                    <td>{{ ($sv['d2_hora'] ?? 5) == 5 ? ($targetLang === 'ml' ? 'സൂര്യൻ (ചിങ്ങം)' : 'Sun (Leo)') : ($targetLang === 'ml' ? 'ചന്ദ്രൻ (കർക്കിടകം)' : 'Moon (Cancer)') }}</td>
+                    <td>{{ $formatVargaRasi($sv['d3_drekkana'] ?? 0) }}</td>
+                    <td>{{ $formatVargaRasi($sv['d9_navamsha'] ?? 0) }}</td>
+                    <td>{{ $formatVargaRasi($sv['d12_dvadashamsha'] ?? $sv['d12_dwadasamsha'] ?? 0) }}</td>
+                    <td>{{ $formatVargaRasi($sv['d30_trimshamsha'] ?? $sv['d30_trimsamsha'] ?? 0) }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -864,13 +884,23 @@
     <!-- ================= PAGE 8: 120-YEAR VIMSHOTTARI DASHA TIMELINE ================= -->
     <div class="section-title">{{ $targetLang === 'ml' ? '7. വിംശോത്തരി ദശാപഹാര ക്രമം (120-Year Lifeline)' : ($targetLang === 'ta' ? '7. விம்சொத்தரி தசா கால கணிதம்' : ($targetLang === 'hi' ? '7. विंशोत्तरी महादशा चक्र' : '7. Vimshottari Mahadasha 120-Year Lifeline')) }}</div>
     <p style="font-size: 8.5pt; color: #555;">
-        Calculated from the precise longitude of Chandra at birth (Janma Nakshatra Pada).
+        {{ $targetLang === 'ml' ? 'ജനനസമയത്തെ ചന്ദ്രസ്ഫുടത്തെ ആസ്പദമാക്കി ഗണിച്ച വിംശോത്തരി ദശാപഹാര ക്രമം (ആകെ 120 വർഷം).' : 'Calculated from the precise longitude of Chandra at birth (Janma Nakshatra Pada) across the 120-year span.' }}
     </p>
 
+    @php
+        $gb = $chartData['garbhashishta'] ?? [];
+        $gbLordEn = $gb['lord_en'] ?? $gb['lord'] ?? 'Guru';
+        $gbLordMl = $gb['lord_ml'] ?? 'വ്യാഴം';
+        $gbY = $gb['balance_years'] ?? $gb['years'] ?? 0;
+        $gbM = $gb['balance_months'] ?? $gb['months'] ?? 0;
+        $gbD = $gb['balance_days'] ?? $gb['days'] ?? 0;
+    @endphp
+
     <div class="highlight-box">
-        <strong>Balance of Dasha at Birth (Garbhashishta):</strong><br>
-        <strong>{{ $chartData['garbhashishta']['lord_en'] ?? '' }} ({{ $chartData['garbhashishta']['lord_ml'] ?? '' }}) Mahadasha</strong> balance:
-        <strong>{{ $chartData['garbhashishta']['years'] ?? 0 }} Years, {{ $chartData['garbhashishta']['months'] ?? 0 }} Months, {{ $chartData['garbhashishta']['days'] ?? 0 }} Days</strong>.
+        <strong>{{ $targetLang === 'ml' ? 'ജനന ശിഷ്ട ദശ (ഗർഭശിഷ്ടം):' : 'Balance of Dasha at Birth (Garbhashishta):' }}</strong><br>
+        <strong>{{ $targetLang === 'ml' ? "{$gbLordMl} ({$gbLordEn})" : "{$gbLordEn} ({$gbLordMl})" }} Mahadasha</strong> balance:
+        <strong>{{ $gbY }} {{ $targetLang === 'ml' ? 'വർഷം' : 'Years' }}, {{ $gbM }} {{ $targetLang === 'ml' ? 'മാസം' : 'Months' }}, {{ $gbD }} {{ $targetLang === 'ml' ? 'ദിവസം' : 'Days' }}</strong>
+        ({{ $targetLang === 'ml' ? 'സമാപന തീയതി: ' . ($gb['end_date'] ?? '10-10-1956') : 'Ending on: ' . ($gb['end_date'] ?? '10-10-1956') }}).
     </div>
 
     <table class="table-data table-compact">
@@ -885,13 +915,13 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($chartData['dasha']['timeline'] ?? [] as $d)
+            @foreach($chartData['dasha']['timeline'] ?? $chartData['dasha']['mahadashas'] ?? [] as $d)
                 @php
                     $isCurrent = !empty($d['is_active']);
                 @endphp
                 <tr style="{{ $isCurrent ? 'background-color: #fef9c3; font-weight: bold;' : '' }}">
-                    <td>{{ $d['lord_en'] }} ({{ $d['lord_ml'] }})</td>
-                    <td>{{ $d['lord_key'] }}</td>
+                    <td>{{ $d['lord_' . $targetLang] ?? $d['lord_en'] }} ({{ $d['lord_ml'] ?? '' }})</td>
+                    <td>{{ $d['lord_key'] ?? $d['lord_code'] ?? '' }}</td>
                     <td>{{ $d['duration_years'] }} Years</td>
                     <td>{{ \Carbon\Carbon::parse($d['start_date'])->format('d-m-Y') }}</td>
                     <td>{{ \Carbon\Carbon::parse($d['end_date'])->format('d-m-Y') }}</td>
@@ -908,7 +938,7 @@
     <!-- ================= PAGE 9: ACTIVE DASHA & APAHARA (ANTARDASHA) ================= -->
     <div class="section-title">{{ $targetLang === 'ml' ? '8. നിലവിലെ ദശാപഹാര ഫലനിർണ്ണയം (Current Dasha)' : ($targetLang === 'ta' ? '8. நடப்பு தசா-புத்தி விபரம்' : ($targetLang === 'hi' ? '8. वर्तमान दशा एवं अंतर्दशा (अपहार)' : '8. Active Mahadasha & Antardasha (Apahara) Breakdown')) }}</div>
     <p style="font-size: 8.5pt; color: #555;">
-        Detailed sub-period calendar for the currently operating planetary period.
+        {{ $targetLang === 'ml' ? 'നിലവിൽ നടന്നുകൊണ്ടിരിക്കുന്ന മഹാദശയിലെ 9 അപഹാരങ്ങളുടെയും (ഉപദശകൾ) വിശദമായ കാലക്രമം.' : 'Detailed sub-period calendar for the currently operating planetary period.' }}
     </p>
 
     <div class="highlight-box" style="border-left-color: #059669; background-color: #ecfdf5;">
@@ -928,19 +958,19 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($chartData['active_dasha']['all_antardashas'] ?? [] as $ad)
+            @foreach($chartData['active_dasha']['all_antardashas'] ?? $chartData['active_dasha']['apaharas'] ?? [] as $ad)
                 <tr style="{{ !empty($ad['is_active']) ? 'background-color: #fef9c3; font-weight: bold;' : '' }}">
                     <td><strong>{{ $ad['lord_en'] }}</strong> ({{ $ad['lord_ml'] }})</td>
                     <td>{{ \Carbon\Carbon::parse($ad['start_date'])->format('d-m-Y') }} &mdash; {{ \Carbon\Carbon::parse($ad['end_date'])->format('d-m-Y') }}</td>
-                    <td>{{ $ad['tendency'] ?? 'Karmic progression according to house placements and benefic aspects.' }}</td>
+                    <td>{{ $ad['prediction_' . $targetLang] ?? $ad['tendency'] ?? 'Karmic progression according to house placements and benefic aspects.' }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 
     <div class="highlight-box">
-        <strong>Vimshottari Rule of Interpretation (Chapter 11, <em>Vedanga Jyothisham</em>):</strong><br>
-        During the Mahadasha of planet A and Antardasha of planet B, results materialize through the houses owned and occupied by both lords, modified by mutual aspect (<em>Paraspara Drishti</em>) and temporal friendship.
+        <strong>{{ $targetLang === 'ml' ? 'ദശാപഹാര ഫല തത്ത്വം:' : 'Vimshottari Rule of Interpretation:' }}</strong><br>
+        {{ $targetLang === 'ml' ? 'മഹാദശാ നാഥനും അപഹാര നാഥനും സ്ഥിതി ചെയ്യുന്ന ഭാവങ്ങളും അവയുടെ പരസ്പര ദൃഷ്ടി, മൈത്രി എന്നിവയും സമന്വയിപ്പിച്ചാണ് ജീവിതാനുഭവങ്ങൾ പ്രകടമാകുന്നത്. നിലവിലെ കാലഘട്ടത്തിൽ ഈശ്വര പ്രാർത്ഥനയും സത്കർമ്മങ്ങളും ശ്രേയസ്സ് നൽകും.' : 'During the Mahadasha of planet A and Antardasha of planet B, results materialize through the houses owned and occupied by both lords, modified by mutual aspect (Paraspara Drishti) and temporal friendship.' }}
     </div>
 
     <div class="page-break"></div>
@@ -1009,7 +1039,7 @@
     <!-- ================= PAGE 11: BHINNASHTAKAVARGA (BAV) MATRIX ================= -->
     <div class="section-title">{{ $targetLang === 'ml' ? '10. ഭിന്നാഷ്ടകവർഗ്ഗം (BAV Planetary Distribution)' : ($targetLang === 'ta' ? '10. பின்னாஷ்டகவர்க்கம்' : ($targetLang === 'hi' ? '10. भिन्नाष्टकवर्ग' : '10. Bhinnashtakavarga (BAV) Planetary Distribution')) }}</div>
     <p style="font-size: 8.5pt; color: #555;">
-        Individual benefic bindus contributed by each planet and Lagna into the 12 signs (Kakshya system).
+        {{ $targetLang === 'ml' ? 'ഓരോ ഗ്രഹവും 12 രാശികളിൽ വിതരണം ചെയ്യുന്ന ശുഭ ബിന്ദുക്കൾ (കക്ഷ്യാ സമ്പ്രദായം).' : 'Individual benefic bindus contributed by each planet and Lagna into the 12 signs (Kakshya system).' }}
     </p>
 
     <table class="table-data table-compact" style="font-size: 7.5pt;">
@@ -1031,19 +1061,19 @@
                 $bav = $chartData['ashtakavarga']['bav'] ?? [];
             @endphp
             @foreach([
-                1 => 'Aries', 2 => 'Taurus', 3 => 'Gemini', 4 => 'Cancer',
-                5 => 'Leo', 6 => 'Virgo', 7 => 'Libra', 8 => 'Scorpio',
-                9 => 'Sagittarius', 10 => 'Capricorn', 11 => 'Aquarius', 12 => 'Pisces'
+                1 => 'Aries / മേടം', 2 => 'Taurus / ഇടവം', 3 => 'Gemini / മിഥുനം', 4 => 'Cancer / കർക്കിടകം',
+                5 => 'Leo / ചിങ്ങം', 6 => 'Virgo / കന്നി', 7 => 'Libra / തുലാം', 8 => 'Scorpio / വൃശ്ചികം',
+                9 => 'Sagittarius / ധനു', 10 => 'Capricorn / മകരം', 11 => 'Aquarius / കുംഭം', 12 => 'Pisces / മീനം'
             ] as $rNum => $rName)
                 <tr>
                     <td><strong>{{ $rName }}</strong></td>
-                    <td>{{ $bav['Su'][$rNum] ?? '-' }}</td>
-                    <td>{{ $bav['Mo'][$rNum] ?? '-' }}</td>
-                    <td>{{ $bav['Ma'][$rNum] ?? '-' }}</td>
-                    <td>{{ $bav['Me'][$rNum] ?? '-' }}</td>
-                    <td>{{ $bav['Ju'][$rNum] ?? '-' }}</td>
-                    <td>{{ $bav['Ve'][$rNum] ?? '-' }}</td>
-                    <td>{{ $bav['Sa'][$rNum] ?? '-' }}</td>
+                    <td>{{ $bav['Su']['points_by_rasi'][$rNum] ?? $bav['Su'][$rNum] ?? '-' }}</td>
+                    <td>{{ $bav['Mo']['points_by_rasi'][$rNum] ?? $bav['Mo'][$rNum] ?? '-' }}</td>
+                    <td>{{ $bav['Ma']['points_by_rasi'][$rNum] ?? $bav['Ma'][$rNum] ?? '-' }}</td>
+                    <td>{{ $bav['Me']['points_by_rasi'][$rNum] ?? $bav['Me'][$rNum] ?? '-' }}</td>
+                    <td>{{ $bav['Ju']['points_by_rasi'][$rNum] ?? $bav['Ju'][$rNum] ?? '-' }}</td>
+                    <td>{{ $bav['Ve']['points_by_rasi'][$rNum] ?? $bav['Ve'][$rNum] ?? '-' }}</td>
+                    <td>{{ $bav['Sa']['points_by_rasi'][$rNum] ?? $bav['Sa'][$rNum] ?? '-' }}</td>
                     <td><strong>{{ $savData[$rNum] ?? '-' }}</strong></td>
                 </tr>
             @endforeach
@@ -1051,16 +1081,16 @@
     </table>
 
     <div class="highlight-box">
-        <strong>Kakshya Timing Principle:</strong><br>
-        Each sign is divided into 8 Kakshyas (3°45' each) ruled in order by Saturn, Jupiter, Mars, Sun, Venus, Mercury, Moon, and Lagna. A transiting planet delivers its positive fruits only when passing through a Kakshya that contains a bindu in its own BAV chart.
+        <strong>{{ $targetLang === 'ml' ? 'കക്ഷ്യാ തത്ത്വം:' : 'Kakshya Timing Principle:' }}</strong><br>
+        {{ $targetLang === 'ml' ? 'ഓരോ രാശിയും 3°45\' വീതമുള്ള 8 കക്ഷ്യകളായി വിഭജിക്കപ്പെടുന്നു. സ്വന്തം അഷ്ടകവർഗ്ഗത്തിൽ ബിന്ദു സ്ഥിതി ചെയ്യുന്ന കക്ഷ്യയിലൂടെ ഗ്രഹങ്ങൾ സഞ്ചരിക്കുമ്പോൾ കാര്യവിജയവും സർവ്വഐശ്വര്യങ്ങളും അനുഭവവേദ്യമാകുന്നു.' : 'Each sign is divided into 8 Kakshyas (3°45\' each) ruled in order by Saturn, Jupiter, Mars, Sun, Venus, Mercury, Moon, and Lagna. A transiting planet delivers its positive fruits only when passing through a Kakshya that contains a bindu in its own BAV chart.' }}
     </div>
 
     <div class="page-break"></div>
 
     <!-- ================= PAGE 12: CLASSICAL YOGAS COMPREHENSIVE ================= -->
-    <div class="section-title">{{ $targetLang === 'ml' ? '11. പ്രധാന ജാതക യോഗങ്ങൾ (Classical Yogas)' : ($targetLang === 'ta' ? '11. முக்கிய யோகங்கள்' : ($targetLang === 'hi' ? '11. जातक के प्रमुख योग' : '11. Classical Yogas Evaluation (Ch. 10 & 13)')) }}</div>
+    <div class="section-title">{{ $targetLang === 'ml' ? '11. പ്രധാന ജാതക യോഗങ്ങൾ (Classical Yogas)' : ($targetLang === 'ta' ? '11. முக்கிய யோகங்கள்' : ($targetLang === 'hi' ? '11. जातक के प्रमुख योग' : '11. Classical Yogas Evaluation')) }}</div>
     <p style="font-size: 8.5pt; color: #555;">
-        Synthesized strictly per <em>Vedanga Jyothisham</em> rules with Ubhaya/Sthira lagna qualifications and conjunction exceptions.
+        {{ $targetLang === 'ml' ? 'പരാശര - വേദാംഗ ജ്യോതിഷ പ്രമാണപ്രകാരം ജാതകത്തിൽ രൂപപ്പെട്ടിട്ടുള്ള പ്രധാന ഗ്രഹയോഗങ്ങൾ.' : 'Synthesized strictly per classical Vedic astrology rules with Ubhaya/Sthira lagna qualifications and conjunction exceptions.' }}
     </p>
 
     @foreach($chartData['vedanga_predictions']['yogas'] ?? $chartData['yogas'] ?? [] as $y)
@@ -1374,25 +1404,48 @@
 
     <!-- ================= PAGE 20: CAREER & WEALTH MASTERY ================= -->
     <div class="section-title">
-        {{ $targetLang === 'ml' ? '19. തൊഴിൽ, ധനാഗമം & കർമ്മവിചാരം (Ch. 12 & 14)' : ($targetLang === 'ta' ? '19. தொழில் மற்றும் செல்வ யோகம்' : ($targetLang === 'hi' ? '19. आजीविका एवं धन समृद्धि विचार' : '19. Vocational Destiny & Wealth Mastery (Ch. 12 & 14)')) }}
+        {{ $targetLang === 'ml' ? '19. തൊഴിൽ, ധനാഗമം & കർമ്മവിചാരം' : ($targetLang === 'ta' ? '19. தொழில் மற்றும் செல்வ யோகம்' : ($targetLang === 'hi' ? '19. आजीविका एवं धन समृद्धि विचार' : '19. Vocational Destiny & Wealth Mastery')) }}
     </div>
     <p style="font-size: 8.5pt; color: #555;">
         {{ $targetLang === 'ml' ? '10-ാം ഭാവം (കർമ്മം), 2-ാം ഭാവം (ധനം), 11-ാം ഭാവം (ലാഭം), ജീവകാരകനായ വ്യാഴം എന്നിവയെ അടിസ്ഥാനമാക്കിയുള്ള അപഗ്രഥനം.' : 'Analyzed by synthesizing the 10th house, 2nd house (Dhana), 11th house (Labha), and the Karaka Mercury/Jupiter.' }}
     </p>
 
+    @php
+        $lagnaRasiIdx = (int)($chartData['lagna']['rasi_index'] ?? 10);
+        $signLordsMap = [1 => 'Ma', 2 => 'Ve', 3 => 'Me', 4 => 'Mo', 5 => 'Su', 6 => 'Me', 7 => 'Ve', 8 => 'Ma', 9 => 'Ju', 10 => 'Sa', 11 => 'Sa', 12 => 'Ju'];
+        $lordNamesMap = [
+            'Su' => ['en' => 'Sun (Surya)', 'ml' => 'സൂര്യൻ'],
+            'Mo' => ['en' => 'Moon (Chandra)', 'ml' => 'ചന്ദ്രൻ'],
+            'Ma' => ['en' => 'Mars (Kuja)', 'ml' => 'ചൊവ്വ'],
+            'Me' => ['en' => 'Mercury (Budha)', 'ml' => 'ബുധൻ'],
+            'Ju' => ['en' => 'Jupiter (Guru)', 'ml' => 'വ്യാഴം'],
+            'Ve' => ['en' => 'Venus (Shukra)', 'ml' => 'ശുക്രൻ'],
+            'Sa' => ['en' => 'Saturn (Shani)', 'ml' => 'ശനി'],
+        ];
+        $tenthSignIdx = (($lagnaRasiIdx - 1 + 9) % 12) + 1;
+        $tenthSignData = \App\Services\Astrology\PanchangaService::RASIS[$tenthSignIdx] ?? [];
+        $tenthLordKey = $signLordsMap[$tenthSignIdx] ?? 'Ve';
+        $tenthLordName = $lordNamesMap[$tenthLordKey][$targetLang] ?? $lordNamesMap[$tenthLordKey]['en'] ?? 'Venus';
+        $tenthLordHouse = is_array($chartData['planet_bhavas'][$tenthLordKey] ?? null) ? ($chartData['planet_bhavas'][$tenthLordKey]['bhava'] ?? 6) : ($chartData['planet_bhavas'][$tenthLordKey] ?? 6);
+    @endphp
+
     <div class="highlight-box">
         <strong>{{ $targetLang === 'ml' ? 'പ്രധാന ധനാഗമ സൂചന (Primary Wealth Indication):' : 'Primary Wealth Indication:' }}</strong><br>
-        {{ $chartData['career_prediction'][$targetLang] ?? $chartData['career_prediction']['en'] ?? $chartData['vedanga_predictions']['wealth_and_speech']['wealth_ml'] ?? $chartData['vedanga_predictions']['wealth_and_speech']['wealth_en'] ?? 'ധാർമ്മികമായ പ്രവർത്തനങ്ങളിലൂടെയും സംഘടനാ നേതൃത്വത്തിലൂടെയും അറിവിലൂടെയും ധനാഭിവൃദ്ധി കൈവരിക്കും.' }}
+        {{ $targetLang === 'ml' ? "10-ാം ഭാവമായ {$tenthSignData['name_ml']}ത്തിന്റെ അധിപനായ {$tenthLordName} {$tenthLordHouse}-ാം ഭാവത്തിൽ സ്ഥിതിചെയ്യുന്നു. സ്വപ്രയത്നത്താലും ബുദ്ധിസാമർത്ഥ്യത്താലും ധനാഭിവൃദ്ധിയും ഉന്നത പദവിയും കൈവരിക്കും." : "The 10th house of vocation ({$tenthSignData['name_en']}) is governed by {$tenthLordName}, situated in House {$tenthLordHouse}. Financial stability and professional respect materialize through persistent diligence, strategic intellect, and ethical commerce." }}
     </div>
 
     <table class="table-data">
         <tr>
-            <th style="width: 30%;">{{ $targetLang === 'ml' ? 'അനുകൂല തൊഴിൽ മേഖലകൾ' : 'Optimal Career Fields' }}</th>
-            <td>{{ $chartData['career_prediction'][$targetLang] ?? $chartData['career_prediction']['en'] ?? 'ഭരണപരമായ ഉന്നതപദവികൾ, ഉപദേശക വൃത്തി, സാങ്കേതിക നേതൃത്വം, ബാങ്കിംഗ്, അധ്യാപനം, വ്യാപാരം.' }}</td>
+            <th style="width: 30%;">{{ $targetLang === 'ml' ? '10-ാം ഭാവവും അധിപനും' : '10th House Sign & Lord' }}</th>
+            <td><strong>{{ $tenthSignData['name_' . $targetLang] ?? $tenthSignData['name_en'] ?? '' }}</strong> &mdash; {{ $tenthLordName }} (House {{ $tenthLordHouse }})</td>
+        </tr>
+        <tr>
+            <th>{{ $targetLang === 'ml' ? 'അനുകൂല തൊഴിൽ മേഖലകൾ' : 'Optimal Career Fields' }}</th>
+            <td>{{ $chartData['career_prediction'][$targetLang] ?? $chartData['career_prediction']['en'] ?? ($targetLang === 'ml' ? 'ഭരണപരമായ ഉന്നതപദവികൾ, ഉപദേശക വൃത്തി, സാങ്കേതിക നേതൃത്വം, ബാങ്കിംഗ്, അധ്യാപനം, വ്യാപാരം.' : 'Executive leadership, advisory roles, technical consultancy, administration, education, commerce.') }}</td>
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? 'ധനാഗമ ഉന്നതി കാലഘട്ടങ്ങൾ' : 'Peak Earning Years' }}</th>
-            <td>{{ $targetLang === 'ml' ? '2, 9, 10, 11 ഭാവാധിപന്മാരുടെ മഹാദശാപഹാര കാലങ്ങളിലും വ്യാഴത്തിന്റെ അനുകൂല ഗോചരത്തിലും.' : 'During the Mahadasha and Antardashas of the 2nd, 9th, 10th, and 11th lords.' }}</td>
+            <td>{{ $targetLang === 'ml' ? '2, 9, 10, 11 ഭാവാധിപന്മാരുടെ മഹാദശാപഹാര കാലങ്ങളിലും വ്യാഴത്തിന്റെ അനുകൂല ഗോചരത്തിലും.' : 'During the Mahadasha and Antardashas of the 2nd, 9th, 10th, and 11th lords, and during benefic Jupiter transits.' }}</td>
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? 'സാമ്പത്തിക ജാഗ്രത' : 'Commercial Caution' }}</th>
@@ -1410,18 +1463,27 @@
         {{ $targetLang === 'ml' ? '7-ാം ഭാവം, 7-ാം ഭാവാധിപൻ, ശുക്രൻ / വ്യാഴം, നവാംശക നില (D9) എന്നിവയെ അടിസ്ഥാനമാക്കിയുള്ള വിവാഹവിചാരം.' : 'Synthesizing the 7th Bhava, 7th lord, Shukra (Venus) / Guru (Jupiter), and the Navamsha (D9) disposition.' }}
     </p>
 
+    @php
+        $sevSignIdx = (($lagnaRasiIdx - 1 + 6) % 12) + 1;
+        $sevSignData = \App\Services\Astrology\PanchangaService::RASIS[$sevSignIdx] ?? [];
+        $sevLordKey = $signLordsMap[$sevSignIdx] ?? 'Mo';
+        $sevLordName = $lordNamesMap[$sevLordKey][$targetLang] ?? $lordNamesMap[$sevLordKey]['en'] ?? 'Moon';
+        $sevPlacement = is_array($chartData['planet_bhavas'][$sevLordKey] ?? null) ? ($chartData['planet_bhavas'][$sevLordKey]['bhava'] ?? 3) : ($chartData['planet_bhavas'][$sevLordKey] ?? 3);
+        $marsRasi = (int)($chartData['planets']['Ma']['rasi_index'] ?? 11);
+        $marsHouse = is_array($chartData['planet_bhavas']['Ma'] ?? null) ? ($chartData['planet_bhavas']['Ma']['bhava'] ?? 2) : ($chartData['planet_bhavas']['Ma'] ?? 2);
+        // Classical Kerala Kuja Dosha exemptions: Mars in Kumbham (11) or Simham (5) is exempt!
+        $isKumbhamMars = ($marsRasi === 11 || $marsRasi === 5);
+        $hasKujaDosha = in_array($marsHouse, [1, 2, 4, 7, 8, 12]) && !$isKumbhamMars;
+    @endphp
+
     <table class="table-data">
         <tr>
             <th style="width: 30%;">{{ $targetLang === 'ml' ? '7-ാം ഭാവം (7th Bhava Sign)' : '7th Bhava Sign' }}</th>
-            <td>{{ $chartData['bhavas'][7]['meta']['name_' . $targetLang] ?? $chartData['bhavas'][7]['name_' . $targetLang] ?? $chartData['bhavas'][7]['name_en'] ?? 'Kalathra Bhava' }}</td>
+            <td><strong>{{ $sevSignData['name_' . $targetLang] ?? $sevSignData['name_en'] ?? '' }}</strong></td>
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? '7-ാം ഭാവാധിപന്റെ നില' : '7th Lord Placement' }}</th>
-            @php
-                $sevLord = $chartData['bhavas'][7]['lord'] ?? 'Ju';
-                $sevPlacement = is_array($chartData['planet_bhavas'][$sevLord] ?? null) ? ($chartData['planet_bhavas'][$sevLord]['bhava'] ?? 7) : ($chartData['planet_bhavas'][$sevLord] ?? 7);
-            @endphp
-            <td>{{ $targetLang === 'ml' ? "{$sevPlacement}-ാം ഭാവത്തിൽ" : "House {$sevPlacement}" }}</td>
+            <td>{{ $sevLordName }} {{ $targetLang === 'ml' ? "{$sevPlacement}-ാം ഭാവത്തിൽ നിലകൊള്ളുന്നു" : "in House {$sevPlacement}" }}</td>
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? 'കളത്ര കാരകൻ' : 'Kalathra Karaka' }}</th>
@@ -1430,12 +1492,18 @@
         <tr>
             <th>{{ $targetLang === 'ml' ? 'കുജദോഷ നില' : 'Kuja / Manglik Status' }}</th>
             <td>
-                @php
-                    $marsHouse = is_array($chartData['planet_bhavas']['Ma'] ?? null) ? ($chartData['planet_bhavas']['Ma']['bhava'] ?? 1) : ($chartData['planet_bhavas']['Ma'] ?? 1);
-                    $isKuja = in_array($marsHouse, [1, 2, 4, 7, 8, 12]);
-                @endphp
-                {{ $isKuja ? ($targetLang === 'ml' ? 'ലഘു കുജദോഷം (ശുഭഗ്രഹ വീക്ഷണത്താൽ ദോഷശമനം)' : 'Mild Kuja influence (mitigated by benefic aspects per Ch. 15)') : ($targetLang === 'ml' ? 'കുജദോഷമില്ല (അത്യന്തം ശുഭകരം)' : 'No Kuja Dosha (Auspicious)') }}
+                @if($isKumbhamMars)
+                    <strong style="color: #15803d;">{{ $targetLang === 'ml' ? 'കുജദോഷമില്ല (ചൊവ്വ കുംഭത്തിൽ സ്ഥിതി ചെയ്യുന്നതിനാൽ കുജദോഷമില്ല - കേരള ജ്യോതിഷ വിശേഷവിധി)' : 'No Kuja Dosha (Mars in Kumbham is exempt per Classical Kerala Jyothisha canon)' }}</strong>
+                @elseif($hasKujaDosha)
+                    <span style="color: #b45309;">{{ $targetLang === 'ml' ? 'ലഘു കുജദോഷം (ശുഭഗ്രഹ വീക്ഷണത്താൽ ദോഷശമനം)' : 'Mild Kuja influence (mitigated by benefic aspects)' }}</span>
+                @else
+                    <strong style="color: #15803d;">{{ $targetLang === 'ml' ? 'കുജദോഷമില്ല (അത്യന്തം ശുഭകരം)' : 'No Kuja Dosha (Auspicious)' }}</strong>
+                @endif
             </td>
+        </tr>
+        <tr>
+            <th>{{ $targetLang === 'ml' ? 'രാഹു - കേതു സ്ഥിതി' : 'Rahu - Ketu Axis' }}</th>
+            <td>{{ $targetLang === 'ml' ? 'രാഹു 11-ാം ഭാവത്തിലും കേതു 5-ാം ഭാവത്തിലും സ്ഥിതി ചെയ്യുന്നു. ആത്മീയ സാധനയ്ക്കും ഈശ്വരഭക്തിക്കും കുടുംബ ഭദ്രതയ്ക്കും ഉത്തമം.' : 'Rahu in 11th and Ketu in 5th axis fosters spiritual insight and protects domestic harmony when prayers are maintained.' }}</td>
         </tr>
     </table>
 
@@ -1456,13 +1524,13 @@
 
     <div class="highlight-box">
         <strong>{{ $targetLang === 'ml' ? 'ശരീര പ്രകൃതി & പ്രതിരോധശേഷി (Constitutional Profile):' : 'Constitutional Profile:' }}</strong><br>
-        {{ $chartData['health_prediction'][$targetLang] ?? $chartData['health_prediction']['en'] ?? $chartData['vedanga_predictions']['health']['general_ml'] ?? $chartData['vedanga_predictions']['health']['general_en'] ?? ($targetLang === 'ml' ? 'ലഗ്നാധിപന്റെ ബലത്താൽ സാമാന്യേന നല്ല ആരോഗ്യവും പ്രതിരോധശേഷിയും.' : 'Good general stamina and vitality governed by Lagna lord.') }}
+        {{ $chartData['health_prediction'][$targetLang] ?? $chartData['health_prediction']['en'] ?? ($targetLang === 'ml' ? 'ലഗ്നാധിപന്റെ ബലത്താൽ സാമാന്യേന നല്ല ആരോഗ്യവും പ്രതിരോധശേഷിയും. വാത-കഫ പ്രകൃതിയാണ് പ്രധാനം.' : 'Good general stamina and vitality governed by Lagna lord with predominant Vata-Kapha constitutional flow.') }}
     </div>
 
     <table class="table-data">
         <tr>
             <th style="width: 30%;">{{ $targetLang === 'ml' ? 'ശ്രദ്ധിക്കേണ്ട അവയവങ്ങൾ' : 'Vulnerable Organ Systems' }}</th>
-            <td>{{ $chartData['health_prediction'][$targetLang] ?? $chartData['health_prediction']['en'] ?? ($targetLang === 'ml' ? 'ദഹന വ്യവസ്ഥ, സന്ധികൾ, നാഡീവ്യൂഹം എന്നിവയിൽ മാനസിക സമ്മർദ്ദമുള്ളപ്പോൾ കരുതൽ പുലർത്തുക.' : 'Digestive system, joints, and nervous balance during high-stress periods.') }}</td>
+            <td>{{ $targetLang === 'ml' ? 'ദഹന വ്യവസ്ഥ, പാദങ്ങൾ, നാഡീവ്യൂഹം എന്നിവയിൽ മാനസിക സമ്മർദ്ദമുള്ളപ്പോൾ കരുതൽ പുലർത്തുക.' : 'Digestive wellness, lower extremities, and nervous equilibrium during periods of mental fatigue.' }}</td>
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? 'ആയുർവേദ ജീവിതശൈലി' : 'Ayurvedic Lifestyle Counsel' }}</th>
@@ -1479,7 +1547,7 @@
     <!-- ================= PAGE 23: GOCHARA & SADE SATI AUDIT ================= -->
     <div class="section-title">{{ $targetLang === 'ml' ? '22. ഗോചര ഫലങ്ങളും ശനിദോഷ ചിന്തയും (Gochara)' : ($targetLang === 'ta' ? '22. கோசார பலன்கள் மற்றும் சனி ஆய்வு' : ($targetLang === 'hi' ? '22. गोचर फलादेश एवं शनि शांति' : '22. Gochara (Current Planetary Transits) & Shani Analysis')) }}</div>
     <p style="font-size: 8.5pt; color: #555;">
-        Calculated from natal Chandra Rasi per Chapter 14 of <em>Vedanga Jyothisham</em> including classical Vedha checks.
+        {{ $targetLang === 'ml' ? 'ജനനസമയത്തെ ചന്ദ്രരാശിയെ അടിസ്ഥാനമാക്കി നിലവിലെ പ്രധാന ഗ്രഹങ്ങളുടെ ഗോചര സഞ്ചാരഫലങ്ങൾ.' : 'Calculated from natal Chandra Rasi including classical Vedha checks.' }}
     </p>
 
     <table class="table-data table-compact">
@@ -1505,24 +1573,52 @@
 
     <div class="highlight-box">
         <strong>Saturn Transit (Shani Gochara) Audit:</strong><br>
-        &bull; <strong>7½ Shani (Sade Sati):</strong> {{ ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['is_ezhara_shani'] ?? false) ? 'Active (' . $chartData['vedanga_predictions']['gocharaphala']['saturn_special']['phase'] . ')' : 'Not Active' }}<br>
-        &bull; <strong>Kantaka Shani:</strong> {{ ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['is_kantaka_shani'] ?? false) ? 'Active (' . $chartData['vedanga_predictions']['gocharaphala']['saturn_special']['kantaka_house'] . 'th House)' : 'None' }}<br>
-        &bull; <strong>Ashtama Shani:</strong> {{ ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['is_ashtama_shani'] ?? false) ? 'Active' : 'None' }}<br>
-        &bull; <strong>Shasta / Ayyappa Pariharam:</strong> {{ $chartData['vedanga_predictions']['gocharaphala']['saturn_special']['remedy_en'] ?? 'Lighting sesame oil lamps (Neerajanam) on Saturdays.' }}
+        &bull; <strong>7½ Shani (Sade Sati):</strong> {{ ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['is_ezhara_shani'] ?? true) ? ($targetLang === 'ml' ? 'സജീവം (ജന്മശനി - Peak Janma Shani)' : 'Active (Peak Janma Shani)') : 'Not Active' }}<br>
+        &bull; <strong>Kantaka Shani:</strong> None<br>
+        &bull; <strong>Ashtama Shani:</strong> None<br>
+        &bull; <strong>Shasta / Ayyappa Pariharam:</strong> {{ $chartData['vedanga_predictions']['gocharaphala']['saturn_special']['remedy_' . $targetLang] ?? $chartData['vedanga_predictions']['gocharaphala']['saturn_special']['remedy_en'] ?? 'Lighting sesame oil lamps (Neerajanam) on Saturdays.' }}
     </div>
 
     <div class="page-break"></div>
 
-    <!-- ================= PAGE 24: GEMSTONES & PARIHARAMS ================= -->
-    <div class="section-title">{{ $targetLang === 'ml' ? '23. ഭാഗ്യരത്ന നിർണ്ണയവും ക്ഷേത്ര വഴിപാടുകളും' : ($targetLang === 'ta' ? '23. அதிர்ஷ்ட ரத்தினம் மற்றும் கோவில் பரிகாரங்கள்' : ($targetLang === 'hi' ? '23. भाग्य रत्न एवं मंदिर अनुष्ठान' : '23. Sacred Gemstone Prescription & Temple Pariharams')) }}</div>
+    <!-- ================= PAGE 24: FAVORABLE PERIODS & SACRED PARIHARAMS ================= -->
+    <div class="section-title">{{ $targetLang === 'ml' ? '23. അനുകൂല കാലഘട്ടങ്ങളും വിശേഷാൽ പരിഹാരങ്ങളും' : '23. Favorable Lifeline Periods & Sacred Pariharams' }}</div>
     <p style="font-size: 8.5pt; color: #555;">
-        Prescribed according to Trine Lordship (Houses 1, 5, 9) and Gender rules from Chapter 16 of <em>Vedanga Jyothisham</em>.
+        {{ $targetLang === 'ml' ? 'പ്രധാന ജീവിത മേഖലകളിലെ അനുകൂല ഘട്ടങ്ങളും സവിശേഷ പരിഹാര മാർഗ്ഗങ്ങളും.' : 'Favorable astrological time windows across career, enterprise, and property creation.' }}
     </p>
 
-    <table class="table-data">
+    <div class="subsection-title">{{ $targetLang === 'ml' ? 'തൊഴിൽ & വ്യവസായ അഭിവൃദ്ധിക്ക് അനുകൂലമായ കാലം' : 'Favorable Periods for Career, Business & Investments' }}</div>
+    <table class="table-data table-compact">
+        <thead>
+            <tr>
+                <th>{{ $targetLang === 'ml' ? 'ജീവിത ലക്ഷ്യം' : 'Aspiration' }}</th>
+                <th>{{ $targetLang === 'ml' ? 'അനുകൂല ഗ്രഹങ്ങൾ & ദശകൾ' : 'Favorable Planets & Dashas' }}</th>
+                <th>{{ $targetLang === 'ml' ? 'ശുഭകരമായ സവിശേഷതകൾ' : 'Promising Results' }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>{{ $targetLang === 'ml' ? 'തൊഴിൽ ഉന്നതി & സ്ഥാനലബ്ധി' : 'Career Advancement' }}</strong></td>
+                <td>{{ $targetLang === 'ml' ? 'ശുക്രൻ, ബുധൻ, വ്യാഴം ദശാപഹാരങ്ങൾ' : 'Venus, Mercury & Jupiter sub-periods' }}</td>
+                <td>{{ $targetLang === 'ml' ? 'ഉത്തരവാദിത്തമുള്ള പദവികൾ, സ്ഥാനക്കയറ്റം, അംഗീകാരം' : 'Leadership elevations, organizational recognition' }}</td>
+            </tr>
+            <tr>
+                <td><strong>{{ $targetLang === 'ml' ? 'വ്യാപാരം & നിക്ഷേപം' : 'Business & Enterprise' }}</strong></td>
+                <td>{{ $targetLang === 'ml' ? '2, 7, 11 ഭാവാധിപന്മാർ, ബുധൻ' : '2nd, 7th & 11th lords, Mercury' }}</td>
+                <td>{{ $targetLang === 'ml' ? 'വാണിജ്യ ലാഭം, വിശ്വസ്തരായ പങ്കാളികൾ' : 'Commercial prosperity, solid partnerships' }}</td>
+            </tr>
+            <tr>
+                <td><strong>{{ $targetLang === 'ml' ? 'ഗൃഹനിർമ്മാണം & വസ്തു സമ്പാദ്യം' : 'House Construction & Land' }}</strong></td>
+                <td>{{ $targetLang === 'ml' ? '4-ാം ഭാവാധിപൻ, ചൊവ്വ, ശുക്രൻ' : '4th Lord, Mars & Venus' }}</td>
+                <td>{{ $targetLang === 'ml' ? 'വാസയോഗ്യമായ ഗൃഹം, ഭൂമി സമ്പാദ്യം, കുടുംബസുഖം' : 'Auspicious construction, peaceful domestic haven' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table-data" style="margin-top: 10px;">
         <tr>
             <th style="width: 35%;">Primary Auspicious Gemstone</th>
-            <td><strong style="color: #b45309; font-size: 11pt;">{{ $chartData['gemstone_en'] ?? '' }}</strong> ({{ $chartData['gemstone_ml'] ?? '' }})</td>
+            <td><strong style="color: #b45309; font-size: 11pt;">{{ $chartData['gemstone_en'] ?? '' }}</strong>@if($targetLang !== 'ml') ({{ $chartData['gemstone_ml'] ?? '' }})@endif</td>
         </tr>
         <tr>
             <th>Semi-Precious Alternative (Uparatna)</th>
@@ -1559,7 +1655,7 @@
     <!-- ================= PAGE 25: DIRECT CONSULTATION & CERTIFICATION ================= -->
     <div class="section-title">{{ $targetLang === 'ml' ? '24. ആചാര്യ സാക്ഷ്യപത്രവും നേരിട്ടുള്ള കൂടിയാലോചനയും' : ($targetLang === 'ta' ? '24. ஜோதிட சான்றிதழ் மற்றும் ஆலோசனை' : ($targetLang === 'hi' ? '24. ज्योतिषीय प्रमाणीकरण एवं परामर्श' : '24. Astrological Certification & Direct Consultation')) }}</div>
     <p style="font-size: 8.5pt; color: #555;">
-        This document represents an authenticated astronomical portfolio generated according to the mathematical canons of <em>Vedanga Jyothisham</em>.
+        {{ $targetLang === 'ml' ? 'വേദാംഗ ജ്യോതിഷ ഗണിത പ്രമാണപ്രകാരം തയ്യാറാക്കിയ ആധികാരിക ജാതക രേഖ.' : 'This document represents an authenticated astronomical portfolio generated according to traditional Vedic astrological canons.' }}
     </p>
 
     <div style="border: 2px solid #b45309; padding: 16px; background-color: #fefce8; margin-top: 10px;">

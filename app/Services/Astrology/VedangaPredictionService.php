@@ -375,9 +375,9 @@ class VedangaPredictionService
             ];
         }
 
-        // 4. NEECHABHANGA RAJA YOGA (Page 56)
+        // 4. NEECHABHANGA RAJA YOGA (Only 7 physical Grahas, strictly excluding Chhaya Grahas Rahu/Ketu)
         foreach ($chartData['dignities'] ?? [] as $pk => $dInfo) {
-            if (($dInfo['status'] ?? '') === 'debilitated') {
+            if (in_array($pk, ['Su', 'Mo', 'Ma', 'Me', 'Ju', 'Ve', 'Sa'], true) && ($dInfo['status'] ?? '') === 'debilitated') {
                 $debRasi = (int)($dInfo['rasi'] ?? 1);
                 $dispositor = AshtakavargaAndDignityService::RASI_LORDS[$debRasi] ?? 'Ma';
                 $dispRasi = (int)floor(fmod(($chartData['planets'][$dispositor]['longitude'] ?? 0.0) + 360.0, 360.0) / 30.0) + 1;

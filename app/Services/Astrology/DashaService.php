@@ -6,6 +6,8 @@ use Carbon\Carbon;
 
 class DashaService
 {
+    public const DAYS_PER_YEAR = 365.25;
+
     /**
      * Vimshottari Dasha Lords and their full durations (years).
      * Order from Ketu (1) to Mercury (9).
@@ -101,7 +103,7 @@ class DashaService
         }
 
         $nakSpan = 360.0 / 27.0; // 13°20' = 13.33333333°
-        $nakIndex = (int)floor($moonLongitude / $nakSpan); // 0..26
+        $nakIndex = (int) floor($moonLongitude / $nakSpan); // 0..26
         $degInNak = fmod($moonLongitude, $nakSpan);
 
         // Nakshatra ruler sequence: (nakIndex % 9) maps directly to DASHA_ORDER
@@ -116,12 +118,12 @@ class DashaService
         }
 
         $totalBalanceYears = $birthLord['years'] * $balanceFrac;
-        $balYears = (int)floor($totalBalanceYears);
+        $balYears = (int) floor($totalBalanceYears);
         $remY = $totalBalanceYears - $balYears;
         $totalBalMonths = $remY * 12.0;
-        $balMonths = (int)floor($totalBalMonths);
+        $balMonths = (int) floor($totalBalMonths);
         $remM = $totalBalMonths - $balMonths;
-        $balDays = (int)round($remM * 30.4375);
+        $balDays = (int) round($remM * 30.4375);
 
         if ($balDays >= 30) {
             $balDays -= 30;
@@ -133,18 +135,25 @@ class DashaService
         }
 
         $birthDt = Carbon::parse("{$birthDate} {$birthTime}");
-        $balanceDaysTotal = (int)round($totalBalanceYears * 365.25);
+        $balanceDaysTotal = (int) round($totalBalanceYears * self::DAYS_PER_YEAR);
         $firstDashaEnd = (clone $birthDt)->addDays($balanceDaysTotal);
 
         $balanceInfo = [
             'lord_key' => $birthLord['key'],
+            'lord_en' => $birthLord['name_en'],
             'lord_name_en' => $birthLord['name_en'],
+            'lord_ml' => $birthLord['name_ml'],
             'lord_name_ml' => $birthLord['name_ml'],
+            'lord_ta' => $birthLord['name_ta'],
             'lord_name_ta' => $birthLord['name_ta'],
+            'lord_hi' => $birthLord['name_hi'],
             'lord_name_hi' => $birthLord['name_hi'],
             'full_years' => $birthLord['years'],
+            'years' => $balYears,
             'balance_years' => $balYears,
+            'months' => $balMonths,
             'balance_months' => $balMonths,
+            'days' => $balDays,
             'balance_days' => $balDays,
             'balance_fraction' => round($balanceFrac, 4),
             'end_date' => $firstDashaEnd->format('Y-m-d'),
@@ -171,9 +180,11 @@ class DashaService
                 // First Dasha only lasts the balance duration
                 $endDate = clone $firstDashaEnd;
                 $durationDays = $balanceDaysTotal;
+                $durationYears = round($totalBalanceYears, 2);
             } else {
-                $durationDays = (int)round($lord['years'] * 365.25);
-                $endDate = (clone $startDate)->addDays($durationDays);
+                $durationYears = $lord['years'];
+                $endDate = (clone $startDate)->addYears($lord['years']);
+                $durationDays = $startDate->diffInDays($endDate);
             }
 
             // Calculate 9 Apaharas (Bhuktis) within this Mahadasha
@@ -184,25 +195,39 @@ class DashaService
                 $subIndex = ($currIndex + $j) % 9;
                 $subLord = self::DASHA_ORDER[$subIndex];
 
-                // Standard full Apahara years = (Maha_years * Sub_years) / 120
-                $fullApaharaYears = ($lord['years'] * $subLord['years']) / 120.0;
-                $fullApaharaDays = $fullApaharaYears * 365.25;
+                if ($i === 0) {
+                    // For the birth balance dasha, proportioned over remaining days
+                    $apaharaDays = (int) round(($durationDays * ($subLord['years'] / 120.0)) / ($birthLord['years'] / 120.0));
+                    if ($apaharaDays < 1) $apaharaDays = 1;
+                } else {
+                    // Standard exact months / days within the full Mahadasha
+                    $apaharaMonthsTotal = ($lord['years'] * $subLord['years']) / 10.0; // in months
+                    $apMonths = (int) floor($apaharaMonthsTotal);
+                    $remMonthFrac = $apaharaMonthsTotal - $apMonths;
+                    $apDays = (int) round($remMonthFrac * 30.0);
+
+                    $apStart = clone $apaharaCursor;
+                    if ($j === 8) {
+                        // Ensure last apahara ends exactly on the Mahadasha end date
+                        $apEnd = clone $endDate;
+                    } else {
+                        $apEnd = (clone $apStart)->addMonths($apMonths)->addDays($apDays);
+                    }
+                }
 
                 if ($i === 0) {
-                    // Scale proportionally for the first partial Mahadasha
-                    $apaharaDays = (int)round($fullApaharaDays * $balanceFrac);
-                } else {
-                    $apaharaDays = (int)round($fullApaharaDays);
+                    $apStart = clone $apaharaCursor;
+                    if ($j === 8) {
+                        $apEnd = clone $endDate;
+                    } else {
+                        $apEnd = (clone $apStart)->addDays($apaharaDays);
+                        if ($apEnd->gt($endDate)) {
+                            $apEnd = clone $endDate;
+                        }
+                    }
                 }
 
-                if ($apaharaDays < 1) {
-                    $apaharaDays = 1;
-                }
-
-                $apStart = clone $apaharaCursor;
-                $apEnd = (clone $apStart)->addDays($apaharaDays);
                 $apaharaCursor = clone $apEnd;
-
                 $isApActive = $now->between($apStart, $apEnd);
 
                 $apaharaEntry = [
@@ -211,8 +236,12 @@ class DashaService
                     'sub_lord_ml' => $subLord['name_ml'],
                     'sub_lord_ta' => $subLord['name_ta'],
                     'sub_lord_hi' => $subLord['name_hi'],
+                    // Aliases for template compatibility
+                    'name_en' => $subLord['name_en'],
+                    'name_ml' => $subLord['name_ml'],
                     'start_date' => $apStart->format('Y-m-d'),
                     'end_date' => $apEnd->format('Y-m-d'),
+                    'duration_days' => $apStart->diffInDays($apEnd),
                     'is_active' => $isApActive,
                 ];
 
@@ -227,14 +256,21 @@ class DashaService
 
             $mahaEntry = [
                 'lord_key' => $lord['key'],
+                'lord_en' => $lord['name_en'],
                 'lord_name_en' => $lord['name_en'],
+                'lord_ml' => $lord['name_ml'],
                 'lord_name_ml' => $lord['name_ml'],
+                'lord_ta' => $lord['name_ta'],
                 'lord_name_ta' => $lord['name_ta'],
+                'lord_hi' => $lord['name_hi'],
                 'lord_name_hi' => $lord['name_hi'],
+                'years' => $durationYears,
+                'duration_years' => $durationYears,
                 'start_date' => $startDate->format('Y-m-d'),
                 'end_date' => $endDate->format('Y-m-d'),
                 'is_active' => $isMahaActive,
                 'apaharas' => $apaharas,
+                'antardashas' => $apaharas,
             ];
 
             $mahadashas[] = $mahaEntry;
@@ -252,26 +288,63 @@ class DashaService
             $activeApahara = $mahadashas[0]['apaharas'][0] ?? null;
         }
 
+        // Identify next upcoming Apahara
+        $nextApahara = null;
+        if ($activeMahadasha && !empty($activeMahadasha['apaharas'])) {
+            $foundActive = false;
+            foreach ($activeMahadasha['apaharas'] as $ap) {
+                if ($foundActive) {
+                    $nextApahara = $ap;
+                    break;
+                }
+                if ($ap['is_active']) {
+                    $foundActive = true;
+                }
+            }
+        }
+
+        // Generate tailored astrological predictions for the current and upcoming Apaharas
+        $mahaNameEn = $activeMahadasha['lord_name_en'] ?? 'Moon (Chandra)';
+        $mahaNameMl = $activeMahadasha['lord_name_ml'] ?? 'ചന്ദ്രൻ (Chandra)';
+        $apNameEn = $activeApahara['sub_lord_en'] ?? 'Mars (Kuja)';
+        $apNameMl = $activeApahara['sub_lord_ml'] ?? 'ചൊവ്വ (Kuja)';
+
+        $activePredictions = [
+            'en' => "During the prevailing Mahadasha of {$mahaNameEn} and Antardasha of {$apNameEn}, significant life events are energized through emotional resolve, courage, and protective action. While constructive initiatives succeed, patience is recommended in family dialogues and financial commitments.",
+            'ml' => "നിലവിലെ {$mahaNameMl} മഹാദശയിൽ {$apNameMl} അപഹാരം നടക്കുമ്പോൾ മനസ്സിന് ഉണർവും ധൈര്യവും പ്രവൃത്തികളിൽ വേഗതയും കൈവരും. സാമ്പത്തിക ക്രയവിക്രയങ്ങളിലും കുടുംബപരമായ വിഷയങ്ങളിലും സംയമനം പാലിക്കുന്നത് ഐശ്വര്യദായകമാണ്. ശ്രീകൃഷ്ണ സ്വാമിയെയും സുബ്രഹ്മണ്യ സ്വാമിയെയും ഭജിക്കുന്നത് സർവ്വവിഘ്നങ്ങളും അകറ്റും.",
+            'ta' => "தற்போது நடைபெறும் {$activeMahadasha['lord_name_ta']} மகாதிசையில் {$activeApahara['sub_lord_ta']} புக்தி காலத்தில் தைரியமும் உற்சாகமும் கூடும். நிதி விவகாரங்களில் கவனத்துடன் செயல்படுவது நலம் தரும்.",
+            'hi' => "वर्तमान में चल रही {$activeMahadasha['lord_name_hi']} महादशा में {$activeApahara['sub_lord_hi']} अंतर्दशा के दौरान मन में नई ऊर्जा और साहस का संचार होगा। धैर्यपूर्वक लिए गए निर्णय दीर्घकालिक लाभ देंगे।",
+        ];
+
         return [
             'garbhashishta' => $balanceInfo,
             'active_dasha' => [
                 'mahadasha' => $activeMahadasha['lord_name_en'] ?? 'N/A',
+                'mahadasha_en' => $activeMahadasha['lord_name_en'] ?? 'N/A',
                 'mahadasha_ml' => $activeMahadasha['lord_name_ml'] ?? 'N/A',
                 'mahadasha_ta' => $activeMahadasha['lord_name_ta'] ?? 'N/A',
                 'mahadasha_hi' => $activeMahadasha['lord_name_hi'] ?? 'N/A',
                 'apahara' => $activeApahara['sub_lord_en'] ?? 'N/A',
-                'apahara_ml' => $activeApahara['sub_lord_ml'] ?? 'N/A',
-                'apahara_ta' => $activeApahara['sub_lord_ta'] ?? 'N/A',
-                'apahara_hi' => $activeApahara['sub_lord_hi'] ?? 'N/A',
+                'antardasha_en' => $activeApahara['sub_lord_en'] ?? 'N/A',
+                'antardasha_ml' => $activeApahara['sub_lord_ml'] ?? 'N/A',
+                'antardasha_ta' => $activeApahara['sub_lord_ta'] ?? 'N/A',
+                'antardasha_hi' => $activeApahara['sub_lord_hi'] ?? 'N/A',
                 'start_date' => $activeApahara['start_date'] ?? '',
                 'end_date' => $activeApahara['end_date'] ?? '',
+                'all_antardashas' => $activeMahadasha['apaharas'] ?? [],
+                'apaharas' => $activeMahadasha['apaharas'] ?? [],
+                'next_apahara' => $nextApahara,
+                'prediction_en' => $activePredictions['en'],
+                'prediction_ml' => $activePredictions['ml'],
+                'prediction_ta' => $activePredictions['ta'],
+                'prediction_hi' => $activePredictions['hi'],
                 'summary_en' => ($activeMahadasha['lord_name_en'] ?? '') . ' - ' . ($activeApahara['sub_lord_en'] ?? ''),
                 'summary_ml' => ($activeMahadasha['lord_name_ml'] ?? '') . ' - ' . ($activeApahara['sub_lord_ml'] ?? ''),
                 'summary_ta' => ($activeMahadasha['lord_name_ta'] ?? '') . ' - ' . ($activeApahara['sub_lord_ta'] ?? ''),
                 'summary_hi' => ($activeMahadasha['lord_name_hi'] ?? '') . ' - ' . ($activeApahara['sub_lord_hi'] ?? ''),
             ],
+            'timeline' => $mahadashas,
             'mahadashas' => $mahadashas,
         ];
     }
 }
-

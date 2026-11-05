@@ -20,6 +20,143 @@ class AstrologyReadingController extends Controller
     }
 
     /**
+     * Universal Birth Place Geocoding endpoint with Google Maps & OpenStreetMap fallback.
+     * Endpoint: GET /api/astrology/geocode?q={query}
+     */
+    public function geocode(Request $request): JsonResponse
+    {
+        $query = trim($request->query('q', ''));
+        if (mb_strlen($query) < 2) {
+            return response()->json(['success' => true, 'places' => []]);
+        }
+
+        $results = [];
+
+        // 1. Fast local Kerala/India presets check
+        $localPresets = [
+            'mankada' => ['name' => 'Mankada, Malappuram, Kerala', 'lat' => 11.1000, 'lng' => 76.2000, 'tz' => 'Asia/Kolkata'],
+            'malappuram' => ['name' => 'Malappuram, Kerala', 'lat' => 11.0732, 'lng' => 76.0740, 'tz' => 'Asia/Kolkata'],
+            'aluva' => ['name' => 'Aluva, Ernakulam, Kerala', 'lat' => 10.1076, 'lng' => 76.3516, 'tz' => 'Asia/Kolkata'],
+            'thripunithura' => ['name' => 'Thripunithura, Kochi, Kerala', 'lat' => 9.9507, 'lng' => 76.3496, 'tz' => 'Asia/Kolkata'],
+            'muppathadam' => ['name' => 'Muppathadam, Ernakulam, Kerala', 'lat' => 10.0890, 'lng' => 76.3190, 'tz' => 'Asia/Kolkata'],
+            'perumbavoor' => ['name' => 'Perumbavoor, Ernakulam, Kerala', 'lat' => 10.1118, 'lng' => 76.4784, 'tz' => 'Asia/Kolkata'],
+            'angamaly' => ['name' => 'Angamaly, Ernakulam, Kerala', 'lat' => 10.1960, 'lng' => 76.3860, 'tz' => 'Asia/Kolkata'],
+            'paravur' => ['name' => 'North Paravur, Ernakulam, Kerala', 'lat' => 10.1458, 'lng' => 76.2309, 'tz' => 'Asia/Kolkata'],
+            'palakkad' => ['name' => 'Palakkad, Kerala', 'lat' => 10.7867, 'lng' => 76.6548, 'tz' => 'Asia/Kolkata'],
+            'thrissur' => ['name' => 'Thrissur, Kerala', 'lat' => 10.5276, 'lng' => 76.2144, 'tz' => 'Asia/Kolkata'],
+            'kozhikode' => ['name' => 'Kozhikode (Calicut), Kerala', 'lat' => 11.2588, 'lng' => 75.7804, 'tz' => 'Asia/Kolkata'],
+            'kannur' => ['name' => 'Kannur, Kerala', 'lat' => 11.8745, 'lng' => 75.3704, 'tz' => 'Asia/Kolkata'],
+            'kollam' => ['name' => 'Kollam, Kerala', 'lat' => 8.8932, 'lng' => 76.6141, 'tz' => 'Asia/Kolkata'],
+            'thiruvananthapuram' => ['name' => 'Thiruvananthapuram, Kerala', 'lat' => 8.5241, 'lng' => 76.9366, 'tz' => 'Asia/Kolkata'],
+            'ernakulam' => ['name' => 'Ernakulam / Kochi, Kerala', 'lat' => 9.9312, 'lng' => 76.2673, 'tz' => 'Asia/Kolkata'],
+            'kottayam' => ['name' => 'Kottayam, Kerala', 'lat' => 9.5916, 'lng' => 76.5222, 'tz' => 'Asia/Kolkata'],
+            'alappuzha' => ['name' => 'Alappuzha, Kerala', 'lat' => 9.4981, 'lng' => 76.3388, 'tz' => 'Asia/Kolkata'],
+            'kasaragod' => ['name' => 'Kasaragod, Kerala', 'lat' => 12.5102, 'lng' => 74.9852, 'tz' => 'Asia/Kolkata'],
+            'pathanamthitta' => ['name' => 'Pathanamthitta, Kerala', 'lat' => 9.2648, 'lng' => 76.7870, 'tz' => 'Asia/Kolkata'],
+            'idukki' => ['name' => 'Idukki / Thodupuzha, Kerala', 'lat' => 9.8959, 'lng' => 76.7184, 'tz' => 'Asia/Kolkata'],
+            'wayanad' => ['name' => 'Wayanad / Kalpetta, Kerala', 'lat' => 11.6103, 'lng' => 76.0828, 'tz' => 'Asia/Kolkata'],
+            'guruvayur' => ['name' => 'Guruvayur, Thrissur, Kerala', 'lat' => 10.5946, 'lng' => 76.0416, 'tz' => 'Asia/Kolkata'],
+            'tirur' => ['name' => 'Tirur, Malappuram, Kerala', 'lat' => 10.9146, 'lng' => 75.9224, 'tz' => 'Asia/Kolkata'],
+            'perinthalmanna' => ['name' => 'Perinthalmanna, Malappuram, Kerala', 'lat' => 10.9760, 'lng' => 76.2254, 'tz' => 'Asia/Kolkata'],
+            'ottapalam' => ['name' => 'Ottapalam, Palakkad, Kerala', 'lat' => 10.7734, 'lng' => 76.3811, 'tz' => 'Asia/Kolkata'],
+            'changanassery' => ['name' => 'Changanassery, Kottayam, Kerala', 'lat' => 9.4447, 'lng' => 76.5392, 'tz' => 'Asia/Kolkata'],
+            'tiruvalla' => ['name' => 'Tiruvalla, Pathanamthitta, Kerala', 'lat' => 9.3835, 'lng' => 76.5741, 'tz' => 'Asia/Kolkata'],
+            'kayamkulam' => ['name' => 'Kayamkulam, Alappuzha, Kerala', 'lat' => 9.1726, 'lng' => 76.5004, 'tz' => 'Asia/Kolkata'],
+        ];
+
+        $lowerQ = strtolower($query);
+        foreach ($localPresets as $key => $preset) {
+            if (str_contains($lowerQ, $key) || str_contains(strtolower($preset['name']), $lowerQ)) {
+                $results[] = $preset;
+            }
+        }
+
+        // 2. Google Maps Geocoding API if key configured
+        $googleKey = config('services.google.maps_key') ?: env('GOOGLE_MAPS_API_KEY');
+        if (!empty($googleKey)) {
+            try {
+                $response = \Illuminate\Support\Facades\Http::timeout(3)->get('https://maps.googleapis.com/maps/api/geocode/json', [
+                    'address' => $query,
+                    'key' => $googleKey,
+                    'region' => 'in',
+                ]);
+                if ($response->successful()) {
+                    $json = $response->json();
+                    foreach ($json['results'] ?? [] as $item) {
+                        $name = $item['formatted_address'] ?? $query;
+                        $lat = (float)($item['geometry']['location']['lat'] ?? 0);
+                        $lng = (float)($item['geometry']['location']['lng'] ?? 0);
+                        if ($lat != 0 && $lng != 0) {
+                            $results[] = [
+                                'name' => $name,
+                                'lat' => round($lat, 4),
+                                'lng' => round($lng, 4),
+                                'tz' => 'Asia/Kolkata',
+                            ];
+                        }
+                    }
+                }
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning('Google Maps Geocoding exception: ' . $e->getMessage());
+            }
+        }
+
+        // 3. Fallback to OpenStreetMap Nominatim API if results < 3
+        if (count($results) < 3) {
+            try {
+                $response = \Illuminate\Support\Facades\Http::timeout(4)
+                    ->withHeaders(['User-Agent' => 'CovilakamAstrology/2.0 (info@covilakamastrology.com)'])
+                    ->get('https://nominatim.openstreetmap.org/search', [
+                        'format' => 'json',
+                        'addressdetails' => 1,
+                        'limit' => 8,
+                        'q' => $query,
+                    ]);
+
+                if ($response->successful()) {
+                    $items = $response->json();
+                    foreach ($items ?? [] as $item) {
+                        $disp = $item['display_name'] ?? '';
+                        $parts = array_map('trim', explode(',', $disp));
+                        // Format clean short place name
+                        $shortName = implode(', ', array_slice($parts, 0, 3));
+                        $lat = (float)($item['lat'] ?? 0);
+                        $lng = (float)($item['lon'] ?? 0);
+                        if ($lat != 0 && $lng != 0) {
+                            $results[] = [
+                                'name' => $shortName ?: $disp,
+                                'full_address' => $disp,
+                                'lat' => round($lat, 4),
+                                'lng' => round($lng, 4),
+                                'tz' => 'Asia/Kolkata',
+                            ];
+                        }
+                    }
+                }
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning('Nominatim Geocoding exception: ' . $e->getMessage());
+            }
+        }
+
+        // Deduplicate results by rounded lat/lng
+        $unique = [];
+        $seen = [];
+        foreach ($results as $r) {
+            $key = round($r['lat'], 2) . '_' . round($r['lng'], 2);
+            if (!isset($seen[$key])) {
+                $seen[$key] = true;
+                $unique[] = $r;
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'query' => $query,
+            'places' => array_slice($unique, 0, 8),
+        ]);
+    }
+
+    /**
      * Compute full Sidereal Vedic Kundali & DOB profile.
      * Endpoint: POST /api/astrology/calculate
      */
