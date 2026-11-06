@@ -106,13 +106,29 @@ class AstrologyPdfService
     protected function resolveChartData(AstrologyReading $reading, string $lang): array
     {
         $chartData = is_array($reading->chart_data) ? $reading->chart_data : json_decode($reading->chart_data, true);
-        if (empty($chartData) || empty($chartData['kollavarsham']) || empty($chartData['active_dasha']['all_antardashas'])) {
+        
+        $needsRecalc = empty($chartData)
+            || empty($chartData['kollavarsham'])
+            || empty($chartData['active_dasha']['all_antardashas'])
+            || empty($chartData['vedanga_predictions']['marriage']['sev_lord_bhava'])
+            || empty($chartData['vedanga_predictions']['bhavas'])
+            || empty($chartData['vedanga_predictions']['favorable_periods'])
+            || request()->has('refresh')
+            || request()->has('admin');
+
+        if ($needsRecalc) {
             try {
                 $engine = app(\App\Services\Astrology\AstrologyEngineService::class);
+                $dobVal = $reading->dob;
+                $dobStr = ($dobVal instanceof \Carbon\Carbon) ? $dobVal->format('Y-m-d') : (string)$dobVal;
+                if (!empty($dobStr) && strlen($dobStr) > 10) {
+                    $dobStr = substr($dobStr, 0, 10);
+                }
+
                 $calcInput = [
                     'name' => $reading->full_name,
                     'gender' => $reading->gender ?: 'male',
-                    'dob' => $reading->dob,
+                    'dob' => $dobStr ?: '1985-01-01',
                     'birth_time' => $reading->birth_time ?: '12:00:00',
                     'is_approximate_time' => (bool)$reading->is_approximate_time,
                     'birth_place' => $reading->birth_place ?: 'Ernakulam / Kochi, Kerala, India',
@@ -121,11 +137,14 @@ class AstrologyPdfService
                     'timezone' => $reading->timezone ?: 'Asia/Kolkata',
                     'language' => $lang,
                 ];
-                $chartData = $engine->calculate($calcInput);
-                $reading->chart_data = $chartData;
-                try {
-                    $reading->save();
-                } catch (\Throwable $e) {}
+                $freshData = $engine->calculate($calcInput);
+                if (!empty($freshData)) {
+                    $chartData = $freshData;
+                    $reading->chart_data = $freshData;
+                    try {
+                        $reading->saveQuietly();
+                    } catch (\Throwable $e) {}
+                }
             } catch (\Throwable $err) {}
         }
         return $chartData ?: [];

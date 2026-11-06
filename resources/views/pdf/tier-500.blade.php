@@ -1240,12 +1240,19 @@
     @if(!empty($b1['lagnaProfile']))
         <div style="background-color: #fffbeb; border: 1px solid #fde68a; border-radius: 4px; padding: 6px 10px; margin-bottom: 8px; font-size: 8pt;">
             <strong style="color: #92400e;">{{ $targetLang === 'ml' ? 'ലഗ്ന സ്വഭാവവും ശരീരപ്രകൃതിയും:' : 'Ascendant Disposition & Physical Appearance:' }}</strong><br>
-            {{ $targetLang === 'ml' ? ($b1['lagnaProfile']['traits_ml'] . ' ' . $b1['lagnaProfile']['physical_ml']) : ($b1['lagnaProfile']['traits_en'] . ' ' . $b1['lagnaProfile']['physical_en']) }}<br>
-            <strong style="color: #92400e; margin-top: 3px; display: inline-block;">{{ $targetLang === 'ml' ? 'ഭാഗ്യവർഷങ്ങൾ (Milestone Ages):' : 'Key Milestone Ages:' }}</strong> {{ $b1['lagnaProfile']['milestone_ages'] }} വയസ്സ്.<br>
-            <strong style="color: #92400e; margin-top: 3px; display: inline-block;">{{ $targetLang === 'ml' ? 'ദ്രേക്കാണ വിചാരം:' : 'Drekkana Breakdown:' }}</strong><br>
-            @foreach(($targetLang === 'ml' ? $b1['lagnaProfile']['drekkanas_ml'] : $b1['lagnaProfile']['drekkanas_en']) as $drk)
-                &bull; {{ $drk }}<br>
-            @endforeach
+            {{ $targetLang === 'ml' ? (($b1['lagnaProfile']['traits_ml'] ?? '') . ' ' . ($b1['lagnaProfile']['physical_ml'] ?? '')) : (($b1['lagnaProfile']['traits_en'] ?? '') . ' ' . ($b1['lagnaProfile']['physical_en'] ?? '')) }}<br>
+            @if(!empty($b1['lagnaProfile']['milestone_ages']))
+                <strong style="color: #92400e; margin-top: 3px; display: inline-block;">{{ $targetLang === 'ml' ? 'ഭാഗ്യവർഷങ്ങൾ (Milestone Ages):' : 'Key Milestone Ages:' }}</strong> {{ $b1['lagnaProfile']['milestone_ages'] }} വയസ്സ്.<br>
+            @endif
+            @php
+                $drkList = $targetLang === 'ml' ? ($b1['lagnaProfile']['drekkanas_ml'] ?? []) : ($b1['lagnaProfile']['drekkanas_en'] ?? []);
+            @endphp
+            @if(!empty($drkList))
+                <strong style="color: #92400e; margin-top: 3px; display: inline-block;">{{ $targetLang === 'ml' ? 'ദ്രേക്കാണ വിചാരം:' : 'Drekkana Breakdown:' }}</strong><br>
+                @foreach($drkList as $drk)
+                    &bull; {{ $drk }}<br>
+                @endforeach
+            @endif
         </div>
     @endif
 
@@ -1254,13 +1261,13 @@
         @if(!empty($b1['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b1['occupants'] as $occ)
-                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phalam_en'] ?? $occ['phala'] ?? '' }} </span>
             @endforeach
         @endif
         @if(!empty($b1['aspects']))
             <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
             @foreach($b1['aspects'] as $asp)
-                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text_en'] ?? $asp['text'] ?? '' }}<br>
             @endforeach
         @endif
     </div>
@@ -1273,13 +1280,13 @@
         @if(!empty($b2['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b2['occupants'] as $occ)
-                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phalam_en'] ?? $occ['phala'] ?? '' }} </span>
             @endforeach
         @endif
         @if(!empty($b2['aspects']))
             <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
             @foreach($b2['aspects'] as $asp)
-                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text_en'] ?? $asp['text'] ?? '' }}<br>
             @endforeach
         @endif
     </div>
@@ -1296,13 +1303,13 @@
         @if(!empty($b3['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b3['occupants'] as $occ)
-                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phalam_en'] ?? $occ['phala'] ?? '' }} </span>
             @endforeach
         @endif
         @if(!empty($b3['aspects']))
             <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
             @foreach($b3['aspects'] as $asp)
-                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text_en'] ?? $asp['text'] ?? '' }}<br>
             @endforeach
         @endif
     </div>
@@ -1315,13 +1322,13 @@
         @if(!empty($b4['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b4['occupants'] as $occ)
-                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phalam_en'] ?? $occ['phala'] ?? '' }} </span>
             @endforeach
         @endif
         @if(!empty($b4['aspects']))
             <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
             @foreach($b4['aspects'] as $asp)
-                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text_en'] ?? $asp['text'] ?? '' }}<br>
             @endforeach
         @endif
     </div>
@@ -1341,13 +1348,13 @@
         @if(!empty($b5['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b5['occupants'] as $occ)
-                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phalam_en'] ?? $occ['phala'] ?? '' }} </span>
             @endforeach
         @endif
         @if(!empty($b5['aspects']))
             <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
             @foreach($b5['aspects'] as $asp)
-                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text_en'] ?? $asp['text'] ?? '' }}<br>
             @endforeach
         @endif
     </div>
@@ -1360,13 +1367,13 @@
         @if(!empty($b6['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b6['occupants'] as $occ)
-                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phalam_en'] ?? $occ['phala'] ?? '' }} </span>
             @endforeach
         @endif
         @if(!empty($b6['aspects']))
             <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
             @foreach($b6['aspects'] as $asp)
-                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text_en'] ?? $asp['text'] ?? '' }}<br>
             @endforeach
         @endif
     </div>
@@ -1386,13 +1393,13 @@
         @if(!empty($b7['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b7['occupants'] as $occ)
-                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phalam_en'] ?? $occ['phala'] ?? '' }} </span>
             @endforeach
         @endif
         @if(!empty($b7['aspects']))
             <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
             @foreach($b7['aspects'] as $asp)
-                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text_en'] ?? $asp['text'] ?? '' }}<br>
             @endforeach
         @endif
     </div>
@@ -1405,13 +1412,13 @@
         @if(!empty($b8['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b8['occupants'] as $occ)
-                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phalam_en'] ?? $occ['phala'] ?? '' }} </span>
             @endforeach
         @endif
         @if(!empty($b8['aspects']))
             <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
             @foreach($b8['aspects'] as $asp)
-                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text_en'] ?? $asp['text'] ?? '' }}<br>
             @endforeach
         @endif
     </div>
@@ -1428,13 +1435,13 @@
         @if(!empty($b9['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b9['occupants'] as $occ)
-                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phalam_en'] ?? $occ['phala'] ?? '' }} </span>
             @endforeach
         @endif
         @if(!empty($b9['aspects']))
             <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
             @foreach($b9['aspects'] as $asp)
-                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text_en'] ?? $asp['text'] ?? '' }}<br>
             @endforeach
         @endif
     </div>
@@ -1447,13 +1454,13 @@
         @if(!empty($b10['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b10['occupants'] as $occ)
-                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phalam_en'] ?? $occ['phala'] ?? '' }} </span>
             @endforeach
         @endif
         @if(!empty($b10['aspects']))
             <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
             @foreach($b10['aspects'] as $asp)
-                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text_en'] ?? $asp['text'] ?? '' }}<br>
             @endforeach
         @endif
     </div>
@@ -1470,13 +1477,13 @@
         @if(!empty($b11['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b11['occupants'] as $occ)
-                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phalam_en'] ?? $occ['phala'] ?? '' }} </span>
             @endforeach
         @endif
         @if(!empty($b11['aspects']))
             <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
             @foreach($b11['aspects'] as $asp)
-                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text_en'] ?? $asp['text'] ?? '' }}<br>
             @endforeach
         @endif
     </div>
@@ -1489,13 +1496,13 @@
         @if(!empty($b12['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b12['occupants'] as $occ)
-                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phalam_en'] ?? $occ['phala'] ?? '' }} </span>
             @endforeach
         @endif
         @if(!empty($b12['aspects']))
             <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
             @foreach($b12['aspects'] as $asp)
-                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text_en'] ?? $asp['text'] ?? '' }}<br>
             @endforeach
         @endif
     </div>
@@ -1559,7 +1566,7 @@
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? '7-ാം ഭാവാധിപന്റെ നില' : '7th Lord Placement' }}</th>
-            <td>{{ $mw['sev_lord_name_' . $targetLang] ?? $mw['sev_lord_name_en'] ?? '' }} {{ $targetLang === 'ml' ? "({$mw['sev_lord_bhava']}-ാം ഭാവത്തിൽ നിലകൊള്ളുന്നു)" : "(in House {$mw['sev_lord_bhava']})" }}</td>
+            <td>{{ $mw['sev_lord_name_' . $targetLang] ?? $mw['sev_lord_name_en'] ?? '' }} @if(!empty($mw['sev_lord_bhava'])) {{ $targetLang === 'ml' ? "({$mw['sev_lord_bhava']}-ാം ഭാവത്തിൽ നിലകൊള്ളുന്നു)" : "(in House {$mw['sev_lord_bhava']})" }} @endif</td>
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? 'കളത്ര കാരകൻ' : 'Kalathra Karaka' }}</th>
@@ -1569,22 +1576,22 @@
             <th>{{ $targetLang === 'ml' ? 'കുജദോഷ നില (Kuja Status)' : 'Kuja / Manglik Status' }}</th>
             <td>
                 @if(!empty($mw['has_kuja_dosha']))
-                    <strong style="color: #b45309;">{{ $mw['kuja_status_' . $targetLang] ?? $mw['kuja_status_en'] }}</strong><br>
-                    <span style="font-size: 8pt; color: #555;">{{ $mw['kuja_mitigation_' . $targetLang] ?? $mw['kuja_mitigation_en'] }}</span>
+                    <strong style="color: #b45309;">{{ $mw['kuja_status_' . $targetLang] ?? $mw['kuja_status_en'] ?? '' }}</strong><br>
+                    <span style="font-size: 8pt; color: #555;">{{ $mw['kuja_mitigation_' . $targetLang] ?? $mw['kuja_mitigation_en'] ?? '' }}</span>
                 @else
-                    <strong style="color: #15803d;">{{ $mw['kuja_status_' . $targetLang] ?? $mw['kuja_status_en'] }}</strong>
+                    <strong style="color: #15803d;">{{ $mw['kuja_status_' . $targetLang] ?? $mw['kuja_status_en'] ?? ($targetLang === 'ml' ? 'ജാതകത്തിൽ കുജദോഷമില്ല (അത്യന്തം ശുഭകരം).' : 'No Kuja Dosha present in the horoscope.') }}</strong>
                 @endif
             </td>
         </tr>
         @if(!empty($mw['has_kuja_dosha']))
         <tr>
             <th>{{ $targetLang === 'ml' ? 'കുജദോഷ പരിഹാരം' : 'Kuja Remedies' }}</th>
-            <td>{{ $mw['kuja_remedy_' . $targetLang] ?? $mw['kuja_remedy_en'] }}</td>
+            <td>{{ $mw['kuja_remedy_' . $targetLang] ?? $mw['kuja_remedy_en'] ?? '' }}</td>
         </tr>
         @endif
         <tr>
             <th>{{ $targetLang === 'ml' ? 'രാഹു - കേതു സ്ഥിതി' : 'Rahu - Ketu Axis' }}</th>
-            <td>{{ $mw['rahu_ketu_' . $targetLang] ?? $mw['rahu_ketu_en'] }}</td>
+            <td>{{ $mw['rahu_ketu_' . $targetLang] ?? $mw['rahu_ketu_en'] ?? '' }}</td>
         </tr>
     </table>
 
