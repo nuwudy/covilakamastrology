@@ -293,7 +293,7 @@
             <th>Birth Tithi</th>
             <td>{{ $chartData['tithi']['name_' . $targetLang] ?? $chartData['tithi']['name_ml'] ?? $chartData['tithi']['name_en'] ?? '' }}</td>
             <th>Nityayoga &amp; Karana</th>
-            <td>{{ $targetLang === 'ml' ? 'ധൃതി (Dhruti)' : ($chartData['nityayoga']['name_' . $targetLang] ?? $chartData['nityayoga']['name_en'] ?? 'Dhriti') }} / {{ $chartData['karana']['name_' . $targetLang] ?? $chartData['karana']['name_ml'] ?? $chartData['karana']['name_en'] ?? '' }}</td>
+            <td>{{ $chartData['nityayoga']['name_' . $targetLang] ?? $chartData['nityayoga'][$targetLang] ?? $chartData['nityayoga']['name_en'] ?? $chartData['nityayoga']['en'] ?? 'Harshana' }} / {{ $chartData['karana']['name_' . $targetLang] ?? $chartData['karana']['name_ml'] ?? $chartData['karana']['name_en'] ?? '' }}</td>
         </tr>
         <tr>
             <th>Mulank (Birth No.)</th>
@@ -523,10 +523,10 @@
 
     <div class="highlight-box">
         <strong>Saturn Transit Alert (Shani Gochara):</strong><br>
-        &bull; <strong>7½ Shani (Sade Sati):</strong> {{ ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['is_ezhara_shani'] ?? false) ? 'Active (' . $chartData['vedanga_predictions']['gocharaphala']['saturn_special']['phase'] . ')' : 'Not Active' }}<br>
-        &bull; <strong>Kantaka Shani:</strong> {{ ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['is_kantaka_shani'] ?? false) ? 'Active (' . $chartData['vedanga_predictions']['gocharaphala']['saturn_special']['kantaka_house'] . 'th House)' : 'None' }}<br>
-        &bull; <strong>Ashtama Shani:</strong> {{ ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['is_ashtama_shani'] ?? false) ? 'Active' : 'None' }}<br>
-        &bull; <strong>Shasta / Ayyappa Remedy:</strong> {{ $chartData['vedanga_predictions']['gocharaphala']['saturn_special']['remedy_en'] ?? '' }}
+        &bull; <strong>7½ Shani (Sade Sati):</strong> {{ ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['is_ezhara_shani'] ?? false) ? 'Active (' . ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['phase'] ?? ($targetLang === 'ml' ? ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['status_ml'] ?? 'സജീവം') : ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['status_en'] ?? 'Active'))) . ')' : ($targetLang === 'ml' ? 'ബാധകമല്ല / ഇല്ല (None)' : 'Not Active (None)') }}<br>
+        &bull; <strong>Kantaka Shani:</strong> {{ ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['is_kantaka_shani'] ?? false) ? 'Active (' . ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['kantaka_house'] ?? '') . 'th House)' : ($targetLang === 'ml' ? 'ബാധകമല്ല / ഇല്ല (None)' : 'None') }}<br>
+        &bull; <strong>Ashtama Shani:</strong> {{ ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['is_ashtama_shani'] ?? false) ? 'Active' : ($targetLang === 'ml' ? 'ബാധകമല്ല / ഇല്ല (None)' : 'None') }}<br>
+        &bull; <strong>Shasta / Ayyappa Remedy:</strong> {{ $targetLang === 'ml' ? ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['remedy_ml'] ?? '') : ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['remedy_en'] ?? '') }}
     </div>
 
     <div class="page-break"></div>

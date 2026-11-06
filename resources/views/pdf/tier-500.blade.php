@@ -373,9 +373,9 @@
         </tr>
         <tr>
             <th>4. Nityayoga</th>
-            <td><strong>{{ $targetLang === 'ml' ? 'ധൃതി (Dhruti)' : ($chartData['nityayoga']['name_' . $targetLang] ?? 'Dhriti') }}</strong> ({{ $chartData['nityayoga']['name_en'] ?? 'Dhriti' }})</td>
+            <td><strong>{{ $chartData['nityayoga']['name_' . $targetLang] ?? $chartData['nityayoga'][$targetLang] ?? $chartData['nityayoga']['name_en'] ?? $chartData['nityayoga']['en'] ?? 'Harshana' }}</strong>@if($targetLang !== 'en' && !empty($chartData['nityayoga']['name_en'])) ({{ $chartData['nityayoga']['name_en'] }})@endif</td>
             <th>Yoga Signification</th>
-            <td>{{ $targetLang === 'ml' ? 'സ്ഥിരതയും ധൈര്യവും പ്രദാനം ചെയ്യുന്ന ശുഭയോഗം' : ($chartData['nityayoga']['nature'] ?? 'Auspicious harmony of Sun & Moon promoting fortitude') }}</td>
+            <td>{{ $chartData['nityayoga']['nature_' . $targetLang] ?? ($targetLang === 'ml' ? 'സന്തോഷവും സൽക്കീർത്തിയും ഉന്നതിയും നൽകുന്ന മംഗളകരമായ നിത്യയോഗം' : ($chartData['nityayoga']['nature'] ?? 'Auspicious solar-lunar alignment fostering harmony and prosperity')) }}</td>
         </tr>
         <tr>
             <th>5. Karana (Half-Tithi)</th>
@@ -1208,64 +1208,25 @@
             $bMeta = $bData['meta'] ?? \App\Services\Astrology\VargaAndBhavaService::BHAVA_METADATA[$h] ?? [];
             $title = $bMeta['name_' . $targetLang] ?? $bMeta['name_en'] ?? "Bhava {$h}";
             $desc = $bMeta['significance_' . $targetLang] ?? $bData['analysis_' . $targetLang] ?? $bMeta['significance_en'] ?? $bData['analysis_en'] ?? '';
-            $lordPhala = $bData['lord_phala_translations'][$targetLang] ?? $bData['lord_placement_' . $targetLang] ?? null;
+            $lordPhala = $bData['lord_placement_' . $targetLang] ?? $bData['lord_phala'] ?? \App\Services\Astrology\BhavaInterpretationDictionary::getBhavaLordInterpretation($h, $bData['lord_placed_in_bhava'] ?? 1, $targetLang);
             $lord = $bData['bhava_lord'] ?? '';
             $lordHouse = $bData['lord_placed_in_bhava'] ?? '';
 
-            if (!$lordPhala && $lordHouse) {
-                $cachedLordRule = \App\Models\VedangaRule::where('category', 'lord_in_house')->where('rule_key', "L{$h}_H{$lordHouse}")->first();
-                if ($cachedLordRule) {
-                    $lordPhala = $cachedLordRule->{'content_' . $targetLang} ?? $cachedLordRule->content_en;
-                }
-            }
-            if (!$lordPhala) {
-                $lordPhala = $bData['lord_phala'] ?? ($lord ? "Lord {$lord} in House {$lordHouse}." : '');
-            }
-
-            $planetNames = [
-                'Su' => ['en' => 'Sun', 'ml' => 'സൂര്യൻ', 'ta' => 'சூரியன்', 'hi' => 'सूर्य'],
-                'Mo' => ['en' => 'Moon', 'ml' => 'ചന്ദ്രൻ', 'ta' => 'சந்திரன்', 'hi' => 'चन्द्र'],
-                'Ma' => ['en' => 'Mars', 'ml' => 'ചൊവ്വ', 'ta' => 'செவ்வாய்', 'hi' => 'मंगल'],
-                'Me' => ['en' => 'Mercury', 'ml' => 'ബുധൻ', 'ta' => 'புதன்', 'hi' => 'बुध'],
-                'Ju' => ['en' => 'Jupiter', 'ml' => 'വ്യാഴം', 'ta' => 'குரு', 'hi' => 'गुरु'],
-                'Ve' => ['en' => 'Venus', 'ml' => 'ശുക്രൻ', 'ta' => 'சுக்கிரன்', 'hi' => 'शुक्र'],
-                'Sa' => ['en' => 'Saturn', 'ml' => 'ശനി', 'ta' => 'சனி', 'hi' => 'शनि'],
-                'Ra' => ['en' => 'Rahu', 'ml' => 'രാഹു', 'ta' => 'ராகு', 'hi' => 'राहु'],
-                'Ke' => ['en' => 'Ketu', 'ml' => 'കേതു', 'ta' => 'கேது', 'hi' => 'केतु'],
-                'Md' => ['en' => 'Gulika', 'ml' => 'ഗുളികൻ', 'ta' => 'குளிகன்', 'hi' => 'गुलिक'],
-                'As' => ['en' => 'Lagna', 'ml' => 'ലഗ്നം', 'ta' => 'லக்னம்', 'hi' => 'लग्न'],
-            ];
-
             $occupants = $bData['occupants'] ?? [];
-            $localizedOccupants = [];
-            foreach ($occupants as $occ) {
-                $pk = $occ['planet'] ?? '';
-                $pName = $planetNames[$pk][$targetLang] ?? $occ['name_' . $targetLang] ?? $planetNames[$pk]['en'] ?? $occ['name_en'] ?? $pk;
-                $pPhala = $occ['phala_translations'][$targetLang] ?? null;
-                if (!$pPhala && $targetLang !== 'en' && $pk && $pk !== 'As' && $pk !== 'Md') {
-                    $pRule = \App\Models\VedangaRule::where('category', 'planet_in_house')->where('rule_key', "{$pk}_H{$h}")->first();
-                    if ($pRule) {
-                        $pPhala = $pRule->{'content_' . $targetLang} ?? $pRule->content_en;
-                    }
-                }
-                if (!$pPhala) {
-                    $pPhala = $occ['phala'] ?? "{$pName} in Bhava {$h}.";
-                }
-                $localizedOccupants[] = [
-                    'name' => $pName,
-                    'phala' => $pPhala,
-                ];
-            }
-
+            $aspects = $bData['aspects'] ?? \App\Services\Astrology\BhavaInterpretationDictionary::getAspectsOnBhava($h, $chartData, $targetLang);
             $karakaExp = $bData['karaka_exception'] ?? null;
+            $lagnaProf = ($h === 1) ? ($bData['lagna_profile'] ?? \App\Services\Astrology\BhavaInterpretationDictionary::LAGNA_PROFILES[$chartData['lagna']['rasi_index'] ?? 1] ?? null) : null;
+
             return [
                 'title' => $title,
                 'desc' => $desc,
                 'lordPhala' => $lordPhala,
                 'lord' => $lord,
                 'lordHouse' => $lordHouse,
-                'occupants' => $localizedOccupants,
+                'occupants' => $occupants,
+                'aspects' => $aspects,
                 'karakaExp' => $karakaExp,
+                'lagnaProfile' => $lagnaProf,
             ];
         };
     @endphp
@@ -1275,12 +1236,31 @@
     @php $b1 = $getBhavaInfo(1); @endphp
     <div class="subsection-title">{{ $b1['title'] }}</div>
     <p>{{ $b1['desc'] }}</p>
+
+    @if(!empty($b1['lagnaProfile']))
+        <div style="background-color: #fffbeb; border: 1px solid #fde68a; border-radius: 4px; padding: 6px 10px; margin-bottom: 8px; font-size: 8pt;">
+            <strong style="color: #92400e;">{{ $targetLang === 'ml' ? 'ലഗ്ന സ്വഭാവവും ശരീരപ്രകൃതിയും:' : 'Ascendant Disposition & Physical Appearance:' }}</strong><br>
+            {{ $targetLang === 'ml' ? ($b1['lagnaProfile']['traits_ml'] . ' ' . $b1['lagnaProfile']['physical_ml']) : ($b1['lagnaProfile']['traits_en'] . ' ' . $b1['lagnaProfile']['physical_en']) }}<br>
+            <strong style="color: #92400e; margin-top: 3px; display: inline-block;">{{ $targetLang === 'ml' ? 'ഭാഗ്യവർഷങ്ങൾ (Milestone Ages):' : 'Key Milestone Ages:' }}</strong> {{ $b1['lagnaProfile']['milestone_ages'] }} വയസ്സ്.<br>
+            <strong style="color: #92400e; margin-top: 3px; display: inline-block;">{{ $targetLang === 'ml' ? 'ദ്രേക്കാണ വിചാരം:' : 'Drekkana Breakdown:' }}</strong><br>
+            @foreach(($targetLang === 'ml' ? $b1['lagnaProfile']['drekkanas_ml'] : $b1['lagnaProfile']['drekkanas_en']) as $drk)
+                &bull; {{ $drk }}<br>
+            @endforeach
+        </div>
+    @endif
+
     <div class="highlight-box">
-        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b1['lordPhala'] ?: ($b1['lord'] ? "Lord {$b1['lord']} in House {$b1['lordHouse']}." : '') }}
+        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b1['lordPhala'] }}
         @if(!empty($b1['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b1['occupants'] as $occ)
-                <span>{{ $occ['name'] ?? $occ['name_ml'] ?? $occ['planet'] }}: {{ $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+            @endforeach
+        @endif
+        @if(!empty($b1['aspects']))
+            <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
+            @foreach($b1['aspects'] as $asp)
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
             @endforeach
         @endif
     </div>
@@ -1289,11 +1269,17 @@
     <div class="subsection-title">{{ $b2['title'] }}</div>
     <p>{{ $b2['desc'] }}</p>
     <div class="highlight-box">
-        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b2['lordPhala'] ?: ($b2['lord'] ? "Lord {$b2['lord']} in House {$b2['lordHouse']}." : '') }}
+        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b2['lordPhala'] }}
         @if(!empty($b2['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b2['occupants'] as $occ)
-                <span>{{ $occ['name'] ?? $occ['name_ml'] ?? $occ['planet'] }}: {{ $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+            @endforeach
+        @endif
+        @if(!empty($b2['aspects']))
+            <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
+            @foreach($b2['aspects'] as $asp)
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
             @endforeach
         @endif
     </div>
@@ -1306,11 +1292,17 @@
     <div class="subsection-title">{{ $b3['title'] }}</div>
     <p>{{ $b3['desc'] }}</p>
     <div class="highlight-box">
-        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b3['lordPhala'] ?: ($b3['lord'] ? "Lord {$b3['lord']} in House {$b3['lordHouse']}." : '') }}
+        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b3['lordPhala'] }}
         @if(!empty($b3['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b3['occupants'] as $occ)
-                <span>{{ $occ['name'] ?? $occ['name_ml'] ?? $occ['planet'] }}: {{ $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+            @endforeach
+        @endif
+        @if(!empty($b3['aspects']))
+            <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
+            @foreach($b3['aspects'] as $asp)
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
             @endforeach
         @endif
     </div>
@@ -1319,11 +1311,17 @@
     <div class="subsection-title">{{ $b4['title'] }}</div>
     <p>{{ $b4['desc'] }}</p>
     <div class="highlight-box">
-        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b4['lordPhala'] ?: ($b4['lord'] ? "Lord {$b4['lord']} in House {$b4['lordHouse']}." : '') }}
+        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b4['lordPhala'] }}
         @if(!empty($b4['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b4['occupants'] as $occ)
-                <span>{{ $occ['name'] ?? $occ['name_ml'] ?? $occ['planet'] }}: {{ $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+            @endforeach
+        @endif
+        @if(!empty($b4['aspects']))
+            <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
+            @foreach($b4['aspects'] as $asp)
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
             @endforeach
         @endif
     </div>
@@ -1336,14 +1334,20 @@
     <div class="subsection-title">{{ $b5['title'] }}</div>
     <p>{{ $b5['desc'] }}</p>
     <div class="highlight-box">
-        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b5['lordPhala'] ?: ($b5['lord'] ? "Lord {$b5['lord']} in House {$b5['lordHouse']}." : '') }}
+        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b5['lordPhala'] }}
         @if($b5['karakaExp'])
             <br><span style="color: #b91c1c; font-weight: bold;">{{ $b5['karakaExp'] }}</span>
         @endif
         @if(!empty($b5['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b5['occupants'] as $occ)
-                <span>{{ $occ['name'] ?? $occ['name_ml'] ?? $occ['planet'] }}: {{ $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+            @endforeach
+        @endif
+        @if(!empty($b5['aspects']))
+            <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
+            @foreach($b5['aspects'] as $asp)
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
             @endforeach
         @endif
     </div>
@@ -1352,11 +1356,17 @@
     <div class="subsection-title">{{ $b6['title'] }}</div>
     <p>{{ $b6['desc'] }}</p>
     <div class="highlight-box">
-        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b6['lordPhala'] ?: ($b6['lord'] ? "Lord {$b6['lord']} in House {$b6['lordHouse']}." : '') }}
+        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b6['lordPhala'] }}
         @if(!empty($b6['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b6['occupants'] as $occ)
-                <span>{{ $occ['name'] ?? $occ['name_ml'] ?? $occ['planet'] }}: {{ $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+            @endforeach
+        @endif
+        @if(!empty($b6['aspects']))
+            <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
+            @foreach($b6['aspects'] as $asp)
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
             @endforeach
         @endif
     </div>
@@ -1369,14 +1379,20 @@
     <div class="subsection-title">{{ $b7['title'] }}</div>
     <p>{{ $b7['desc'] }}</p>
     <div class="highlight-box">
-        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b7['lordPhala'] ?: ($b7['lord'] ? "Lord {$b7['lord']} in House {$b7['lordHouse']}." : '') }}
+        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b7['lordPhala'] }}
         @if($b7['karakaExp'])
             <br><span style="color: #b91c1c; font-weight: bold;">{{ $b7['karakaExp'] }}</span>
         @endif
         @if(!empty($b7['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b7['occupants'] as $occ)
-                <span>{{ $occ['name'] ?? $occ['name_ml'] ?? $occ['planet'] }}: {{ $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+            @endforeach
+        @endif
+        @if(!empty($b7['aspects']))
+            <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
+            @foreach($b7['aspects'] as $asp)
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
             @endforeach
         @endif
     </div>
@@ -1385,11 +1401,17 @@
     <div class="subsection-title">{{ $b8['title'] }}</div>
     <p>{{ $b8['desc'] }}</p>
     <div class="highlight-box">
-        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b8['lordPhala'] ?: ($b8['lord'] ? "Lord {$b8['lord']} in House {$b8['lordHouse']}." : '') }}
+        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b8['lordPhala'] }}
         @if(!empty($b8['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b8['occupants'] as $occ)
-                <span>{{ $occ['name'] ?? $occ['name_ml'] ?? $occ['planet'] }}: {{ $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+            @endforeach
+        @endif
+        @if(!empty($b8['aspects']))
+            <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
+            @foreach($b8['aspects'] as $asp)
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
             @endforeach
         @endif
     </div>
@@ -1402,11 +1424,17 @@
     <div class="subsection-title">{{ $b9['title'] }}</div>
     <p>{{ $b9['desc'] }}</p>
     <div class="highlight-box">
-        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b9['lordPhala'] ?: ($b9['lord'] ? "Lord {$b9['lord']} in House {$b9['lordHouse']}." : '') }}
+        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b9['lordPhala'] }}
         @if(!empty($b9['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b9['occupants'] as $occ)
-                <span>{{ $occ['name'] ?? $occ['name_ml'] ?? $occ['planet'] }}: {{ $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+            @endforeach
+        @endif
+        @if(!empty($b9['aspects']))
+            <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
+            @foreach($b9['aspects'] as $asp)
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
             @endforeach
         @endif
     </div>
@@ -1415,11 +1443,17 @@
     <div class="subsection-title">{{ $b10['title'] }}</div>
     <p>{{ $b10['desc'] }}</p>
     <div class="highlight-box">
-        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b10['lordPhala'] ?: ($b10['lord'] ? "Lord {$b10['lord']} in House {$b10['lordHouse']}." : '') }}
+        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b10['lordPhala'] }}
         @if(!empty($b10['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b10['occupants'] as $occ)
-                <span>{{ $occ['name'] ?? $occ['name_ml'] ?? $occ['planet'] }}: {{ $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+            @endforeach
+        @endif
+        @if(!empty($b10['aspects']))
+            <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
+            @foreach($b10['aspects'] as $asp)
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
             @endforeach
         @endif
     </div>
@@ -1432,11 +1466,17 @@
     <div class="subsection-title">{{ $b11['title'] }}</div>
     <p>{{ $b11['desc'] }}</p>
     <div class="highlight-box">
-        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b11['lordPhala'] ?: ($b11['lord'] ? "Lord {$b11['lord']} in House {$b11['lordHouse']}." : '') }}
+        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b11['lordPhala'] }}
         @if(!empty($b11['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b11['occupants'] as $occ)
-                <span>{{ $occ['name'] ?? $occ['name_ml'] ?? $occ['planet'] }}: {{ $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+            @endforeach
+        @endif
+        @if(!empty($b11['aspects']))
+            <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
+            @foreach($b11['aspects'] as $asp)
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
             @endforeach
         @endif
     </div>
@@ -1445,11 +1485,17 @@
     <div class="subsection-title">{{ $b12['title'] }}</div>
     <p>{{ $b12['desc'] }}</p>
     <div class="highlight-box">
-        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b12['lordPhala'] ?: ($b12['lord'] ? "Lord {$b12['lord']} in House {$b12['lordHouse']}." : '') }}
+        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b12['lordPhala'] }}
         @if(!empty($b12['occupants']))
             <br><strong>{{ $targetLang === 'ml' ? 'സ്ഥിതിചെയ്യുന്ന ഗ്രഹങ്ങൾ:' : 'Occupying Influences:' }}</strong>
             @foreach($b12['occupants'] as $occ)
-                <span>{{ $occ['name'] ?? $occ['name_ml'] ?? $occ['planet'] }}: {{ $occ['phala'] }} </span>
+                <span>{{ $occ['name_' . $targetLang] ?? $occ['name_en'] ?? $occ['name'] }}: {{ $occ['phalam_' . $targetLang] ?? $occ['phala'] }} </span>
+            @endforeach
+        @endif
+        @if(!empty($b12['aspects']))
+            <br><strong>{{ $targetLang === 'ml' ? 'ദൃഷ്ടി ഫലം (Planetary Aspects):' : 'Planetary Aspects on this Bhava:' }}</strong><br>
+            @foreach($b12['aspects'] as $asp)
+                &bull; {{ $asp['text_' . $targetLang] ?? $asp['text'] }}<br>
             @endforeach
         @endif
     </div>
@@ -1461,45 +1507,30 @@
         {{ $targetLang === 'ml' ? '19. തൊഴിൽ, ധനാഗമം & കർമ്മവിചാരം' : ($targetLang === 'ta' ? '19. தொழில் மற்றும் செல்வ யோகம்' : ($targetLang === 'hi' ? '19. आजीविका एवं धन समृद्धि विचार' : '19. Vocational Destiny & Wealth Mastery')) }}
     </div>
     <p style="font-size: 8.5pt; color: #555;">
-        {{ $targetLang === 'ml' ? '10-ാം ഭാവം (കർമ്മം), 2-ാം ഭാവം (ധനം), 11-ാം ഭാവം (ലാഭം), ജീവകാരകനായ വ്യാഴം എന്നിവയെ അടിസ്ഥാനമാക്കിയുള്ള അപഗ്രഥനം.' : 'Analyzed by synthesizing the 10th house, 2nd house (Dhana), 11th house (Labha), and the Karaka Mercury/Jupiter.' }}
+        {{ $targetLang === 'ml' ? '10-ാം ഭാവം (കർമ്മം), 2-ാം ഭാവം (ധനം), 11-ാം ഭാവം (ലാഭം), ജീവകാരകനായ വ്യാഴം എന്നിവയെ അടിസ്ഥാനമാക്കിയുള്ള ആധികാരിക അപഗ്രഥനം.' : 'Analyzed by synthesizing the 10th house of vocation, 2nd house (Dhana), 11th house (Labha), and the Karakas Mercury and Jupiter.' }}
     </p>
 
     @php
-        $lagnaRasiIdx = (int)($chartData['lagna']['rasi_index'] ?? 10);
-        $signLordsMap = [1 => 'Ma', 2 => 'Ve', 3 => 'Me', 4 => 'Mo', 5 => 'Su', 6 => 'Me', 7 => 'Ve', 8 => 'Ma', 9 => 'Ju', 10 => 'Sa', 11 => 'Sa', 12 => 'Ju'];
-        $lordNamesMap = [
-            'Su' => ['en' => 'Sun (Surya)', 'ml' => 'സൂര്യൻ'],
-            'Mo' => ['en' => 'Moon (Chandra)', 'ml' => 'ചന്ദ്രൻ'],
-            'Ma' => ['en' => 'Mars (Kuja)', 'ml' => 'ചൊവ്വ'],
-            'Me' => ['en' => 'Mercury (Budha)', 'ml' => 'ബുധൻ'],
-            'Ju' => ['en' => 'Jupiter (Guru)', 'ml' => 'വ്യാഴം'],
-            'Ve' => ['en' => 'Venus (Shukra)', 'ml' => 'ശുക്രൻ'],
-            'Sa' => ['en' => 'Saturn (Shani)', 'ml' => 'ശനി'],
-        ];
-        $tenthSignIdx = (($lagnaRasiIdx - 1 + 9) % 12) + 1;
-        $tenthSignData = \App\Services\Astrology\PanchangaService::RASIS[$tenthSignIdx] ?? [];
-        $tenthLordKey = $signLordsMap[$tenthSignIdx] ?? 'Ve';
-        $tenthLordName = $lordNamesMap[$tenthLordKey][$targetLang] ?? $lordNamesMap[$tenthLordKey]['en'] ?? 'Venus';
-        $tenthLordHouse = is_array($chartData['planet_bhavas'][$tenthLordKey] ?? null) ? ($chartData['planet_bhavas'][$tenthLordKey]['bhava'] ?? 6) : ($chartData['planet_bhavas'][$tenthLordKey] ?? 6);
+        $cw = $chartData['vedanga_predictions']['career'] ?? [];
     @endphp
 
     <div class="highlight-box">
         <strong>{{ $targetLang === 'ml' ? 'പ്രധാന ധനാഗമ സൂചന (Primary Wealth Indication):' : 'Primary Wealth Indication:' }}</strong><br>
-        {{ $targetLang === 'ml' ? "10-ാം ഭാവമായ {$tenthSignData['name_ml']}ത്തിന്റെ അധിപനായ {$tenthLordName} {$tenthLordHouse}-ാം ഭാവത്തിൽ സ്ഥിതിചെയ്യുന്നു. സ്വപ്രയത്നത്താലും ബുദ്ധിസാമർത്ഥ്യത്താലും ധനാഭിവൃദ്ധിയും ഉന്നത പദവിയും കൈവരിക്കും." : "The 10th house of vocation ({$tenthSignData['name_en']}) is governed by {$tenthLordName}, situated in House {$tenthLordHouse}. Financial stability and professional respect materialize through persistent diligence, strategic intellect, and ethical commerce." }}
+        {{ $cw['summary_' . $targetLang] ?? $cw['summary_en'] ?? ($targetLang === 'ml' ? 'സ്വപ്രയത്നത്താലും ബുദ്ധിസാമർത്ഥ്യത്താലും ധനാഭിവൃദ്ധിയും ഉന്നത പദവിയും കൈവരിക്കും.' : 'Financial stability and professional respect materialize through persistent diligence, strategic intellect, and ethical commerce.') }}
     </div>
 
     <table class="table-data">
         <tr>
             <th style="width: 30%;">{{ $targetLang === 'ml' ? '10-ാം ഭാവവും അധിപനും' : '10th House Sign & Lord' }}</th>
-            <td><strong>{{ $tenthSignData['name_' . $targetLang] ?? $tenthSignData['name_en'] ?? '' }}</strong> &mdash; {{ $tenthLordName }} (House {{ $tenthLordHouse }})</td>
+            <td><strong>{{ $cw['tenth_sign_' . $targetLang] ?? $cw['tenth_sign_en'] ?? '' }}</strong> &mdash; {{ $cw['tenth_lord_name_' . $targetLang] ?? $cw['tenth_lord_name_en'] ?? '' }} (House {{ $cw['tenth_lord_bhava'] ?? 10 }})</td>
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? 'അനുകൂല തൊഴിൽ മേഖലകൾ' : 'Optimal Career Fields' }}</th>
-            <td>{{ $chartData['career_prediction'][$targetLang] ?? $chartData['career_prediction']['en'] ?? ($targetLang === 'ml' ? 'ഭരണപരമായ ഉന്നതപദവികൾ, ഉപദേശക വൃത്തി, സാങ്കേതിക നേതൃത്വം, ബാങ്കിംഗ്, അധ്യാപനം, വ്യാപാരം.' : 'Executive leadership, advisory roles, technical consultancy, administration, education, commerce.') }}</td>
+            <td>{{ $cw['suitable_careers_' . $targetLang] ?? $cw['suitable_careers_en'] ?? ($targetLang === 'ml' ? 'ഭരണപരമായ ഉന്നതപദവികൾ, ഉപദേശക വൃത്തി, സാങ്കേതിക നേതൃത്വം, ബാങ്കിംഗ്, അധ്യാപനം, വ്യാപാരം.' : 'Executive leadership, advisory roles, technical consultancy, administration, education, commerce.') }}</td>
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? 'ധനാഗമ ഉന്നതി കാലഘട്ടങ്ങൾ' : 'Peak Earning Years' }}</th>
-            <td>{{ $targetLang === 'ml' ? '2, 9, 10, 11 ഭാവാധിപന്മാരുടെ മഹാദശാപഹാര കാലങ്ങളിലും വ്യാഴത്തിന്റെ അനുകൂല ഗോചരത്തിലും.' : 'During the Mahadasha and Antardashas of the 2nd, 9th, 10th, and 11th lords, and during benefic Jupiter transits.' }}</td>
+            <td>{{ $cw['peak_wealth_' . $targetLang] ?? $cw['peak_wealth_en'] ?? ($targetLang === 'ml' ? '2, 9, 10, 11 ഭാവാധിപന്മാരുടെ മഹാദശാപഹാര കാലങ്ങളിലും വ്യാഴത്തിന്റെ അനുകൂല ഗോചരത്തിലും.' : 'During the Mahadasha and Antardashas of the 2nd, 9th, 10th, and 11th lords, and during benefic Jupiter transits.') }}</td>
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? 'സാമ്പത്തിക ജാഗ്രത' : 'Commercial Caution' }}</th>
@@ -1514,56 +1545,52 @@
         {{ $targetLang === 'ml' ? '20. വിവാഹം, ദാമ്പത്യം & കുടുംബസൗഖ്യം (Vivaha)' : ($targetLang === 'ta' ? '20. திருமண பொருத்தம் மற்றும் குடும்ப வாழ்க்கை' : ($targetLang === 'hi' ? '20. विवाह एवं दांपत्य सामंजस्य' : '20. Vivaha (Marriage) & Relational Concord')) }}
     </div>
     <p style="font-size: 8.5pt; color: #555;">
-        {{ $targetLang === 'ml' ? '7-ാം ഭാവം, 7-ാം ഭാവാധിപൻ, ശുക്രൻ / വ്യാഴം, നവാംശക നില (D9) എന്നിവയെ അടിസ്ഥാനമാക്കിയുള്ള വിവാഹവിചാരം.' : 'Synthesizing the 7th Bhava, 7th lord, Shukra (Venus) / Guru (Jupiter), and the Navamsha (D9) disposition.' }}
+        {{ $targetLang === 'ml' ? '7-ാം ഭാവം, 7-ാം ഭാവാധിപൻ, കളത്രകാരകൻ, കുജദോഷ വിചാരം, രാഹു-കേതു അച്ചുതണ്ട് എന്നിവയെ ആസ്പദമാക്കിയുള്ള ശാസ്ത്രീയ അപഗ്രഥനം.' : 'Synthesizing the 7th Bhava, 7th lord, Kalathra Karaka, Kuja Dosha audit, and the dynamic Rahu-Ketu nodal axis.' }}
     </p>
 
     @php
-        $sevSignIdx = (($lagnaRasiIdx - 1 + 6) % 12) + 1;
-        $sevSignData = \App\Services\Astrology\PanchangaService::RASIS[$sevSignIdx] ?? [];
-        $sevLordKey = $signLordsMap[$sevSignIdx] ?? 'Mo';
-        $sevLordName = $lordNamesMap[$sevLordKey][$targetLang] ?? $lordNamesMap[$sevLordKey]['en'] ?? 'Moon';
-        $sevPlacement = is_array($chartData['planet_bhavas'][$sevLordKey] ?? null) ? ($chartData['planet_bhavas'][$sevLordKey]['bhava'] ?? 3) : ($chartData['planet_bhavas'][$sevLordKey] ?? 3);
-        $marsRasi = (int)($chartData['planets']['Ma']['rasi_index'] ?? 11);
-        $marsHouse = is_array($chartData['planet_bhavas']['Ma'] ?? null) ? ($chartData['planet_bhavas']['Ma']['bhava'] ?? 2) : ($chartData['planet_bhavas']['Ma'] ?? 2);
-        // Classical Kerala Kuja Dosha exemptions: Mars in Kumbham (11) or Simham (5) is exempt!
-        $isKumbhamMars = ($marsRasi === 11 || $marsRasi === 5);
-        $hasKujaDosha = in_array($marsHouse, [1, 2, 4, 7, 8, 12]) && !$isKumbhamMars;
+        $mw = $chartData['vedanga_predictions']['marriage'] ?? [];
     @endphp
 
     <table class="table-data">
         <tr>
             <th style="width: 30%;">{{ $targetLang === 'ml' ? '7-ാം ഭാവം (7th Bhava Sign)' : '7th Bhava Sign' }}</th>
-            <td><strong>{{ $sevSignData['name_' . $targetLang] ?? $sevSignData['name_en'] ?? '' }}</strong></td>
+            <td><strong>{{ $mw['sev_sign_' . $targetLang] ?? $mw['sev_sign_en'] ?? '' }}</strong></td>
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? '7-ാം ഭാവാധിപന്റെ നില' : '7th Lord Placement' }}</th>
-            <td>{{ $sevLordName }} {{ $targetLang === 'ml' ? "{$sevPlacement}-ാം ഭാവത്തിൽ നിലകൊള്ളുന്നു" : "in House {$sevPlacement}" }}</td>
+            <td>{{ $mw['sev_lord_name_' . $targetLang] ?? $mw['sev_lord_name_en'] ?? '' }} {{ $targetLang === 'ml' ? "({$mw['sev_lord_bhava']}-ാം ഭാവത്തിൽ നിലകൊള്ളുന്നു)" : "(in House {$mw['sev_lord_bhava']})" }}</td>
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? 'കളത്ര കാരകൻ' : 'Kalathra Karaka' }}</th>
-            <td>{{ $reading->gender === 'female' ? ($targetLang === 'ml' ? 'വ്യാഴം (Guru) & ചൊവ്വ (Mars)' : 'Guru (Jupiter) & Mars') : ($targetLang === 'ml' ? 'ശുക്രൻ (Venus)' : 'Shukra (Venus)') }}</td>
+            <td>{{ $mw['kalathra_karaka_' . $targetLang] ?? $mw['kalathra_karaka_en'] ?? '' }}</td>
         </tr>
         <tr>
-            <th>{{ $targetLang === 'ml' ? 'കുജദോഷ നില' : 'Kuja / Manglik Status' }}</th>
+            <th>{{ $targetLang === 'ml' ? 'കുജദോഷ നില (Kuja Status)' : 'Kuja / Manglik Status' }}</th>
             <td>
-                @if($isKumbhamMars)
-                    <strong style="color: #15803d;">{{ $targetLang === 'ml' ? 'കുജദോഷമില്ല (ചൊവ്വ കുംഭത്തിൽ സ്ഥിതി ചെയ്യുന്നതിനാൽ കുജദോഷമില്ല - കേരള ജ്യോതിഷ വിശേഷവിധി)' : 'No Kuja Dosha (Mars in Kumbham is exempt per Classical Kerala Jyothisha canon)' }}</strong>
-                @elseif($hasKujaDosha)
-                    <span style="color: #b45309;">{{ $targetLang === 'ml' ? 'ലഘു കുജദോഷം (ശുഭഗ്രഹ വീക്ഷണത്താൽ ദോഷശമനം)' : 'Mild Kuja influence (mitigated by benefic aspects)' }}</span>
+                @if(!empty($mw['has_kuja_dosha']))
+                    <strong style="color: #b45309;">{{ $mw['kuja_status_' . $targetLang] ?? $mw['kuja_status_en'] }}</strong><br>
+                    <span style="font-size: 8pt; color: #555;">{{ $mw['kuja_mitigation_' . $targetLang] ?? $mw['kuja_mitigation_en'] }}</span>
                 @else
-                    <strong style="color: #15803d;">{{ $targetLang === 'ml' ? 'കുജദോഷമില്ല (അത്യന്തം ശുഭകരം)' : 'No Kuja Dosha (Auspicious)' }}</strong>
+                    <strong style="color: #15803d;">{{ $mw['kuja_status_' . $targetLang] ?? $mw['kuja_status_en'] }}</strong>
                 @endif
             </td>
         </tr>
+        @if(!empty($mw['has_kuja_dosha']))
+        <tr>
+            <th>{{ $targetLang === 'ml' ? 'കുജദോഷ പരിഹാരം' : 'Kuja Remedies' }}</th>
+            <td>{{ $mw['kuja_remedy_' . $targetLang] ?? $mw['kuja_remedy_en'] }}</td>
+        </tr>
+        @endif
         <tr>
             <th>{{ $targetLang === 'ml' ? 'രാഹു - കേതു സ്ഥിതി' : 'Rahu - Ketu Axis' }}</th>
-            <td>{{ $targetLang === 'ml' ? 'രാഹു 11-ാം ഭാവത്തിലും കേതു 5-ാം ഭാവത്തിലും സ്ഥിതി ചെയ്യുന്നു. ആത്മീയ സാധനയ്ക്കും ഈശ്വരഭക്തിക്കും കുടുംബ ഭദ്രതയ്ക്കും ഉത്തമം.' : 'Rahu in 11th and Ketu in 5th axis fosters spiritual insight and protects domestic harmony when prayers are maintained.' }}</td>
+            <td>{{ $mw['rahu_ketu_' . $targetLang] ?? $mw['rahu_ketu_en'] }}</td>
         </tr>
     </table>
 
     <div class="highlight-box">
         <strong>{{ $targetLang === 'ml' ? 'ദാമ്പത്യ സൗഖ്യ മാർഗ്ഗനിർദ്ദേശം (Marital Compatibility Counsel):' : 'Marital Compatibility Counsel:' }}</strong><br>
-        {{ $chartData['relationship_prediction'][$targetLang] ?? $chartData['relationship_prediction']['en'] ?? ($targetLang === 'ml' ? 'പരസ്പര ബഹുമാനവും തുറന്ന ആശയവിനിമയവും കുടുംബക്ഷേത്ര പ്രാർത്ഥനകളും ആയുഷ്കാല ദാമ്പത്യസൗഖ്യം പ്രദാനം ചെയ്യും.' : 'Mutual understanding, transparent communication, and periodic prayers at family deity temples cultivate lifelong relational serenity.') }}
+        {{ $targetLang === 'ml' ? 'പരസ്പര ബഹുമാനവും തുറന്ന ആശയവിനിമയവും കുടുംബക്ഷേത്ര പ്രാർത്ഥനകളും ആയുഷ്കാല ദാമ്പത്യസൗഖ്യം പ്രദാനം ചെയ്യും. ജാതക പൊരുത്തത്തിൽ മാനസിക പൊരുത്തത്തിനും ധർമ്മനിഷ്ഠയ്ക്കും പ്രഥമ പരിഗണന നൽകുക.' : 'Mutual understanding, transparent communication, and periodic prayers at family deity temples cultivate lifelong relational serenity.' }}
     </div>
 
     <div class="page-break"></div>
@@ -1573,26 +1600,30 @@
         {{ $targetLang === 'ml' ? '21. ആരോഗ്യ സംരക്ഷണവും ദോഷ ചിന്തയും (Health & Ayurveda)' : ($targetLang === 'ta' ? '21. உடல் நலம் மற்றும் ஆயுர்வேத வழிகாட்டல்' : ($targetLang === 'hi' ? '21. स्वास्थ्य विचार एवं आयुर्वेद परामर्श' : '21. Constitutional Vitality & Health Wisdom')) }}
     </div>
     <p style="font-size: 8.5pt; color: #555;">
-        {{ $targetLang === 'ml' ? 'ആയുർവേദ ത്രിദോഷങ്ങളായ വാതം, പിത്തം, കഫം എന്നിവയുടെ സമതുലിതാവസ്ഥ കാത്തുസൂക്ഷിക്കാനുള്ള വേദാംഗ മാർഗ്ഗനിർദ്ദേശങ്ങൾ.' : 'Medical astrology is purely diagnostic and preventive, promoting harmony among Vata, Pitta, and Kapha doshas.' }}
+        {{ $targetLang === 'ml' ? 'ആയുർവേദ ത്രിദോഷങ്ങളായ വാതം, പിത്തം, കഫം എന്നിവയുടെ സമതുലിതാവസ്ഥ കാത്തുസൂക്ഷിക്കാനുള്ള വേദാംഗ മാർഗ്ഗനിർദ്ദേശങ്ങൾ.' : 'Medical astrology is diagnostic and preventive, promoting balance among Vata, Pitta, and Kapha doshas.' }}
     </p>
+
+    @php
+        $hw = $chartData['vedanga_predictions']['health'] ?? [];
+    @endphp
 
     <div class="highlight-box">
         <strong>{{ $targetLang === 'ml' ? 'ശരീര പ്രകൃതി & പ്രതിരോധശേഷി (Constitutional Profile):' : 'Constitutional Profile:' }}</strong><br>
-        {{ $chartData['health_prediction'][$targetLang] ?? $chartData['health_prediction']['en'] ?? ($targetLang === 'ml' ? 'ലഗ്നാധിപന്റെ ബലത്താൽ സാമാന്യേന നല്ല ആരോഗ്യവും പ്രതിരോധശേഷിയും. വാത-കഫ പ്രകൃതിയാണ് പ്രധാനം.' : 'Good general stamina and vitality governed by Lagna lord with predominant Vata-Kapha constitutional flow.') }}
+        {{ $hw['dosha_profile_' . $targetLang] ?? $hw['dosha_profile_en'] ?? ($targetLang === 'ml' ? 'ലഗ്നാധിപന്റെ ബലത്താൽ സാമാന്യേന നല്ല ആരോഗ്യവും പ്രതിരോധശേഷിയും.' : 'Good general stamina and vitality governed by Lagna lord.') }}
     </div>
 
     <table class="table-data">
         <tr>
             <th style="width: 30%;">{{ $targetLang === 'ml' ? 'ശ്രദ്ധിക്കേണ്ട അവയവങ്ങൾ' : 'Vulnerable Organ Systems' }}</th>
-            <td>{{ $targetLang === 'ml' ? 'ദഹന വ്യവസ്ഥ, പാദങ്ങൾ, നാഡീവ്യൂഹം എന്നിവയിൽ മാനസിക സമ്മർദ്ദമുള്ളപ്പോൾ കരുതൽ പുലർത്തുക.' : 'Digestive wellness, lower extremities, and nervous equilibrium during periods of mental fatigue.' }}</td>
+            <td>{{ $hw['vulnerable_organs_' . $targetLang] ?? $hw['vulnerable_organs_en'] ?? '' }}</td>
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? 'ആയുർവേദ ജീവിതശൈലി' : 'Ayurvedic Lifestyle Counsel' }}</th>
-            <td>{{ $targetLang === 'ml' ? 'ധാരാളം ശുദ്ധജലം കുടിക്കുക, സാത്വിക ആഹാരം, പ്രഭാത സൂര്യനമസ്കാരം, സമയബന്ധിതമായ ഉറക്കം.' : 'Regular hydration, satvic vegetarian meals, morning suryanamaskar, and restful sleep before midnight.' }}</td>
+            <td>{{ $hw['lifestyle_' . $targetLang] ?? $hw['lifestyle_en'] ?? '' }}</td>
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? 'ആരോഗ്യ മന്ത്രം' : 'Spiritual Health Mantra' }}</th>
-            <td>{{ $targetLang === 'ml' ? 'മഹാമൃത്യുഞ്ജയ മന്ത്രം (പ്രഭാതത്തിൽ 11 തവണ ഭക്തിപൂർവ്വം ജപിക്കുക).' : 'Maha Mrityunjaya Mantra (11 repetitions daily at dawn).' }}</td>
+            <td>{{ $hw['healing_mantra_' . $targetLang] ?? $hw['healing_mantra_en'] ?? '' }}</td>
         </tr>
     </table>
 
@@ -1601,36 +1632,55 @@
     <!-- ================= PAGE 23: GOCHARA & SADE SATI AUDIT ================= -->
     <div class="section-title">{{ $targetLang === 'ml' ? '22. ഗോചര ഫലങ്ങളും ശനിദോഷ ചിന്തയും (Gochara)' : ($targetLang === 'ta' ? '22. கோசார பலன்கள் மற்றும் சனி ஆய்வு' : ($targetLang === 'hi' ? '22. गोचर फलादेश एवं शनि शांति' : '22. Gochara (Current Planetary Transits) & Shani Analysis')) }}</div>
     <p style="font-size: 8.5pt; color: #555;">
-        {{ $targetLang === 'ml' ? 'ജനനസമയത്തെ ചന്ദ്രരാശിയെ അടിസ്ഥാനമാക്കി നിലവിലെ പ്രധാന ഗ്രഹങ്ങളുടെ ഗോചര സഞ്ചാരഫലങ്ങൾ.' : 'Calculated from natal Chandra Rasi including classical Vedha checks.' }}
+        {{ $targetLang === 'ml' ? 'ജനനസമയത്തെ ചന്ദ്രരാശിയെ അടിസ്ഥാനമാക്കി നിലവിലെ പ്രധാന ഗ്രഹങ്ങളുടെ ഗോചര സഞ്ചാരഫലങ്ങൾ.' : 'Calculated strictly from natal Chandra Rasi including classical Vedha checks.' }}
     </p>
+
+    @php
+        $gc = $chartData['vedanga_predictions']['gocharaphala'] ?? [];
+        $shani = $gc['saturn_special'] ?? [];
+        $guru = $gc['jupiter_special'] ?? [];
+        $sunTr = $gc['sun_special'] ?? [];
+    @endphp
 
     <table class="table-data table-compact">
         <thead>
             <tr>
                 <th>Planet</th>
+                <th>Current Transit Sign</th>
                 <th>Position from Moon</th>
+                <th>Status</th>
                 <th>Transit Impact</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($chartData['vedanga_predictions']['gocharaphala']['planets'] ?? [] as $gp)
+            @foreach($gc['planets'] ?? [] as $gp)
                 <tr>
                     <td><strong>{{ $gp['name_' . $targetLang] ?? $gp['name_en'] ?? $gp['name'] ?? '' }}</strong> @if($targetLang !== 'ml' && !empty($gp['name_ml']))({{ $gp['name_ml'] }})@endif</td>
+                    <td>{{ $gp['current_rasi_name_' . $targetLang] ?? $gp['current_rasi_name_en'] ?? '' }}</td>
                     <td>{{ $gp['house_from_moon'] ?? 1 }}th House</td>
                     <td style="color: {{ !empty($gp['effective_favorable']) ? '#15803d' : '#b45309' }}; font-weight: bold;">
-                        {{ $gp['status_text'] ?? ($targetLang === 'ml' ? 'സമതുലിത ഫലം' : 'Moderate') }}
+                        {{ !empty($gp['effective_favorable']) ? ($targetLang === 'ml' ? 'അനുകൂലം' : 'Favorable') : ($targetLang === 'ml' ? 'ജാഗ്രത' : 'Challenging') }}
                     </td>
+                    <td>{{ $gp['status_text'] ?? ($targetLang === 'ml' ? 'സമതുലിത ഫലം' : 'Moderate') }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 
     <div class="highlight-box">
-        <strong>Saturn Transit (Shani Gochara) Audit:</strong><br>
-        &bull; <strong>7½ Shani (Sade Sati):</strong> {{ ($chartData['vedanga_predictions']['gocharaphala']['saturn_special']['is_ezhara_shani'] ?? true) ? ($targetLang === 'ml' ? 'സജീവം (ജന്മശനി - Peak Janma Shani)' : 'Active (Peak Janma Shani)') : 'Not Active' }}<br>
-        &bull; <strong>Kantaka Shani:</strong> None<br>
-        &bull; <strong>Ashtama Shani:</strong> None<br>
-        &bull; <strong>Shasta / Ayyappa Pariharam:</strong> {{ $chartData['vedanga_predictions']['gocharaphala']['saturn_special']['remedy_' . $targetLang] ?? $chartData['vedanga_predictions']['gocharaphala']['saturn_special']['remedy_en'] ?? 'Lighting sesame oil lamps (Neerajanam) on Saturdays.' }}
+        <strong style="color: #92400e; font-size: 10pt;">{{ $targetLang === 'ml' ? 'ശനി ഗോചര വിശകലനം (Saturn Transit Audit):' : 'Saturn Transit (Shani Gochara) Audit:' }}</strong><br>
+        &bull; <strong>7½ Shani (Sade Sati):</strong> {{ $shani['status_' . $targetLang] ?? $shani['status_en'] ?? 'None' }}<br>
+        &bull; <strong>Kantaka Shani:</strong> {{ $shani['kantaka_status_' . $targetLang] ?? $shani['kantaka_status_en'] ?? 'None' }}<br>
+        &bull; <strong>Ashtama Shani:</strong> {{ $shani['ashtama_status_' . $targetLang] ?? $shani['ashtama_status_en'] ?? 'None' }}<br>
+        &bull; <strong>{{ $targetLang === 'ml' ? 'വിശദ ഫലം:' : 'Detailed Transit Narrative:' }}</strong> {{ $shani['narrative_' . $targetLang] ?? $shani['narrative_en'] ?? '' }}<br>
+        &bull; <strong>{{ $targetLang === 'ml' ? 'ശാസ്താ പരിഹാരം:' : 'Shasta Pariharam:' }}</strong> {{ $shani['remedy_' . $targetLang] ?? $shani['remedy_en'] ?? '' }}
+    </div>
+
+    <div class="highlight-box" style="margin-top: 6px; border-left-color: #059669; background-color: #ecfdf5;">
+        <strong style="color: #065f46; font-size: 10pt;">{{ $targetLang === 'ml' ? 'വ്യാഴ & സൂര്യ ഗോചര വിശകലനം (Jupiter & Sun Transits):' : 'Jupiter & Sun Transits:' }}</strong><br>
+        &bull; <strong>{{ $targetLang === 'ml' ? 'വ്യാഴം (Guru):' : 'Jupiter (Guru):' }}</strong> {{ $guru['narrative_' . $targetLang] ?? $guru['narrative_en'] ?? '' }}<br>
+        &bull; <strong>{{ $targetLang === 'ml' ? 'സൂര്യൻ (Sun):' : 'Sun (Surya):' }}</strong> {{ $sunTr['narrative_' . $targetLang] ?? $sunTr['narrative_en'] ?? '' }}<br>
+        &bull; <strong>{{ $targetLang === 'ml' ? 'സർവ്വാഷ്ടകവർഗ്ഗ സമന്വയം:' : 'Ashtakavarga Synthesis:' }}</strong> {{ $gc['sav_synthesis_' . $targetLang] ?? $gc['sav_synthesis_en'] ?? '' }}
     </div>
 
     <div class="page-break"></div>
@@ -1638,34 +1688,28 @@
     <!-- ================= PAGE 24: FAVORABLE PERIODS & SACRED PARIHARAMS ================= -->
     <div class="section-title">{{ $targetLang === 'ml' ? '23. അനുകൂല കാലഘട്ടങ്ങളും വിശേഷാൽ പരിഹാരങ്ങളും' : '23. Favorable Lifeline Periods & Sacred Pariharams' }}</div>
     <p style="font-size: 8.5pt; color: #555;">
-        {{ $targetLang === 'ml' ? 'പ്രധാന ജീവിത മേഖലകളിലെ അനുകൂല ഘട്ടങ്ങളും സവിശേഷ പരിഹാര മാർഗ്ഗങ്ങളും.' : 'Favorable astrological time windows across career, enterprise, and property creation.' }}
+        {{ $targetLang === 'ml' ? 'വിംശോത്തരി ദശാപഹാര ക്രമപ്രകാരം 15 മുതൽ 75 വയസ്സ് വരെയുള്ള സുപ്രധാന ജീവിത നേട്ടങ്ങളുടെ കാലഗണന.' : 'Chronological astrological time windows across career, enterprise, and property creation.' }}
     </p>
 
-    <div class="subsection-title">{{ $targetLang === 'ml' ? 'തൊഴിൽ & വ്യവസായ അഭിവൃദ്ധിക്ക് അനുകൂലമായ കാലം' : 'Favorable Periods for Career, Business & Investments' }}</div>
+    <div class="subsection-title">{{ $targetLang === 'ml' ? 'പ്രധാന ജീവിത ഘട്ടങ്ങളിലെ അനുകൂല കാലഗണന (Ages 15 to 75)' : 'Chronological Favorable Lifeline Windows (Ages 15 to 75)' }}</div>
     <table class="table-data table-compact">
         <thead>
             <tr>
-                <th>{{ $targetLang === 'ml' ? 'ജീവിത ലക്ഷ്യം' : 'Aspiration' }}</th>
-                <th>{{ $targetLang === 'ml' ? 'അനുകൂല ഗ്രഹങ്ങൾ & ദശകൾ' : 'Favorable Planets & Dashas' }}</th>
-                <th>{{ $targetLang === 'ml' ? 'ശുഭകരമായ സവിശേഷതകൾ' : 'Promising Results' }}</th>
+                <th style="width: 25%;">{{ $targetLang === 'ml' ? 'കാലഘട്ടം (പ്രായം)' : 'Period (Age)' }}</th>
+                <th style="width: 20%;">{{ $targetLang === 'ml' ? 'മഹാദശ' : 'Mahadasha' }}</th>
+                <th style="width: 30%;">{{ $targetLang === 'ml' ? 'പ്രധാന അനുഭവങ്ങൾ' : 'Key Lifeline Realizations' }}</th>
+                <th style="width: 25%;">{{ $targetLang === 'ml' ? 'ജ്യോതിഷ കാരണം' : 'Astrological Rationale' }}</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td><strong>{{ $targetLang === 'ml' ? 'തൊഴിൽ ഉന്നതി & സ്ഥാനലബ്ധി' : 'Career Advancement' }}</strong></td>
-                <td>{{ $targetLang === 'ml' ? 'ശുക്രൻ, ബുധൻ, വ്യാഴം ദശാപഹാരങ്ങൾ' : 'Venus, Mercury & Jupiter sub-periods' }}</td>
-                <td>{{ $targetLang === 'ml' ? 'ഉത്തരവാദിത്തമുള്ള പദവികൾ, സ്ഥാനക്കയറ്റം, അംഗീകാരം' : 'Leadership elevations, organizational recognition' }}</td>
-            </tr>
-            <tr>
-                <td><strong>{{ $targetLang === 'ml' ? 'വ്യാപാരം & നിക്ഷേപം' : 'Business & Enterprise' }}</strong></td>
-                <td>{{ $targetLang === 'ml' ? '2, 7, 11 ഭാവാധിപന്മാർ, ബുധൻ' : '2nd, 7th & 11th lords, Mercury' }}</td>
-                <td>{{ $targetLang === 'ml' ? 'വാണിജ്യ ലാഭം, വിശ്വസ്തരായ പങ്കാളികൾ' : 'Commercial prosperity, solid partnerships' }}</td>
-            </tr>
-            <tr>
-                <td><strong>{{ $targetLang === 'ml' ? 'ഗൃഹനിർമ്മാണം & വസ്തു സമ്പാദ്യം' : 'House Construction & Land' }}</strong></td>
-                <td>{{ $targetLang === 'ml' ? '4-ാം ഭാവാധിപൻ, ചൊവ്വ, ശുക്രൻ' : '4th Lord, Mars & Venus' }}</td>
-                <td>{{ $targetLang === 'ml' ? 'വാസയോഗ്യമായ ഗൃഹം, ഭൂമി സമ്പാദ്യം, കുടുംബസുഖം' : 'Auspicious construction, peaceful domestic haven' }}</td>
-            </tr>
+            @foreach($chartData['vedanga_predictions']['favorable_periods'] ?? [] as $fp)
+                <tr style="{{ !empty($fp['is_current']) ? 'background-color: #fef9c3; font-weight: bold;' : '' }}">
+                    <td><strong>{{ $fp['period_label'] }}</strong> @if(!empty($fp['is_current'])) <span style="color:#b45309; font-size:7pt;">★ ACTIVE</span> @endif</td>
+                    <td>{{ $targetLang === 'ml' ? $fp['mahadasha_ml'] : $fp['mahadasha_en'] }}</td>
+                    <td>{{ $targetLang === 'ml' ? $fp['focus_ml'] : $fp['focus_en'] }}</td>
+                    <td><span style="font-size: 7.5pt; color: #555;">{{ $targetLang === 'ml' ? $fp['reason_ml'] : $fp['reason_en'] }}</span></td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
 
@@ -1696,12 +1740,17 @@
         </tr>
     </table>
 
-    <div class="subsection-title">Sacred Temple Pariharams</div>
+    @php
+        $pari = $chartData['vedanga_predictions']['sacred_pariharams'] ?? [];
+    @endphp
+
+    <div class="subsection-title">{{ $targetLang === 'ml' ? 'വിശേഷാൽ ക്ഷേത്ര പരിഹാരങ്ങൾ (Sacred Pariharams)' : 'Sacred Temple Pariharams' }}</div>
     <div class="highlight-box">
-        &bull; <strong>Navagraha Archana:</strong> Perform once a year on your Janma Nakshatra day.<br>
-        &bull; <strong>Dharma Sastha / Ayyappa Temple:</strong> Neerajanam on Saturdays for Shani blessings.<br>
-        &bull; <strong>Chottanikkara / Mahalakshmi:</strong> Friday ghee lamp for emotional peace and domestic concord.<br>
-        &bull; <strong>Maha Ganapathi Homam:</strong> For removing obstacles at the start of new ventures.
+        &bull; <strong>{{ $targetLang === 'ml' ? 'ജന്മനക്ഷത്ര അർച്ചന:' : 'Janma Nakshatra Archana:' }}</strong> {{ $pari['nakshatra_deity_' . $targetLang] ?? $pari['nakshatra_deity_en'] ?? 'Perform annual Archana on your birth star day.' }}<br>
+        &bull; <strong>{{ $targetLang === 'ml' ? 'നിലവിലെ ദശാപഹാര പ്രാർത്ഥന:' : 'Active Dasha Prayer:' }}</strong> {{ $pari['active_dasha_pariharam_' . $targetLang] ?? $pari['active_dasha_pariharam_en'] ?? 'Perform dedicated prayers to operating dasha lord.' }}<br>
+        @foreach(($targetLang === 'ml' ? ($pari['temples_ml'] ?? []) : ($pari['temples_en'] ?? [])) as $tmpl)
+            &bull; {{ $tmpl }}<br>
+        @endforeach
     </div>
 
     <div class="page-break"></div>

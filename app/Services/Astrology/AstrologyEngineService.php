@@ -159,8 +159,25 @@ class AstrologyEngineService
             11 => ['ml' => 'കുംഭം', 'en' => 'Kumbham'],
             12 => ['ml' => 'മീനം', 'en' => 'Meenam'],
         ];
-        $kollamDay = (int) floor(fmod($sunLong, 30.0)) + 1;
-        $kollamYear = ($sunRasiIdx >= 5) ? ($dobCarbon->year - 824) : ($dobCarbon->year - 825);
+
+        // Kollam Year & Solar Day calculation per authentic Kerala calendar (Chingam ingress)
+        $gMonth = (int)$dobCarbon->month;
+        if ($gMonth >= 9) {
+            $kollamYear = $dobCarbon->year - 824;
+        } elseif ($gMonth <= 7) {
+            $kollamYear = $dobCarbon->year - 825;
+        } else {
+            // August: Check if Sun has already entered Chingam (index 5)
+            $kollamYear = ($sunRasiIdx === 5) ? ($dobCarbon->year - 824) : ($dobCarbon->year - 825);
+        }
+
+        // Solar day in Kerala tradition is determined at sunrise
+        // Sun moves ~0.9856 degrees per day (~0.04106 deg/hour).
+        $birthHoursFromSunrise = ($dobCarbon->hour + $dobCarbon->minute / 60.0 + $dobCarbon->second / 3600.0) - 6.25;
+        $sunLongAtSunrise = $sunLong - ($birthHoursFromSunrise * (0.9856 / 24.0));
+        $degInSignAtSunrise = fmod(fmod($sunLongAtSunrise, 30.0) + 30.0, 30.0);
+        $kollamDay = (int) floor($degInSignAtSunrise) + 1;
+
         $kollamMonthMl = $kollamMonthMap[$sunRasiIdx]['ml'] ?? 'കർക്കിടകം';
         $kollamMonthEn = $kollamMonthMap[$sunRasiIdx]['en'] ?? 'Karkidakam';
         $kollavarshamData = [
@@ -286,12 +303,18 @@ class AstrologyEngineService
         // 6. Deep Vedanga Jyothisham Predictions & Transits
         $vedangaPredictions = $this->predictions->evaluateChart([
             'gender' => $gender,
+            'dob' => $dobCarbon->format('Y-m-d'),
+            'birth_time' => $birthTime,
             'lagna' => $lagna,
             'gulika' => $gulika,
             'planets' => $planets,
             'planet_bhavas' => $bhavaData['planet_bhavas'],
             'dignities' => $planetDignities,
             'moon_sign' => $panchangaData['chandra_sign'],
+            'nakshatra' => $panchangaData['nakshatra'],
+            'dasha' => $dashaData,
+            'active_dasha' => $dashaData['active_dasha'] ?? [],
+            'ashtakavarga' => $ashtakavarga,
         ], $lang);
 
         // WhatsApp consultation URL pre-filled with client's exact coordinates

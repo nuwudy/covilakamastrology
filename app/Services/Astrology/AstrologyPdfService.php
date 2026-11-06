@@ -14,6 +14,9 @@ class AstrologyPdfService
      */
     protected function createMpdfInstance(string $title = 'Covilakam Vedic Astrology Jathakam', string $lang = 'en'): Mpdf
     {
+        @ini_set('memory_limit', '512M');
+        @set_time_limit(300);
+
         if (!class_exists(Mpdf::class) || !class_exists(ConfigVariables::class)) {
             throw new \RuntimeException('mPDF package is not installed in vendor. Please run "composer install --no-dev" in your server project directory.');
         }
@@ -98,12 +101,43 @@ class AstrologyPdfService
     }
 
     /**
+     * Resolve fresh, complete chart data for the given reading.
+     */
+    protected function resolveChartData(AstrologyReading $reading, string $lang): array
+    {
+        $chartData = is_array($reading->chart_data) ? $reading->chart_data : json_decode($reading->chart_data, true);
+        if (empty($chartData) || empty($chartData['kollavarsham']) || empty($chartData['active_dasha']['all_antardashas'])) {
+            try {
+                $engine = app(\App\Services\Astrology\AstrologyEngineService::class);
+                $calcInput = [
+                    'name' => $reading->full_name,
+                    'gender' => $reading->gender ?: 'male',
+                    'dob' => $reading->dob,
+                    'birth_time' => $reading->birth_time ?: '12:00:00',
+                    'is_approximate_time' => (bool)$reading->is_approximate_time,
+                    'birth_place' => $reading->birth_place ?: 'Ernakulam / Kochi, Kerala, India',
+                    'latitude' => (float)($reading->latitude ?: 9.9312),
+                    'longitude' => (float)($reading->longitude ?: 76.2673),
+                    'timezone' => $reading->timezone ?: 'Asia/Kolkata',
+                    'language' => $lang,
+                ];
+                $chartData = $engine->calculate($calcInput);
+                $reading->chart_data = $chartData;
+                try {
+                    $reading->save();
+                } catch (\Throwable $e) {}
+            } catch (\Throwable $err) {}
+        }
+        return $chartData ?: [];
+    }
+
+    /**
      * Generate Tier 2: ₹100 Certified Vedic DOB Profile PDF (6–8 Pages).
      */
     public function generateTier100Pdf(AstrologyReading $reading, ?string $lang = null): string
     {
-        $chartData = is_array($reading->chart_data) ? $reading->chart_data : json_decode($reading->chart_data, true);
         $lang = $lang ?: ($reading->language ?: 'en');
+        $chartData = $this->resolveChartData($reading, $lang);
 
         $mpdf = $this->createMpdfInstance("Covilakam Certified DOB Profile - {$reading->full_name}", $lang);
 
@@ -127,8 +161,8 @@ class AstrologyPdfService
      */
     public function generateTier500Pdf(AstrologyReading $reading, ?string $lang = null): string
     {
-        $chartData = is_array($reading->chart_data) ? $reading->chart_data : json_decode($reading->chart_data, true);
         $lang = $lang ?: ($reading->language ?: 'en');
+        $chartData = $this->resolveChartData($reading, $lang);
 
         $mpdf = $this->createMpdfInstance("Covilakam Deluxe Vedic Jathakam - {$reading->full_name}", $lang);
 
