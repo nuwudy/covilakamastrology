@@ -610,15 +610,26 @@
                 <!-- Left Column (Branding & Authority) -->
                 <div class="lg:col-span-7 space-y-6">
                     
-                    <!-- Gold Medal & Ph.D. Highlight Badge -->
-                    <div class="inline-flex items-center space-x-2.5 px-4 py-2 rounded-full border border-amber-400/50 bg-gradient-to-r from-amber-500/20 via-yellow-400/10 to-amber-950/40 backdrop-blur-md shadow-lg shadow-amber-500/10">
-                        <span class="flex h-3 w-3 relative">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-3 w-3 bg-gradient-to-r from-amber-400 to-yellow-300"></span>
-                        </span>
-                        <span class="text-xs sm:text-sm font-semibold tracking-wide text-amber-200">
-                            🏅 2026 Gold Medalist & Ph.D. in Online Astro Counselling
-                        </span>
+                    <!-- Divine Invocation & Gold Medal / Ph.D. Badges -->
+                    <div class="flex flex-wrap items-center gap-2.5">
+                        <!-- Sacred Invocation Badge -->
+                        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full border border-amber-400/60 bg-gradient-to-r from-amber-500/25 via-yellow-400/15 to-[#261238] shadow-lg shadow-amber-500/10 backdrop-blur-md">
+                            <span class="text-amber-300 text-xs animate-pulse">🕉️</span>
+                            <span class="text-xs font-cinzel font-bold text-amber-200 tracking-wide">
+                                ॥ ॐ ശ്രീ മൂകാംബികായൈ നമഃ ॥
+                            </span>
+                        </div>
+
+                        <!-- Gold Medal & Ph.D. Highlight Badge -->
+                        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full border border-amber-400/50 bg-gradient-to-r from-amber-500/20 via-yellow-400/10 to-amber-950/40 backdrop-blur-md shadow-md">
+                            <span class="flex h-2.5 w-2.5 relative">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-gradient-to-r from-amber-400 to-yellow-300"></span>
+                            </span>
+                            <span class="text-xs sm:text-sm font-semibold tracking-wide text-amber-200">
+                                🏅 2026 Gold Medalist & Ph.D. in Online Astro Counselling
+                            </span>
+                        </div>
                     </div>
 
                     <!-- Main Heading & Astrologer Identity -->
@@ -648,31 +659,93 @@
                         </a>
                     </div>
 
-                    <!-- Astrologer Featured Portrait Card -->
-                    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#201133]/90 via-[#2f1020]/80 to-[#190e28]/90 border border-amber-500/40 shadow-xl backdrop-blur-md">
-                        <!-- Royal Gold Ornate Frame -->
-                        <div class="relative shrink-0">
-                            <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl p-1.5 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-2xl gold-glow transform rotate-1 hover:rotate-0 transition-transform duration-300">
-                                <img src="{{ asset('storage/media/images/covilakam-4bcJQK.webp') }}?v={{ time() }}"
-                                     alt="Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)"
-                                     onerror="this.onerror=null; this.src='{{ asset('images/covilakam-hero.webp') }}';"
-                                     class="w-full h-full object-cover object-top rounded-xl border border-amber-300/60 shadow-inner">
+                    <!-- Sacred Divine Mookambika Devi & Astrologer Showcase Card -->
+                    <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-[#221035]/95 via-[#2e0e24]/90 to-[#180b29]/95 border-2 border-amber-400/50 shadow-2xl backdrop-blur-md relative overflow-hidden">
+                        <!-- Divine Halo Light Effect -->
+                        <div class="absolute -top-12 -left-12 w-48 h-48 bg-amber-400/15 rounded-full blur-3xl pointer-events-none"></div>
+
+                        <!-- Sacred Top Banner -->
+                        <div class="flex items-center justify-between pb-3 mb-4 border-b border-amber-500/25">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-amber-400 text-base animate-pulse">🌸</span>
+                                <div>
+                                    <span class="font-cinzel text-xs sm:text-sm font-bold text-amber-200 tracking-wide block">
+                                        കൊല്ലൂർ ശ്രീ മൂകാംബികാ ദേവി കൃപാകടാക്ഷം
+                                    </span>
+                                    <span class="text-[10px] sm:text-[11px] text-amber-300/80 font-medium">
+                                        Divine Grace & Guidance of Goddess Sri Mookambika Devi
+                                    </span>
+                                </div>
                             </div>
-                            <span class="absolute -bottom-2 -right-2 px-2.5 py-0.5 rounded-full bg-amber-400 text-[10px] font-extrabold text-[#1a1128] uppercase shadow-lg border border-amber-200">
-                                Verified
+                            <span class="hidden sm:inline-flex items-center px-2.5 py-1 rounded-full bg-amber-500/15 border border-amber-400/40 text-[10px] text-amber-300 font-bold uppercase tracking-wider">
+                                ✨ പരദേവതാ പ്രീതി
                             </span>
                         </div>
 
-                        <!-- Bio Snippet & Tagline -->
-                        <div class="space-y-2 text-center sm:text-left">
-                            <p class="font-cinzel text-xs text-amber-300 uppercase tracking-widest font-bold">
-                                Covilakam Astrology (Kovilakam Astrology / കോവിലകം ജ്യോതിഷം) • <span class="italic font-playfair lowercase">Explore. Discover. Transform.</span>
-                            </p>
-                            <p class="text-xs sm:text-sm text-amber-100/80 leading-relaxed">
-                                Conferred Ph.D. in Vedic Astrology (Specialisation in Online Astro Counselling) by IAMA Open University, Florida, and Gold Medalist at Shree Maharshi College of Vedic Astrology. Dedicated to helping you align with cosmic harmony since 2022.
-                            </p>
-                            <div class="text-[11px] text-amber-200/90 font-medium pt-0.5">
-                                <span class="text-amber-400 font-bold">IVAF Life Member ID:</span> 11009
+                        <!-- Dual Visual Presentation: Goddess Mookambika (Dominant & Prominent) + Astrologer -->
+                        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 sm:gap-6">
+                            
+                            <!-- 1. GODDESS MOOKAMBIKA (LARGEST & PROMINENT) -->
+                            <div class="relative shrink-0 text-center group">
+                                <div class="w-48 h-48 sm:w-56 sm:h-56 md:w-60 md:h-60 rounded-3xl p-2 bg-gradient-to-tr from-amber-500 via-yellow-300 to-amber-600 shadow-2xl gold-glow border-2 border-amber-300/80 transform group-hover:scale-[1.02] transition-all duration-300 relative">
+                                    <img src="{{ asset('storage/media/images/untitled-design-29-mb3Njo.webp') }}"
+                                         alt="കൊല്ലൂർ ശ്രീ മൂകാംബികാ ദേവി (Goddess Sri Mookambika Devi)"
+                                         onerror="this.onerror=null; this.src='{{ asset('images/mookambika-devi.webp') }}';"
+                                         class="w-full h-full object-cover rounded-2xl border border-amber-200/50 shadow-inner">
+                                    
+                                    <!-- Divine Badge -->
+                                    <div class="absolute -bottom-2.5 inset-x-0 flex justify-center">
+                                        <span class="px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-[10px] sm:text-[11px] font-black text-[#1a1128] uppercase tracking-wider shadow-xl border border-amber-200 flex items-center space-x-1">
+                                            <span>✨ ശ്രീ മൂകാംബികാ ദേവി</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <p class="text-[10px] sm:text-[11px] text-amber-300 font-bold mt-3 font-cinzel tracking-wider">
+                                    Supreme Divine Upasana
+                                </p>
+                            </div>
+
+                            <!-- 2. Astrologer Companion Profile (Respectfully Sized Alongside) -->
+                            <div class="flex-1 space-y-3 text-center sm:text-left">
+                                
+                                <!-- Compact Practitioner Card -->
+                                <div class="flex flex-col sm:flex-row items-center gap-3.5 p-3 rounded-2xl bg-[#170c26]/90 border border-amber-500/30">
+                                    <div class="relative shrink-0">
+                                        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl p-1 bg-gradient-to-tr from-amber-600 via-amber-300 to-yellow-500 shadow-lg">
+                                            <img src="{{ asset('storage/media/images/covilakam-4bcJQK.webp') }}?v={{ time() }}"
+                                                 alt="Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)"
+                                                 onerror="this.onerror=null; this.src='{{ asset('images/covilakam-hero.webp') }}';"
+                                                 class="w-full h-full object-cover object-top rounded-xl border border-amber-300/40">
+                                        </div>
+                                        <span class="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-full bg-amber-400 text-[8px] font-extrabold text-[#1a1128] uppercase shadow border border-amber-200">
+                                            Verified
+                                        </span>
+                                    </div>
+                                    <div class="space-y-0.5 text-center sm:text-left">
+                                        <span class="text-[10px] text-amber-300 font-bold uppercase tracking-widest block">
+                                            Vedic Astrologer & Upasaka
+                                        </span>
+                                        <h3 class="font-cinzel text-base sm:text-lg font-bold text-white leading-tight">
+                                            Dr. E. K. Raja Varma
+                                        </h3>
+                                        <p class="text-[11px] text-amber-200/90 font-medium">
+                                            Vidya Vachaspathi • 2026 Gold Medalist
+                                        </p>
+                                        <div class="text-[10px] text-amber-300/80">
+                                            IVAF Life Member ID: 11009
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bio Snippet & Tagline -->
+                                <div class="space-y-1.5 pt-0.5">
+                                    <p class="font-cinzel text-[11px] sm:text-xs text-amber-300 uppercase tracking-widest font-bold">
+                                        Covilakam Astrology (കോവിലകം ജ്യോതിഷം) • <span class="italic font-playfair lowercase">Explore. Discover. Transform.</span>
+                                    </p>
+                                    <p class="text-xs text-amber-100/85 leading-relaxed">
+                                        Under the supreme divine blessings of Goddess Kollur Sri Mookambika Devi, Dr. E. K. Raja Varma (Ph.D. in Vedic Astrology & Online Astro Counselling, Florida) guides seekers through authentic horoscope readings, marriage compatibility, and compassionate spiritual guidance.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
