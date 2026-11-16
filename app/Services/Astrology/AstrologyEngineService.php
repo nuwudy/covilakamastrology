@@ -121,7 +121,12 @@ class AstrologyEngineService
         );
 
         // 2b. Compute Authentic Kerala Panchanga Limbs: Vara, Kollavarsham, Sunrise/Sunset, Dinamana
-        $dobCarbon = Carbon::parse($dob);
+        $cleanBirthTime = !empty($birthTime) ? $birthTime : '12:00:00';
+        try {
+            $dobCarbon = Carbon::parse("{$dob} {$cleanBirthTime}");
+        } catch (\Throwable $e) {
+            $dobCarbon = Carbon::parse($dob);
+        }
         $dow = $dobCarbon->dayOfWeek; // 0: Sun, 1: Mon, ..., 6: Sat
         $varaDataMap = [
             0 => ['en' => 'Sunday (Ravivara)', 'ml' => 'ഞായറാഴ്ച (രവിവാരം)', 'ta' => 'ஞாயிற்றுக்கிழமை', 'hi' => 'रविवार', 'lord' => 'Surya / Sun', 'lord_code' => 'Su'],

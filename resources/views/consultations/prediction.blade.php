@@ -18,6 +18,43 @@
 @endphp
 
 @section('content')
+<style>
+@media print {
+    body, html {
+        background: #ffffff !important;
+        color: #1a1a1a !important;
+    }
+    header, footer, nav, .site-header, .site-footer, .no-print, button, a.btn {
+        display: none !important;
+    }
+    .min-h-screen {
+        min-height: auto !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        background: #ffffff !important;
+    }
+    .bg-\[\#0d0716\], .bg-\[\#160b24\], .bg-\[\#1e1030\], .bg-\[\#231538\] {
+        background: #ffffff !important;
+        color: #1a1a1a !important;
+        border-color: #d1d5db !important;
+    }
+    * {
+        color: #1a1a1a !important;
+        text-shadow: none !important;
+        box-shadow: none !important;
+    }
+    .text-amber-200, .text-amber-300, .text-amber-400, .text-amber-100 {
+        color: #78350f !important;
+    }
+    table, tr, td, th {
+        border-color: #e5e7eb !important;
+        page-break-inside: avoid !important;
+    }
+    .page-break {
+        page-break-after: always !important;
+    }
+}
+</style>
 <div class="pt-28 pb-24 bg-[#0d0716] min-h-screen"
      x-data="{ 
          activeTab: 'overview',
@@ -202,6 +239,11 @@
                     <span class="text-[10px] uppercase tracking-widest text-amber-400 font-bold block">Horoscope Analysis For</span>
                     <h2 class="font-cinzel text-lg sm:text-xl font-bold text-white">{{ $reading['name'] }}</h2>
                     <span class="text-xs text-amber-200/70 font-mono">DOB: {{ $reading['birth_date'] }} (Indian Standard)</span>
+                    @if(!empty($reading['gender']))
+                        <span class="text-xs text-amber-300 font-mono block">
+                            {{ $currLang === 'ml' ? ($reading['gender'] === 'female' ? 'സ്ത്രീ (Female) • ഇടതുകൈ' : 'പുരുഷൻ (Male) • വലതുകൈ') : ucfirst($reading['gender']) . ($reading['gender'] === 'female' ? ' (Left Hand)' : ' (Right Hand)') }}
+                        </span>
+                    @endif
                 </div>
             </div>
 

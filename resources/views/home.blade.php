@@ -5,8 +5,27 @@
 @section('content')
 <style>
 @media print {
-    .free-reading-protected {
+    /* Ensure horoscope reading prints cleanly with white background & dark text */
+    body {
+        background: #ffffff !important;
+        color: #1a1a1a !important;
+    }
+    header, footer, nav, .site-header, .site-footer, #dob-traditional-form, .web-view-toolbar, .no-print, button, a.btn {
         display: none !important;
+    }
+    #dob-result-card {
+        display: block !important;
+        background: #ffffff !important;
+        color: #1a1a1a !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+    #dob-result-card * {
+        color: #1a1a1a !important;
+        text-shadow: none !important;
+    }
+    .chart-grid, table, .table-data {
+        page-break-inside: avoid !important;
     }
 }
 .free-reading-protected {
@@ -589,7 +608,7 @@
         this.hasResult = false;
         this.calcResult = null;
     }
-}">
+}" x-init="syncBirthTime(); syncDob();">
 
     <!-- ========================================================================= -->
     <!-- SECTION 1: Top Attractive Hero Banner + Instant Free DOB Prediction Funnel -->
@@ -993,6 +1012,11 @@
                                 @csrf
                                 <input type="hidden" name="birth_date" :value="calcDob">
                                 <input type="hidden" name="language" :value="readingLang">
+                                <input type="hidden" name="birth_time" :value="calcBirthTime">
+                                <input type="hidden" name="is_approximate_time" :value="isApproximateTime ? 1 : 0">
+                                <input type="hidden" name="latitude" :value="calcLatitude">
+                                <input type="hidden" name="longitude" :value="calcLongitude">
+                                <input type="hidden" name="timezone" :value="selectedCity?.tz || 'Asia/Kolkata'">
 
                                 {{-- Anti-Spam Honeypot Fields (Hidden to humans, filled by bots) --}}
                                 <div style="display:none !important; position:absolute; left:-9999px;" aria-hidden="true">

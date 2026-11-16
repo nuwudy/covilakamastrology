@@ -156,7 +156,7 @@
                     <!-- Operating Location -->
                     <div class="flex items-start space-x-2.5">
                         <span class="text-amber-400 font-bold">Location:</span>
-                        <span>Kerala, India (PIN: 686574)</span>
+                        <span>Kerala, India</span>
                     </div>
 
                     <!-- Website -->

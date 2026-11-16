@@ -18,12 +18,17 @@ class ConsultationController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:120',
+            'gender' => 'nullable|string|in:male,female',
             'birth_date' => 'required|date',
             'phone' => 'nullable|string|max:30',
             'service_requested' => 'nullable|string|max:150',
             'language' => 'nullable|string|in:en,ml,ta,hi',
             'birth_time' => 'nullable|string|max:30',
+            'is_approximate_time' => 'nullable|boolean',
             'birth_place' => 'nullable|string|max:150',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
+            'timezone' => 'nullable|string|max:60',
         ]);
 
         $selectedLang = $validated['language'] ?? 'en';
@@ -106,12 +111,12 @@ class ConsultationController extends Controller
             $reading = AstrologyReading::create([
                 'uuid' => $readingUuid,
                 'full_name' => $validated['name'],
-                'gender' => $request->input('gender', 'male'),
+                'gender' => $validated['gender'] ?? $request->input('gender', 'male'),
                 'whatsapp_number' => $userPhone,
                 'language' => $selectedLang,
                 'dob' => $validated['birth_date'],
                 'birth_time' => $birthTime ?: '12:00:00',
-                'is_approximate_time' => empty($birthTime),
+                'is_approximate_time' => !empty($validated['is_approximate_time']) || empty($birthTime),
                 'birth_place' => $birthPlace ?: 'Ernakulam / Kochi, Kerala, India',
                 'latitude' => (float)($request->input('latitude', 9.9312)),
                 'longitude' => (float)($request->input('longitude', 76.2673)),

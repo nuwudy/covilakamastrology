@@ -189,6 +189,9 @@
             margin-bottom: 12px;
             font-size: 9pt;
         }
+        table, tr, .table-data, .chart-grid, .highlight-box, .cover-box, .shloka-box, .cta-box {
+            page-break-inside: avoid;
+        }
     @media print { .web-view-toolbar { display: none !important; } }
 </style>
 </head>
@@ -291,10 +294,10 @@
     <div class="section-title">{{ $targetLang === 'ml' ? 'ജാതക വിവരങ്ങൾ (Jathaka Particulars)' : ($targetLang === 'ta' ? 'ஜாதக விபரங்கள்' : ($targetLang === 'hi' ? 'जातक जन्म विवरण' : 'Jathaka Registered Particulars')) }}</div>
     <table class="table-data">
         <tr>
-            <th style="width: 25%;">Full Name</th>
+            <th style="width: 25%;">{{ $targetLang === 'ml' ? 'പൂർണ്ണ നാമം (Name)' : 'Full Name' }}</th>
             <td style="width: 25%; font-weight: bold; color: #78350f;">{{ $reading->full_name }}</td>
-            <th style="width: 25%;">Gender</th>
-            <td style="width: 25%;">{{ ucfirst($reading->gender) }} ({{ $reading->gender === 'female' ? 'Left Hand' : 'Right Hand' }})</td>
+            <th style="width: 25%;">{{ $targetLang === 'ml' ? 'ലിംഗം (Gender)' : 'Gender' }}</th>
+            <td style="width: 25%;">{{ $targetLang === 'ml' ? ($reading->gender === 'female' ? 'സ്ത്രീ (Female)' : 'പുരുഷൻ (Male)') : ucfirst($reading->gender) }} ({{ $targetLang === 'ml' ? ($reading->gender === 'female' ? 'ഇടതുകൈ' : 'വലതുകൈ') : ($reading->gender === 'female' ? 'Left Hand' : 'Right Hand') }})</td>
         </tr>
         <tr>
             <th>Date of Birth</th>
@@ -1341,8 +1344,8 @@
     <div class="subsection-title">{{ $b5['title'] }}</div>
     <p>{{ $b5['desc'] }}</p>
     <div class="highlight-box">
-        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b5['lordPhala'] }}
-        @if($b5['karakaExp'])
+        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b5['lordPhala'] ?? '' }}
+        @if(!empty($b5['karakaExp']))
             <br><span style="color: #b91c1c; font-weight: bold;">{{ $b5['karakaExp'] }}</span>
         @endif
         @if(!empty($b5['occupants']))
@@ -1386,8 +1389,8 @@
     <div class="subsection-title">{{ $b7['title'] }}</div>
     <p>{{ $b7['desc'] }}</p>
     <div class="highlight-box">
-        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b7['lordPhala'] }}
-        @if($b7['karakaExp'])
+        <strong>{{ $targetLang === 'ml' ? 'ഭാവാധിപനും ഫലവും:' : 'Lord & Placement:' }}</strong> {{ $b7['lordPhala'] ?? '' }}
+        @if(!empty($b7['karakaExp']))
             <br><span style="color: #b91c1c; font-weight: bold;">{{ $b7['karakaExp'] }}</span>
         @endif
         @if(!empty($b7['occupants']))
@@ -1566,7 +1569,8 @@
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? '7-ാം ഭാവാധിപന്റെ നില' : '7th Lord Placement' }}</th>
-            <td>{{ $mw['sev_lord_name_' . $targetLang] ?? $mw['sev_lord_name_en'] ?? '' }} @if(!empty($mw['sev_lord_bhava'])) {{ $targetLang === 'ml' ? "({$mw['sev_lord_bhava']}-ാം ഭാവത്തിൽ നിലകൊള്ളുന്നു)" : "(in House {$mw['sev_lord_bhava']})" }} @endif</td>
+            @php $sevBhava = $mw['sev_lord_bhava'] ?? null; @endphp
+            <td>{{ $mw['sev_lord_name_' . $targetLang] ?? $mw['sev_lord_name_en'] ?? '' }} @if(!empty($sevBhava)) {{ $targetLang === 'ml' ? "({$sevBhava}-ാം ഭാവത്തിൽ നിലകൊള്ളുന്നു)" : "(in House {$sevBhava})" }} @endif</td>
         </tr>
         <tr>
             <th>{{ $targetLang === 'ml' ? 'കളത്ര കാരകൻ' : 'Kalathra Karaka' }}</th>
@@ -1711,10 +1715,10 @@
         <tbody>
             @foreach($chartData['vedanga_predictions']['favorable_periods'] ?? [] as $fp)
                 <tr style="{{ !empty($fp['is_current']) ? 'background-color: #fef9c3; font-weight: bold;' : '' }}">
-                    <td><strong>{{ $fp['period_label'] }}</strong> @if(!empty($fp['is_current'])) <span style="color:#b45309; font-size:7pt;">★ ACTIVE</span> @endif</td>
-                    <td>{{ $targetLang === 'ml' ? $fp['mahadasha_ml'] : $fp['mahadasha_en'] }}</td>
-                    <td>{{ $targetLang === 'ml' ? $fp['focus_ml'] : $fp['focus_en'] }}</td>
-                    <td><span style="font-size: 7.5pt; color: #555;">{{ $targetLang === 'ml' ? $fp['reason_ml'] : $fp['reason_en'] }}</span></td>
+                    <td><strong>{{ $fp['period_label'] ?? '' }}</strong> @if(!empty($fp['is_current'])) <span style="color:#b45309; font-size:7pt;">★ ACTIVE</span> @endif</td>
+                    <td>{{ $targetLang === 'ml' ? ($fp['mahadasha_ml'] ?? $fp['mahadasha_en'] ?? '') : ($fp['mahadasha_en'] ?? $fp['mahadasha_ml'] ?? '') }}</td>
+                    <td>{{ $targetLang === 'ml' ? ($fp['focus_ml'] ?? $fp['focus_en'] ?? '') : ($fp['focus_en'] ?? $fp['focus_ml'] ?? '') }}</td>
+                    <td><span style="font-size: 7.5pt; color: #555;">{{ $targetLang === 'ml' ? ($fp['reason_ml'] ?? $fp['reason_en'] ?? '') : ($fp['reason_en'] ?? $fp['reason_ml'] ?? '') }}</span></td>
                 </tr>
             @endforeach
         </tbody>

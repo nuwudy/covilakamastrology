@@ -166,6 +166,9 @@
         .page-break {
             page-break-after: always;
         }
+        table, tr, .table-data, .chart-grid, .highlight-box, .cover-box, .cta-box {
+            page-break-inside: avoid;
+        }
     @media print { .web-view-toolbar { display: none !important; } }
 </style>
 </head>
@@ -247,10 +250,10 @@
     <div class="section-title">{{ $targetLang === 'ml' ? '1. ജാതക വിവരങ്ങളും പഞ്ചാംഗ തത്ത്വവും' : ($targetLang === 'ta' ? '1. ஜாதக விபரங்கள் மற்றும் பஞ்சாங்கம்' : ($targetLang === 'hi' ? '1. जातक विवरण एवं पंचांग तत्त्व' : '1. Jathaka Birth Particulars & Panchanga')) }}</div>
     <table class="table-data">
         <tr>
-            <th style="width: 25%;">Full Name</th>
+            <th style="width: 25%;">{{ $targetLang === 'ml' ? 'പൂർണ്ണ നാമം (Name)' : 'Full Name' }}</th>
             <td style="width: 25%; font-weight: bold;">{{ $reading->full_name }}</td>
-            <th style="width: 25%;">Gender</th>
-            <td style="width: 25%;">{{ ucfirst($reading->gender) }} ({{ $reading->gender === 'female' ? 'Left Hand' : 'Right Hand' }})</td>
+            <th style="width: 25%;">{{ $targetLang === 'ml' ? 'ലിംഗം (Gender)' : 'Gender' }}</th>
+            <td style="width: 25%;">{{ $targetLang === 'ml' ? ($reading->gender === 'female' ? 'സ്ത്രീ (Female)' : 'പുരുഷൻ (Male)') : ucfirst($reading->gender) }} ({{ $targetLang === 'ml' ? ($reading->gender === 'female' ? 'ഇടതുകൈ' : 'വലതുകൈ') : ($reading->gender === 'female' ? 'Left Hand' : 'Right Hand') }})</td>
         </tr>
         <tr>
             <th>Date of Birth</th>
