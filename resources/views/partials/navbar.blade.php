@@ -52,8 +52,9 @@
                     <span>💳</span>
                     <span class="whitespace-nowrap">Pay Online</span>
                 </a>
-                <a href="{{ route('blog.index') }}" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1 whitespace-nowrap">Blog</a>
-                <a href="{{ route('visiting-card') }}" class="text-amber-100/80 hover:text-amber-300 transition-colors py-1 whitespace-nowrap">Visiting Card</a>
+                <a href="{{ route('blog.index') }}" class="{{ request()->routeIs('blog.*') ? 'text-amber-300 font-bold border-b-2 border-amber-400' : 'text-amber-100/80 hover:text-amber-300' }} transition-colors py-1 whitespace-nowrap">Blog</a>
+                <a href="{{ route('visiting-card') }}" class="{{ request()->routeIs('visiting-card') ? 'text-amber-300 font-bold border-b-2 border-amber-400' : 'text-amber-100/80 hover:text-amber-300' }} transition-colors py-1 whitespace-nowrap">Visiting Card</a>
+                <a href="{{ route('policies.contact') }}" class="{{ request()->routeIs('policies.contact') ? 'text-amber-300 font-bold border-b-2 border-amber-400' : 'text-amber-100/80 hover:text-amber-300' }} transition-colors py-1 whitespace-nowrap">Contact</a>
                 @auth
                 <a href="{{ route('admin.dashboard') }}" class="text-amber-300 font-semibold hover:text-amber-100 transition-colors py-1 flex items-center space-x-1 whitespace-nowrap">
                     <span>⚙️</span>
@@ -129,6 +130,10 @@
                 </a>
                 <a @click="mobileMenuOpen = false" href="{{ route('blog.index') }}" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">Astrology Blogs</a>
                 <a @click="mobileMenuOpen = false" href="{{ route('visiting-card') }}" class="px-3 py-2 rounded-lg text-amber-100 hover:text-amber-300 hover:bg-amber-500/10">Digital Visiting Card</a>
+                <a @click="mobileMenuOpen = false" href="{{ route('policies.contact') }}" class="px-3 py-2 rounded-lg {{ request()->routeIs('policies.contact') ? 'text-amber-300 font-bold bg-amber-500/20 border border-amber-500/30' : 'text-amber-100 hover:text-amber-300 hover:bg-amber-500/10' }} flex items-center justify-between">
+                    <span>Contact Us (ബന്ധപ്പെടുക)</span>
+                    <span class="text-xs text-amber-300">📍</span>
+                </a>
                 @auth
                 <a @click="mobileMenuOpen = false" href="{{ route('admin.dashboard') }}" class="px-3 py-2 rounded-lg text-amber-300 hover:text-amber-100 bg-amber-500/20 flex items-center justify-between font-semibold">
                     <span>⚙️ Admin Dashboard</span>
