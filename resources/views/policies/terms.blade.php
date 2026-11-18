@@ -105,7 +105,7 @@
                 <div class="bg-[#1a1128] p-5 rounded-2xl border border-amber-500/20 text-xs sm:text-sm space-y-1.5">
                     <p><strong>Merchant / Practice Name:</strong> Covilakam Astrology (Kovilakam Astrology)</p>
                     <p><strong>Directing Astrologer:</strong> Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</p>
-                    <p><strong>Operating Address:</strong> Covilakam Astrology, Kerala, India (PIN: 686574)</p>
+                    <p><strong>Operating Address:</strong> Covilakam Astrology, Kerala, India (PIN: 683110)</p>
                     <p><strong>Primary WhatsApp:</strong> +91 7907052160</p>
                     <p><strong>Phone / GPay:</strong> 094473 27450 / +91 9447327450</p>
                     <p><strong>Official Email:</strong> varmaji@covilakamastrology.com / ekrvarma@gmail.com</p>

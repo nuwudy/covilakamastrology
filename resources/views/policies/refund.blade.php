@@ -94,7 +94,7 @@
                     <p><strong>Primary WhatsApp Support:</strong> <a href="https://wa.me/917907052160" target="_blank" class="text-emerald-400 font-semibold">+91 7907052160</a> (Fastest response within 2-4 hours)</p>
                     <p><strong>Official Email:</strong> <a href="mailto:varmaji@covilakamastrology.com" class="text-amber-300">varmaji@covilakamastrology.com</a></p>
                     <p><strong>Phone Support:</strong> 094473 27450 / +91 9447327450 (Mon - Sat, 9:00 AM to 8:00 PM IST)</p>
-                    <p><strong>Mailing Address:</strong> Covilakam Astrology, Kerala, India (PIN: 686574)</p>
+                    <p><strong>Mailing Address:</strong> Covilakam Astrology, Kerala, India (PIN: 683110)</p>
                 </div>
             </section>
         </div>

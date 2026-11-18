@@ -55,7 +55,7 @@
                                 <strong class="text-amber-300 block">Registered Operating Address:</strong>
                                 <p class="text-amber-100/80 leading-relaxed">
                                     Covilakam Astrology Centre,<br>
-                                    Kerala, India — PIN: 686574
+                                    Kerala, India — PIN: 683110
                                 </p>
                             </div>
                         </div>

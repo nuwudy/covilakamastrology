@@ -89,7 +89,7 @@
                     <p>In accordance with Information Technology Act, 2000 and the Rules made thereunder:</p>
                     <p><strong>Grievance Officer:</strong> Dr. E. K. Raja Varma (Vidya Vachaspathi in Vedic Astrology)</p>
                     <p><strong>Entity:</strong> Covilakam Astrology (Kovilakam Astrology)</p>
-                    <p><strong>Location:</strong> Kerala, India (PIN: 686574)</p>
+                    <p><strong>Location:</strong> Kerala, India (PIN: 683110)</p>
                     <p><strong>Grievance Email:</strong> <a href="mailto:varmaji@covilakamastrology.com" class="text-amber-300">varmaji@covilakamastrology.com</a></p>
                     <p><strong>Support Helpline:</strong> +91 7907052160 / 094473 27450</p>
                 </div>
