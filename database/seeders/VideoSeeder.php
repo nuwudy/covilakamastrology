@@ -69,6 +69,15 @@ class VideoSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 6,
             ],
+            [
+                'title' => 'Dr. E. K. രാജവർമ്മയ്ക്ക് കീർത്തന അസ്ട്രോളജിക്കൽ റിസർച്ച് സെന്ററിന്റെ ആദരിക്കൽ ചടങ്ങ്',
+                'youtube_url' => 'https://youtu.be/x_gYSiAFjLU?si=krw2jeQs1yluY6xd',
+                'youtube_id' => 'x_gYSiAFjLU',
+                'description' => 'ജ്യോതിഷ പണ്ഡിതനും കൗൺസിലറുമായ Dr. ഇ. കെ. രാജ വർമ്മയെ (Vidya Vachaspathi in Vedic Astrology) കീർത്തന അസ്ട്രോളജിക്കൽ റിസർച്ച് സെന്റർ ആദരിച്ച ചടങ്ങിന്റെ ദൃശ്യങ്ങൾ. ജ്യോതിഷ രംഗത്തെ അദ്ദേഹത്തിന്റെ സമഗ്ര സംഭാവനകളെയും സേവനങ്ങളെയും മുൻനിർത്തി നടന്ന സദസ്സ്.',
+                'duration' => '64:51',
+                'is_active' => true,
+                'sort_order' => 7,
+            ],
         ];
 
         foreach ($videos as $video) {
